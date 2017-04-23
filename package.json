@@ -4,14 +4,12 @@
   "description": "There are land or 'green' borders, and there are maritime or 'blue' borders. The focus of this website is on the latter - and on migration",
   "private": true,
   "dependencies": {
-    "react": "15.5.4",
-    "react-dom": "15.5.4",
     "ampersand-app": "2.0.0",
     "ampersand-router": "4.0.0",
+    "babel-polyfill": "6.23.0",
     "bootstrap": "3.3.7",
     "classnames": "2.2.5",
     "gemini-scrollbar": "1.5.0",
-    "jquery": "3.2.1",
     "js-base64": "2.1.9",
     "local-links": "1.4.1",
     "lodash": "4.17.4",
@@ -19,10 +17,12 @@
     "pouchdb": "6.2.0",
     "pouchdb-authentication": "0.5.5",
     "pouchdb-upsert": "2.2.0",
+    "react": "15.5.4",
     "react-bootstrap": "0.30.10",
     "react-bootstrap-daterangepicker": "3.2.2",
     "react-copy-to-clipboard": "4.3.1",
     "react-document-title": "2.0.3",
+    "react-dom": "15.5.4",
     "react-dropzone": "3.13.0",
     "react-gemini-scrollbar": "2.3.0",
     "react-list": "0.8.5",
@@ -30,6 +30,9 @@
     "slug": "0.9.1"
   },
   "devDependencies": {
+    "css-loader": "0.28.0",
+    "html-loader": "0.4.5",
+    "postcss-loader": "1.3.3",
     "react-scripts": "0.9.5"
   },
   "scripts": {

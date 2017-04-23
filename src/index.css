@@ -1,5 +1,736 @@
+@import '../node_modules/react-bootstrap-daterangepicker/css/daterangepicker.css';
+@import '../node_modules/gemini-scrollbar/gemini-scrollbar.css';
+
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+  margin-top: 52px;
+  hyphens: auto;
+}
+
+body .navbar {
+  margin-bottom: 0;
+}
+
+body .navbar-inverse .navbar-brand {
+  color: #EDF4F8;
+  cursor: pointer;
+}
+
+p,
+div {
+	font-size: medium;
+}
+
+a,
+a:link {
+	cursor: pointer;
+}
+
+.home-title h2 {
+	margin-top: 30px;
+	margin-bottom: 50px;
+}
+
+.introHeader {
+  margin-top: 42px;
+	height: 150px;
+  padding: 15px;
+}
+
+.introHeader:before {
+  content: ' ';
+  background-image: url('./images/ocean.jpg');
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 51px;
+  width: 100%;
+  height: 150px;
+  z-index: -1;
+  opacity: 1;
+}
+
+.introText {
+	font-size: 28px;
+	font-weight: 600;
+	line-height: 30px;
+	color: #FFF;
+	text-shadow: 2px 2px 3px black, -2px -2px 3px black, 2px -2px 3px black, -2px 2px 3px black;
+}
+
+.introText {
+  text-align: center;
+}
+
+.introTitle {
+	margin-top: 20px;
+	font-size: 42px;
+	font-weight: 800;
+	line-height: 46px;
+}
+
+body .navbar {
+	border-radius: 0;
+}
+body .navbar a {
+  color: #EDF4F8 !important;
+}
+
+.no-break-inside {
+  break-inside: avoid-column;
+  page-break-inside: avoid;
+}
+
+.navbar-inverse {
+	background-image: url('./images/oceanDark.jpg');
+}
+
+// bootstrap only padds jumbotron above 768px screen width!
+.events .eventsIntro.jumbotron {
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 20px;
+  padding-bottom: 15px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: transparent;
+  border: 0 solid #ddd;
+  border-radius: 4px;
+}
+.eventsIntro.jumbotron p {
+  font-size: 18px;
+}
+
+.btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+  background-color: rgba(0, 109, 255, 0.05) !important;
+}
+
+.year > .panel-heading,
+.category > .panel-heading,
+.commentaries .panel-heading,
+.actors .panel-heading {
+  background-image: url('./images/oceanDark.jpg');
+}
+
+.year.not-active > .panel-heading,
+.category.not-active > .panel-heading {
+  border-radius: 3px;
+}
+
+.panel-group .year > .panel-heading {
+  background-color: transparent;
+}
+
+.year > .panel-heading a,
+.category > .panel-heading a,
+.commentaries .panel-heading a,
+.actors .panel-heading a {
+  color: #EDF4F8;
+  font-weight: bold;
+}
+
+.col400,
+.col500 {
+	column-count: 1;
+	column-gap: 20px;
+}
+
+.commentaries a.list-group-item {
+  padding-right: 50px;
+}
+
+.commentary p,
+.commentary	.row,
+.commentary	table {
+	margin-bottom: 20px;
+}
+.commentary	h2 {
+	text-align: center;
+	font-size: x-large;
+	font-weight: 800;
+	margin-top: 60px;
+	margin-bottom: 20px;
+}
+.commentaries .h2-subtitle {
+  text-align: center;
+  font-size: large;
+  font-weight: 800;
+  margin-top: -10px;
+  margin-bottom: 0;
+}
+
+.commentaries .h2-subtitle-top {
+  text-align: center;
+  font-size: large;
+  font-weight: 800;
+  margin-bottom: -40px;
+}
+
+.commentary h3 {
+  text-align: center;
+  font-size: large;
+  font-weight: 800;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.actors,
+.actors h1 {
+	margin-top: 40px;
+	font-size: x-large;
+	font-weight: 700;
+}
+.actors	h2 {
+	font-size: large;
+	font-weight: 700;
+	margin-top: 40px;
+	margin-bottom: 20px;
+}
+
+.publication h2 {
+  font-size: medium;
+  font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.tab-content .actors {
+	margin-top: 20px;
+}
+
+.page h1{
+  font-size: 36px;
+  font-weight: 500;
+}
+.page h2 {
+  font-size: x-large;
+  font-weight: 700;
+}
+.page h3 {
+  font-size: large;
+  font-weight: 700;
+}
+
+.manualHyphens {
+  hyphens: manual;
+}
+
+/*--------------------------------*\
+    3. #Events
+\*--------------------------------*/
+
+.eventsIntro {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.eventsTable {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+// fix table header
+.events {
+  position: relative;
+}
+.eventsTable-body {
+  overflow-x: visible;
+  overflow-y: auto;
+  height: calc(100vh - 94px);
+  margin-top: 77px;
+  border-top: 1px solid #ECECEC;
+  border-bottom: 1px solid #ECECEC;
+}
+
+.eventsTable-header,
+.eventsTable-body {
+  width: 100%;
+}
+.eventsTable-header {
+  font-weight: bold;
+}
+
+.eventsTable-header-cell,
+.eventsTable-body-cell {
+  padding: 5px;
+  flex: 1;
+}
+
+.eventsTable-header-cell {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.eventsTable-header-row,
+.eventsTable-body-row {
+  display: flex;
+}
+
+.eventsTable-body-row {
+  border-top: 1px solid #ECECEC !important;
+}
+.eventsTable-body-row:hover {
+  background-color: #f5f5f5;
+}
+.eventsTable-body-monthRow {
+  background-image: url('./images/oceanDark.jpg');
+  color: #EDF4F8;
+  font-weight: bold;
+}
+.eventsTable-body-monthRow .eventsTable-body-cell {
+  padding-left: 10px;
+}
+
+.events .monthlyStatisticsRow {
+  background-color: rgba(0, 109, 255, 0.05);
+}
+
+.eventsTable-cell-day {
+  width: 60px;
+  max-width: 60px;
+  padding-right: 20px;
+  text-align: right;
+}
+.events .dayWithEvents p {
+  margin-top: 5px;
+}
+.eventsTable-cell-migration,
+.eventsTable-cell-politics {
+  width: 50%;
+  max-width: 50%;
+  word-wrap: break-word;
+}
+.eventsTable-cell-migration {
+  padding-right: 10px;
+}
+.eventsTable-cell-politics {
+  padding-left: 10px;
+}
+.eventsTable-body-row ul {
+  padding-left: 10px;
+  margin-bottom: 0;
+}
+.eventsTable-body-row ul li {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.eventsTable-body-row ul li+li {
+  margin-top: 10px;
+}
+.eventsTable-body-row p {
+  margin-bottom: 0;
+}
+
+/* make sure glyphicon and link text are on same line */
+.eventsTable-body-row a {
+  white-space: nowrap;
+}
+
+.events p.event-weather {
+  position: relative;
+}
+.events li.event-weather {
+  list-style-type: none;
+}
+.events p.event-weather:before {
+  font-family: 'Glyphicons Halflings';
+  content: '\2601';
+  font-size: 1.4em;
+  position: absolute;
+  top: -3px;
+  left: -26px;
+}
+
+.events p.event-statistics,
+.events p.event-monthlyStatistics {
+  position: relative;
+}
+.events li.event-statistics,
+.events li.event-monthlyStatistics {
+  list-style-type: none;
+}
+.events p.event-statistics:before,
+.events p.event-monthlyStatistics:before {
+  font-family: 'Glyphicons Halflings';
+  content: '\e185';
+  font-size: 1em;
+  position: absolute;
+  top: -2px;
+  left: -23px;
+}
+
+.events p.event-victims {
+  position: relative;
+}
+.events li.event-victims {
+  list-style-type: none;
+}
+.events p.event-victims:before {
+  font-family: 'Glyphicons Halflings';
+  content: '\e101';
+  font-size: 1.3em;
+  position: absolute;
+  top: -4px;
+  left: -26px;
+}
+
+.events p.event-highlighted {
+  position: relative;
+}
+.events li.event-highlighted {
+  list-style-type: none;
+}
+.events p.event-highlighted:before {
+  font-family: 'Glyphicons Halflings';
+  content: '\e006';
+  font-size: 1.3em;
+  position: absolute;
+  top: -5px;
+  left: -23px;
+}
+
+a.typeahead-token-close {
+  margin-left: 5px;
+}
+.typeahead-selector .list-group-item:focus,
+.typeahead-selector .list-group-item:hover {
+  color: #555;
+  text-decoration: none;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.editEvent .col-xs-1, .editEvent .col-sm-1, .editEvent .col-md-1, .editEvent .col-lg-1, .editEvent .col-xs-2, .editEvent .col-sm-2, .editEvent .col-md-2, .editEvent .col-lg-2, .editEvent .col-xs-3, .editEvent .col-sm-3, .editEvent .col-md-3, .editEvent .col-lg-3, .editEvent .col-xs-4, .editEvent .col-sm-4, .editEvent .col-md-4, .editEvent .col-lg-4, .editEvent .col-xs-5, .editEvent .col-sm-5, .editEvent .col-md-5, .editEvent .col-lg-5, .editEvent .col-xs-6, .editEvent .col-sm-6, .editEvent .col-md-6, .editEvent .col-lg-6, .editEvent .col-xs-7, .editEvent .col-sm-7, .editEvent .col-md-7, .editEvent .col-lg-7, .editEvent .col-xs-8, .editEvent .col-sm-8, .editEvent .col-md-8, .editEvent .col-lg-8, .editEvent .col-xs-9, .editEvent .col-sm-9, .editEvent .col-md-9, .editEvent .col-lg-9, .editEvent .col-xs-10, .editEvent .col-sm-10, .editEvent .col-md-10, .editEvent .col-lg-10, .editEvent .col-xs-11, .editEvent .col-sm-11, .editEvent .col-md-11, .editEvent .col-lg-11, .editEvent .col-xs-12, .editEvent .col-sm-12, .editEvent .col-md-12, .editEvent .col-lg-12 {
+  padding-right: 0;
+}
+.editEvent .form-group {
+  margin-bottom: 5px;
+}
+
+
+h4.modal-title {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+
+
+/* validate div after react bootstrap component */
+.validateDivAfterRBC {
+  color: #a94442;
+  margin-top: -15px;
+  margin-bottom: 5px;
+}
+
+.dropzone > div {
+  width: 220px !important;
+  margin-left: 5px;
+  height: 147px !important;
+  padding: 5px;
+}
+
+
+
+.editEvent .event-tags {
+  column-width: 250px;
+  break-inside: avoid;
+}
+
+.editEvent .event-tag input {
+  position: relative;
+  top: 2px;
+}
+.editEvent .event-tag span {
+  font-weight: normal;
+  margin-left: 7px;
+  cursor: pointer;
+}
+
+#date {
+  border-radius: 4px;
+}
+
+
+
+
+
+/*--------------------------------*\
+    3. #Monthly Events
+\*--------------------------------*/
+
+#monthlyEvents .panel-body,
+#publications .category > .panel-collapse > .panel-body {
+  padding: 0 0;
+}
+#publications .panel-body .publication .mce-tinymce {
+  margin: -15px;
+}
+#monthlyEvents .panel-group,
+#publications .panel-group {
+  margin-bottom: 0;
+}
+#monthlyEvents .panel.month,
+#publications .panel.month {
+  margin-top: 0;
+  border-radius: 0;
+  border-top-width: 0;
+  border-right-width: 0;
+  border-left-width: 0;
+}
+#monthlyEvents .panel.month > .panel-heading,
+#publications .panel.month .panel-heading {
+  background-color: transparent;
+}
+#monthlyEvents .panel.month .panel-heading:hover,
+#publications .panel.month .panel-heading:hover {
+  background-color: #f5f5f5;
+}
+#monthlyEvents .panel-heading,
+#publications .panel-heading {
+  cursor: pointer;
+}
+#monthlyEvents .panel.month > .panel-heading h4,
+#publications .panel.month > .panel-heading h4 {
+  font-weight: bold;
+  z-index: 0;
+}
+#monthlyEvents .panel.month:last-of-type,
+#publications .panel.month:last-of-type {
+  border-bottom-width: 0;
+}
+
+#monthlyEvents .panel.month .panel-body table {
+  margin-left: 0 !important;
+  width: 100% !important;
+}
+
+/* TODO: import tinymce.css instead
+   add other css for editor before */
+.monthlyEvent table.new {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+.monthlyEvent .new thead {
+  background-color: rgb(250, 191, 143);
+}
+.monthlyEvent .new tr,
+.monthlyEvent .new th,
+.monthlyEvent .new td {
+  border: 1px solid black;
+  padding: 5px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.monthlyEvent .new h1,
+.monthlyEvent .new h2,
+.monthlyEvent .new p {
+  text-align: center;
+}
+
+.monthlyEvent .new h1 {
+  font-size: 1em;
+  font-weight: bold;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+.monthlyEvent .new h1+h1 {
+  margin-top: -15px;
+}
+.monthlyEvent .new h2 {
+  font-size: 0.8em;
+  font-weight: bold;
+  text-decoration: underline;
+  margin-top: 10px;
+}
+.monthlyEvent .new p {
+  font-size: 0.8em;
+  font-weight: normal;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.monthlyEvent .new p.bold {
+  font-weight: bold;
+}
+
+
+
+
+
+/*--------------------------------*\
+       #archive
+       #tables
+\*--------------------------------*/
+table > thead > tr > th {
+	border-bottom: 0 solid #dddddd !important;
+	line-height: .3;
+}
+table > thead > tr.totals > td {
+	border-top: 0;
+	border-bottom: 2px solid #dddddd !important;
+	line-height: .6;
+	color: #9C9C9C;
+}
+
+/*--------------------------------*\
+       #tinymce code editor
+\*--------------------------------*/
+
+.mce-container.mce-panel.mce-floatpanel.mce-window.mce-in {
+  left: 2vw !important;
+  top: 2vh !important;
+  height: 95vh !important;
+}
+
+.mce-container.mce-panel.mce-floatpanel.mce-window.mce-in .mce-container-body {
+  height: calc(95vh - 89px) !important;
+}
+
+.mce-container.mce-panel.mce-floatpanel.mce-window.mce-in,
+.mce-container.mce-panel.mce-floatpanel.mce-window.mce-in .mce-container-body,
+.mce-container.mce-panel.mce-floatpanel.mce-window.mce-in .mce-foot {
+  width: 96vw !important;
+}
+
+/*--------------------------------*\
+       #errors
+\*--------------------------------*/
+
+#errors {
+  position: absolute;
+  /* misteriously a top and left value of 0
+  // are added directly to the element
+  // must be react-bootstraps Overlay element
+  // but is not documented?
+  // > counter it */
+  top: auto !important;
+  left: auto !important;
+  bottom: 8px;
+  right: 8px;
+  margin-left: 8px;
+  background-color: orange;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid #CCC;
+  border-radius: 3px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  z-index: 3;
+}
+
+#errors .errorContainer {
+  border: none;
+}
+
+#errors .errorContainer:first-of-type .error {
+  padding-right: 27px;
+}
+
+#errors .error {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#errors .error p {
+  margin-bottom: 0;
+}
+#errors .error p+p {
+  margin-bottom: -2px;
+}
+
+#errors hr {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid #CCC;
+}
+
+
+@media (min-width 786px) {
+	.col400 {
+		column-count: 2;
+	}
+  .modal-lg.modal-dialog {
+    width: 700px;
+  }
+}
+
+@media (min-width 992px) {
+	.home-title h2 {
+		margin-top: 70px;
+		margin-bottom: 70px;
+	}
+	.col400 {
+		column-count: 3;
+	}
+	.col500 {
+		column-count: 2;
+	}
+  .modal-lg.modal-dialog {
+    width: 950px;
+  }
+}
+
+@media (min-width 1100px) {
+  .modal-lg.modal-dialog {
+    width: 1000px;
+  }
+}
+
+@media (min-width 1300px) {
+  .modal-lg.modal-dialog {
+    width: 1100px;
+  }
+}
+
+
+/* formally tynimce.css */
+.monthlyEvent table.new {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+.monthlyEvent .new thead {
+  background-color: rgb(250, 191, 143);
+}
+.monthlyEvent .new tr,
+.monthlyEvent .new th,
+.monthlyEvent .new td {
+  border: 1px solid black;
+  padding: 5px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.monthlyEvent .new h1,
+.monthlyEvent .new h2,
+.monthlyEvent .new p {
+  text-align: center;
+}
+.monthlyEvent .new h1 {
+  font-size: 1em;
+  font-weight: bold;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+.monthlyEvent .new h1+h1 {
+  margin-top: -15px;
+}
+.monthlyEvent .new h2 {
+  font-size: 0.8em;
+  font-weight: bold;
+  text-decoration: underline;
+  margin-top: 10px;
+}
+.monthlyEvent .new p {
+  font-size: 0.8em;
+  font-weight: normal;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.monthlyEvent .new p.bold {
+  font-weight: bold;
 }
