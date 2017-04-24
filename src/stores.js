@@ -15,7 +15,7 @@ import sortEvents from './modules/sortEvents.js'
 import getYearsOfEvents from './modules/getYearsOfEvents.js'
 import getPublications from './modules/getPublications.js'
 import sortPublications from './modules/sortPublications.js'
-import { uniq } from 'lodash'
+import uniq from 'lodash/uniq'
 
 export default Actions => {
   app.activePageStore = Reflux.createStore({
