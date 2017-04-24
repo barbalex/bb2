@@ -21,24 +21,6 @@ const enhance = compose(
   })
 )
 
-const errorMessages = errors =>
-  errors.map((error, index) => (
-    <div className="errorContainer" key={index}>
-      <div className="error">
-        {error.title &&
-          <p>
-            {error.title}
-          </p>}
-        <p>
-          <em>
-            {error.msg}
-          </em>
-        </p>
-      </div>
-      {index + 1 < errors.length && <hr />}
-    </div>
-  ))
-
 const glyphStyle = {
   position: 'absolute',
   top: 3,
@@ -61,7 +43,22 @@ const Errors = ({
         style={glyphStyle}
         onClick={onClickGlyph}
       />
-      {errorMessages(errors)}
+      {errors.map((error, index) => (
+        <div className="errorContainer" key={index}>
+          <div className="error">
+            {error.title &&
+              <p>
+                {error.title}
+              </p>}
+            <p>
+              <em>
+                {error.msg}
+              </em>
+            </p>
+          </div>
+          {index + 1 < errors.length && <hr />}
+        </div>
+      ))}
     </div>
   </Overlay>
 )
