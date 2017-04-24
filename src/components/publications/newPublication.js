@@ -6,7 +6,7 @@ import {
   Alert,
   FormGroup,
   ControlLabel,
-  FormControl,
+  FormControl
 } from 'react-bootstrap'
 
 export default React.createClass({
@@ -57,10 +57,10 @@ export default React.createClass({
 
   categoryOptions() {
     const publicationCategories = app.publicationsStore.getPublicationCategories()
-    const options = publicationCategories.map((category, index) =>
+    const options = publicationCategories.map((category, index) => (
       <option key={index + 1} value={category}>{category}</option>
-    )
-    options.unshift(<option key={0} value={null}></option>)
+    ))
+    options.unshift(<option key={0} value={null} />)
     return options
   },
 
@@ -70,11 +70,7 @@ export default React.createClass({
       marginBottom: 10
     }
     return (
-      <Modal
-        show
-        onHide={this.close}
-        bsSize="large"
-      >
+      <Modal show onHide={this.close} bsSize="large">
         <Modal.Header>
           <Modal.Title>
             New publication
@@ -82,9 +78,7 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <FormGroup
-            controlId="event"
-          >
+          <FormGroup controlId="event">
             <ControlLabel>Title</ControlLabel>
             <FormControl
               type="text"
@@ -94,9 +88,7 @@ export default React.createClass({
               autoFocus
             />
           </FormGroup>
-          <FormGroup
-            controlId="category"
-          >
+          <FormGroup controlId="category">
             <ControlLabel>Category</ControlLabel>
             <FormControl
               componentClass="select"
@@ -107,27 +99,17 @@ export default React.createClass({
               {this.categoryOptions()}
             </FormControl>
           </FormGroup>
-          {
-            error &&
-            <Alert
-              bsStyle="danger"
-              style={alertStyle}
-            >
+          {error &&
+            <Alert bsStyle="danger" style={alertStyle}>
               {error}
-            </Alert>
-          }
+            </Alert>}
         </Modal.Body>
 
         <Modal.Footer>
-          <Button
-            onClick={this.close}
-          >
+          <Button onClick={this.close}>
             discard input and close
           </Button>
-          <Button
-            bsStyle="primary"
-            onClick={this.createNewPublication}
-          >
+          <Button bsStyle="primary" onClick={this.createNewPublication}>
             create new publication
           </Button>
         </Modal.Footer>

@@ -15,8 +15,6 @@ import sortEvents from './modules/sortEvents.js'
 import getYearsOfEvents from './modules/getYearsOfEvents.js'
 import getPublications from './modules/getPublications.js'
 import sortPublications from './modules/sortPublications.js'
-import publicationTemplate
-  from './components/publications/publicationTemplate.txt'
 import { uniq } from 'lodash'
 
 export default Actions => {
@@ -590,7 +588,13 @@ export default Actions => {
       const _id = `publications_${categorySlugified}_${titleSlugified}`
       const type = 'publications'
       const draft = true
-      const article = Base64.encode(publicationTemplate)
+      const article = Base64.encode(
+        `<div class='actors col500'>
+          <ul style='padding-left: 20px;'>
+            <li>Name (year). Title, where.</li>
+          </ul>
+        </div>`
+      )
       const publication = { _id, type, draft, category, title, article }
       this.activePublicationCategory = category
       this.onSavePublication(publication)
