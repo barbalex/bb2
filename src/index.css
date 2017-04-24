@@ -84,7 +84,7 @@ body .navbar a {
 	background-image: url('./images/oceanDark.jpg');
 }
 
-// bootstrap only padds jumbotron above 768px screen width!
+/* bootstrap only padds jumbotron above 768px screen width!*/
 .events .eventsIntro.jumbotron {
   padding-left: 30px;
   padding-right: 30px;
@@ -229,7 +229,7 @@ body .navbar a {
   margin-bottom: 0;
 }
 
-// fix table header
+/* fix table header */
 .events {
   position: relative;
 }

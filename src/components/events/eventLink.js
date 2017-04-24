@@ -8,7 +8,7 @@ import {
   OverlayTrigger,
   Glyphicon,
   FormGroup,
-  FormControl,
+  FormControl
 } from 'react-bootstrap'
 
 export default React.createClass({
@@ -37,7 +37,7 @@ export default React.createClass({
     // this is a bad hack
     // without it state is not changed when activeEvent changes
     // > if a link is deleted, the wrong one keeps being shown
-    this.state.link = this.props.link
+    this.setState({ link: this.props.link })
   },
 
   onChangeUrl(e) {
@@ -49,8 +49,8 @@ export default React.createClass({
   onBlurUrl() {
     const { activeEvent, link: oldLink } = this.props
     const { link: newLink } = this.state
-    const index = activeEvent.links.findIndex((link) =>
-      link.label === oldLink.label && link.url === oldLink.url
+    const index = activeEvent.links.findIndex(
+      link => link.label === oldLink.label && link.url === oldLink.url
     )
     activeEvent.links[index] = newLink
     app.Actions.saveEvent(activeEvent)
@@ -65,8 +65,8 @@ export default React.createClass({
   onBlurLabel() {
     const { activeEvent, link: oldLink } = this.props
     const { link: newLink } = this.state
-    const index = activeEvent.links.findIndex((link) =>
-      link.url === oldLink.url && link.label === oldLink.label
+    const index = activeEvent.links.findIndex(
+      link => link.url === oldLink.url && link.label === oldLink.label
     )
     activeEvent.links[index] = newLink
     app.Actions.saveEvent(activeEvent)
@@ -75,8 +75,8 @@ export default React.createClass({
   onRemoveLink() {
     const { activeEvent } = this.props
     const { link: linkToRemove } = this.props
-    activeEvent.links = activeEvent.links.filter((link) =>
-      link.label !== linkToRemove.label && link.url !== linkToRemove.url
+    activeEvent.links = activeEvent.links.filter(
+      link => link.label !== linkToRemove.label && link.url !== linkToRemove.url
     )
     app.Actions.saveEvent(activeEvent)
   },
@@ -111,46 +111,31 @@ export default React.createClass({
     const focusLabel = focus && !link.label
 
     return (
-      <Row
-        key={index}
-      >
-        <Col
-          sm={3}
-          lg={2}
-        >
-          <FormGroup
-            controlId="eventLink"
-          >
+      <Row key={index}>
+        <Col sm={3} lg={2}>
+          <FormGroup controlId="eventLink">
             <FormControl
               type="text"
               bsSize="small"
               value={link.label}
-              onChange={(event) => this.onChangeLabel(event)}
+              onChange={event => this.onChangeLabel(event)}
               onBlur={() => this.onBlurLabel()}
               autoFocus={focusLabel}
             />
           </FormGroup>
         </Col>
-        <Col
-          sm={8}
-          lg={9}
-        >
-          <FormGroup
-            controlId="eventUrl"
-          >
+        <Col sm={8} lg={9}>
+          <FormGroup controlId="eventUrl">
             <FormControl
               type="url"
               bsSize="small"
               value={link.url}
-              onChange={(event) => this.onChangeUrl(event)}
+              onChange={event => this.onChangeUrl(event)}
               onBlur={() => this.onBlurUrl()}
             />
           </FormGroup>
         </Col>
-        <Col
-          sm={1}
-          lg={1}
-        >
+        <Col sm={1} lg={1}>
           {this.removeLinkGlyph()}
         </Col>
       </Row>

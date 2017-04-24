@@ -47,7 +47,9 @@ export default React.createClass({
     const { activePublication } = this.props
     // prevent higher level panels from reacting
     e.stopPropagation()
-    const idToGet = (!activePublication || activePublication._id !== id) ? id : null
+    const idToGet = !activePublication || activePublication._id !== id
+      ? id
+      : null
     app.Actions.getPublication(idToGet)
   },
 
@@ -71,14 +73,18 @@ export default React.createClass({
   scrollToActivePanel(more) {
     const node = ReactDOM.findDOMNode(this._activePublicationPanel)
     if (node) {
-      const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
+      const navWrapperOffsetTop = document.getElementById('nav-wrapper')
+        .offsetTop
       let reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 30 : 52
       // somehow on first load the panel does not scroll up far enough
-      if (more) reduce = reduce - 5
+      if (more) reduce -= 5
       if (node.offsetTop) {
-        window.$('html, body').animate({
-          scrollTop: node.offsetTop - reduce
-        }, 500)
+        window.$('html, body').animate(
+          {
+            scrollTop: node.offsetTop - reduce
+          },
+          500
+        )
       }
     }
   },
@@ -151,8 +157,8 @@ export default React.createClass({
     } = this.props
     let { publications } = this.props
     // filter only publication of current category
-    publications = publications.filter((publication) =>
-      publication.category === category
+    publications = publications.filter(
+      publication => publication.category === category
     )
     publications = publications.sort((a, b) => {
       if (a.order && b.order) {
@@ -163,11 +169,9 @@ export default React.createClass({
       return 1
     })
     return publications.map((doc, dIndex) => {
-      const isActivePublication = (
-        activePublication ?
-        doc._id === activePublication._id :
-        false
-      )
+      const isActivePublication = activePublication
+        ? doc._id === activePublication._id
+        : false
       const showEditingGlyphons = !!email
       const panelHeadingStyle = {
         position: 'relative'
@@ -176,17 +180,15 @@ export default React.createClass({
         maxHeight: window.innerHeight - 127,
         overflowY: 'auto'
       }
-      const ref = (
-        isActivePublication ?
-        '_activePublicationPanel' :
-        `_publicationPanel${doc._id}`
-      )
+      const ref = isActivePublication
+        ? '_activePublicationPanel'
+        : `_publicationPanel${doc._id}`
       // use pure bootstrap.
       // advantage: can add edit icon to panel-heading
       return (
         <div
           key={dIndex}
-          ref={(c) => {
+          ref={c => {
             this[ref] = c
           }}
           className="panel panel-default month"
@@ -198,9 +200,7 @@ export default React.createClass({
             onClick={this.onClickPublication.bind(this, doc._id)}
             style={panelHeadingStyle}
           >
-            <h4
-              className="panel-title"
-            >
+            <h4 className="panel-title">
               <a
                 role="button"
                 data-toggle="collapse"
@@ -212,17 +212,10 @@ export default React.createClass({
                 {doc.title}
               </a>
             </h4>
-            {
-              showEditingGlyphons &&
-              this.toggleDraftGlyph(doc)
-            }
-            {
-              showEditingGlyphons &&
-              this.removePublicationGlyph(doc)
-            }
+            {showEditingGlyphons && this.toggleDraftGlyph(doc)}
+            {showEditingGlyphons && this.removePublicationGlyph(doc)}
           </div>
-          {
-            isActivePublication &&
+          {isActivePublication &&
             <div
               id={`#collapse${dIndex}`}
               className="panel-collapse collapse in"
@@ -230,18 +223,14 @@ export default React.createClass({
               aria-labelledby={`heading${dIndex}`}
               onClick={this.onClickEventCollapse}
             >
-              <div
-                className="panel-body"
-                style={panelBodyStyle}
-              >
+              <div className="panel-body" style={panelBodyStyle}>
                 <Publication
                   activePublication={activePublication}
                   editing={editing}
                   onSavePublicationArticle={onSavePublicationArticle}
                 />
               </div>
-            </div>
-          }
+            </div>}
         </div>
       )
     })
@@ -254,18 +243,16 @@ export default React.createClass({
       <div
         className="panel-group"
         id={category}
-        ref={(c) => {
+        ref={c => {
           this[category] = c
         }}
       >
         {this.publicationsComponent(category)}
-        {
-          docToRemove &&
+        {docToRemove &&
           <ModalRemovePublication
             doc={docToRemove}
             removePublication={this.removePublication}
-          />
-        }
+          />}
       </div>
     )
   }

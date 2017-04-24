@@ -3,46 +3,13 @@ import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
 import allTags from './tags.js'
 
-const tagIcon = (option) => {
+const tagIcon = option => {
   const top = option.top ? option.top : 0
   const glyphStyle = {
     top,
     fontSize: '1.5em'
   }
-  return (
-    <Glyphicon
-      glyph={option.iconText}
-      style={glyphStyle}
-    />
-  )
-}
-
-const tags = (activeEvent) => {
-  const options = allTags()
-  return options.map((option, index) => {
-    const checked = activeEvent.tags.includes(option.tag)
-    return (
-      <div
-        key={index}
-        className="form-group event-tag"
-      >
-        <label>
-          <input
-            type="checkbox"
-            checked={checked}
-            onChange={(event) =>
-              onChangeTag(option.tag, event, activeEvent)
-            }
-          />
-            {
-              option.iconText &&
-              tagIcon(option)
-            }
-            &nbsp;{option.tag}
-        </label>
-      </div>
-    )
-  })
+  return <Glyphicon glyph={option.iconText} style={glyphStyle} />
 }
 
 const onChangeTag = (tag, event, activeEvent) => {
@@ -51,11 +18,29 @@ const onChangeTag = (tag, event, activeEvent) => {
     activeEvent.tags.push(tag)
     app.Actions.saveEvent(activeEvent)
   } else {
-    activeEvent.tags = activeEvent.tags.filter((_tag) =>
-      _tag !== tag
-    )
+    activeEvent.tags = activeEvent.tags.filter(_tag => _tag !== tag)
     app.Actions.saveEvent(activeEvent)
   }
+}
+
+const tags = activeEvent => {
+  const options = allTags()
+  return options.map((option, index) => {
+    const checked = activeEvent.tags.includes(option.tag)
+    return (
+      <div key={index} className="form-group event-tag">
+        <label>
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={event => onChangeTag(option.tag, event, activeEvent)}
+          />
+          {option.iconText && tagIcon(option)}
+          &nbsp;{option.tag}
+        </label>
+      </div>
+    )
+  })
 }
 
 const labelStyle = {
@@ -63,7 +48,7 @@ const labelStyle = {
   marginBottom: 2
 }
 
-const EventTags = ({ activeEvent }) =>
+const EventTags = ({ activeEvent }) => (
   <div style={{ marginBottom: 20 }}>
     <div style={labelStyle}>
       Tags
@@ -72,6 +57,7 @@ const EventTags = ({ activeEvent }) =>
       {tags(activeEvent)}
     </div>
   </div>
+)
 
 EventTags.displayName = 'EventTags'
 

@@ -7,9 +7,11 @@ const Events = ({
   activeEventYears,
   events,
   email,
-  onRemoveEvent,
+  onRemoveEvent
 }) => {
-  const eventsTableHeadTop = introJumbotronHeight ? introJumbotronHeight + 88 : 173
+  const eventsTableHeadTop = introJumbotronHeight
+    ? introJumbotronHeight + 88
+    : 173
   const eventsTableHeadStyle = {
     top: eventsTableHeadTop,
     position: 'absolute'
@@ -19,16 +21,12 @@ const Events = ({
 
   return (
     <div className="eventsTable">
-      <div
-        style={eventsTableHeadStyle}
-        className="eventsTable-header"
-      >
+      <div style={eventsTableHeadStyle} className="eventsTable-header">
         <div className="eventsTable-header-row">
           <div
             className="eventsTable-header-cell eventsTable-cell-day"
             style={headerStyle}
-          >
-          </div>
+          />
           <div
             className="eventsTable-header-cell eventsTable-cell-migration"
             style={headerStyle}
@@ -66,7 +64,7 @@ Events.propTypes = {
   introJumbotronHeight: React.PropTypes.number,
   activeEventYears: React.PropTypes.array,
   setActiveEventYears: React.PropTypes.func,
-  onRemoveEvent: React.PropTypes.func,
+  onRemoveEvent: React.PropTypes.func
 }
 
 export default Events
