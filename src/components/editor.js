@@ -2,6 +2,32 @@ import React from 'react'
 import { Base64 } from 'js-base64'
 import tinymce from 'tinymce'
 import 'tinymce/themes/modern'
+import 'tinymce/plugins/advlist'
+import 'tinymce/plugins/autolink'
+import 'tinymce/plugins/link'
+import 'tinymce/plugins/image'
+import 'tinymce/plugins/lists'
+import 'tinymce/plugins/charmap'
+import 'tinymce/plugins/print'
+import 'tinymce/plugins/hr'
+import 'tinymce/plugins/anchor'
+import 'tinymce/plugins/pagebreak'
+import 'tinymce/plugins/searchreplace'
+import 'tinymce/plugins/wordcount'
+import 'tinymce/plugins/visualblocks'
+import 'tinymce/plugins/visualchars'
+import 'tinymce/plugins/code'
+import 'tinymce/plugins/fullscreen'
+import 'tinymce/plugins/media'
+import 'tinymce/plugins/nonbreaking'
+import 'tinymce/plugins/save'
+import 'tinymce/plugins/table'
+import 'tinymce/plugins/contextmenu'
+import 'tinymce/plugins/directionality'
+import 'tinymce/plugins/template'
+import 'tinymce/plugins/paste'
+import 'tinymce/plugins/textcolor'
+import 'tinymce/plugins/autosave'
 
 export default React.createClass({
   displayName: 'Editor',
@@ -33,7 +59,6 @@ export default React.createClass({
     if (onSaveCommentaryArticle || onSaveActorArticle) {
       height = window.innerHeight - 52 - 74 - 90
     }
-    const instanceSelector = `#${doc._id}`
     // need to add specific classes to the iframe body because my css will not apply otherwise
     let bodyClass = ''
     if (onSavePageArticle) bodyClass = ''
@@ -43,13 +68,14 @@ export default React.createClass({
     if (onSaveActorArticle) bodyClass = 'actor'
 
     // see: https://www.ephox.com/blog/how-to-integrate-react-with-tinymce
-
+    // add codemirror? see: https://github.com/christiaan/tinymce-codemirror
     tinymce.init({
-      selector: instanceSelector,
+      selector: `#${doc._id}`,
+      theme: 'modern',
       plugins: [
         'advlist autolink link image lists charmap print hr anchor pagebreak',
         'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',
-        'save table contextmenu directionality template paste textcolor autosave codemirror'
+        'save table contextmenu directionality template paste textcolor autosave'
       ],
       menubar: 'edit insert view format table tools',
       toolbar: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print code fullscreen',
@@ -58,7 +84,7 @@ export default React.createClass({
       automatic_uploads: false,
       statusbar: false,
       body_class: bodyClass,
-      content_css: '/tinymce.css',
+      content_css: `${process.env.PUBLIC_URL}/tinymce.css`,
       // enable auto-saving
       setup(editor) {
         editor.on('change undo redo', () => {
@@ -71,11 +97,6 @@ export default React.createClass({
           if (onSaveCommentaryArticle) onSaveCommentaryArticle(articleEncoded)
           if (onSaveActorArticle) onSaveActorArticle(articleEncoded)
         })
-      },
-      // options for http://www.avoid.org/codemirror-for-tinymce4
-      codemirror: {
-        path: 'http://46.101.159.23/tinymce/plugins/codemirror/codemirror-5.15',
-        indentOnInit: true
       }
     })
     // scroll editor to top in pages
