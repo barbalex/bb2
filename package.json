@@ -26,8 +26,11 @@
     "react-dropzone": "3.13.0",
     "react-gemini-scrollbar": "2.3.0",
     "react-list": "0.8.5",
+    "recompose": "0.23.1",
     "reflux": "0.4.1",
-    "slug": "0.9.1"
+    "slug": "0.9.1",
+    "styled-components": "1.4.5",
+    "tinymce": "4.5.6"
   },
   "devDependencies": {
     "css-loader": "0.28.0",
@@ -40,6 +43,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   },
   "keywords": [
     "migration",

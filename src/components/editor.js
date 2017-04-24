@@ -1,5 +1,7 @@
 import React from 'react'
 import { Base64 } from 'js-base64'
+import tinymce from 'tinymce'
+import 'tinymce/themes/modern'
 
 export default React.createClass({
   displayName: 'Editor',
@@ -40,7 +42,9 @@ export default React.createClass({
     if (onSaveCommentaryArticle) bodyClass = 'commentary'
     if (onSaveActorArticle) bodyClass = 'actor'
 
-    window.tinymce.init({
+    // see: https://www.ephox.com/blog/how-to-integrate-react-with-tinymce
+
+    tinymce.init({
       selector: instanceSelector,
       plugins: [
         'advlist autolink link image lists charmap print hr anchor pagebreak',
@@ -55,25 +59,14 @@ export default React.createClass({
       statusbar: false,
       body_class: bodyClass,
       content_css: '/tinymce.css',
-      // try to stop tinymce from changing html on the server
-      // sadly did not work
-      /*
-      entity_encoding: 'raw',
-      verify_html: false,
-      cleanup_on_startup: false,
-      cleanup_on_save: false,
-      trim_span_elements: false,
-      convert_urls: false,
-      extended_valid_elements: 'table[th]',
-      valid_elements: '*[*]',
-      */
       // enable auto-saving
       setup(editor) {
         editor.on('change undo redo', () => {
           const articleDecoded = editor.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
           if (onSavePageArticle) onSavePageArticle(articleEncoded)
-          if (onSaveMonthlyEventArticle) onSaveMonthlyEventArticle(articleEncoded)
+          if (onSaveMonthlyEventArticle)
+            onSaveMonthlyEventArticle(articleEncoded)
           if (onSavePublicationArticle) onSavePublicationArticle(articleEncoded)
           if (onSaveCommentaryArticle) onSaveCommentaryArticle(articleEncoded)
           if (onSaveActorArticle) onSaveActorArticle(articleEncoded)
@@ -87,9 +80,12 @@ export default React.createClass({
     })
     // scroll editor to top in pages
     if (doc.type === 'pages') {
-      window.$('html, body').animate({
-        scrollTop: 140
-      }, 800)
+      window.$('html, body').animate(
+        {
+          scrollTop: 140
+        },
+        800
+      )
     }
   },
 
@@ -103,16 +99,11 @@ export default React.createClass({
     // http://stackoverflow.com/questions/29169158/react-html-editor-tinymce
     const { doc } = this.props
     const instanceSelector = `#${doc._id}`
-    window.tinymce.remove(instanceSelector)
+    tinymce.remove(instanceSelector)
   },
 
   render() {
     const { doc, articleDecoded } = this.props
-    return (
-      <textarea
-        id={doc._id}
-        defaultValue={articleDecoded}
-      />
-    )
+    return <textarea id={doc._id} defaultValue={articleDecoded} />
   }
 })
