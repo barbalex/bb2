@@ -1,3 +1,4 @@
+// @flow
 /*
  * receives an object with two keys: title, msg
  * displays it while the object is present
@@ -11,32 +12,32 @@
 import app from 'ampersand-app'
 import React from 'react'
 import { Overlay, Glyphicon } from 'react-bootstrap'
+import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
 
-const errorMessages = (errors) =>
-  errors.map((error, index) =>
-    <div
-      className="errorContainer"
-      key={index}
-    >
+const enhance = compose(
+  withHandlers({
+    onClickGlyph: props => () => app.Actions.showError()
+  })
+)
+
+const errorMessages = errors =>
+  errors.map((error, index) => (
+    <div className="errorContainer" key={index}>
       <div className="error">
-        {
-          error.title &&
+        {error.title &&
           <p>
             {error.title}
-          </p>
-        }
+          </p>}
         <p>
           <em>
             {error.msg}
           </em>
         </p>
       </div>
-      {
-        index + 1 < errors.length &&
-        <hr />
-      }
+      {index + 1 < errors.length && <hr />}
     </div>
-  )
+  ))
 
 const glyphStyle = {
   position: 'absolute',
@@ -46,28 +47,25 @@ const glyphStyle = {
   cursor: 'pointer'
 }
 
-const Errors = ({ errors }) =>
-  <Overlay
-    show={errors.length > 0}
-  >
-    <div
-      id="errors"
-    >
+const Errors = ({
+  errors,
+  onClickGlyph
+}: {
+  errors: Array<Object>,
+  onClickGlyph: () => void
+}) => (
+  <Overlay show={errors.length > 0}>
+    <div id="errors">
       <Glyphicon
         glyph="remove-circle"
         style={glyphStyle}
-        onClick={() =>
-          app.Actions.showError()
-        }
+        onClick={onClickGlyph}
       />
       {errorMessages(errors)}
     </div>
   </Overlay>
+)
 
 Errors.displayName = 'Errors'
 
-Errors.propTypes = {
-  errors: React.PropTypes.array
-}
-
-export default Errors
+export default enhance(Errors)
