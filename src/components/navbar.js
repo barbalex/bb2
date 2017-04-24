@@ -60,7 +60,7 @@ export default React.createClass({
   },
 
   isNavMobile() {
-    const documentWidth = document.getElementById('content').clientWidth
+    const documentWidth = document.getElementById('root').clientWidth
     return documentWidth <= 750
   },
 

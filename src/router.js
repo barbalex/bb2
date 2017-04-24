@@ -29,6 +29,7 @@ export default Router.extend({
   },
 
   home() {
+    console.log('router.js')
     const id = 'pages_events'
     this.render(id)
   },
@@ -98,15 +99,11 @@ export default Router.extend({
   },
 
   login() {
-    ReactDOM.render(
-      <Main login />, document.getElementById('content')
-    )
+    ReactDOM.render(<Main login />, document.getElementById('root'))
   },
 
   render(id) {
-    ReactDOM.render(
-      <Main />, document.getElementById('content')
-    )
+    ReactDOM.render(<Main />, document.getElementById('root'))
     if (id) app.Actions.getPage(id)
   }
 })

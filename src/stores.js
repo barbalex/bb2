@@ -16,7 +16,7 @@ import getYearsOfEvents from './modules/getYearsOfEvents.js'
 import getPublications from './modules/getPublications.js'
 import sortPublications from './modules/sortPublications.js'
 import publicationTemplate
-  from './components/publications/publicationTemplate.html'
+  from './components/publications/publicationTemplate.txt'
 import { uniq } from 'lodash'
 
 export default Actions => {
