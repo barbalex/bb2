@@ -95,19 +95,19 @@ export default React.createClass({
   onMonthlyEventsStoreChange(monthlyEvents, activeMonthlyEvent) {
     const { email } = this.state
     if (!email) {
-      monthlyEvents = monthlyEvents.filter((monthlyEvent) =>
-        !monthlyEvent.draft
-      )
+      monthlyEvents = monthlyEvents.filter(monthlyEvent => !monthlyEvent.draft)
     }
     this.setState({ monthlyEvents, activeMonthlyEvent })
   },
 
-  onPublicationsStoreChange(publications, activePublicationCategory, activePublication) {
+  onPublicationsStoreChange(
+    publications,
+    activePublicationCategory,
+    activePublication
+  ) {
     const { email } = this.state
     if (!email) {
-      publications = publications.filter((publication) =>
-        !publication.draft
-      )
+      publications = publications.filter(publication => !publication.draft)
     }
     this.setState({
       publications,
@@ -119,9 +119,7 @@ export default React.createClass({
   onCommentariesStoreChange(commentaries, activeCommentary) {
     const { email } = this.state
     if (!email) {
-      commentaries = commentaries.filter((commentary) =>
-        !commentary.draft
-      )
+      commentaries = commentaries.filter(commentary => !commentary.draft)
     }
     this.setState({ commentaries, activeCommentary })
   },
@@ -140,7 +138,7 @@ export default React.createClass({
   onActorsStoreChange(actors, activeActor) {
     const { email } = this.state
     if (!email) {
-      actors = actors.filter((actor) => !actor.draft)
+      actors = actors.filter(actor => !actor.draft)
     }
     this.setState({ actors, activeActor })
   },
@@ -266,7 +264,7 @@ export default React.createClass({
       showNewPublication,
       email,
       errors,
-      activeEventYears,
+      activeEventYears
     } = this.state
     const nonSimplePages = [
       'pages_commentaries',
@@ -274,62 +272,52 @@ export default React.createClass({
       'pages_publications',
       'pages_events'
     ]
-    const isSimplePage = (
+    const isSimplePage =
       activePage.type &&
       activePage.type === 'pages' &&
       !nonSimplePages.includes(activePage._id)
-    )
-    const isCommentariesPage = (
+    const isCommentariesPage =
       activePage.type &&
       activePage.type === 'pages' &&
       activePage._id === 'pages_commentaries'
-    )
-    const isEventsPage = (
+    const isEventsPage =
       activePage.type &&
       activePage.type === 'pages' &&
       activePage._id === 'pages_events'
-    )
-    const isActorPage = (
+    const isActorPage =
       activePage.type &&
-      activePage.type === 'pages'
-      && activePage._id === 'pages_actors'
-    )
-    const isMonthlyEventsPage = (
+      activePage.type === 'pages' &&
+      activePage._id === 'pages_actors'
+    const isMonthlyEventsPage =
       activePage.type &&
       activePage.type === 'pages' &&
       activePage._id === 'pages_monthlyEvents'
-    )
-    const isPublicationsPage = (
+    const isPublicationsPage =
       activePage.type &&
       activePage.type === 'pages' &&
       activePage._id === 'pages_publications'
-    )
-    const isCommentary = (
-      activePage.type &&
-      activePage.type === 'commentaries'
-    )
+    const isCommentary = activePage.type && activePage.type === 'commentaries'
     const isActor = activePage.type && activePage.type === 'actors'
     const showCommentaryPage = isCommentariesPage || isCommentary
     const showEventsPage = isEventsPage
     const showActorPage = isActorPage || isActor
-    const isMonthlyEvent = activePage.type && activePage.type === 'monthlyEvents'
+    const isMonthlyEvent =
+      activePage.type && activePage.type === 'monthlyEvents'
     const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
     const isPublication = activePage.type && activePage.type === 'publications'
     const showPublicationsPage = isPublicationsPage || isPublication
     const pageName = getPageNameFromDoc(activePage)
     const pageTitle = `blue-borders | ${pageName}`
     const pagesWitCopyright = ['pages_commentaries']
-    const showCopyright = (
+    const showCopyright =
       activePage.type &&
       activePage.type === 'pages' &&
       pagesWitCopyright.includes(activePage._id)
-    )
     const showErrors = errors && errors.length > 0
+    console.log('main.js, showErrors:', showErrors)
 
     return (
-      <DocumentTitle
-        title={pageTitle}
-      >
+      <DocumentTitle title={pageTitle}>
         <NavHelper>
           <Header />
           <Navbar
@@ -348,21 +336,15 @@ export default React.createClass({
             onClickNewPublication={this.onClickNewPublication}
           />
           <div className="container">
-            {
-              showErrors &&
-              <Errors errors={errors} />
-            }
-            {
-              isSimplePage &&
+            {showErrors && <Errors errors={errors} />}
+            {isSimplePage &&
               <Page
                 activePage={activePage}
                 editing={editing}
                 onSavePageArticle={this.onSavePageArticle}
                 onSavePage={this.onSavePage}
-              />
-            }
-            {
-              showEventsPage &&
+              />}
+            {showEventsPage &&
               <Events
                 events={events}
                 yearsOfEvents={yearsOfEvents}
@@ -374,10 +356,8 @@ export default React.createClass({
                 onCloseNewEvent={this.onCloseNewEvent}
                 activeEventYears={activeEventYears}
                 setActiveEventYears={this.setActiveEventYears}
-              />
-            }
-            {
-              showCommentaryPage &&
+              />}
+            {showCommentaryPage &&
               <Commentaries
                 commentaries={commentaries}
                 activeCommentary={activeCommentary}
@@ -386,10 +366,8 @@ export default React.createClass({
                 onSaveCommentaryArticle={this.onSaveCommentaryArticle}
                 showNewCommentary={showNewCommentary}
                 onCloseNewCommentary={this.onCloseNewCommentary}
-              />
-            }
-            {
-              showActorPage &&
+              />}
+            {showActorPage &&
               <Actors
                 actors={actors}
                 activeActor={activeActor}
@@ -398,10 +376,8 @@ export default React.createClass({
                 onSaveActorArticle={this.onSaveActorArticle}
                 showNewActor={showNewActor}
                 onCloseNewActor={this.onCloseNewActor}
-              />
-            }
-            {
-              showMonthlyEventsPage &&
+              />}
+            {showMonthlyEventsPage &&
               <MonthlyEvents
                 monthlyEvents={monthlyEvents}
                 activeMonthlyEvent={activeMonthlyEvent}
@@ -410,10 +386,8 @@ export default React.createClass({
                 onSaveMonthlyEventArticle={this.onSaveMonthlyEventArticle}
                 showNewMonthlyEvent={showNewMonthlyEvent}
                 onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent}
-              />
-            }
-            {
-              showPublicationsPage &&
+              />}
+            {showPublicationsPage &&
               <Publications
                 publications={publications}
                 activePublicationCategory={activePublicationCategory}
@@ -423,22 +397,12 @@ export default React.createClass({
                 onSavePublicationArticle={this.onSavePublicationArticle}
                 showNewPublication={showNewPublication}
                 onCloseNewPublication={this.onCloseNewPublication}
-              />
-            }
-            {
-              login &&
-              <Login
-                email={email}
-              />
-            }
-            {
-              showCopyright &&
-              <p
-                style={{ marginTop: 70 }}
-              >
-                &copy; Jürg Martin Gabriel. All Rights Reserved.
-              </p>
-            }
+              />}
+            {login && <Login email={email} />}
+            {showCopyright &&
+              <p style={{ marginTop: 70 }}>
+                © Jürg Martin Gabriel. All Rights Reserved.
+              </p>}
           </div>
         </NavHelper>
       </DocumentTitle>
