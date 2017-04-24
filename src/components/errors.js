@@ -21,6 +21,12 @@ const enhance = compose(
   })
 )
 
+/**
+ * BEWARE OF BOOTSTRAP
+ * wanted to use styled-components to styled
+ * but did not work AT ALL
+ * styles for div with id = errors never even appeared!!!
+ */
 const glyphStyle = {
   position: 'absolute',
   top: 3,
