@@ -1,6 +1,4 @@
-/*
- * contains ui for login
- */
+// @flow
 
 import app from 'ampersand-app'
 import React from 'react'
@@ -12,195 +10,177 @@ import {
   FormControl,
 } from 'react-bootstrap'
 import { isObject } from 'lodash'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
+import withState from 'recompose/withState'
+
 import validateEmail from './validateEmail.js'
 
-export default React.createClass({
-  displayName: 'LoginForm',
-
-  propTypes: {
-    invalidEmail: React.PropTypes.bool,
-    invalidPassword: React.PropTypes.bool,
-    newEmail: React.PropTypes.string,
-    password: React.PropTypes.string,
-    loginError: React.PropTypes.string
-  },
-
-  getInitialState() {
-    return {
-      invalidEmail: false,
-      invalidPassword: false,
-      newEmail: null,
-      password: null,
-      loginError: null
-    }
-  },
-
-  onKeyDownEmail(event) {
-    const { password } = this.state
-    const enter = 13
-    if (event.keyCode === enter) {
-      // if enter was pressed, update the value first
+const enhance = compose(
+  inject(`store`),
+  withState('invalidEmail', 'changeInvalidEmail', false),
+  withState('invalidPassword', 'changeInvalidPassword', false),
+  withState('newEmail', 'changeNewEmail', ''),
+  withState('password', 'changePassword', ''),
+  withState('loginError', 'changeLoginError', ''),
+  withHandlers({
+    validEmail: props => (newEmail: string): boolean => {
+      const validEmail = newEmail && validateEmail(newEmail)
+      const invalidEmail = !validEmail
+      props.changeInvalidEmail(invalidEmail)
+      return validEmail
+    },
+    validPassword: props => (password: boolean): boolean => {
+      const validPassword = !!password
+      const invalidPassword = !validPassword
+      props.changeInvalidPassword(invalidPassword)
+      return validPassword
+    },
+  }),
+  withHandlers({
+    validSignin: props => (newEmail: string, password: string): boolean => {
+      const validEmail = props.validEmail(newEmail)
+      const validPassword = props.validPassword(password)
+      return validEmail && validPassword
+    },
+  }),
+  withHandlers({
+    checkSignin: props => (newEmail, password) => {
+      if (props.validSignin(newEmail, password)) {
+        app.db
+          .login(newEmail, password)
+          .then(() => props.store.login.login(newEmail))
+          .catch(error => {
+            props.changeNewEmail(null)
+            props.changeLoginError(error)
+          })
+      }
+    },
+  }),
+  withHandlers({
+    onKeyDownEmail: props => event => {
+      const enter = 13
+      if (event.keyCode === enter) {
+        // if enter was pressed, update the value first
+        const newEmail = event.target.value
+        props.changeNewEmail(newEmail)
+        props.checkSignin(newEmail, props.password)
+      }
+    },
+    onKeyDownPassword: props => event => {
+      const enter = 13
+      if (event.keyCode === enter) {
+        // if enter was pressed, update the value first
+        const password = event.target.value
+        props.changePassword(password)
+        props.checkSignin(props.newEmail, password)
+      }
+    },
+    onBlurEmail: props => event => {
       const newEmail = event.target.value
-      this.setState({ newEmail })
-      this.checkSignin(newEmail, password)
-    }
-  },
+      props.changeNewEmail(newEmail)
+      props.validEmail(newEmail)
+    },
+    onBlurPassword: props => event => props.changePassword(event.target.value),
+    onAlertDismiss: props => () => props.changeLoginError(null),
+    onClickLogin: props => () =>
+      props.checkSignin(props.newEmail, props.password),
+  }),
+  observer,
+)
 
-  onKeyDownPassword(event) {
-    const { newEmail } = this.state
-    const enter = 13
-    if (event.keyCode === enter) {
-      // if enter was pressed, update the value first
-      const password = event.target.value
-      this.setState({ password })
-      this.checkSignin(newEmail, password)
-    }
-  },
+const styleAlert = {
+  marginBottom: 8,
+}
 
-  onBlurEmail(event) {
-    const newEmail = event.target.value
-    this.setState({ newEmail })
-    this.validEmail(newEmail)
-  },
-
-  onBlurPassword(event) {
-    const password = event.target.value
-    this.setState({ password })
-  },
-
-  onAlertDismiss() {
-    this.setState({ loginError: null })
-  },
-
-  onClickLogin() {
-    const { newEmail, password } = this.state
-    this.checkSignin(newEmail, password)
-  },
-
-  checkSignin(newEmail, password) {
-    if (this.validSignin(newEmail, password)) {
-      app.db.login(newEmail, password)
-        .then(() =>
-          app.Actions.login(newEmail)
-        )
-        .catch((error) =>
-          this.setState({ newEmail: null, loginError: error })
-        )
-    }
-  },
-
-  validEmail(newEmail) {
-    const validEmail = newEmail && validateEmail(newEmail)
-    const invalidEmail = !validEmail
-    this.setState({ invalidEmail })
-    return validEmail
-  },
-
-  validPassword(password) {
-    const validPassword = !!password
-    const invalidPassword = !validPassword
-    this.setState({ invalidPassword })
-    return validPassword
-  },
-
-  validSignin(newEmail, password) {
-    const validEmail = this.validEmail(newEmail)
-    const validPassword = this.validPassword(password)
-    return validEmail && validPassword
-  },
-
-  render() {
-    const {
-      invalidEmail,
-      invalidPassword,
-      loginError
-    } = this.state
-    const emailInputBsStyle = invalidEmail ? 'error' : null
-    const passwordInputBsStyle = invalidPassword ? 'error' : null
-    const styleAlert = {
-      marginBottom: 8
-    }
-    let error = loginError
-    if (isObject(loginError)) error = loginError.message
-    const isError = error && error.length > 0
-
-    return (
-      <form
-        className="form"
-        autoComplete="off"
-      >
-        <div
-          className="formGroup"
-        >
-          <FormGroup
-            controlId="email"
-          >
-            <ControlLabel>Email</ControlLabel>
-            <FormControl
-              type="email"
-              id="email"
-              bsSize="small"
-              className="controls"
-              bsStyle={emailInputBsStyle}
-              onBlur={this.onBlurEmail}
-              onKeyDown={this.onKeyDownEmail}
-              required
-              autoFocus
-            />
-          </FormGroup>
-          {
-            invalidEmail &&
-            <div
-              className="validateDivAfterRBC"
-            >
-              Please check email
-            </div>
-          }
-        </div>
-        <div
-          className="formGroup"
-        >
-          <FormGroup
-            controlId="password"
-          >
-            <ControlLabel>Password</ControlLabel>
-            <FormControl
-              type="password"
-              id="password"
-              bsSize="small"
-              className="controls"
-              bsStyle={passwordInputBsStyle}
-              onBlur={this.onBlurPassword}
-              onKeyDown={this.onKeyDownPassword}
-              required
-            />
-          </FormGroup>
-          {
-            invalidPassword &&
-            <div
-              className="validateDivAfterRBC"
-            >
-              Please check password
-            </div>
-          }
-        </div>
-        {
-          isError &&
-          <Alert
-            bsStyle="danger"
-            onDismiss={this.onAlertDismiss}
-            style={styleAlert}
-          >
-            Error: {error}
-          </Alert>
-        }
-        <Button
-          className="btn-primary"
-          onClick={this.onClickLogin}
-        >
-          log in
-        </Button>
-      </form>
-    )
+const LoginForm = ({
+  store,
+  invalidEmail,
+  invalidPassword,
+  newEmail,
+  password,
+  loginError,
+  onKeyDownEmail,
+  onKeyDownPassword,
+  onBlurEmail,
+  onBlurPassword,
+  onAlertDismiss,
+  onClickLogin,
+}: {
+  store: Object,
+  invalidEmail: boolean,
+  invalidPassword: boolean,
+  newEmail: string,
+  password: string,
+  loginError: string,
+  onKeyDownEmail: () => void,
+  onKeyDownPassword: () => void,
+  onBlurEmail: () => void,
+  onBlurPassword: () => void,
+  onAlertDismiss: () => void,
+  onClickLogin: () => void,
+}) => {
+  const emailInputBsStyle = invalidEmail ? 'error' : null
+  const passwordInputBsStyle = invalidPassword ? 'error' : null
+  let error = loginError
+  if (isObject(loginError)) {
+    error = loginError.message
   }
-})
+  const isError = error && error.length > 0
+
+  return (
+    <form className="form" autoComplete="off">
+      <div className="formGroup">
+        <FormGroup controlId="email">
+          <ControlLabel>Email</ControlLabel>
+          <FormControl
+            type="email"
+            id="email"
+            bsSize="small"
+            className="controls"
+            bsStyle={emailInputBsStyle}
+            onBlur={onBlurEmail}
+            onKeyDown={onKeyDownEmail}
+            required
+            autoFocus
+          />
+        </FormGroup>
+        {invalidEmail &&
+          <div className="validateDivAfterRBC">
+            Please check email
+          </div>}
+      </div>
+      <div className="formGroup">
+        <FormGroup controlId="password">
+          <ControlLabel>Password</ControlLabel>
+          <FormControl
+            type="password"
+            id="password"
+            bsSize="small"
+            className="controls"
+            bsStyle={passwordInputBsStyle}
+            onBlur={onBlurPassword}
+            onKeyDown={onKeyDownPassword}
+            required
+          />
+        </FormGroup>
+        {invalidPassword &&
+          <div className="validateDivAfterRBC">
+            Please check password
+          </div>}
+      </div>
+      {isError &&
+        <Alert bsStyle="danger" onDismiss={onAlertDismiss} style={styleAlert}>
+          Error: {error}
+        </Alert>}
+      <Button className="btn-primary" onClick={onClickLogin}>
+        log in
+      </Button>
+    </form>
+  )
+}
+
+LoginForm.displayName = 'LoginForm'
+
+export default enhance(LoginForm)
