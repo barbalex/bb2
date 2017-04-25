@@ -1,4 +1,5 @@
-import React from 'react'
+// @flow
+import React, { Component } from 'react'
 import { Base64 } from 'js-base64'
 import tinymce from 'tinymce'
 import 'tinymce/themes/modern'
@@ -28,19 +29,34 @@ import 'tinymce/plugins/template'
 import 'tinymce/plugins/paste'
 import 'tinymce/plugins/textcolor'
 import 'tinymce/plugins/autosave'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
 
-export default React.createClass({
-  displayName: 'Editor',
+const enhance = compose(
+  inject(`store`),
+  withHandlers({
+    onSavePageArticle: props => articleEncoded => {
+      const { activePage } = props.store.page
+      activePage.article = articleEncoded
+      props.store.page.savePage(activePage)
+    }
+  }),
+  observer
+)
 
-  propTypes: {
-    doc: React.PropTypes.object,
-    articleDecoded: React.PropTypes.string,
-    onSavePageArticle: React.PropTypes.func,
-    onSaveMonthlyEventArticle: React.PropTypes.func,
-    onSavePublicationArticle: React.PropTypes.func,
-    onSaveCommentaryArticle: React.PropTypes.func,
-    onSaveActorArticle: React.PropTypes.func
-  },
+class Editor extends Component {
+  displayName: 'Editor'
+
+  props: {
+    doc: Object,
+    articleDecoded: string,
+    onSavePageArticle: () => void,
+    onSaveMonthlyEventArticle: () => void,
+    onSavePublicationArticle: () => void,
+    onSaveCommentaryArticle: () => void,
+    onSaveActorArticle: () => void
+  }
 
   componentDidMount() {
     const {
@@ -84,6 +100,7 @@ export default React.createClass({
       automatic_uploads: false,
       statusbar: false,
       body_class: bodyClass,
+      // $FlowIssue
       content_css: `${process.env.PUBLIC_URL}/tinymce.css`,
       // enable auto-saving
       setup(editor) {
@@ -108,12 +125,12 @@ export default React.createClass({
         800
       )
     }
-  },
+  }
 
   shouldComponentUpdate() {
     // make sure react does not update this component
     return false
-  },
+  }
 
   componentWillUnmount() {
     // this is needed for correct behaviour, see
@@ -121,10 +138,12 @@ export default React.createClass({
     const { doc } = this.props
     const instanceSelector = `#${doc._id}`
     tinymce.remove(instanceSelector)
-  },
+  }
 
   render() {
     const { doc, articleDecoded } = this.props
     return <textarea id={doc._id} defaultValue={articleDecoded} />
   }
-})
+}
+
+export default enhance(Editor)

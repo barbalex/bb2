@@ -10,7 +10,6 @@ function Store(): void {
     savePage: null,
     addPageAttachments: null,
     removePageAttachment: null,
-    onSavePageArticle: null,
     onSavePage: null
   }
 }

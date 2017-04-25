@@ -2,7 +2,10 @@ import app from 'ampersand-app'
 import Router from 'ampersand-router'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'mobx-react'
+
 import Main from './components/main.js'
+import store from './store'
 
 export default Router.extend({
   routes: {
@@ -95,11 +98,17 @@ export default Router.extend({
   },
 
   login() {
-    ReactDOM.render(<Main login />, document.getElementById('root'))
+    ReactDOM.render(
+      <Provider store={store}><Main login /></Provider>,
+      document.getElementById('root')
+    )
   },
 
   render(id) {
-    ReactDOM.render(<Main />, document.getElementById('root'))
+    ReactDOM.render(
+      <Provider store={store}><Main /></Provider>,
+      document.getElementById('root')
+    )
     if (id) app.Actions.getPage(id)
   }
 })

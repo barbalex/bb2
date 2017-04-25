@@ -202,12 +202,6 @@ export default React.createClass({
     app.Actions.savePage(activePage)
   },
 
-  onSavePageArticle(articleEncoded) {
-    const { activePage } = this.state
-    activePage.article = articleEncoded
-    app.Actions.savePage(activePage)
-  },
-
   onSaveMonthlyEventArticle(articleEncoded) {
     const { activeMonthlyEvent } = this.state
     activeMonthlyEvent.article = articleEncoded
@@ -340,7 +334,6 @@ export default React.createClass({
               <Page
                 activePage={activePage}
                 editing={editing}
-                onSavePageArticle={this.onSavePageArticle}
                 onSavePage={this.onSavePage}
               />}
             {showEventsPage &&

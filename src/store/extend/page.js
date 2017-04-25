@@ -33,7 +33,6 @@ export default (store: Object): void => {
     savePage: action('savePage', () => {}),
     addPageAttachments: action('addPageAttachments', () => {}),
     removePageAttachment: action('removePageAttachment', () => {}),
-    onSavePageArticle: null,
     onSavePage: null
   })
 }
