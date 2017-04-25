@@ -1,34 +1,25 @@
-/*
- * contains ui for a login/signup modal
- */
+// @flow
 
-import app from 'ampersand-app'
 import React from 'react'
 import { Button } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+
 import LoginForm from './loginForm.js'
 
-const Login = ({ email }) =>
+const enhance = compose(inject(`store`), observer)
+
+const Login = ({ email, store }: { email: string, store: Object }) => (
   <div>
     <h1>Login</h1>
-    {
-      !email &&
-      <LoginForm />
-    }
-    {
-      email &&
-      <Button
-        className="btn-primary"
-        onClick={() => app.Actions.logout()}
-      >
+    {!email && <LoginForm />}
+    {email &&
+      <Button className="btn-primary" onClick={() => store.login.logout()}>
         log out
-      </Button>
-    }
+      </Button>}
   </div>
+)
 
 Login.displayName = 'Login'
 
-Login.propTypes = {
-  email: React.PropTypes.string
-}
-
-export default Login
+export default enhance(Login)
