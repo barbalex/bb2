@@ -43,6 +43,15 @@ export default (store: Object): void => {
         ),
     ),
 
+    showNewCommentary: false,
+
+    toggleShowNewCommentary: action(
+      'toggleShowNewCommentary',
+      (): void =>
+        (store.commentaries.showNewCommentary = !store.commentaries
+          .showNewCommentary),
+    ),
+
     newCommentary: action(
       'newCommentary',
       (title: string, date: Date): void => {

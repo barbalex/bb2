@@ -50,6 +50,8 @@ function Store(): void {
     activeCommentary: null,
     getCommentariesCallback: null,
     getCommentaries: null,
+    showNewCommentary: false,
+    toggleShowNewCommentary: null,
     newCommentary: null,
     getCommentary: null,
     updateCommentariesInCache: null,

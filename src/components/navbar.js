@@ -8,7 +8,7 @@ import {
   Nav,
   Glyphicon,
   Tooltip,
-  OverlayTrigger
+  OverlayTrigger,
 } from 'react-bootstrap'
 import has from 'lodash/has'
 import { observer, inject } from 'mobx-react'
@@ -29,7 +29,7 @@ const enhance = compose(
       const navIsMobile = isNavMobile()
       // toggle only if nav is in mobile mode
       if (navIsMobile) props.changeNavExpanded(!props.navExpanded)
-    }
+    },
   }),
   withHandlers({
     onClickPage: props => id => {
@@ -44,50 +44,37 @@ const enhance = compose(
     onClickLogout: props => () => {
       app.Actions.logout()
       props.onToggleNav()
-    }
+    },
+    onClickNewCommentary: props => () =>
+      props.store.commentaries.toggleShowNewCommentary(),
   }),
-  observer
+  observer,
 )
 
 const MyNavbar = ({
   store,
-  activePage,
-  activeMonthlyEvent,
-  activePublication,
-  activeCommentary,
-  activeActor,
-  email,
-  editing,
-  onClickEdit,
+  navExpanded,
   onClickNewCommentary,
-  onClickNewEvent,
-  onClickNewActor,
-  onClickNewMonthlyEvent,
-  onClickNewPublication,
-  onClickPage,
-  onClickLogout,
-  onToggleNav,
-  navExpanded
 }: {
   store: Object,
-  activePage: Object,
-  activeMonthlyEvent: Object,
-  activePublication: Object,
-  activeCommentary: Object,
-  activeActor: Object,
-  email: string,
-  editing: boolean,
-  onClickEdit: () => void,
+  navExpanded: boolean,
   onClickNewCommentary: () => void,
-  onClickNewEvent: () => void,
-  onClickNewActor: () => void,
-  onClickNewMonthlyEvent: () => void,
-  onClickNewPublication: () => void,
-  onClickPage: () => void,
-  onClickLogout: () => void,
-  onToggleNav: () => void,
-  navExpanded: boolean
 }) => {
+  const { activePage } = store.page
+  const { activeMonthlyEvent, onClickNewMonthlyEvent } = store.monthlyEvents
+  const { activePublication, onClickNewPublication } = store.publications
+  const { activeCommentary } = store.commentaries
+  const {
+    activeActor,
+    email,
+    editing,
+    onClickEdit,
+    onClickNewEvent,
+    onClickNewActor,
+    onClickPage,
+    onClickLogout,
+    onToggleNav,
+  } = store
   const glyph = editing ? 'eye-open' : 'pencil'
   const id = activePage && activePage._id ? activePage._id : null
   const nonEditableIds = [
@@ -95,7 +82,7 @@ const MyNavbar = ({
     'pages_monthlyEvents',
     'pages_publications',
     'pages_actors',
-    'pages_events'
+    'pages_events',
   ]
   const showEdit =
     email &&

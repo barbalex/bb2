@@ -1,9 +1,7 @@
 // @flow
 import app from 'ampersand-app'
-import React, { Component } from 'react'
-import { ListenerMixin } from 'reflux'
+import React from 'react'
 import DocumentTitle from 'react-document-title'
-import moment from 'moment'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 
@@ -46,7 +44,7 @@ const Main = ({
   login,
   email,
   errors,
-  activeEventYears
+  activeEventYears,
 }: {
   store: Object,
   activePage: Object,
@@ -71,13 +69,13 @@ const Main = ({
   login: boolean,
   email: string,
   errors: Array<Object>,
-  activeEventYears: Array<number>
+  activeEventYears: Array<number>,
 }) => {
   const nonSimplePages = [
     'pages_commentaries',
     'pages_monthlyEvents',
     'pages_publications',
-    'pages_events'
+    'pages_events',
   ]
   const isSimplePage =
     activePage.type &&
@@ -134,7 +132,6 @@ const Main = ({
           email={email}
           editing={editing}
           onClickEdit={onClickEdit}
-          onClickNewCommentary={onClickNewCommentary}
           onClickNewEvent={onClickNewEvent}
           onClickNewActor={onClickNewActor}
           onClickNewMonthlyEvent={onClickNewMonthlyEvent}
@@ -164,7 +161,6 @@ const Main = ({
               email={email}
               onSaveCommentaryArticle={onSaveCommentaryArticle}
               showNewCommentary={showNewCommentary}
-              onCloseNewCommentary={onCloseNewCommentary}
             />}
           {showActorPage &&
             <Actors
@@ -213,113 +209,10 @@ Main.displayName = 'Main'
 export default enhance(Main)
 
 React.createClass({
-  getInitialState() {
-    const email = window.localStorage.email
-    return {
-      activeMonthlyEvent: null,
-      monthlyEvents: [],
-      activePublication: null,
-      publications: [],
-      activePublicationCategory: null,
-      activeCommentary: null,
-      commentaries: [],
-      activeEvent: null,
-      events: [],
-      yearsOfEvents: [],
-      activeActor: null,
-      actors: [],
-      editing: false,
-      showNewCommentary: false,
-      showNewEvent: false,
-      showNewActor: false,
-      showNewMonthlyEvent: false,
-      showNewPublication: false,
-      email,
-      errors: [],
-      activeEventYears: [parseInt(moment().format('YYYY'), 0)]
-    }
-  },
-
-  componentDidMount() {
-    // listen to stores
-    this.listenTo(app.monthlyEventsStore, this.onMonthlyEventsStoreChange)
-    this.listenTo(app.publicationsStore, this.onPublicationsStoreChange)
-    this.listenTo(app.commentariesStore, this.onCommentariesStoreChange)
-    this.listenTo(app.eventsStore, this.onEventsStoreChange)
-    this.listenTo(app.yearsOfEventsStore, this.onYearsOfEventsStoreChange)
-    this.listenTo(app.actorsStore, this.onActorsStoreChange)
-    this.listenTo(app.loginStore, this.onLoginStoreChange)
-    this.listenTo(app.errorStore, this.onErrorStoreChange)
-  },
-
-  onMonthlyEventsStoreChange(monthlyEvents, activeMonthlyEvent) {
-    const { email } = this.state
-    if (!email) {
-      monthlyEvents = monthlyEvents.filter(monthlyEvent => !monthlyEvent.draft)
-    }
-    this.setState({ monthlyEvents, activeMonthlyEvent })
-  },
-
-  onPublicationsStoreChange(
-    publications,
-    activePublicationCategory,
-    activePublication
-  ) {
-    const { email } = this.state
-    if (!email) {
-      publications = publications.filter(publication => !publication.draft)
-    }
-    this.setState({
-      publications,
-      activePublicationCategory,
-      activePublication
-    })
-  },
-
-  onCommentariesStoreChange(commentaries, activeCommentary) {
-    const { email } = this.state
-    if (!email) {
-      commentaries = commentaries.filter(commentary => !commentary.draft)
-    }
-    this.setState({ commentaries, activeCommentary })
-  },
-
-  onEventsStoreChange(events, activeEvent) {
-    const state = { events, activeEvent }
-    // when new event was saved, hide component
-    if (activeEvent) Object.assign(state, { showNewEvent: false })
-    this.setState(state)
-  },
-
-  onYearsOfEventsStoreChange(yearsOfEvents) {
-    this.setState({ yearsOfEvents })
-  },
-
-  onActorsStoreChange(actors, activeActor) {
-    const { email } = this.state
-    if (!email) {
-      actors = actors.filter(actor => !actor.draft)
-    }
-    this.setState({ actors, activeActor })
-  },
-
-  onLoginStoreChange(email) {
-    this.setState({ email })
-    if (email) app.store.page.getPage('pages_events')
-  },
-
-  onErrorStoreChange(errors) {
-    this.setState({ errors })
-  },
-
   onClickEdit() {
     let { editing } = this.state
     editing = !editing
     this.setState({ editing })
-  },
-
-  onClickNewCommentary() {
-    this.setState({ showNewCommentary: true })
   },
 
   onClickNewEvent() {
@@ -336,10 +229,6 @@ React.createClass({
 
   onClickNewPublication() {
     this.setState({ showNewPublication: true })
-  },
-
-  onCloseNewCommentary() {
-    this.setState({ showNewCommentary: false })
   },
 
   onCloseNewEvent() {
@@ -390,5 +279,5 @@ React.createClass({
     this.setState({ activeEventYears })
   },
 
-  render() {}
+  render() {},
 })
