@@ -1,248 +1,23 @@
 import app from 'ampersand-app'
 import Reflux from 'reflux'
-import moment from 'moment'
 import { Base64 } from 'js-base64'
 import slug from 'slug'
 import getPathFromDoc from './modules/getPathFromDoc.js'
-import getCommentaries from './modules/getCommentaries.js'
 import sortCommentaries from './modules/sortCommentaries.js'
 import getActors from './modules/getActors.js'
 import sortActors from './modules/sortActors.js'
-import getMonthlyEvents from './modules/getMonthlyEvents.js'
-import sortMonthlyEvents from './modules/sortMonthlyEvents.js'
-import getEvents from './modules/getEvents.js'
-import sortEvents from './modules/sortEvents.js'
-import getYearsOfEvents from './modules/getYearsOfEvents.js'
 import getPublications from './modules/getPublications.js'
 import sortPublications from './modules/sortPublications.js'
 import uniq from 'lodash/uniq'
 
 export default Actions => {
-  app.eventsStore = Reflux.createStore({
-    listenables: Actions,
-
-    events: [],
-
-    // cache the id, not the entire doc
-    // advantage: on first load events is empty so no activeEvent can be gotten
-    // but if id is used, this can be cached
-    activeEventId: null,
-
-    activeEvent() {
-      return this.events.find(event => event._id === this.activeEventId)
-    },
-
-    getEventsCallback: null,
-
-    onGetEvents(years) {
-      getEvents(years)
-        .then(events => {
-          this.events = events
-          if (this.getEventsCallback) {
-            this.getEventsCallback()
-            this.getEventsCallback = null
-          }
-          this.triggerStore()
-        })
-        .catch(error =>
-          app.Actions.showError({
-            msg: error
-          })
-        )
-    },
-
-    onNewEvent(event) {
-      const title = event.title
-      const year = moment(event.date).year()
-      const month = moment(event.date).format('MM')
-      const day = moment(event.date).format('DD')
-      const _id = `events_${year}_${month}_${day}_${slug(title)}`
-      const type = 'events'
-      const eventType = event.eventType || 'migration'
-      const links = event.links || []
-      const order = event.order || 99
-      const tags = event.tags || []
-      const newEvent = {
-        _id,
-        type,
-        title,
-        links,
-        eventType,
-        order,
-        tags
-      }
-      this.activeEventId = _id
-      this.onSaveEvent(newEvent)
-    },
-
-    onGetEvent(id) {
-      if (!id) {
-        this.activeEventId = null
-        this.triggerStore()
-      } else {
-        if (this.events.length === 0) {
-          // on first load events is empty
-          // need to wait until onGetEvents fires
-          this.getEventsCallback = () => {
-            this.activeEventId = id
-          }
-        } else {
-          this.activeEventId = id
-          this.triggerStore()
-        }
-      }
-    },
-
-    updateEventsInCache(event) {
-      // first update the event in this.events
-      this.events = this.events.filter(thisEvent => thisEvent._id !== event._id)
-      this.events.push(event)
-      this.events = sortEvents(this.events)
-      // now tell every one!
-      this.triggerStore()
-    },
-
-    revertCache(oldEvents, oldActiveEventId) {
-      this.events = oldEvents
-      this.activeEventId = oldActiveEventId
-      this.triggerStore()
-    },
-
-    onSaveEvent(event) {
-      // keep old cache in case of error
-      const oldEvents = this.events
-      const oldActiveEventId = this.activeEventId
-      // optimistically update in cache
-      this.updateEventsInCache(event)
-      app.db
-        .put(event)
-        .then(resp => {
-          event._rev = resp.rev
-          // definitely update in cache
-          this.updateEventsInCache(event)
-        })
-        .catch(error => {
-          this.revertCache(oldEvents, oldActiveEventId)
-          app.Actions.showError({
-            title: 'Error saving event:',
-            msg: error
-          })
-        })
-    },
-
-    removeEventFromCache(event) {
-      // first update the event in this.events
-      this.events = this.events.filter(thisEvent => thisEvent._id !== event._id)
-      this.events = sortEvents(this.events)
-      // now update it in this.activeEvent if it is the active event
-      const isActiveEvent = this.activeEventId === event._id
-      if (isActiveEvent) this.activeEventId = null
-      // now tell every one!
-      this.triggerStore()
-    },
-
-    onRemoveEvent(event) {
-      // keep old cache in case of error
-      const oldEvents = this.events
-      const oldActiveEventId = this.activeEventId
-      // optimistically remove event from cache
-      this.removeEventFromCache(event)
-      app.db.remove(event).catch(error => {
-        // oops. Revert optimistic removal
-        this.revertCache(oldEvents, oldActiveEventId)
-        app.Actions.showError({
-          title: 'Error removing event:',
-          msg: error
-        })
-      })
-    },
-
-    onReplaceEvent(event) {
-      // if an event's title or date are changed, it has to be replaced with a new one
-      this.onNewEvent(event)
-      this.onRemoveEvent(event)
-    },
-
-    triggerStore() {
-      this.trigger(this.events, this.activeEvent())
-    }
-  })
-
   app.commentariesStore = Reflux.createStore({
     listenables: Actions,
-
-    commentaries: [],
-
-    // cache the id, not the entire doc
-    // advantage: on first load commentaries is empty so no activeCommentary can be gotten
-    // but if id is used, this can be cached
-    activeCommentaryId: null,
-
-    activeCommentary() {
-      return this.commentaries.find(
-        commentary => commentary._id === this.activeCommentaryId
-      )
-    },
-
-    getCommentariesCallback: null,
-
-    onGetCommentaries() {
-      getCommentaries()
-        .then(commentaries => {
-          this.commentaries = commentaries
-          if (this.getCommentariesCallback) {
-            this.getCommentariesCallback()
-            this.getCommentariesCallback = null
-          }
-          this.triggerStore()
-        })
-        .catch(error =>
-          app.Actions.showError({
-            msg: error
-          })
-        )
-    },
-
-    onNewCommentary(title, date) {
-      const year = moment(date).year()
-      const month = moment(date).format('MM')
-      const day = moment(date).format('DD')
-      const _id = `commentaries_${year}_${month}_${day}_${title}`
-      const draft = true
-      const article = 'IA=='
-      const type = 'commentaries'
-      const commentary = { _id, title, draft, article, type }
-      this.onSaveCommentary(commentary)
-    },
-
-    onGetCommentary(id) {
-      if (!id) {
-        app.router.navigate('/commentaries')
-        this.activeCommentaryId = null
-        this.triggerStore()
-      } else {
-        this.activeCommentaryId = id
-        if (this.commentaries.length === 0) {
-          // on first load commentaries is empty
-          // need to wait until onGetCommentaries fires
-          this.getCommentariesCallback = () => {
-            const commentary = this.commentaries.find(c => c._id === id)
-            const path = getPathFromDoc(commentary)
-            app.router.navigate(`/${path}`)
-          }
-        } else {
-          const commentary = this.commentaries.find(c => c._id === id)
-          const path = getPathFromDoc(commentary)
-          app.router.navigate(`/${path}`)
-          this.triggerStore()
-        }
-      }
-    },
 
     updateCommentariesInCache(commentary) {
       // first update the commentary in this.commentaries
       this.commentaries = this.commentaries.filter(
-        c => c._id !== commentary._id
+        c => c._id !== commentary._id,
       )
       this.commentaries.push(commentary)
       this.commentaries = sortCommentaries(this.commentaries)
@@ -274,7 +49,7 @@ export default Actions => {
           this.revertCache(oldCommentaries, oldActiveCommentaryId)
           app.Actions.showError({
             title: 'Error saving commentary:',
-            msg: error
+            msg: error,
           })
         })
     },
@@ -282,7 +57,7 @@ export default Actions => {
     removeCommentaryFromCache(commentary) {
       // first update the commentary in this.commentaries
       this.commentaries = this.commentaries.filter(
-        thisCommentary => thisCommentary._id !== commentary._id
+        thisCommentary => thisCommentary._id !== commentary._id,
       )
       this.commentaries = sortCommentaries(this.commentaries)
       // now update this.activeCommentaryId if it is the active commentary's _id
@@ -303,7 +78,7 @@ export default Actions => {
         this.revertCache(oldCommentaries, oldActiveCommentaryId)
         app.Actions.showError({
           title: 'Error removing commentary:',
-          msg: error
+          msg: error,
         })
       })
     },
@@ -319,7 +94,7 @@ export default Actions => {
 
     triggerStore() {
       this.trigger(this.commentaries, this.activeCommentary())
-    }
+    },
   })
 
   app.publicationsStore = Reflux.createStore({
@@ -334,7 +109,7 @@ export default Actions => {
     activePublication() {
       return (
         this.publications.find(
-          publication => publication._id === this.activePublicationId
+          publication => publication._id === this.activePublicationId,
         ) || null
       )
     },
@@ -353,8 +128,8 @@ export default Actions => {
         })
         .catch(error =>
           app.Actions.showError({
-            msg: error
-          })
+            msg: error,
+          }),
         )
     },
 
@@ -369,7 +144,7 @@ export default Actions => {
           <ul style='padding-left: 20px;'>
             <li>Name (year). Title, where.</li>
           </ul>
-        </div>`
+        </div>`,
       )
       const publication = { _id, type, draft, category, title, article }
       this.activePublicationCategory = category
@@ -405,7 +180,7 @@ export default Actions => {
     updatePublicationInCache(publication) {
       // first update the publication in this.publications
       this.publications = this.publications.filter(
-        p => p._id !== publication._id
+        p => p._id !== publication._id,
       )
       this.publications.push(publication)
       this.publications = sortPublications(this.publications)
@@ -416,7 +191,7 @@ export default Actions => {
     revertCache(
       oldPublications,
       oldActivePublicationId,
-      oldActivePublicationCategory
+      oldActivePublicationCategory,
     ) {
       this.publications = oldPublications
       this.activePublicationId = oldActivePublicationId
@@ -443,11 +218,11 @@ export default Actions => {
           this.revertCache(
             oldPublications,
             oldActivePublicationId,
-            oldActivePublicationCategory
+            oldActivePublicationCategory,
           )
           app.Actions.showError({
             title: 'Error saving publication:',
-            msg: error
+            msg: error,
           })
         })
     },
@@ -455,7 +230,7 @@ export default Actions => {
     removePublicationFromCache(publication) {
       // first update the publication in this.publications
       this.publications = this.publications.filter(
-        p => p._id !== publication._id
+        p => p._id !== publication._id,
       )
       this.publications = sortPublications(this.publications)
       // now update this.activePublicationId if it is the active publication's _id
@@ -477,11 +252,11 @@ export default Actions => {
         this.revertCache(
           oldPublications,
           oldActivePublicationId,
-          oldActivePublicationCategory
+          oldActivePublicationCategory,
         )
         app.Actions.showError({
           title: 'Error removing publication:',
-          msg: error
+          msg: error,
         })
       })
     },
@@ -497,7 +272,7 @@ export default Actions => {
 
     getPublicationCategories() {
       const allCategories = this.publications.map(
-        publication => publication.category
+        publication => publication.category,
       )
       const publicationCategories = uniq(allCategories)
       return publicationCategories.sort()
@@ -516,9 +291,9 @@ export default Actions => {
       this.trigger(
         this.publications,
         this.activePublicationCategory,
-        this.activePublication()
+        this.activePublication(),
       )
-    }
+    },
   })
 
   app.actorsStore = Reflux.createStore({
@@ -549,8 +324,8 @@ export default Actions => {
         })
         .catch(error =>
           app.Actions.showError({
-            msg: error
-          })
+            msg: error,
+          }),
         )
     },
 
@@ -621,7 +396,7 @@ export default Actions => {
           this.revertCache(oldActors, oldActiveActorId)
           app.Actions.showError({
             title: 'Error saving actor:',
-            msg: error
+            msg: error,
           })
         })
     },
@@ -648,7 +423,7 @@ export default Actions => {
         this.revertCache(oldActors, oldActiveActorId)
         app.Actions.showError({
           title: 'Error removing actor:',
-          msg: error
+          msg: error,
         })
       })
     },
@@ -664,7 +439,7 @@ export default Actions => {
 
     triggerStore() {
       this.trigger(this.actors, this.activeActor())
-    }
+    },
   })
 
   app.loginStore = Reflux.createStore({
@@ -697,7 +472,7 @@ export default Actions => {
     onLogout() {
       delete window.localStorage.email
       this.trigger(null)
-    }
+    },
   })
 
   app.errorStore = Reflux.createStore({
@@ -736,6 +511,6 @@ export default Actions => {
           this.trigger(this.errors)
         }, this.duration)
       }
-    }
+    },
   })
 }

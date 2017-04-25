@@ -9,7 +9,7 @@ export default (store: Object): void => {
     activePage: {},
     editing: false,
     showMeta: false,
-    getPage: action('getPage', id => {
+    getPage: action('getPage', (id: string): void => {
       const get =
         !store.page.activePage ||
         (store.page.activePage._id && store.page.activePage._id !== id)
@@ -24,12 +24,12 @@ export default (store: Object): void => {
           .catch(error =>
             app.Actions.showError({
               title: `Error loading ${id}:`,
-              msg: error
-            })
+              msg: error,
+            }),
           )
       }
     }),
-    savePage: action('savePage', doc => {
+    savePage: action('savePage', (doc: Object): void =>
       app.db
         .put(doc)
         .then(resp => {
@@ -40,22 +40,25 @@ export default (store: Object): void => {
         .catch(error =>
           app.Actions.showError({
             title: 'Error saving page:',
-            msg: error
-          })
-        )
-    }),
+            msg: error,
+          }),
+        ),
+    ),
     // see: http://pouchdb.com/api.html#save_attachment > Save many attachments at once
-    addPageAttachments: action('addPageAttachments', (doc, attachments) => {
-      if (!doc._attachments) doc._attachments = {}
-      doc._attachments = Object.assign(doc._attachments, attachments)
-      store.page.savePage(doc)
-    }),
+    addPageAttachments: action(
+      'addPageAttachments',
+      (doc: Object, attachments: Object): void => {
+        if (!doc._attachments) doc._attachments = {}
+        doc._attachments = Object.assign(doc._attachments, attachments)
+        store.page.savePage(doc)
+      },
+    ),
     removePageAttachment: action(
       'removePageAttachment',
-      (doc, attachmentId) => {
+      (doc: Object, attachmentId: string): void => {
         delete doc._attachments[attachmentId]
         store.page.savePage(doc)
-      }
-    )
+      },
+    ),
   })
 }
