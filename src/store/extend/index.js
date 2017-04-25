@@ -5,6 +5,7 @@ import extendEvents from './events'
 import extendCommentaries from './commentaries'
 import extendPublications from './publications'
 import extendActors from './actors'
+import extendLogin from './login'
 
 export default (store: Object): void => {
   extendPage(store)
@@ -14,4 +15,5 @@ export default (store: Object): void => {
   extendCommentaries(store)
   extendPublications(store)
   extendActors(store)
+  extendLogin(store)
 }
