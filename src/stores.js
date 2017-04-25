@@ -18,27 +18,6 @@ import sortPublications from './modules/sortPublications.js'
 import uniq from 'lodash/uniq'
 
 export default Actions => {
-  app.yearsOfEventsStore = Reflux.createStore({
-    listenables: Actions,
-
-    yearsOfEvents: [parseInt(moment().format('YYYY'), 0)],
-
-    onGetYearsOfEvents() {
-      this.trigger(this.yearsOfEvents)
-      getYearsOfEvents()
-        .then(years => {
-          this.yearsOfEvents = years
-          this.trigger(this.yearsOfEvents)
-        })
-        .catch(error =>
-          console.log(
-            'yearsOfEventsStore, error getting years of events',
-            error
-          )
-        )
-    }
-  })
-
   app.eventsStore = Reflux.createStore({
     listenables: Actions,
 

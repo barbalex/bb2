@@ -85,7 +85,7 @@ export default (store: Object): void => {
         store.monthlyEvents.activeMonthlyEventId = oldActiveMonthlyEventId
       }
     ),
-    onSaveMonthlyEvent: action('onSaveMonthlyEvent', monthlyEvent => {
+    saveMonthlyEvent: action('saveMonthlyEvent', monthlyEvent => {
       // keep old cache in case of error
       const oldMonthlyEvents = store.monthlyEvents.monthlyEvents
       const oldActiveMonthlyEventId = store.monthlyEvents.activeMonthlyEventId

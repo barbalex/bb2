@@ -11,6 +11,25 @@ function Store(): void {
     addPageAttachments: null,
     removePageAttachment: null
   }
+  this.monthlyEvents = {
+    monthlyEvents: [],
+    activeMonthlyEventId: null,
+    activeMonthlyEvent: null,
+    getMonthlyEventsCallback: null,
+    getMonthlyEvents: null,
+    getMonthlyEvent: null,
+    updateMonthlyEventsInCache: null,
+    revertCache: null,
+    saveMonthlyEvent: null,
+    removeMonthlyEventFromCache: null,
+    removeMonthlyEvent: null,
+    toggleDraftOfMonthlyEvent: null
+  }
+  this.yearsOfEvents = {
+    yearsOfEvents: [],
+    getYearsOfEvents: null
+  }
+  this.events = {}
 }
 
 const MyStore = new Store()

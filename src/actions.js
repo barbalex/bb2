@@ -2,8 +2,6 @@ import Reflux from 'reflux'
 
 export default () =>
   Reflux.createActions({
-    addPageAttachments: {},
-    removePageAttachment: {},
     getEvents: {},
     getEvent: {},
     getYearsOfEvents: {},
@@ -11,12 +9,6 @@ export default () =>
     newEvent: {},
     removeEvent: {},
     replaceEvent: {},
-    getMonthlyEvents: {},
-    getMonthlyEvent: {},
-    saveMonthlyEvent: {},
-    newMonthlyEvent: {},
-    removeMonthlyEvent: {},
-    toggleDraftOfMonthlyEvent: {},
     getCommentaries: {},
     getCommentary: {},
     saveCommentary: {},
