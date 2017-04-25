@@ -5,6 +5,7 @@ import pouchdbAuthentication from 'pouchdb-authentication'
 import Router from './router.js'
 import actions from './actions.js'
 import stores from './stores'
+import store from './store'
 import couchUrl from './modules/getCouchUrl.js'
 // need this polyfill to transform promise.all
 // without it IE 11 and lower bark
@@ -53,6 +54,7 @@ window.PouchDB = PouchDB
 app.extend({
   init() {
     this.Actions = actions()
+    this.store = store
     stores(this.Actions)
     Promise.all([(this.db = new PouchDB(couchUrl()))])
       .then(() => {

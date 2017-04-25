@@ -39,11 +39,17 @@ export default React.createClass({
     app.Actions.getEvents([parseInt(moment().format('YYYY'), 0)])
     app.Actions.getYearsOfEvents()
     this.setIntroComponentsHeight()
-    window.addEventListener('resize', debounce(this.setIntroComponentsHeight, 50))
+    window.addEventListener(
+      'resize',
+      debounce(this.setIntroComponentsHeight, 50)
+    )
   },
 
   componentWillUnmount() {
-    window.removeEventListener('resize', debounce(this.setIntroComponentsHeight, 50))
+    window.removeEventListener(
+      'resize',
+      debounce(this.setIntroComponentsHeight, 50)
+    )
   },
 
   onRemoveEvent(docToRemove) {
@@ -52,9 +58,16 @@ export default React.createClass({
 
   setIntroComponentsHeight() {
     const { introJumbotronHeight: introJumbotronHeightOld } = this.state
-    const introJumbotronDomNode = this.introJumbotron ? ReactDOM.findDOMNode(this.introJumbotron) : null
-    const introJumbotronHeight = introJumbotronDomNode ? introJumbotronDomNode.clientHeight : null
-    if (introJumbotronHeight && introJumbotronHeight !== introJumbotronHeightOld) {
+    const introJumbotronDomNode = this.introJumbotron
+      ? ReactDOM.findDOMNode(this.introJumbotron)
+      : null
+    const introJumbotronHeight = introJumbotronDomNode
+      ? introJumbotronDomNode.clientHeight
+      : null
+    if (
+      introJumbotronHeight &&
+      introJumbotronHeight !== introJumbotronHeightOld
+    ) {
       this.setState({ introJumbotronHeight })
     }
   },
@@ -67,7 +80,7 @@ export default React.createClass({
 
   yearButtons() {
     const { yearsOfEvents, activeEventYears } = this.props
-    return yearsOfEvents.map((year, index) =>
+    return yearsOfEvents.map((year, index) => (
       <Button
         key={index}
         active={activeEventYears.includes(year)}
@@ -75,7 +88,7 @@ export default React.createClass({
       >
         {year}
       </Button>
-    )
+    ))
   },
 
   removeEvent(remove) {
@@ -96,35 +109,27 @@ export default React.createClass({
       activeEventYears,
       setActiveEventYears
     } = this.props
-    const {
-      docToRemove,
-      introJumbotronHeight
-    } = this.state
+    const { docToRemove, introJumbotronHeight } = this.state
     const showEventsTable = min(activeEventYears) > 2014
 
     return (
       <div className="events">
         <IntroJumbotron
-          ref={(j) => {
+          ref={j => {
             this.introJumbotron = j
           }}
         />
-        <div
-          style={{ textAlign: 'center' }}
-        >
+        <div style={{ textAlign: 'center' }}>
           <ButtonGroup>
             {this.yearButtons()}
             <Button
-              onClick={() =>
-                app.Actions.getPage('pages_monthlyEvents')
-              }
+              onClick={() => app.store.page.getPage('pages_monthlyEvents')}
             >
               2014 - 2011
             </Button>
           </ButtonGroup>
         </div>
-        {
-          showEventsTable &&
+        {showEventsTable &&
           <EventsTable
             events={events}
             yearsOfEvents={yearsOfEvents}
@@ -133,28 +138,15 @@ export default React.createClass({
             setActiveEventYears={setActiveEventYears}
             introJumbotronHeight={introJumbotronHeight}
             onRemoveEvent={this.onRemoveEvent}
-          />
-        }
-        {
-          activeEvent &&
+          />}
+        {activeEvent &&
           <EditEvent
             activeEvent={activeEvent}
             onChangeActiveEvent={onChangeActiveEvent}
-          />
-        }
-        {
-          showNewEvent &&
-          <NewEvent
-            onCloseNewEvent={onCloseNewEvent}
-          />
-        }
-        {
-          docToRemove &&
-          <ModalRemoveEvent
-            doc={docToRemove}
-            removeEvent={this.removeEvent}
-          />
-        }
+          />}
+        {showNewEvent && <NewEvent onCloseNewEvent={onCloseNewEvent} />}
+        {docToRemove &&
+          <ModalRemoveEvent doc={docToRemove} removeEvent={this.removeEvent} />}
       </div>
     )
   }

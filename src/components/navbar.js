@@ -11,6 +11,7 @@ import {
   OverlayTrigger
 } from 'react-bootstrap'
 import has from 'lodash/has'
+import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
@@ -21,6 +22,7 @@ const isNavMobile = () => {
 }
 
 const enhance = compose(
+  inject(`store`),
   withState('navExpanded', 'changeNavExpanded', false),
   withHandlers({
     onToggleNav: props => () => {
@@ -31,7 +33,7 @@ const enhance = compose(
   }),
   withHandlers({
     onClickPage: props => id => {
-      app.Actions.getPage(id)
+      props.store.page.getPage(id)
       // if home was clicked, do not toggle nav
       if (id !== 'pages_events') props.onToggleNav()
     },
@@ -43,10 +45,12 @@ const enhance = compose(
       app.Actions.logout()
       props.onToggleNav()
     }
-  })
+  }),
+  observer
 )
 
 const MyNavbar = ({
+  store,
   activePage,
   activeMonthlyEvent,
   activePublication,
@@ -65,6 +69,7 @@ const MyNavbar = ({
   onToggleNav,
   navExpanded
 }: {
+  store: Object,
   activePage: Object,
   activeMonthlyEvent: Object,
   activePublication: Object,

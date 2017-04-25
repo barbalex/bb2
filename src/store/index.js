@@ -9,8 +9,7 @@ function Store(): void {
     getPage: null,
     savePage: null,
     addPageAttachments: null,
-    removePageAttachment: null,
-    onSavePage: null
+    removePageAttachment: null
   }
 }
 

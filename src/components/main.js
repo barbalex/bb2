@@ -1,8 +1,12 @@
+// @flow
 import app from 'ampersand-app'
-import React from 'react'
+import React, { Component } from 'react'
 import { ListenerMixin } from 'reflux'
 import DocumentTitle from 'react-document-title'
 import moment from 'moment'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+
 import NavHelper from '../components/navHelper.js'
 import Header from '../components/header.js'
 import Navbar from '../components/navbar.js'
@@ -16,41 +20,202 @@ import Login from './login/login.js'
 import Errors from './errors.js'
 import getPageNameFromDoc from '../modules/getPageNameFromDoc.js'
 
-export default React.createClass({
-  displayName: 'Main',
+const enhance = compose(inject(`store`), observer)
 
-  propTypes: {
-    activePage: React.PropTypes.object,
-    monthlyEvents: React.PropTypes.array,
-    activeMonthlyEvent: React.PropTypes.object,
-    publications: React.PropTypes.array,
-    activePublicationCategory: React.PropTypes.string,
-    activePublication: React.PropTypes.object,
-    commentaries: React.PropTypes.array,
-    activeCommentary: React.PropTypes.object,
-    events: React.PropTypes.array,
-    yearsOfEvents: React.PropTypes.array,
-    activeEvent: React.PropTypes.object,
-    actors: React.PropTypes.array,
-    activeActor: React.PropTypes.object,
-    editing: React.PropTypes.bool,
-    showNewCommentary: React.PropTypes.bool,
-    showNewEvent: React.PropTypes.bool,
-    showNewActor: React.PropTypes.bool,
-    showNewMonthlyEvent: React.PropTypes.bool,
-    showNewPublication: React.PropTypes.bool,
-    login: React.PropTypes.bool,
-    email: React.PropTypes.string,
-    errors: React.PropTypes.array,
-    activeEventYears: React.PropTypes.array
-  },
+const Main = ({
+  store,
+  activePage,
+  monthlyEvents,
+  activeMonthlyEvent,
+  publications,
+  activePublicationCategory,
+  activePublication,
+  commentaries,
+  activeCommentary,
+  events,
+  yearsOfEvents,
+  activeEvent,
+  actors,
+  activeActor,
+  editing,
+  showNewCommentary,
+  showNewEvent,
+  showNewActor,
+  showNewMonthlyEvent,
+  showNewPublication,
+  login,
+  email,
+  errors,
+  activeEventYears
+}: {
+  store: Object,
+  activePage: Object,
+  monthlyEvents: Array<Object>,
+  activeMonthlyEvent: Object,
+  publications: Array<Object>,
+  activePublicationCategory: string,
+  activePublication: Object,
+  commentaries: Array<Object>,
+  activeCommentary: Object,
+  events: Array<Object>,
+  yearsOfEvents: Array<number>,
+  activeEvent: Object,
+  actors: Array<Object>,
+  activeActor: Object,
+  editing: boolean,
+  showNewCommentary: boolean,
+  showNewEvent: boolean,
+  showNewActor: boolean,
+  showNewMonthlyEvent: boolean,
+  showNewPublication: boolean,
+  login: boolean,
+  email: string,
+  errors: Array<Object>,
+  activeEventYears: Array<number>
+}) => {
+  const nonSimplePages = [
+    'pages_commentaries',
+    'pages_monthlyEvents',
+    'pages_publications',
+    'pages_events'
+  ]
+  const isSimplePage =
+    activePage.type &&
+    activePage.type === 'pages' &&
+    !nonSimplePages.includes(activePage._id)
+  const isCommentariesPage =
+    activePage.type &&
+    activePage.type === 'pages' &&
+    activePage._id === 'pages_commentaries'
+  const isEventsPage =
+    activePage.type &&
+    activePage.type === 'pages' &&
+    activePage._id === 'pages_events'
+  const isActorPage =
+    activePage.type &&
+    activePage.type === 'pages' &&
+    activePage._id === 'pages_actors'
+  const isMonthlyEventsPage =
+    activePage.type &&
+    activePage.type === 'pages' &&
+    activePage._id === 'pages_monthlyEvents'
+  const isPublicationsPage =
+    activePage.type &&
+    activePage.type === 'pages' &&
+    activePage._id === 'pages_publications'
+  const isCommentary = activePage.type && activePage.type === 'commentaries'
+  const isActor = activePage.type && activePage.type === 'actors'
+  const showCommentaryPage = isCommentariesPage || isCommentary
+  const showEventsPage = isEventsPage
+  const showActorPage = isActorPage || isActor
+  const isMonthlyEvent = activePage.type && activePage.type === 'monthlyEvents'
+  const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
+  const isPublication = activePage.type && activePage.type === 'publications'
+  const showPublicationsPage = isPublicationsPage || isPublication
+  const pageName = getPageNameFromDoc(activePage)
+  const pageTitle = `blue-borders | ${pageName}`
+  const pagesWitCopyright = ['pages_commentaries']
+  const showCopyright =
+    activePage.type &&
+    activePage.type === 'pages' &&
+    pagesWitCopyright.includes(activePage._id)
+  const showErrors = errors && errors.length > 0
 
-  mixins: [ListenerMixin],
+  return (
+    <DocumentTitle title={pageTitle}>
+      <NavHelper>
+        <Header />
+        <Navbar
+          activePage={activePage}
+          activeMonthlyEvent={activeMonthlyEvent}
+          activePublication={activePublication}
+          activeCommentary={activeCommentary}
+          activeActor={activeActor}
+          email={email}
+          editing={editing}
+          onClickEdit={onClickEdit}
+          onClickNewCommentary={onClickNewCommentary}
+          onClickNewEvent={onClickNewEvent}
+          onClickNewActor={onClickNewActor}
+          onClickNewMonthlyEvent={onClickNewMonthlyEvent}
+          onClickNewPublication={onClickNewPublication}
+        />
+        <div className="container">
+          {showErrors && <Errors errors={errors} />}
+          {isSimplePage && <Page activePage={activePage} editing={editing} />}
+          {showEventsPage &&
+            <Events
+              events={events}
+              yearsOfEvents={yearsOfEvents}
+              editing={editing}
+              email={email}
+              activeEvent={activeEvent}
+              showNewEvent={showNewEvent}
+              onChangeActiveEvent={onChangeActiveEvent}
+              onCloseNewEvent={onCloseNewEvent}
+              activeEventYears={activeEventYears}
+              setActiveEventYears={setActiveEventYears}
+            />}
+          {showCommentaryPage &&
+            <Commentaries
+              commentaries={commentaries}
+              activeCommentary={activeCommentary}
+              editing={editing}
+              email={email}
+              onSaveCommentaryArticle={onSaveCommentaryArticle}
+              showNewCommentary={showNewCommentary}
+              onCloseNewCommentary={onCloseNewCommentary}
+            />}
+          {showActorPage &&
+            <Actors
+              actors={actors}
+              activeActor={activeActor}
+              editing={editing}
+              email={email}
+              onSaveActorArticle={onSaveActorArticle}
+              showNewActor={showNewActor}
+              onCloseNewActor={onCloseNewActor}
+            />}
+          {showMonthlyEventsPage &&
+            <MonthlyEvents
+              monthlyEvents={monthlyEvents}
+              activeMonthlyEvent={activeMonthlyEvent}
+              editing={editing}
+              email={email}
+              onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
+              showNewMonthlyEvent={showNewMonthlyEvent}
+              onCloseNewMonthlyEvent={onCloseNewMonthlyEvent}
+            />}
+          {showPublicationsPage &&
+            <Publications
+              publications={publications}
+              activePublicationCategory={activePublicationCategory}
+              activePublication={activePublication}
+              editing={editing}
+              email={email}
+              onSavePublicationArticle={onSavePublicationArticle}
+              showNewPublication={showNewPublication}
+              onCloseNewPublication={onCloseNewPublication}
+            />}
+          {login && <Login email={email} />}
+          {showCopyright &&
+            <p style={{ marginTop: 70 }}>
+              © Jürg Martin Gabriel. All Rights Reserved.
+            </p>}
+        </div>
+      </NavHelper>
+    </DocumentTitle>
+  )
+}
 
+Main.displayName = 'Main'
+
+export default enhance(Main)
+
+React.createClass({
   getInitialState() {
     const email = window.localStorage.email
     return {
-      activePage: {},
       activeMonthlyEvent: null,
       monthlyEvents: [],
       activePublication: null,
@@ -77,7 +242,6 @@ export default React.createClass({
 
   componentDidMount() {
     // listen to stores
-    this.listenTo(app.activePageStore, this.onActivePageStoreChange)
     this.listenTo(app.monthlyEventsStore, this.onMonthlyEventsStoreChange)
     this.listenTo(app.publicationsStore, this.onPublicationsStoreChange)
     this.listenTo(app.commentariesStore, this.onCommentariesStoreChange)
@@ -86,10 +250,6 @@ export default React.createClass({
     this.listenTo(app.actorsStore, this.onActorsStoreChange)
     this.listenTo(app.loginStore, this.onLoginStoreChange)
     this.listenTo(app.errorStore, this.onErrorStoreChange)
-  },
-
-  onActivePageStoreChange(activePage) {
-    this.setState({ activePage })
   },
 
   onMonthlyEventsStoreChange(monthlyEvents, activeMonthlyEvent) {
@@ -145,7 +305,7 @@ export default React.createClass({
 
   onLoginStoreChange(email) {
     this.setState({ email })
-    if (email) app.Actions.getPage('pages_events')
+    if (email) app.store.page.getPage('pages_events')
   },
 
   onErrorStoreChange(errors) {
@@ -198,10 +358,6 @@ export default React.createClass({
     this.setState({ showNewPublication: false })
   },
 
-  onSavePage(activePage) {
-    app.Actions.savePage(activePage)
-  },
-
   onSaveMonthlyEventArticle(articleEncoded) {
     const { activeMonthlyEvent } = this.state
     activeMonthlyEvent.article = articleEncoded
@@ -234,170 +390,5 @@ export default React.createClass({
     this.setState({ activeEventYears })
   },
 
-  render() {
-    const { login } = this.props
-    const {
-      activePage,
-      monthlyEvents,
-      activeMonthlyEvent,
-      publications,
-      activePublicationCategory,
-      activePublication,
-      events,
-      yearsOfEvents,
-      activeEvent,
-      commentaries,
-      activeCommentary,
-      actors,
-      activeActor,
-      editing,
-      showNewCommentary,
-      showNewEvent,
-      showNewActor,
-      showNewMonthlyEvent,
-      showNewPublication,
-      email,
-      errors,
-      activeEventYears
-    } = this.state
-    const nonSimplePages = [
-      'pages_commentaries',
-      'pages_monthlyEvents',
-      'pages_publications',
-      'pages_events'
-    ]
-    const isSimplePage =
-      activePage.type &&
-      activePage.type === 'pages' &&
-      !nonSimplePages.includes(activePage._id)
-    const isCommentariesPage =
-      activePage.type &&
-      activePage.type === 'pages' &&
-      activePage._id === 'pages_commentaries'
-    const isEventsPage =
-      activePage.type &&
-      activePage.type === 'pages' &&
-      activePage._id === 'pages_events'
-    const isActorPage =
-      activePage.type &&
-      activePage.type === 'pages' &&
-      activePage._id === 'pages_actors'
-    const isMonthlyEventsPage =
-      activePage.type &&
-      activePage.type === 'pages' &&
-      activePage._id === 'pages_monthlyEvents'
-    const isPublicationsPage =
-      activePage.type &&
-      activePage.type === 'pages' &&
-      activePage._id === 'pages_publications'
-    const isCommentary = activePage.type && activePage.type === 'commentaries'
-    const isActor = activePage.type && activePage.type === 'actors'
-    const showCommentaryPage = isCommentariesPage || isCommentary
-    const showEventsPage = isEventsPage
-    const showActorPage = isActorPage || isActor
-    const isMonthlyEvent =
-      activePage.type && activePage.type === 'monthlyEvents'
-    const showMonthlyEventsPage = isMonthlyEventsPage || isMonthlyEvent
-    const isPublication = activePage.type && activePage.type === 'publications'
-    const showPublicationsPage = isPublicationsPage || isPublication
-    const pageName = getPageNameFromDoc(activePage)
-    const pageTitle = `blue-borders | ${pageName}`
-    const pagesWitCopyright = ['pages_commentaries']
-    const showCopyright =
-      activePage.type &&
-      activePage.type === 'pages' &&
-      pagesWitCopyright.includes(activePage._id)
-    const showErrors = errors && errors.length > 0
-
-    return (
-      <DocumentTitle title={pageTitle}>
-        <NavHelper>
-          <Header />
-          <Navbar
-            activePage={activePage}
-            activeMonthlyEvent={activeMonthlyEvent}
-            activePublication={activePublication}
-            activeCommentary={activeCommentary}
-            activeActor={activeActor}
-            email={email}
-            editing={editing}
-            onClickEdit={this.onClickEdit}
-            onClickNewCommentary={this.onClickNewCommentary}
-            onClickNewEvent={this.onClickNewEvent}
-            onClickNewActor={this.onClickNewActor}
-            onClickNewMonthlyEvent={this.onClickNewMonthlyEvent}
-            onClickNewPublication={this.onClickNewPublication}
-          />
-          <div className="container">
-            {showErrors && <Errors errors={errors} />}
-            {isSimplePage &&
-              <Page
-                activePage={activePage}
-                editing={editing}
-                onSavePage={this.onSavePage}
-              />}
-            {showEventsPage &&
-              <Events
-                events={events}
-                yearsOfEvents={yearsOfEvents}
-                editing={editing}
-                email={email}
-                activeEvent={activeEvent}
-                showNewEvent={showNewEvent}
-                onChangeActiveEvent={this.onChangeActiveEvent}
-                onCloseNewEvent={this.onCloseNewEvent}
-                activeEventYears={activeEventYears}
-                setActiveEventYears={this.setActiveEventYears}
-              />}
-            {showCommentaryPage &&
-              <Commentaries
-                commentaries={commentaries}
-                activeCommentary={activeCommentary}
-                editing={editing}
-                email={email}
-                onSaveCommentaryArticle={this.onSaveCommentaryArticle}
-                showNewCommentary={showNewCommentary}
-                onCloseNewCommentary={this.onCloseNewCommentary}
-              />}
-            {showActorPage &&
-              <Actors
-                actors={actors}
-                activeActor={activeActor}
-                editing={editing}
-                email={email}
-                onSaveActorArticle={this.onSaveActorArticle}
-                showNewActor={showNewActor}
-                onCloseNewActor={this.onCloseNewActor}
-              />}
-            {showMonthlyEventsPage &&
-              <MonthlyEvents
-                monthlyEvents={monthlyEvents}
-                activeMonthlyEvent={activeMonthlyEvent}
-                editing={editing}
-                email={email}
-                onSaveMonthlyEventArticle={this.onSaveMonthlyEventArticle}
-                showNewMonthlyEvent={showNewMonthlyEvent}
-                onCloseNewMonthlyEvent={this.onCloseNewMonthlyEvent}
-              />}
-            {showPublicationsPage &&
-              <Publications
-                publications={publications}
-                activePublicationCategory={activePublicationCategory}
-                activePublication={activePublication}
-                editing={editing}
-                email={email}
-                onSavePublicationArticle={this.onSavePublicationArticle}
-                showNewPublication={showNewPublication}
-                onCloseNewPublication={this.onCloseNewPublication}
-              />}
-            {login && <Login email={email} />}
-            {showCopyright &&
-              <p style={{ marginTop: 70 }}>
-                © Jürg Martin Gabriel. All Rights Reserved.
-              </p>}
-          </div>
-        </NavHelper>
-      </DocumentTitle>
-    )
-  }
+  render() {}
 })

@@ -11,16 +11,15 @@ export default (store: Object): void => {
     showMeta: false,
     getPage: action('getPage', id => {
       const get =
-        !store.activePage ||
-        (store.activePage._id && store.activePage._id !== id)
+        !store.page.activePage ||
+        (store.page.activePage._id && store.page.activePage._id !== id)
       if (get) {
         app.db
           .get(id, { include_docs: true })
           .then(doc => {
-            store.activePage = doc
+            store.page.activePage = doc
             const path = getPathFromDoc(doc)
             app.router.navigate(`/${path}`)
-            store.trigger(doc)
           })
           .catch(error =>
             app.Actions.showError({
@@ -30,9 +29,33 @@ export default (store: Object): void => {
           )
       }
     }),
-    savePage: action('savePage', () => {}),
-    addPageAttachments: action('addPageAttachments', () => {}),
-    removePageAttachment: action('removePageAttachment', () => {}),
-    onSavePage: null
+    savePage: action('savePage', doc => {
+      app.db
+        .put(doc)
+        .then(resp => {
+          // resp.rev is new rev
+          doc._rev = resp.rev
+          store.page.activePage = doc
+        })
+        .catch(error =>
+          app.Actions.showError({
+            title: 'Error saving page:',
+            msg: error
+          })
+        )
+    }),
+    // see: http://pouchdb.com/api.html#save_attachment > Save many attachments at once
+    addPageAttachments: action('addPageAttachments', (doc, attachments) => {
+      if (!doc._attachments) doc._attachments = {}
+      doc._attachments = Object.assign(doc._attachments, attachments)
+      store.page.savePage(doc)
+    }),
+    removePageAttachment: action(
+      'removePageAttachment',
+      (doc, attachmentId) => {
+        delete doc._attachments[attachmentId]
+        store.page.savePage(doc)
+      }
+    )
   })
 }

@@ -18,62 +18,6 @@ import sortPublications from './modules/sortPublications.js'
 import uniq from 'lodash/uniq'
 
 export default Actions => {
-  app.activePageStore = Reflux.createStore({
-    listenables: Actions,
-
-    activePage: null,
-
-    onGetPage(id) {
-      const get =
-        !this.activePage || (this.activePage._id && this.activePage._id !== id)
-      if (get) {
-        app.db
-          .get(id, { include_docs: true })
-          .then(doc => {
-            this.activePage = doc
-            const path = getPathFromDoc(doc)
-            app.router.navigate(`/${path}`)
-            this.trigger(doc)
-          })
-          .catch(error =>
-            app.Actions.showError({
-              title: `Error loading ${id}:`,
-              msg: error
-            })
-          )
-      }
-    },
-
-    onSavePage(doc) {
-      app.db
-        .put(doc)
-        .then(resp => {
-          // resp.rev is new rev
-          doc._rev = resp.rev
-          this.activePage = doc
-          this.trigger(doc)
-        })
-        .catch(error =>
-          app.Actions.showError({
-            title: 'Error in activePageStore, onSavePage:',
-            msg: error
-          })
-        )
-    },
-
-    // see: http://pouchdb.com/api.html#save_attachment > Save many attachments at once
-    onAddPageAttachments(doc, attachments) {
-      if (!doc._attachments) doc._attachments = {}
-      doc._attachments = Object.assign(doc._attachments, attachments)
-      this.onSavePage(doc)
-    },
-
-    onRemovePageAttachment(doc, attachmentId) {
-      delete doc._attachments[attachmentId]
-      this.onSavePage(doc)
-    }
-  })
-
   app.monthlyEventsStore = Reflux.createStore({
     listenables: Actions,
 

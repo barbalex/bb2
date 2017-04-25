@@ -23,14 +23,12 @@ const Page = ({
   activePage,
   editing,
   showMeta,
-  onSavePage,
   onClickMeta,
   onCloseMeta
 }: {
   activePage: Object,
   editing: boolean,
   showMeta: boolean,
-  onSavePage: () => void,
   onClickMeta: () => void,
   onCloseMeta: () => void
 }) => {
