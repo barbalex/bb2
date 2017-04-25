@@ -42,6 +42,8 @@ function Store(): void {
     saveEvent: null,
     removeEventFromCache: null,
     removeEvent: null,
+    eventToRemove: null,
+    setEventToRemove: null,
     replaceEvent: null,
   }
   this.commentaries = {

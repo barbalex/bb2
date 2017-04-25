@@ -152,6 +152,13 @@ export default (store: Object): void => {
       })
     }),
 
+    eventToRemove: null,
+
+    setEventToRemove: action(
+      'setEventToRemove',
+      (event: Object): void => (store.events.eventToRemove = event),
+    ),
+
     replaceEvent: action('replaceEvent', (event: Object): void => {
       // if an event's title or date are changed, it has to be replaced with a new one
       store.events.newEvent(event)
