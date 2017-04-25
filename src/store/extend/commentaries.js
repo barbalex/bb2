@@ -5,6 +5,7 @@ import moment from 'moment'
 
 import getCommentaries from '../../modules/getCommentaries.js'
 import getPathFromDoc from '../../modules/getPathFromDoc.js'
+import sortCommentaries from '../../modules/sortCommentaries.js'
 
 export default (store: Object): void => {
   extendObservable(store.commentaries, {
@@ -82,5 +83,94 @@ export default (store: Object): void => {
         }
       }
     }),
+
+    updateCommentariesInCache: action(
+      'updateCommentariesInCache',
+      (commentary: Object): void => {
+        // first update the commentary in store.commentaries.commentaries
+        store.commentaries.commentaries = store.commentaries.commentaries.filter(
+          c => c._id !== commentary._id,
+        )
+        store.commentaries.commentaries.push(commentary)
+        store.commentaries.commentaries = sortCommentaries(
+          store.commentaries.commentaries,
+        )
+      },
+    ),
+
+    revertCache: action(
+      'revertCache',
+      (oldCommentaries: Object, oldActiveCommentaryId: string): void => {
+        store.commentaries.commentaries = oldCommentaries
+        store.commentaries.activeCommentaryId = oldActiveCommentaryId
+      },
+    ),
+
+    saveCommentary: action('saveCommentary', (commentary: Object): void => {
+      // keep old cache in case of error
+      const oldCommentaries = store.commentaries.commentaries
+      const oldActiveCommentaryId = store.commentaries.activeCommentaryId
+      // optimistically update in cache
+      store.commentaries.updateCommentariesInCache(commentary)
+      app.db
+        .put(commentary)
+        .then(resp => {
+          // resp.rev is new rev
+          commentary._rev = resp.rev
+          // definitely update in cache
+          store.commentaries.updateCommentariesInCache(commentary)
+        })
+        .catch(error => {
+          store.commentaries.revertCache(oldCommentaries, oldActiveCommentaryId)
+          app.Actions.showError({
+            title: 'Error saving commentary:',
+            msg: error,
+          })
+        })
+    }),
+    removeCommentaryFromCache: action(
+      'removeCommentaryFromCache',
+      (commentary: Object): void => {
+        // first update the commentary in store.commentaries.commentaries
+        store.commentaries.commentaries = store.commentaries.commentaries.filter(
+          thisCommentary => thisCommentary._id !== commentary._id,
+        )
+        store.commentaries.commentaries = sortCommentaries(
+          store.commentaries.commentaries,
+        )
+        // now update store.commentaries.activeCommentaryId if it is the active commentary's _id
+        const isActiveCommentary =
+          store.commentaries.activeCommentaryId === commentary._id
+        if (isActiveCommentary) store.commentaries.activeCommentaryId = null
+      },
+    ),
+
+    removeCommentary: action('removeCommentary', (commentary: Object): void => {
+      // keep old cache in case of error
+      const oldCommentaries = store.commentaries.commentaries
+      const oldActiveCommentaryId = store.commentaries.activeCommentaryId
+      // optimistically remove event from cache
+      store.commentaries.removeCommentaryFromCache(commentary)
+      app.db.remove(commentary).catch(error => {
+        // oops. Revert optimistic removal
+        store.commentaries.revertCache(oldCommentaries, oldActiveCommentaryId)
+        app.Actions.showError({
+          title: 'Error removing commentary:',
+          msg: error,
+        })
+      })
+    }),
+
+    toggleDraftOfCommentary: action(
+      'toggleDraftOfCommentary',
+      (commentary: Object): void => {
+        if (commentary.draft === true) {
+          delete commentary.draft
+        } else {
+          commentary.draft = true
+        }
+        store.commentaries.saveCommentary(commentary)
+      },
+    ),
   })
 }
