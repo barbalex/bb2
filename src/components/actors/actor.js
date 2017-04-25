@@ -1,90 +1,72 @@
-import React, { Component, PropTypes } from 'react'
+// @flow
+import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
+
 import Editor from '../editor.js'
 import Meta from '../pages/pageMeta.js'
 
-class Actor extends Component {
-  static propTypes = {
-    activeActor: PropTypes.object,
-    editing: PropTypes.bool,
-    showMeta: PropTypes.bool,
-    onSaveActorArticle: PropTypes.func
-  }
+const enhance = compose(
+  inject(`store`),
+  withState('showMeta', 'changeShowMeta', false),
+  withHandlers({
+    onClickMeta: props => () => props.changeShowMeta(!props.showMeta),
+    onCloseMeta: props => () => props.changeShowMeta(false),
+  }),
+  observer,
+)
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      showMeta: false
-    }
-    this.onClickMeta = this.onClickMeta.bind(this)
-    this.onCloseMeta = this.onCloseMeta.bind(this)
+const Actor = ({
+  store,
+  activeActor,
+  editing,
+  showMeta,
+  onSaveActorArticle,
+  onClickMeta,
+  onCloseMeta,
+}: {
+  store: Object,
+  activeActor: Object,
+  editing: boolean,
+  showMeta: boolean,
+  onSaveActorArticle: () => void,
+  onClickMeta: () => void,
+  onCloseMeta: () => void,
+}) => {
+  const articleEncoded = activeActor.article
+  const articleDecoded = Base64.decode(articleEncoded)
+  const metaButtonStyle = {
+    position: 'fixed',
+    bottom: 10,
+    right: 10,
   }
-
-  onClickMeta() {
-    const { showMeta } = this.state
-    this.setState({
-      showMeta: !showMeta
-    })
-  }
-
-  onCloseMeta() {
-    this.setState({
-      showMeta: false
-    })
-  }
-
-  render() {
-    const {
-      activeActor,
-      editing,
-      onSaveActorArticle,
-    } = this.props
-    const { showMeta } = this.state
-    const articleEncoded = activeActor.article
-    const articleDecoded = Base64.decode(articleEncoded)
-    const metaButtonStyle = {
-      position: 'fixed',
-      bottom: 10,
-      right: 10
-    }
-    if (editing) {
-      return (
-        <div className="actor">
-          {
-            showMeta &&
-            <Meta
-              doc={activeActor}
-              onCloseMeta={this.onCloseMeta}
-            />
-          }
-          <Editor
-            doc={activeActor}
-            articleDecoded={articleDecoded}
-            onSaveActorArticle={onSaveActorArticle}
-          />
-          <Button
-            style={metaButtonStyle}
-            onClick={this.onClickMeta}
-          >
-            images
-          </Button>
-        </div>
-      )
-    }
-    const createMarkup = () => ({ __html: articleDecoded })
+  if (editing) {
     return (
-      <div
-        className="actor col500"
-      >
-        <div
-          dangerouslySetInnerHTML={createMarkup()}
+      <div className="actor">
+        {showMeta && <Meta doc={activeActor} onCloseMeta={onCloseMeta} />}
+        <Editor
+          doc={activeActor}
+          articleDecoded={articleDecoded}
+          onSaveActorArticle={onSaveActorArticle}
         />
+        <Button style={metaButtonStyle} onClick={onClickMeta}>
+          images
+        </Button>
       </div>
     )
   }
+  const createMarkup = () => ({ __html: articleDecoded })
+  return (
+    <div className="actor col500">
+      <div dangerouslySetInnerHTML={createMarkup()} />
+    </div>
+  )
 }
 
 Actor.displayName = 'Actor'
 
-export default Actor
+export default enhance(Actor)

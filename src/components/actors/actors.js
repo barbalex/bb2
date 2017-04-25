@@ -1,37 +1,76 @@
-import app from 'ampersand-app'
-import React from 'react'
+// @flow
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
-import { ListenerMixin } from 'reflux'
 import { sortBy } from 'lodash'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
+
 import Actor from './actor.js'
 import NewActor from './newActor.js'
 import ModalRemoveActor from './modalRemoveActor.js'
 
-export default React.createClass({
-  displayName: 'Actors',
+const glyphStyle = {
+  position: 'absolute',
+  right: 10,
+  top: 6,
+  fontSize: `${1.5}em`,
+  color: '#edf4f8',
+}
 
-  propTypes: {
-    actors: React.PropTypes.array,
-    activeActor: React.PropTypes.object,
-    editing: React.PropTypes.bool,
-    email: React.PropTypes.string,
-    onSaveActorArticle: React.PropTypes.func,
-    showNewActor: React.PropTypes.bool,
-    docToRemove: React.PropTypes.object,
-  },
+const enhance = compose(
+  inject(`store`),
+  withState('docToRemove', 'changeDocToRemove', null),
+  withHandlers({
+    onClickActor: props => (id, e) => {
+      const { activeActor } = props
+      // prevent higher level panels from reacting
+      e.stopPropagation()
+      const idToGet = !activeActor || activeActor._id !== id ? id : null
+      props.store.actors.getActor(idToGet)
+    },
+    onClickActorCollapse: props => event => {
+      // prevent higher level panels from reacting
+      event.stopPropagation()
+    },
+    onRemoveActor: props => (docToRemove, event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      props.changeDocToRemove(props.docToRemove)
+    },
+    onToggleDraft: props => (doc, event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      props.store.actors.toggleDraftOfActor(doc)
+    },
+  }),
+  observer,
+)
 
-  mixins: [ListenerMixin],
+class Actors extends Component {
+  displayName: 'Actors'
 
-  getInitialState() {
-    return {
-      docToRemove: null,
-    }
-  },
+  props: {
+    store: Object,
+    actors: Array<Object>,
+    activeActor: Object,
+    editing: boolean,
+    email: string,
+    onSaveActorArticle: () => void,
+    showNewActor: boolean,
+    docToRemove: Object,
+    changeDocToRemove: () => void,
+    onClickActor: () => void,
+    onClickActorCollapse: () => void,
+    onRemoveActor: () => void,
+    onToggleDraft: () => void,
+  }
 
   componentDidMount() {
-    app.Actions.getActors()
-  },
+    this.props.store.actors.getActors()
+  }
 
   componentDidUpdate(prevProps) {
     if (this.props.activeActor) {
@@ -52,34 +91,10 @@ export default React.createClass({
         this.scrollToActivePanel()
       }
     }
-  },
-
-  onClickActor(id, e) {
-    const { activeActor } = this.props
-    // prevent higher level panels from reacting
-    e.stopPropagation()
-    const idToGet = !activeActor || activeActor._id !== id ? id : null
-    app.Actions.getActor(idToGet)
-  },
-
-  onClickActorCollapse(event) {
-    // prevent higher level panels from reacting
-    event.stopPropagation()
-  },
-
-  onRemoveActor(docToRemove, event) {
-    event.preventDefault()
-    event.stopPropagation()
-    this.setState({ docToRemove })
-  },
-
-  onToggleDraft(doc, event) {
-    event.preventDefault()
-    event.stopPropagation()
-    app.Actions.toggleDraftOfActor(doc)
-  },
+  }
 
   scrollToActivePanel() {
+    // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activeActorPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper')
@@ -94,41 +109,10 @@ export default React.createClass({
         )
       }
     }
-  },
-
-  removeActor(remove) {
-    const { docToRemove } = this.state
-    if (remove) app.Actions.removeActor(docToRemove)
-    this.setState({ docToRemove: null })
-  },
-
-  removeActorGlyph(doc) {
-    const glyphStyle = {
-      position: 'absolute',
-      right: 10,
-      top: 6,
-      fontSize: `${1.5}em`,
-      color: '#edf4f8',
-    }
-    return (
-      <OverlayTrigger
-        placement="top"
-        overlay={
-          <Tooltip id="removeThisActor">
-            remove
-          </Tooltip>
-        }
-      >
-        <Glyphicon
-          glyph="remove-circle"
-          style={glyphStyle}
-          onClick={event => this.onRemoveActor(doc, event)}
-        />
-      </OverlayTrigger>
-    )
-  },
+  }
 
   toggleDraftGlyph(doc) {
+    const { onToggleDraft } = this.props
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : '#00D000'
     const glyphStyle = {
@@ -150,14 +134,21 @@ export default React.createClass({
         <Glyphicon
           glyph={glyph}
           style={glyphStyle}
-          onClick={this.onToggleDraft.bind(this, doc)}
+          onClick={onToggleDraft.bind(this, doc)}
         />
       </OverlayTrigger>
     )
-  },
+  }
 
   actorsComponent() {
-    const { activeActor, editing, email, onSaveActorArticle } = this.props
+    const {
+      activeActor,
+      editing,
+      email,
+      onSaveActorArticle,
+      onClickActor,
+      onClickActorCollapse,
+    } = this.props
     let { actors } = this.props
     if (actors.length > 0) {
       actors = sortBy(actors, actor => {
@@ -180,6 +171,7 @@ export default React.createClass({
           overflowY: 'auto',
         }
         if (!isActiveActor) {
+          // $FlowIssue
           Object.assign(panelHeadingStyle, {
             borderBottomRightRadius: 3,
             borderBottomLeftRadius: 3,
@@ -194,6 +186,7 @@ export default React.createClass({
           <div
             key={doc._id}
             ref={c => {
+              // $FlowIssue
               this[ref] = c
             }}
             className="panel panel-default"
@@ -202,7 +195,7 @@ export default React.createClass({
               className="panel-heading"
               role="tab"
               id={`heading${index}`}
-              onClick={this.onClickActor.bind(this, doc._id)}
+              onClick={onClickActor.bind(this, doc._id)}
               style={panelHeadingStyle}
             >
               <h4 className="panel-title">
@@ -218,7 +211,21 @@ export default React.createClass({
                 </a>
               </h4>
               {showEditingGlyphons && this.toggleDraftGlyph(doc)}
-              {showEditingGlyphons && this.removeActorGlyph(doc)}
+              {showEditingGlyphons &&
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip id="removeThisActor">
+                      remove
+                    </Tooltip>
+                  }
+                >
+                  <Glyphicon
+                    glyph="remove-circle"
+                    style={glyphStyle}
+                    onClick={event => this.props.onRemoveActor(doc, event)}
+                  />
+                </OverlayTrigger>}
             </div>
             {isActiveActor &&
               <div
@@ -226,7 +233,7 @@ export default React.createClass({
                 className="panel-collapse collapse in"
                 role="tabpanel"
                 aria-labelledby={`heading${index}`}
-                onClick={this.onClickActorCollapse}
+                onClick={onClickActorCollapse}
               >
                 <div className="panel-body" style={panelBodyStyle}>
                   <Actor
@@ -241,21 +248,22 @@ export default React.createClass({
       })
     }
     return null
-  },
+  }
 
   render() {
-    const { activeActor, showNewActor } = this.props
-    const { docToRemove } = this.state
+    const { activeActor, showNewActor, docToRemove } = this.props
     const activeId = activeActor ? activeActor._id : null
+
     return (
       <div className="actors">
         <PanelGroup activeKey={activeId} id="actorsAccordion" accordion>
           {this.actorsComponent()}
         </PanelGroup>
         {showNewActor && <NewActor />}
-        {docToRemove &&
-          <ModalRemoveActor doc={docToRemove} removeActor={this.removeActor} />}
+        {docToRemove && <ModalRemoveActor doc={docToRemove} />}
       </div>
     )
-  },
-})
+  }
+}
+
+export default enhance(Actors)

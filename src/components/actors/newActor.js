@@ -16,6 +16,7 @@ import withHandlers from 'recompose/withHandlers'
 const alertStyle = {
   marginBottom: 10,
 }
+
 const enhance = compose(
   inject(`store`),
   withState('category', 'changeCategory', ''),
