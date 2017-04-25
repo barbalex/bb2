@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 
-import allTags from './tags.js'
+import allTags from './tags'
 
 const enhance = compose(
   inject(`store`),
@@ -36,7 +36,6 @@ const labelStyle = {
   fontWeight: 'bold',
   marginBottom: 2,
 }
-const options = allTags()
 
 const EventTags = ({
   activeEvent,
@@ -47,7 +46,7 @@ const EventTags = ({
       Tags
     </div>
     <div className="event-tags">
-      {options.map((option, index) => (
+      {allTags.map((option, index) => (
         <div key={index} className="form-group event-tag">
           <label>
             <input
