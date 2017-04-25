@@ -314,7 +314,6 @@ export default React.createClass({
       activePage.type === 'pages' &&
       pagesWitCopyright.includes(activePage._id)
     const showErrors = errors && errors.length > 0
-    console.log('main.js, showErrors:', showErrors)
 
     return (
       <DocumentTitle title={pageTitle}>
