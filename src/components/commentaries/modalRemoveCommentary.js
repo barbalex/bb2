@@ -1,7 +1,26 @@
+// @flow
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
 
-const ModalRemoveCommentary = ({ doc, removeCommentary }) =>
+const enhance = compose(
+  inject(`store`),
+  withHandlers({
+    remove: props => event =>
+      props.store.commentaries.removeCommentary(props.doc),
+    abort: props => event =>
+      props.store.commentaries.setCommentaryToRemove(null),
+  }),
+  observer,
+)
+
+const ModalRemoveCommentary = ({
+  doc,
+  remove,
+  abort,
+}: { doc: Object, remove: () => void, abort: () => void }) => (
   <div className="static-modal">
     <Modal.Dialog>
       <Modal.Header>
@@ -15,30 +34,17 @@ const ModalRemoveCommentary = ({ doc, removeCommentary }) =>
         </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          bsStyle="danger"
-          onClick={() =>
-            removeCommentary(true)
-          }
-        >
+        <Button bsStyle="danger" onClick={remove}>
           yes, remove!
         </Button>
-        <Button
-          onClick={() =>
-            removeCommentary(false)
-          }
-        >
+        <Button onClick={abort}>
           no!
         </Button>
       </Modal.Footer>
     </Modal.Dialog>
   </div>
+)
 
 ModalRemoveCommentary.displayName = 'ModalRemoveCommentary'
 
-ModalRemoveCommentary.propTypes = {
-  doc: React.PropTypes.object,
-  removeCommentary: React.PropTypes.func
-}
-
-export default ModalRemoveCommentary
+export default enhance(ModalRemoveCommentary)

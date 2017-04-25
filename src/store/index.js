@@ -61,6 +61,8 @@ function Store(): void {
     saveCommentary: null,
     removeCommentaryFromCache: null,
     removeCommentary: null,
+    commentaryToRemove: null,
+    setCommentaryToRemove: null,
     toggleDraftOfCommentary: null,
   }
   this.publications = {

@@ -1,4 +1,3 @@
-import app from 'ampersand-app'
 import React from 'react'
 import {
   Modal,

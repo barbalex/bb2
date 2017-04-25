@@ -170,6 +170,15 @@ export default (store: Object): void => {
       })
     }),
 
+    commentaryToRemove: null,
+
+    setCommentaryToRemove: action(
+      'setCommentaryToRemove',
+      (commentary: Object): void => {
+        store.commentaries.commentaryToRemove = commentary
+      },
+    ),
+
     toggleDraftOfCommentary: action(
       'toggleDraftOfCommentary',
       (commentary: Object): void => {
