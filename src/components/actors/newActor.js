@@ -1,4 +1,4 @@
-import app from 'ampersand-app'
+// @flow
 import React from 'react'
 import {
   Modal,
@@ -6,97 +6,89 @@ import {
   Alert,
   FormGroup,
   ControlLabel,
-  FormControl
+  FormControl,
 } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
 
-export default React.createClass({
-  displayName: 'NewActorCategory',
+const alertStyle = {
+  marginBottom: 10,
+}
+const enhance = compose(
+  inject(`store`),
+  withState('category', 'changeCategory', ''),
+  withState('error', 'changeError', null),
+  withHandlers({
+    onChangeCategory: props => (event: Object): void =>
+      props.changeCategory(event.target.value),
+    createNewActor: props => () => {
+      const { category } = props
+      if (category) {
+        props.store.actors.newActor(category)
+        props.store.actors.setShowNewActor(false)
+      } else {
+        props.changeError('Please choose a category')
+      }
+    },
+    closeNewActor: props => () => {
+      props.store.actors.setShowNewActor(false)
+    },
+  }),
+  observer,
+)
 
-  propTypes: {
-    onCloseNewActor: React.PropTypes.func,
-    category: React.PropTypes.string,
-    error: React.PropTypes.string
-  },
+const NewActor = ({
+  store,
+  category,
+  error,
+  closeNewActor,
+  onChangeCategory,
+  createNewActor,
+}: {
+  store: Object,
+  category: string,
+  error: string,
+  closeNewActor: () => void,
+  onChangeCategory: () => void,
+  createNewActor: () => void,
+}) => (
+  <Modal show bsSize="large">
+    <Modal.Header>
+      <Modal.Title>
+        New actor category
+      </Modal.Title>
+    </Modal.Header>
 
-  getInitialState() {
-    return {
-      category: '',
-      error: null
-    }
-  },
+    <Modal.Body>
+      <FormGroup controlId="actorCategory">
+        <ControlLabel>Category</ControlLabel>
+        <FormControl
+          type="text"
+          value={category}
+          onChange={onChangeCategory}
+          autoFocus
+        />
+      </FormGroup>
+      {error &&
+        <Alert bsStyle="danger" style={alertStyle}>
+          {error}
+        </Alert>}
+    </Modal.Body>
 
-  onChangeCategory(event) {
-    const category = event.target.value
-    this.setState({ category })
-  },
+    <Modal.Footer>
+      <Button onClick={closeNewActor}>
+        discard input and close
+      </Button>
+      <Button bsStyle="primary" onClick={createNewActor}>
+        create new actor
+      </Button>
+    </Modal.Footer>
 
-  createNewActor() {
-    const { onCloseNewActor } = this.props
-    const { category } = this.state
-    if (category) {
-      app.Actions.newActor(category)
-      onCloseNewActor()
-    } else {
-      const error = 'Please choose a category'
-      this.setState({ error })
-    }
-  },
+  </Modal>
+)
 
-  render() {
-    const { onCloseNewActor } = this.props
-    const { category, error } = this.state
-    const alertStyle = {
-      marginBottom: 10
-    }
-    return (
-      <Modal
-        show
-        bsSize="large"
-      >
-        <Modal.Header>
-          <Modal.Title>
-            New actor category
-          </Modal.Title>
-        </Modal.Header>
+NewActor.displayName = 'NewActor'
 
-        <Modal.Body>
-          <FormGroup
-            controlId="actorCategory"
-          >
-            <ControlLabel>Category</ControlLabel>
-            <FormControl
-              type="text"
-              value={category}
-              onChange={this.onChangeCategory}
-              autoFocus
-            />
-          </FormGroup>
-          {
-            error &&
-            <Alert
-              bsStyle="danger"
-              style={alertStyle}
-            >
-              {error}
-            </Alert>
-          }
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button
-            onClick={() => onCloseNewActor()}
-          >
-            discard input and close
-          </Button>
-          <Button
-            bsStyle="primary"
-            onClick={this.createNewActor}
-          >
-            create new actor
-          </Button>
-        </Modal.Footer>
-
-      </Modal>
-    )
-  }
-})
+export default enhance(NewActor)

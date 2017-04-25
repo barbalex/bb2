@@ -53,6 +53,12 @@ export default (store: Object): void => {
       store.actors.saveActor(actor)
     }),
 
+    showNewActor: false,
+
+    setShowNewActor: action('setShowNewActor', show => {
+      store.actors.showNewActor = show
+    }),
+
     getActor: action('getActor', (id: ?string): void => {
       if (!id) {
         app.router.navigate('/actors')

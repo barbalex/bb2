@@ -90,6 +90,8 @@ function Store(): void {
     getActorsCallback: null,
     getActors: null,
     newActor: null,
+    showNewActor: false,
+    setShowNewActor: null,
     getActor: null,
     updateActorsInCache: null,
     revertCache: null,

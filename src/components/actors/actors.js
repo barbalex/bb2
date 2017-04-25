@@ -17,16 +17,15 @@ export default React.createClass({
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onSaveActorArticle: React.PropTypes.func,
-    onCloseNewActor: React.PropTypes.func,
     showNewActor: React.PropTypes.bool,
-    docToRemove: React.PropTypes.object
+    docToRemove: React.PropTypes.object,
   },
 
   mixins: [ListenerMixin],
 
   getInitialState() {
     return {
-      docToRemove: null
+      docToRemove: null,
     }
   },
 
@@ -59,7 +58,7 @@ export default React.createClass({
     const { activeActor } = this.props
     // prevent higher level panels from reacting
     e.stopPropagation()
-    const idToGet = (!activeActor || activeActor._id !== id) ? id : null
+    const idToGet = !activeActor || activeActor._id !== id ? id : null
     app.Actions.getActor(idToGet)
   },
 
@@ -83,12 +82,16 @@ export default React.createClass({
   scrollToActivePanel() {
     const node = ReactDOM.findDOMNode(this._activeActorPanel)
     if (node) {
-      const navWrapperOffsetTop = document.getElementById('nav-wrapper').offsetTop
+      const navWrapperOffsetTop = document.getElementById('nav-wrapper')
+        .offsetTop
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
       if (node.offsetTop) {
-        window.$('html, body').animate({
-          scrollTop: node.offsetTop - reduce
-        }, 500)
+        window.$('html, body').animate(
+          {
+            scrollTop: node.offsetTop - reduce,
+          },
+          500,
+        )
       }
     }
   },
@@ -105,7 +108,7 @@ export default React.createClass({
       right: 10,
       top: 6,
       fontSize: `${1.5}em`,
-      color: '#edf4f8'
+      color: '#edf4f8',
     }
     return (
       <OverlayTrigger
@@ -119,9 +122,7 @@ export default React.createClass({
         <Glyphicon
           glyph="remove-circle"
           style={glyphStyle}
-          onClick={(event) =>
-            this.onRemoveActor(doc, event)
-          }
+          onClick={event => this.onRemoveActor(doc, event)}
         />
       </OverlayTrigger>
     )
@@ -135,7 +136,7 @@ export default React.createClass({
       right: 40,
       top: 6,
       fontSize: '1.5em',
-      color
+      color,
     }
     return (
       <OverlayTrigger
@@ -156,15 +157,10 @@ export default React.createClass({
   },
 
   actorsComponent() {
-    const {
-      activeActor,
-      editing,
-      email,
-      onSaveActorArticle
-    } = this.props
+    const { activeActor, editing, email, onSaveActorArticle } = this.props
     let { actors } = this.props
     if (actors.length > 0) {
-      actors = sortBy(actors, (actor) => {
+      actors = sortBy(actors, actor => {
         if (actor.order) return actor.order
         return 100
       })
@@ -173,7 +169,7 @@ export default React.createClass({
         const showEditingGlyphons = !!email
         const panelHeadingStyle = {
           position: 'relative',
-          cursor: 'pointer'
+          cursor: 'pointer',
         }
         const panelBodyPadding = editing ? 0 : 15
         const panelBodyMarginTop = editing ? '-1px' : 0
@@ -181,21 +177,23 @@ export default React.createClass({
           padding: panelBodyPadding,
           marginTop: panelBodyMarginTop,
           maxHeight: window.innerHeight - 141,
-          overflowY: 'auto'
+          overflowY: 'auto',
         }
         if (!isActiveActor) {
           Object.assign(panelHeadingStyle, {
             borderBottomRightRadius: 3,
-            borderBottomLeftRadius: 3
+            borderBottomLeftRadius: 3,
           })
         }
-        const ref = isActiveActor ? '_activeActorPanel' : `_actorPanel${doc._id}`
+        const ref = isActiveActor
+          ? '_activeActorPanel'
+          : `_actorPanel${doc._id}`
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
           <div
             key={doc._id}
-            ref={(c) => {
+            ref={c => {
               this[ref] = c
             }}
             className="panel panel-default"
@@ -207,9 +205,7 @@ export default React.createClass({
               onClick={this.onClickActor.bind(this, doc._id)}
               style={panelHeadingStyle}
             >
-              <h4
-                className="panel-title"
-              >
+              <h4 className="panel-title">
                 <a
                   role="button"
                   data-toggle="collapse"
@@ -221,17 +217,10 @@ export default React.createClass({
                   {doc.category}
                 </a>
               </h4>
-              {
-                showEditingGlyphons &&
-                this.toggleDraftGlyph(doc)
-              }
-              {
-                showEditingGlyphons &&
-                this.removeActorGlyph(doc)
-              }
+              {showEditingGlyphons && this.toggleDraftGlyph(doc)}
+              {showEditingGlyphons && this.removeActorGlyph(doc)}
             </div>
-            {
-              isActiveActor &&
+            {isActiveActor &&
               <div
                 id={`#collapse${index}`}
                 className="panel-collapse collapse in"
@@ -239,18 +228,14 @@ export default React.createClass({
                 aria-labelledby={`heading${index}`}
                 onClick={this.onClickActorCollapse}
               >
-                <div
-                  className="panel-body"
-                  style={panelBodyStyle}
-                >
+                <div className="panel-body" style={panelBodyStyle}>
                   <Actor
                     activeActor={activeActor}
                     editing={editing}
                     onSaveActorArticle={onSaveActorArticle}
                   />
                 </div>
-              </div>
-            }
+              </div>}
           </div>
         )
       })
@@ -259,34 +244,18 @@ export default React.createClass({
   },
 
   render() {
-    const { activeActor, showNewActor, onCloseNewActor } = this.props
+    const { activeActor, showNewActor } = this.props
     const { docToRemove } = this.state
     const activeId = activeActor ? activeActor._id : null
     return (
-      <div
-        className="actors"
-      >
-        <PanelGroup
-          activeKey={activeId}
-          id="actorsAccordion"
-          accordion
-        >
+      <div className="actors">
+        <PanelGroup activeKey={activeId} id="actorsAccordion" accordion>
           {this.actorsComponent()}
         </PanelGroup>
-        {
-          showNewActor &&
-          <NewActor
-            onCloseNewActor={onCloseNewActor}
-          />
-        }
-        {
-          docToRemove &&
-          <ModalRemoveActor
-            doc={docToRemove}
-            removeActor={this.removeActor}
-          />
-        }
+        {showNewActor && <NewActor />}
+        {docToRemove &&
+          <ModalRemoveActor doc={docToRemove} removeActor={this.removeActor} />}
       </div>
     )
-  }
+  },
 })

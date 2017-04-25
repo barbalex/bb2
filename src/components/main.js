@@ -170,7 +170,6 @@ const Main = ({
               email={email}
               onSaveActorArticle={onSaveActorArticle}
               showNewActor={showNewActor}
-              onCloseNewActor={onCloseNewActor}
             />}
           {showMonthlyEventsPage &&
             <MonthlyEvents
@@ -233,10 +232,6 @@ React.createClass({
 
   onCloseNewEvent() {
     this.setState({ showNewEvent: false })
-  },
-
-  onCloseNewActor() {
-    this.setState({ showNewActor: false })
   },
 
   onCloseNewMonthlyEvent() {
