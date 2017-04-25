@@ -3,8 +3,6 @@ import PouchDB from 'pouchdb'
 import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
 import Router from './router.js'
-import actions from './actions.js'
-import stores from './stores'
 import store from './store'
 import couchUrl from './modules/getCouchUrl.js'
 // need this polyfill to transform promise.all
@@ -26,7 +24,7 @@ Bitte versuchen Sie es mit einer aktuellen Version von (zum Beispiel):
 - Firefox
 - Safari
 - Internet Explorer (ab Version 10)
-- Edge`
+- Edge`,
   )
 }
 
@@ -53,9 +51,7 @@ window.PouchDB = PouchDB
  */
 app.extend({
   init() {
-    this.Actions = actions()
     this.store = store
-    stores(this.Actions)
     Promise.all([(this.db = new PouchDB(couchUrl()))])
       .then(() => {
         this.router = new Router()
@@ -64,10 +60,10 @@ app.extend({
       .catch(error =>
         app.Actions.showError({
           title: 'Fehler in app.js:',
-          msg: error
-        })
+          msg: error,
+        }),
       )
-  }
+  },
 })
 
 /**

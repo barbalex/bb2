@@ -1,34 +1,84 @@
+// @flow
 import app from 'ampersand-app'
-import React from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
 import { has } from 'lodash'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
+
 import Commentary from './commentary.js'
 import NewCommentary from './newCommentary.js'
 import ModalRemoveCommentary from './modalRemoveCommentary.js'
 
-export default React.createClass({
-  displayName: 'Commentaries',
+const glyphStyle = {
+  position: 'absolute',
+  right: 10,
+  top: 6,
+  fontSize: '1.5em',
+  color: '#edf4f8',
+}
 
-  propTypes: {
-    commentaries: React.PropTypes.array,
-    activeCommentary: React.PropTypes.object,
-    editing: React.PropTypes.bool,
-    email: React.PropTypes.string,
-    onSaveCommentaryArticle: React.PropTypes.func,
-    showNewCommentary: React.PropTypes.bool,
-    docToRemove: React.PropTypes.object,
-  },
+const enhance = compose(
+  inject(`store`),
+  withState('docToRemove', 'changeDocToRemove', null),
+  withHandlers({
+    onClickCommentary: props => (id, e) => {
+      const { activeCommentary } = props
+      // prevent higher level panels from reacting
+      e.stopPropagation()
+      const idToGet = !activeCommentary || activeCommentary._id !== id
+        ? id
+        : null
+      app.Actions.getCommentary(idToGet)
+    },
+    // prevent higher level panels from reacting
+    onClickCommentaryCollapse: props => event => event.stopPropagation(),
+    onRemoveCommentary: props => (docToRemove, event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      props.changeDocToRemove(docToRemove)
+    },
+    onToggleDraft: props => (doc, event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      props.store.commentaries.toggleDraftOfCommentary(doc)
+    },
+    removeCommentary: props => remove => {
+      if (remove) {
+        props.store.commentaries.removeCommentary(props.docToRemove)
+      }
+      props.changeDocToRemove(null)
+    },
+  }),
+  observer,
+)
 
-  getInitialState() {
-    return {
-      docToRemove: null,
-    }
-  },
+class Commentaries extends Component {
+  displayName: 'Commentaries'
+
+  props: {
+    store: Object,
+    commentaries: Array<Object>,
+    activeCommentary: Object,
+    editing: boolean,
+    email: string,
+    onSaveCommentaryArticle: () => void,
+    showNewCommentary: boolean,
+    docToRemove: Object,
+    onClickCommentary: () => void,
+    onClickCommentaryCollapse: () => void,
+    onRemoveCommentary: () => void,
+    onToggleDraft: () => void,
+    removeCommentary: () => void,
+  }
 
   componentDidMount() {
-    app.Actions.getCommentaries()
-  },
+    const { store } = this.props
+    store.commentaries.getCommentaries()
+  }
 
   componentDidUpdate(prevProps) {
     if (this.props.activeCommentary) {
@@ -50,34 +100,10 @@ export default React.createClass({
         this.scrollToActivePanel()
       }
     }
-  },
-
-  onClickCommentary(id, e) {
-    const { activeCommentary } = this.props
-    // prevent higher level panels from reacting
-    e.stopPropagation()
-    const idToGet = !activeCommentary || activeCommentary._id !== id ? id : null
-    app.Actions.getCommentary(idToGet)
-  },
-
-  onClickCommentaryCollapse(event) {
-    // prevent higher level panels from reacting
-    event.stopPropagation()
-  },
-
-  onRemoveCommentary(docToRemove, event) {
-    event.preventDefault()
-    event.stopPropagation()
-    this.setState({ docToRemove })
-  },
-
-  onToggleDraft(doc, event) {
-    event.preventDefault()
-    event.stopPropagation()
-    app.Actions.toggleDraftOfCommentary(doc)
-  },
+  }
 
   scrollToActivePanel() {
+    // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activeCommentaryPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper')
@@ -92,41 +118,27 @@ export default React.createClass({
         )
       }
     }
-  },
+  }
 
-  removeCommentary(remove) {
-    const { docToRemove } = this.state
-    if (remove) app.Actions.removeCommentary(docToRemove)
-    this.setState({ docToRemove: null })
-  },
-
-  removeCommentaryGlyph(doc) {
-    const glyphStyle = {
-      position: 'absolute',
-      right: 10,
-      top: 6,
-      fontSize: '1.5em',
-      color: '#edf4f8',
-    }
-    return (
-      <OverlayTrigger
-        placement="top"
-        overlay={
-          <Tooltip id="removeThisCommentary">
-            remove
-          </Tooltip>
-        }
-      >
-        <Glyphicon
-          glyph="remove-circle"
-          style={glyphStyle}
-          onClick={this.onRemoveCommentary.bind(this, doc)}
-        />
-      </OverlayTrigger>
-    )
-  },
+  removeCommentaryGlyph = doc => (
+    <OverlayTrigger
+      placement="top"
+      overlay={
+        <Tooltip id="removeThisCommentary">
+          remove
+        </Tooltip>
+      }
+    >
+      <Glyphicon
+        glyph="remove-circle"
+        style={glyphStyle}
+        onClick={this.props.onRemoveCommentary.bind(this, doc)}
+      />
+    </OverlayTrigger>
+  )
 
   toggleDraftGlyph(doc) {
+    const { onToggleDraft } = this.props
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : '#00D000'
     const glyphStyle = {
@@ -136,6 +148,7 @@ export default React.createClass({
       fontSize: '1.5em',
       color,
     }
+
     return (
       <OverlayTrigger
         placement="top"
@@ -148,11 +161,11 @@ export default React.createClass({
         <Glyphicon
           glyph={glyph}
           style={glyphStyle}
-          onClick={this.onToggleDraft.bind(this, doc)}
+          onClick={onToggleDraft.bind(this, doc)}
         />
       </OverlayTrigger>
     )
-  },
+  }
 
   commentariesComponent() {
     const {
@@ -161,6 +174,8 @@ export default React.createClass({
       editing,
       email,
       onSaveCommentaryArticle,
+      onClickCommentary,
+      onClickCommentaryCollapse,
     } = this.props
 
     if (commentaries.length > 0) {
@@ -183,21 +198,26 @@ export default React.createClass({
           overflowY: 'auto',
         }
         if (!isActiveCommentary) {
+          // $FlowIssue
           Object.assign(panelHeadingStyle, {
             borderBottomRightRadius: 3,
             borderBottomLeftRadius: 3,
           })
         }
-        const ref = isActiveCommentary
-          ? '_activeCommentaryPanel'
-          : `_commentaryPanel${doc._id}`
+
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
         return (
           <div
             key={doc._id}
             ref={c => {
-              this[ref] = c
+              if (isActiveCommentary) {
+                // $FlowIssue
+                this._activeCommentaryPanel = c
+              } else {
+                // $FlowIssue
+                this[`_commentaryPanel${doc._id}`] = c
+              }
             }}
             className="panel panel-default"
           >
@@ -205,7 +225,7 @@ export default React.createClass({
               className="panel-heading"
               role="tab"
               id={`heading${index}`}
-              onClick={this.onClickCommentary.bind(this, doc._id)}
+              onClick={onClickCommentary.bind(this, doc._id)}
               style={panelHeadingStyle}
             >
               <h4 className="panel-title">
@@ -229,7 +249,7 @@ export default React.createClass({
                 className="panel-collapse collapse in"
                 role="tabpanel"
                 aria-labelledby={`heading${index}`}
-                onClick={this.onClickCommentaryCollapse}
+                onClick={onClickCommentaryCollapse}
               >
                 <div className="panel-body" style={panelBodyStyle}>
                   <Commentary
@@ -244,11 +264,15 @@ export default React.createClass({
       })
     }
     return null
-  },
+  }
 
   render() {
-    const { activeCommentary, showNewCommentary } = this.props
-    const { docToRemove } = this.state
+    const {
+      activeCommentary,
+      showNewCommentary,
+      docToRemove,
+      removeCommentary,
+    } = this.props
     const activeCommentaryId = has(activeCommentary, '_id')
       ? activeCommentary._id
       : null
@@ -268,9 +292,11 @@ export default React.createClass({
         {docToRemove &&
           <ModalRemoveCommentary
             doc={docToRemove}
-            removeCommentary={this.removeCommentary}
+            removeCommentary={removeCommentary}
           />}
       </div>
     )
-  },
-})
+  }
+}
+
+export default enhance(Commentaries)
