@@ -129,8 +129,6 @@ const Main = ({
           activeActor={activeActor}
           email={email}
           editing={editing}
-          onClickNewEvent={onClickNewEvent}
-          onClickNewActor={onClickNewActor}
         />
         <div className="container">
           {showErrors && <Errors errors={errors} />}
@@ -151,7 +149,6 @@ const Main = ({
               activeCommentary={activeCommentary}
               editing={editing}
               email={email}
-              onSaveCommentaryArticle={onSaveCommentaryArticle}
               showNewCommentary={showNewCommentary}
             />}
           {showActorPage &&
@@ -160,7 +157,6 @@ const Main = ({
               activeActor={activeActor}
               editing={editing}
               email={email}
-              onSaveActorArticle={onSaveActorArticle}
               showNewActor={showNewActor}
             />}
           {showMonthlyEventsPage &&
@@ -195,29 +191,7 @@ Main.displayName = 'Main'
 export default enhance(Main)
 
 React.createClass({
-  onClickNewEvent() {
-    this.setState({ showNewEvent: true })
-  },
-
-  onClickNewActor() {
-    this.setState({ showNewActor: true })
-  },
-
-  onSaveCommentaryArticle(articleEncoded) {
-    const { activeCommentary } = this.state
-    activeCommentary.article = articleEncoded
-    app.Actions.saveCommentary(activeCommentary)
-  },
-
-  onSaveActorArticle(articleEncoded) {
-    const { activeActor } = this.state
-    activeActor.article = articleEncoded
-    app.Actions.saveActor(activeActor)
-  },
-
   setActiveEventYears(activeEventYears) {
     this.setState({ activeEventYears })
   },
-
-  render() {},
 })

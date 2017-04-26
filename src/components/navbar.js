@@ -50,6 +50,8 @@ const enhance = compose(
     onClickNewPublication: props => () => {
       props.store.publications.setShowNewPublication(true)
     },
+    onClickNewEvent: props => () => props.store.events.setShowNewEvent(true),
+    onClickNewActor: props => () => props.store.actors.setShowNewActor(true),
   }),
   observer,
 )
@@ -59,11 +61,13 @@ const MyNavbar = ({
   navExpanded,
   onClickNewCommentary,
   onClickNewPublication,
+  onClickNewEvent,
 }: {
   store: Object,
   navExpanded: boolean,
   onClickNewCommentary: () => void,
   onClickNewPublication: () => void,
+  onClickNewEvent: () => void,
 }) => {
   const { activePage } = store.page
   const { activeMonthlyEvent } = store.monthlyEvents
@@ -74,8 +78,6 @@ const MyNavbar = ({
     email,
     editing,
     onClickEdit,
-    onClickNewEvent,
-    onClickNewActor,
     onClickPage,
     onClickLogout,
     onToggleNav,

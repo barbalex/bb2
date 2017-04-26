@@ -58,7 +58,6 @@ class Actors extends Component {
     activeActor: Object,
     editing: boolean,
     email: string,
-    onSaveActorArticle: () => void,
     showNewActor: boolean,
     docToRemove: Object,
     changeDocToRemove: () => void,
@@ -145,7 +144,6 @@ class Actors extends Component {
       activeActor,
       editing,
       email,
-      onSaveActorArticle,
       onClickActor,
       onClickActorCollapse,
     } = this.props
@@ -236,11 +234,7 @@ class Actors extends Component {
                 onClick={onClickActorCollapse}
               >
                 <div className="panel-body" style={panelBodyStyle}>
-                  <Actor
-                    activeActor={activeActor}
-                    editing={editing}
-                    onSaveActorArticle={onSaveActorArticle}
-                  />
+                  <Actor activeActor={activeActor} editing={editing} />
                 </div>
               </div>}
           </div>

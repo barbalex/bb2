@@ -38,6 +38,7 @@ const Publication = ({
       <div className="publication">
         <Editor
           doc={activePublication}
+          docType="publication"
           articleDecoded={articleDecoded}
           onSavePublicationArticle={onSavePublicationArticle}
         />

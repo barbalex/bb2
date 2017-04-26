@@ -65,6 +65,7 @@ const MonthlyEvent = ({
           />}
         <Editor
           doc={activeMonthlyEvent}
+          docType="monthlyEvent"
           articleDecoded={articleDecoded}
           onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
         />

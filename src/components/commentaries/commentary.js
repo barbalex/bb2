@@ -30,14 +30,12 @@ const Commentary = ({
   activeCommentary,
   editing,
   showMeta,
-  onSaveCommentaryArticle,
   onClickMeta,
   onCloseMeta,
 }: {
   activeCommentary: Object,
   editing: boolean,
   showMeta: boolean,
-  onSaveCommentaryArticle: () => void,
   onClickMeta: () => void,
   onCloseMeta: () => void,
 }) => {
@@ -50,8 +48,8 @@ const Commentary = ({
         {showMeta && <Meta doc={activeCommentary} onCloseMeta={onCloseMeta} />}
         <Editor
           doc={activeCommentary}
+          docType="commentary"
           articleDecoded={articleDecoded}
-          onSaveCommentaryArticle={onSaveCommentaryArticle}
         />
         <Button style={metaButtonStyle} onClick={onClickMeta}>
           images

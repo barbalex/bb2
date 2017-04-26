@@ -65,7 +65,6 @@ class Commentaries extends Component {
     activeCommentary: Object,
     editing: boolean,
     email: string,
-    onSaveCommentaryArticle: () => void,
     showNewCommentary: boolean,
     docToRemove: Object,
     onClickCommentary: () => void,
@@ -173,7 +172,6 @@ class Commentaries extends Component {
       activeCommentary,
       editing,
       email,
-      onSaveCommentaryArticle,
       onClickCommentary,
       onClickCommentaryCollapse,
     } = this.props
@@ -255,7 +253,6 @@ class Commentaries extends Component {
                   <Commentary
                     activeCommentary={activeCommentary}
                     editing={editing}
-                    onSaveCommentaryArticle={onSaveCommentaryArticle}
                   />
                 </div>
               </div>}

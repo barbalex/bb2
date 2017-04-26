@@ -25,7 +25,6 @@ const Actor = ({
   activeActor,
   editing,
   showMeta,
-  onSaveActorArticle,
   onClickMeta,
   onCloseMeta,
 }: {
@@ -33,7 +32,6 @@ const Actor = ({
   activeActor: Object,
   editing: boolean,
   showMeta: boolean,
-  onSaveActorArticle: () => void,
   onClickMeta: () => void,
   onCloseMeta: () => void,
 }) => {
@@ -50,8 +48,8 @@ const Actor = ({
         {showMeta && <Meta doc={activeActor} onCloseMeta={onCloseMeta} />}
         <Editor
           doc={activeActor}
+          docType="actor"
           articleDecoded={articleDecoded}
-          onSaveActorArticle={onSaveActorArticle}
         />
         <Button style={metaButtonStyle} onClick={onClickMeta}>
           images

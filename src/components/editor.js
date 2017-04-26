@@ -40,9 +40,29 @@ const enhance = compose(
       const { activePage } = props.store.page
       activePage.article = articleEncoded
       props.store.page.savePage(activePage)
-    }
+    },
+    onSaveCommentaryArticle: props => articleEncoded => {
+      const { activeCommentary } = props.store.commentaries
+      activeCommentary.article = articleEncoded
+      props.store.commentaries.saveCommentary(activeCommentary)
+    },
+    onSaveActorArticle: props => articleEncoded => {
+      const { activeActor } = props.store.actors
+      activeActor.article = articleEncoded
+      props.store.actors.saveActor(activeActor)
+    },
+    onSavePublicationArticle: props => articleEncoded => {
+      const { activePublication } = props.store.publications
+      activePublication.article = articleEncoded
+      props.store.publications.savePublication(activePublication)
+    },
+    onSaveMonthlyEventArticle: props => articleEncoded => {
+      const { activeMonthlyEvent } = props.store.monthlyEvents
+      activeMonthlyEvent.article = articleEncoded
+      props.store.monthlyEvents.saveMonthlyEvent(activeMonthlyEvent)
+    },
   }),
-  observer
+  observer,
 )
 
 class Editor extends Component {
@@ -50,38 +70,40 @@ class Editor extends Component {
 
   props: {
     doc: Object,
+    docType: string,
     articleDecoded: string,
     onSavePageArticle: () => void,
     onSaveMonthlyEventArticle: () => void,
     onSavePublicationArticle: () => void,
     onSaveCommentaryArticle: () => void,
-    onSaveActorArticle: () => void
+    onSaveActorArticle: () => void,
   }
 
   componentDidMount() {
     const {
       doc,
+      docType,
       onSavePageArticle,
       onSaveMonthlyEventArticle,
       onSavePublicationArticle,
       onSaveCommentaryArticle,
-      onSaveActorArticle
+      onSaveActorArticle,
     } = this.props
     // height = window - menu height - (menubar + iconbar)
     let height = window.innerHeight - 52 - 74
-    if (onSaveMonthlyEventArticle || onSavePublicationArticle) {
+    if (['monthlyEvent', 'publication'].includes(docType)) {
       height = window.innerHeight - 52 - 74 - 76
     }
-    if (onSaveCommentaryArticle || onSaveActorArticle) {
+    if (['commentary', 'actor'].includes(docType)) {
       height = window.innerHeight - 52 - 74 - 90
     }
     // need to add specific classes to the iframe body because my css will not apply otherwise
     let bodyClass = ''
-    if (onSavePageArticle) bodyClass = ''
-    if (onSaveMonthlyEventArticle) bodyClass = 'monthlyEvent'
-    if (onSavePublicationArticle) bodyClass = 'publication'
-    if (onSaveCommentaryArticle) bodyClass = 'commentary'
-    if (onSaveActorArticle) bodyClass = 'actor'
+    if (docType === 'page') bodyClass = ''
+    if (docType === 'monthlyEvent') bodyClass = 'monthlyEvent'
+    if (docType === 'publication') bodyClass = 'publication'
+    if (docType === 'commentary') bodyClass = 'commentary'
+    if (docType === 'actor') bodyClass = 'actor'
 
     // see: https://www.ephox.com/blog/how-to-integrate-react-with-tinymce
     // add codemirror? see: https://github.com/christiaan/tinymce-codemirror
@@ -91,7 +113,7 @@ class Editor extends Component {
       plugins: [
         'advlist autolink link image lists charmap print hr anchor pagebreak',
         'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',
-        'save table contextmenu directionality template paste textcolor autosave'
+        'save table contextmenu directionality template paste textcolor autosave',
       ],
       menubar: 'edit insert view format table tools',
       toolbar: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print code fullscreen',
@@ -107,22 +129,23 @@ class Editor extends Component {
         editor.on('change undo redo', () => {
           const articleDecoded = editor.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
-          if (onSavePageArticle) onSavePageArticle(articleEncoded)
-          if (onSaveMonthlyEventArticle)
+          if (docType === 'page') onSavePageArticle(articleEncoded)
+          if (docType === 'MonthlyEvent')
             onSaveMonthlyEventArticle(articleEncoded)
-          if (onSavePublicationArticle) onSavePublicationArticle(articleEncoded)
-          if (onSaveCommentaryArticle) onSaveCommentaryArticle(articleEncoded)
-          if (onSaveActorArticle) onSaveActorArticle(articleEncoded)
+          if (docType === 'publication')
+            onSavePublicationArticle(articleEncoded)
+          if (docType === 'commentary') onSaveCommentaryArticle(articleEncoded)
+          if (docType === 'actor') onSaveActorArticle(articleEncoded)
         })
-      }
+      },
     })
     // scroll editor to top in pages
     if (doc.type === 'pages') {
       window.$('html, body').animate(
         {
-          scrollTop: 140
+          scrollTop: 140,
         },
-        800
+        800,
       )
     }
   }
