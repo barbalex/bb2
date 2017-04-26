@@ -35,8 +35,6 @@ class MonthlyEvents extends Component {
 
   props: {
     store: Object,
-    monthlyEvents: Array<Object>,
-    activeMonthlyEvent: Object,
     activeYear: number,
     changeActiveYear: () => void,
     onClickYear: () => void,
@@ -47,7 +45,7 @@ class MonthlyEvents extends Component {
   }
 
   yearsOfEvents() {
-    const { monthlyEvents } = this.props
+    const { monthlyEvents } = this.props.store.monthlyEvents
     const allYears = monthlyEvents.map(doc => getYearFromEventId(doc._id))
     if (allYears.length > 0) {
       const years = uniq(allYears)
@@ -62,8 +60,8 @@ class MonthlyEvents extends Component {
   }
 
   eventYearsComponent(activeYear) {
-    const { store, activeMonthlyEvent, onClickYear } = this.props
-    let { monthlyEvents } = this.props
+    const { store, onClickYear } = this.props
+    let { monthlyEvents } = store.monthlyEvents
     const years = this.yearsOfEvents()
 
     if (monthlyEvents.length > 0 && years.length > 0) {
@@ -81,11 +79,7 @@ class MonthlyEvents extends Component {
             className={className}
             onClick={onClickYear.bind(this, year)}
           >
-            <MonthlyEventsOfYear
-              year={year}
-              monthlyEvents={monthlyEvents}
-              activeMonthlyEvent={activeMonthlyEvent}
-            />
+            <MonthlyEventsOfYear year={year} />
           </Panel>
         )
       })
@@ -94,7 +88,8 @@ class MonthlyEvents extends Component {
   }
 
   render() {
-    const { activeMonthlyEvent } = this.props
+    const { store } = this.props
+    const { activeMonthlyEvent } = store.monthlyEvents
     let activeYear
     if (has(activeMonthlyEvent, '_id')) {
       activeYear = getYearFromEventId(activeMonthlyEvent._id)

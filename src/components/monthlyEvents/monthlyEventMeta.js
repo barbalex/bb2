@@ -15,7 +15,7 @@ const enhance = compose(inject(`store`), observer)
 class MonthlyEventsMeta extends Component {
   constructor(props) {
     super(props)
-    const { activeMonthlyEvent } = props
+    const { activeMonthlyEvent } = props.store.monthlyEvents
     // $FlowIssue
     this.state = {
       arrivals: activeMonthlyEvent.arrivals,
@@ -27,7 +27,6 @@ class MonthlyEventsMeta extends Component {
 
   props: {
     store: Object,
-    activeMonthlyEvent: Object,
     year: string,
     month: string,
     arrivals: number,
@@ -36,10 +35,11 @@ class MonthlyEventsMeta extends Component {
   }
 
   onChangeValue(property, event) {
-    const { activeMonthlyEvent, store } = this.props
+    const { store } = this.props
+    const { activeMonthlyEvent, saveMonthlyEvent } = store.monthlyEvents
     const value = parseInt(event.target.value, 10)
     activeMonthlyEvent[property] = value
-    store.events.saveMonthlyEvent(activeMonthlyEvent)
+    saveMonthlyEvent(activeMonthlyEvent)
     this.setState({ [property]: value })
   }
 

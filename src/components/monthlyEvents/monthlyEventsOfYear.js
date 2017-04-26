@@ -15,14 +15,14 @@ const enhance = compose(
   inject(`store`),
   withHandlers({
     onClickMonthlyEvent: props => (id: string, event: Object): void => {
-      const { activeMonthlyEvent, store } = props
+      const { activeMonthlyEvent, getMonthlyEvent } = props.store.monthlyEvents
       // prevent higher level panels from reacting
       event.stopPropagation()
       const idToGet = !activeMonthlyEvent ||
         (activeMonthlyEvent._id && activeMonthlyEvent._id !== id)
         ? id
         : null
-      store.monthlyEvents.getMonthlyEvent(idToGet)
+      getMonthlyEvent(idToGet)
     },
     onClickEventCollapse: props => (event: Object): void => {
       // prevent higher level panels from reacting
@@ -38,8 +38,6 @@ class MonthlyEventsOfYear extends Component {
   props: {
     store: Object,
     year: string,
-    monthlyEvents: Array<Object>,
-    activeMonthlyEvent: Object,
     onClickMonthlyEvent: () => void,
     onClickEventCollapse: () => void,
   }
@@ -51,10 +49,11 @@ class MonthlyEventsOfYear extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.activeMonthlyEvent) {
+    if (this.props.store.monthlyEvents.activeMonthlyEvent) {
       const activeMonthlyEventChanged =
-        !prevProps.activeMonthlyEvent ||
-        this.props.activeMonthlyEvent._id !== prevProps.activeMonthlyEvent._id
+        !prevProps.store.monthlyEvents.activeMonthlyEvent ||
+        this.props.store.monthlyEvents.activeMonthlyEvent._id !==
+          prevProps.store.monthlyEvents.activeMonthlyEvent._id
       if (activeMonthlyEventChanged) {
         // this is later rerender
         // only scroll into view if the active item changed last render
@@ -84,13 +83,8 @@ class MonthlyEventsOfYear extends Component {
   }
 
   monthlyEventsComponent(year) {
-    const {
-      store,
-      activeMonthlyEvent,
-      onClickMonthlyEvent,
-      onClickEventCollapse,
-    } = this.props
-    let { monthlyEvents } = this.props
+    const { store, onClickMonthlyEvent, onClickEventCollapse } = this.props
+    let { monthlyEvents, activeMonthlyEvent } = store.monthlyEvents
     // filter only events of current year
     monthlyEvents = monthlyEvents.filter(
       monthlyEvent => getYearFromEventId(monthlyEvent._id) === year,
@@ -151,11 +145,7 @@ class MonthlyEventsOfYear extends Component {
               onClick={onClickEventCollapse}
             >
               <div className="panel-body" style={panelBodyStyle}>
-                <MonthlyEvent
-                  activeMonthlyEvent={activeMonthlyEvent}
-                  year={year}
-                  month={month}
-                />
+                <MonthlyEvent year={year} month={month} />
               </div>
             </div>}
         </div>
@@ -164,7 +154,8 @@ class MonthlyEventsOfYear extends Component {
   }
 
   render() {
-    const { year, activeMonthlyEvent } = this.props
+    const { year, store } = this.props
+    const { activeMonthlyEvent } = store.monthlyEvents
     const activeEventId = has(activeMonthlyEvent, '_id')
       ? activeMonthlyEvent._id
       : null

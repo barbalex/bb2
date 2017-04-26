@@ -57,9 +57,9 @@ const enhance = compose(
       props.store.publications.savePublication(activePublication)
     },
     onSaveMonthlyEventArticle: props => articleEncoded => {
-      const { activeMonthlyEvent } = props.store.monthlyEvents
+      const { activeMonthlyEvent, saveMonthlyEvent } = props.store.monthlyEvents
       activeMonthlyEvent.article = articleEncoded
-      props.store.monthlyEvents.saveMonthlyEvent(activeMonthlyEvent)
+      saveMonthlyEvent(activeMonthlyEvent)
     },
   }),
   observer,

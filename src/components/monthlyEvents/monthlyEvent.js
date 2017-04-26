@@ -23,9 +23,9 @@ const enhance = compose(
     onClickMeta: props => () => props.changeShowMeta(!props.showMeta),
     onCloseMeta: props => () => props.changeShowMeta(false),
     onSaveMonthlyEventArticle: props => articleEncoded => {
-      const { activeMonthlyEvent, store } = props
+      const { activeMonthlyEvent, saveMonthlyEvent } = props.store.monthlyEvents
       activeMonthlyEvent.article = articleEncoded
-      store.monthlyEvents.saveMonthlyEvent(activeMonthlyEvent)
+      saveMonthlyEvent(activeMonthlyEvent)
     },
   }),
   observer,
@@ -33,7 +33,6 @@ const enhance = compose(
 
 const MonthlyEvent = ({
   store,
-  activeMonthlyEvent,
   year,
   month,
   showMeta,
@@ -42,7 +41,6 @@ const MonthlyEvent = ({
   onCloseMeta,
 }: {
   store: Object,
-  activeMonthlyEvent: Object,
   year: string,
   month: string,
   showMeta: boolean,
@@ -50,7 +48,7 @@ const MonthlyEvent = ({
   onClickMeta: () => void,
   onCloseMeta: () => void,
 }) => {
-  const articleEncoded = activeMonthlyEvent.article
+  const articleEncoded = store.monthlyEvents.activeMonthlyEvent.article
   const articleDecoded = Base64.decode(articleEncoded)
 
   if (store.editing) {
@@ -58,13 +56,11 @@ const MonthlyEvent = ({
       <div className="monthlyEvent">
         {showMeta &&
           <MonthlyEventMeta
-            activeMonthlyEvent={activeMonthlyEvent}
             year={year}
             month={month}
             onCloseMeta={onCloseMeta}
           />}
         <Editor
-          doc={activeMonthlyEvent}
           docType="monthlyEvent"
           articleDecoded={articleDecoded}
           onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
