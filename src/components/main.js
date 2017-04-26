@@ -142,13 +142,11 @@ const Main = ({
           {isSimplePage && <Page activePage={activePage} editing={editing} />}
           {showEventsPage &&
             <Events
-              events={events}
               yearsOfEvents={yearsOfEvents}
               editing={editing}
               email={email}
               activeEvent={activeEvent}
               showNewEvent={showNewEvent}
-              onChangeActiveEvent={onChangeActiveEvent}
               activeEventYears={activeEventYears}
               setActiveEventYears={setActiveEventYears}
             />}
@@ -259,10 +257,6 @@ React.createClass({
     const { activeActor } = this.state
     activeActor.article = articleEncoded
     app.Actions.saveActor(activeActor)
-  },
-
-  onChangeActiveEvent(activeEvent) {
-    this.setState({ activeEvent })
   },
 
   setActiveEventYears(activeEventYears) {

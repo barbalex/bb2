@@ -1,15 +1,25 @@
+// @flow
 import React from 'react'
 import moment from 'moment'
 import ReactList from 'react-list'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+
 import DateRow from './dateRow.js'
 import MonthRow from './monthRow.js'
 import MonthlyStatisticsRow from './monthlyStatisticsRow.js'
 import getDaterowObjectsSinceOldestEvent
   from '../../modules/getDaterowObjectsSinceOldestEvent.js'
 
-const DateRows = ({ events, email, activeEventYears }) => {
+const enhance = compose(inject(`store`), observer)
+
+const DateRows = ({
+  store,
+  email,
+  activeEventYears,
+}: { store: Object, email: string, activeEventYears: Array<number> }) => {
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(
-    events,
+    store.events.events,
     activeEventYears,
   )
   const dateRows = []
@@ -58,6 +68,7 @@ const DateRows = ({ events, email, activeEventYears }) => {
       )
     })
     const renderDateRow = (index, key) => dateRows[index]
+
     return (
       <div>
         <ReactList
@@ -79,10 +90,4 @@ const DateRows = ({ events, email, activeEventYears }) => {
 
 DateRows.displayName = 'DateRows'
 
-DateRows.propTypes = {
-  events: React.PropTypes.array,
-  email: React.PropTypes.string,
-  activeEventYears: React.PropTypes.array,
-}
-
-export default DateRows
+export default enhance(DateRows)

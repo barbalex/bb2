@@ -1,16 +1,24 @@
+// @flow
 import React from 'react'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment'
-import { FormGroup, ControlLabel, FormControl, InputGroup } from 'react-bootstrap'
+import {
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  InputGroup,
+} from 'react-bootstrap'
 
-const EventDate = ({ date, onChangeDatePicker }) =>
-  <FormGroup
-    controlId="date"
-  >
+const EventDate = ({
+  store,
+  date,
+  onChangeDatePicker,
+}: { store: Object, date: Date, onChangeDatePicker: () => void }) => (
+  <FormGroup controlId="date">
     <ControlLabel>Date</ControlLabel>
     <InputGroup
       style={{
-        width: `${100}%`
+        width: `${100}%`,
       }}
     >
       <DateRangePicker
@@ -22,19 +30,17 @@ const EventDate = ({ date, onChangeDatePicker }) =>
         <FormControl
           type="text"
           value={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
-          onChange={() => { /* react wants an onChange handler */ }}
+          onChange={() => {
+            /* react wants an onChange handler */
+          }}
           bsSize="small"
           tabIndex={2}
         />
       </DateRangePicker>
     </InputGroup>
   </FormGroup>
+)
 
 EventDate.displayName = 'EventDate'
-
-EventDate.propTypes = {
-  date: React.PropTypes.object,
-  onChangeDatePicker: React.PropTypes.func
-}
 
 export default EventDate

@@ -26,12 +26,10 @@ class Events extends Component {
 
   props: {
     store: Object,
-    events: Array<Object>,
     yearsOfEvents: Array<number>,
     activeEvent: Object,
     editing: boolean,
     email: string,
-    onChangeActiveEvent: () => void,
     showNewEvent: boolean,
     docToRemove: Object,
     introJumbotronHeight: number,
@@ -108,12 +106,10 @@ class Events extends Component {
 
   render() {
     const {
-      events,
       yearsOfEvents,
       email,
       showNewEvent,
       activeEvent,
-      onChangeActiveEvent,
       activeEventYears,
       setActiveEventYears,
       docToRemove,
@@ -140,18 +136,13 @@ class Events extends Component {
         </div>
         {showEventsTable &&
           <EventsTable
-            events={events}
             yearsOfEvents={yearsOfEvents}
             email={email}
             activeEventYears={activeEventYears}
             setActiveEventYears={setActiveEventYears}
             introJumbotronHeight={introJumbotronHeight}
           />}
-        {activeEvent &&
-          <EditEvent
-            activeEvent={activeEvent}
-            onChangeActiveEvent={onChangeActiveEvent}
-          />}
+        {activeEvent && <EditEvent activeEvent={activeEvent} />}
         {showNewEvent && <NewEvent />}
         {docToRemove &&
           <ModalRemoveEvent doc={docToRemove} removeEvent={this.removeEvent} />}

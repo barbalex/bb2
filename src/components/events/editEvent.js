@@ -33,11 +33,10 @@ const enhance = compose(
   withState('error', 'changeError', null),
   withHandlers({
     onChangeTitle: props => (e: Object): void => {
-      const { activeEvent, onChangeActiveEvent, changeError } = props
+      const { activeEvent, changeError } = props
       const title = e.target.value
       if (title) {
         activeEvent.title = title
-        onChangeActiveEvent(activeEvent)
         changeError(null)
       } else {
         changeError('Please add a title')
@@ -62,9 +61,8 @@ const enhance = compose(
       }
     },
     onChangeOrder: props => (e: Object): void => {
-      const { activeEvent, onChangeActiveEvent, changeError } = props
+      const { activeEvent, changeError } = props
       activeEvent.order = e.target.value
-      onChangeActiveEvent(activeEvent)
       changeError(null)
     },
     onBlurOrder: props => (e: Object): void => {
@@ -81,7 +79,6 @@ const enhance = compose(
 
 const EditEvent = ({
   activeEvent,
-  onChangeActiveEvent,
   error,
   changeError,
   onChangeTitle,
@@ -92,7 +89,6 @@ const EditEvent = ({
   close,
 }: {
   activeEvent: Object,
-  onChangeActiveEvent: () => void,
   error: string,
   changeError: () => void,
   onChangeTitle: () => void,

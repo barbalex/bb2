@@ -1,11 +1,15 @@
+// @flow
 import React from 'react'
 import moment from 'moment'
 import Event from './event.js'
 
 const mapEventComponents = (events, email) =>
-  events.map((ev, key) => <Event key={key} event={ev} email={email} />)
+  events.map((event, key) => <Event key={key} event={event} email={email} />)
 
-const DateRow = ({ dateRowObject: dRO, email }) => {
+const DateRow = ({
+  dateRowObject: dRO,
+  email,
+}: { dateRowObject: Object, email: string }) => {
   const day = moment(dRO.date).format('D')
   const migrationEvents = mapEventComponents(dRO.migrationEvents, email)
   const politicsEvents = mapEventComponents(dRO.politicsEvents, email)
@@ -35,10 +39,5 @@ const DateRow = ({ dateRowObject: dRO, email }) => {
 }
 
 DateRow.displayName = 'DateRow'
-
-DateRow.propTypes = {
-  dateRowObject: React.PropTypes.object,
-  email: React.PropTypes.string,
-}
 
 export default DateRow
