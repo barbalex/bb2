@@ -19,19 +19,18 @@ export default React.createClass({
     activeEvent: React.PropTypes.object,
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
-    onCloseNewEvent: React.PropTypes.func,
     onChangeActiveEvent: React.PropTypes.func,
     showNewEvent: React.PropTypes.bool,
     docToRemove: React.PropTypes.object,
     introJumbotronHeight: React.PropTypes.number,
     activeEventYears: React.PropTypes.array,
-    setActiveEventYears: React.PropTypes.func
+    setActiveEventYears: React.PropTypes.func,
   },
 
   getInitialState() {
     return {
       docToRemove: null,
-      introJumbotronHeight: null
+      introJumbotronHeight: null,
     }
   },
 
@@ -41,14 +40,14 @@ export default React.createClass({
     this.setIntroComponentsHeight()
     window.addEventListener(
       'resize',
-      debounce(this.setIntroComponentsHeight, 50)
+      debounce(this.setIntroComponentsHeight, 50),
     )
   },
 
   componentWillUnmount() {
     window.removeEventListener(
       'resize',
-      debounce(this.setIntroComponentsHeight, 50)
+      debounce(this.setIntroComponentsHeight, 50),
     )
   },
 
@@ -103,11 +102,10 @@ export default React.createClass({
       yearsOfEvents,
       email,
       showNewEvent,
-      onCloseNewEvent,
       activeEvent,
       onChangeActiveEvent,
       activeEventYears,
-      setActiveEventYears
+      setActiveEventYears,
     } = this.props
     const { docToRemove, introJumbotronHeight } = this.state
     const showEventsTable = min(activeEventYears) > 2014
@@ -144,10 +142,10 @@ export default React.createClass({
             activeEvent={activeEvent}
             onChangeActiveEvent={onChangeActiveEvent}
           />}
-        {showNewEvent && <NewEvent onCloseNewEvent={onCloseNewEvent} />}
+        {showNewEvent && <NewEvent />}
         {docToRemove &&
           <ModalRemoveEvent doc={docToRemove} removeEvent={this.removeEvent} />}
       </div>
     )
-  }
+  },
 })

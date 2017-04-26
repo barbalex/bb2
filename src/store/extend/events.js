@@ -65,6 +65,12 @@ export default (store: Object): void => {
       store.events.saveEvent(newEvent)
     }),
 
+    showNewEvent: false,
+
+    setShowNewEvent: action('setShowNewEvent', show => {
+      store.events.showNewEvent = show
+    }),
+
     getEvent: action('getEvent', (id: ?string): void => {
       if (!id) {
         store.events.activeEventId = null

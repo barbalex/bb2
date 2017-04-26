@@ -36,6 +36,8 @@ function Store(): void {
     getEventsCallback: null,
     getEvents: null,
     newEvent: null,
+    showNewEvent: null,
+    setShowNewEvent: null,
     getEvent: null,
     updateEventsInCache: null,
     revertCache: null,

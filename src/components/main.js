@@ -149,7 +149,6 @@ const Main = ({
               activeEvent={activeEvent}
               showNewEvent={showNewEvent}
               onChangeActiveEvent={onChangeActiveEvent}
-              onCloseNewEvent={onCloseNewEvent}
               activeEventYears={activeEventYears}
               setActiveEventYears={setActiveEventYears}
             />}
@@ -228,10 +227,6 @@ React.createClass({
 
   onClickNewPublication() {
     this.setState({ showNewPublication: true })
-  },
-
-  onCloseNewEvent() {
-    this.setState({ showNewEvent: false })
   },
 
   onCloseNewMonthlyEvent() {

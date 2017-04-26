@@ -15,6 +15,7 @@ const metaButtonStyle = {
   bottom: 10,
   right: 10,
 }
+
 const enhance = compose(
   inject(`store`),
   withState('showMeta', 'changeShowMeta', false),
