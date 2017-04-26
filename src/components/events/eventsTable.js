@@ -12,13 +12,11 @@ const Events = ({
   activeEventYears,
   events,
   email,
-  onRemoveEvent,
 }: {
   introJumbotronHeight: number,
   activeEventYears: Array<number>,
   events: Array<Object>,
   email: string,
-  onRemoveEvent: () => void,
 }) => {
   const eventsTableHeadTop = introJumbotronHeight
     ? introJumbotronHeight + 88
@@ -56,7 +54,6 @@ const Events = ({
             events={events}
             email={email}
             activeEventYears={activeEventYears}
-            onRemoveEvent={onRemoveEvent}
           />
         </GeminiScrollbar>
       </div>

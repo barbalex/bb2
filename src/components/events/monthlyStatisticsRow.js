@@ -2,34 +2,18 @@
 import React from 'react'
 import Event from './event.js'
 
-const mapEventComponents = (
-  events: Array<Object>,
-  onRemoveEvent: () => void,
-  email: string,
-) =>
-  events.map((ev, key) => (
-    <Event key={key} event={ev} email={email} onRemoveEvent={onRemoveEvent} />
-  ))
+const mapEventComponents = (events: Array<Object>, email: string) =>
+  events.map((ev, key) => <Event key={key} event={ev} email={email} />)
 
 const MonthlyStatisticsRow = ({
   dateRowObject: dRO,
-  onRemoveEvent,
   email,
 }: {
   dateRowObject: Object,
-  onRemoveEvent: () => void,
   email: string,
 }) => {
-  const migrationEvents = mapEventComponents(
-    dRO.migrationEvents,
-    onRemoveEvent,
-    email,
-  )
-  const politicsEvents = mapEventComponents(
-    dRO.politicsEvents,
-    onRemoveEvent,
-    email,
-  )
+  const migrationEvents = mapEventComponents(dRO.migrationEvents, email)
+  const politicsEvents = mapEventComponents(dRO.politicsEvents, email)
 
   if (migrationEvents.length > 0 || politicsEvents.length > 0) {
     return (

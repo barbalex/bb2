@@ -17,11 +17,9 @@ const outerSpanStyle = {
 const Event = ({
   event,
   email,
-  onRemoveEvent,
 }: {
   event: Object,
   email: string,
-  onRemoveEvent: () => void,
 }) => {
   const showEditingGlyphons = !!email
   const classNames = event.tags && event.tags.length > 0

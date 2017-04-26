@@ -59,10 +59,6 @@ class Events extends Component {
     )
   }
 
-  onRemoveEvent(docToRemove) {
-    this.props.changeDocToRemove(docToRemove)
-  }
-
   setIntroComponentsHeight() {
     const {
       introJumbotronHeight: introJumbotronHeightOld,
@@ -150,7 +146,6 @@ class Events extends Component {
             activeEventYears={activeEventYears}
             setActiveEventYears={setActiveEventYears}
             introJumbotronHeight={introJumbotronHeight}
-            onRemoveEvent={this.onRemoveEvent}
           />}
         {activeEvent &&
           <EditEvent

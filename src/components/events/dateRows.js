@@ -4,15 +4,14 @@ import ReactList from 'react-list'
 import DateRow from './dateRow.js'
 import MonthRow from './monthRow.js'
 import MonthlyStatisticsRow from './monthlyStatisticsRow.js'
-import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent.js'
+import getDaterowObjectsSinceOldestEvent
+  from '../../modules/getDaterowObjectsSinceOldestEvent.js'
 
-const DateRows = ({
-  events,
-  email,
-  activeEventYears,
-  onRemoveEvent
-}) => {
-  const dateRowObjects = getDaterowObjectsSinceOldestEvent(events, activeEventYears)
+const DateRows = ({ events, email, activeEventYears }) => {
+  const dateRowObjects = getDaterowObjectsSinceOldestEvent(
+    events,
+    activeEventYears,
+  )
   const dateRows = []
   if (dateRowObjects.length > 0) {
     dateRowObjects.forEach((dRO, index) => {
@@ -20,41 +19,30 @@ const DateRows = ({
       const endOfMonth = moment(dRO.date).endOf('month').format('DD')
       const dROForDateRow = {
         date: dRO.date,
-        migrationEvents: dRO.migrationEvents.filter((event) =>
-          !event.tags || !event.tags.includes('monthlyStatistics')
+        migrationEvents: dRO.migrationEvents.filter(
+          event => !event.tags || !event.tags.includes('monthlyStatistics'),
         ),
-        politicsEvents: dRO.politicsEvents.filter((event) =>
-          !event.tags || !event.tags.includes('monthlyStatistics')
-        )
+        politicsEvents: dRO.politicsEvents.filter(
+          event => !event.tags || !event.tags.includes('monthlyStatistics'),
+        ),
       }
       const dROForMonthlyStatsRow = {
         date: dRO.date,
-        migrationEvents: dRO.migrationEvents.filter((event) =>
-          event.tags && event.tags.includes('monthlyStatistics')
+        migrationEvents: dRO.migrationEvents.filter(
+          event => event.tags && event.tags.includes('monthlyStatistics'),
         ),
-        politicsEvents: dRO.politicsEvents.filter((event) =>
-          event.tags && event.tags.includes('monthlyStatistics')
-        )
+        politicsEvents: dRO.politicsEvents.filter(
+          event => event.tags && event.tags.includes('monthlyStatistics'),
+        ),
       }
-      const dROForMonthlyStatsHasEvents = (
+      const dROForMonthlyStatsHasEvents =
         dROForMonthlyStatsRow.migrationEvents.length > 0 ||
         dROForMonthlyStatsRow.politicsEvents.length > 0
-      )
-      const needsMonthRow = (
-        day === endOfMonth ||
-        index === 0
-      )
-      const needsMonthlyStatisticsRow = (
-        day === endOfMonth &&
-        dROForMonthlyStatsHasEvents
-      )
+      const needsMonthRow = day === endOfMonth || index === 0
+      const needsMonthlyStatisticsRow =
+        day === endOfMonth && dROForMonthlyStatsHasEvents
       if (needsMonthRow) {
-        dateRows.push(
-          <MonthRow
-            key={`${index}monthRow`}
-            dateRowObject={dRO}
-          />
-        )
+        dateRows.push(<MonthRow key={`${index}monthRow`} dateRowObject={dRO} />)
       }
       if (needsMonthlyStatisticsRow) {
         dateRows.push(
@@ -62,17 +50,11 @@ const DateRows = ({
             key={`${index}monthlyStatisticsRow`}
             dateRowObject={dROForMonthlyStatsRow}
             email={email}
-            onRemoveEvent={onRemoveEvent}
-          />
+          />,
         )
       }
       dateRows.push(
-        <DateRow
-          key={index}
-          dateRowObject={dROForDateRow}
-          email={email}
-          onRemoveEvent={onRemoveEvent}
-        />
+        <DateRow key={index} dateRowObject={dROForDateRow} email={email} />,
       )
     })
     const renderDateRow = (index, key) => dateRows[index]
@@ -101,7 +83,6 @@ DateRows.propTypes = {
   events: React.PropTypes.array,
   email: React.PropTypes.string,
   activeEventYears: React.PropTypes.array,
-  onRemoveEvent: React.PropTypes.func,
 }
 
 export default DateRows
