@@ -4,7 +4,6 @@ import { PanelGroup, Panel } from 'react-bootstrap'
 import { uniq, has } from 'lodash'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import MonthlyEventsOfYear from './monthlyEventsOfYear.js'
-import NewMonthlyEvent from './newMonthlyEvent.js'
 
 export default React.createClass({
   displayName: 'MonthlyEvents',
@@ -16,13 +15,11 @@ export default React.createClass({
     editing: React.PropTypes.bool,
     email: React.PropTypes.string,
     onSaveMonthlyEventArticle: React.PropTypes.func,
-    onCloseNewMonthlyEvent: React.PropTypes.func,
-    showNewMonthlyEvent: React.PropTypes.bool
   },
 
   getInitialState() {
     return {
-      activeYear: null
+      activeYear: null,
     }
   },
 
@@ -39,9 +36,7 @@ export default React.createClass({
 
   yearsOfEvents() {
     const { monthlyEvents } = this.props
-    const allYears = monthlyEvents.map((doc) =>
-      getYearFromEventId(doc._id)
-    )
+    const allYears = monthlyEvents.map(doc => getYearFromEventId(doc._id))
     if (allYears.length > 0) {
       const years = uniq(allYears)
       return years.sort().reverse()
@@ -59,13 +54,15 @@ export default React.createClass({
       activeMonthlyEvent,
       editing,
       email,
-      onSaveMonthlyEventArticle
+      onSaveMonthlyEventArticle,
     } = this.props
     let { monthlyEvents } = this.props
     const years = this.yearsOfEvents()
     if (monthlyEvents.length > 0 && years.length > 0) {
-      return years.map((year) => {
-        const className = year === activeYear ? 'year active' : 'year not-active'
+      return years.map(year => {
+        const className = year === activeYear
+          ? 'year active'
+          : 'year not-active'
         // wanted to only build MonthlyEventsOfYear if isActiveYear
         // but opening a year was way to hideous
         return (
@@ -92,42 +89,28 @@ export default React.createClass({
   },
 
   render() {
-    const {
-      activeMonthlyEvent,
-      showNewMonthlyEvent,
-      onCloseNewMonthlyEvent
-    } = this.props
+    const { activeMonthlyEvent } = this.props
     let activeYear
     if (has(activeMonthlyEvent, '_id')) {
       activeYear = getYearFromEventId(activeMonthlyEvent._id)
     } else {
-      activeYear = this.state.activeYear ? this.state.activeYear : this.mostRecentYear()
+      activeYear = this.state.activeYear
+        ? this.state.activeYear
+        : this.mostRecentYear()
     }
     const divStyle = {
-      marginBottom: 20
+      marginBottom: 20,
     }
 
     return (
-      <div
-        id="monthlyEvents"
-        style={divStyle}
-      >
+      <div id="monthlyEvents" style={divStyle}>
         <h1>
           Events Archive
         </h1>
-        <PanelGroup
-          activeKey={activeYear}
-          accordion
-        >
+        <PanelGroup activeKey={activeYear} accordion>
           {this.eventYearsComponent(activeYear)}
         </PanelGroup>
-        {
-          showNewMonthlyEvent &&
-          <NewMonthlyEvent
-            onCloseNewMonthlyEvent={onCloseNewMonthlyEvent}
-          />
-        }
       </div>
     )
-  }
+  },
 })

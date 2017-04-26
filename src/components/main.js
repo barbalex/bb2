@@ -39,7 +39,6 @@ const Main = ({
   showNewCommentary,
   showNewEvent,
   showNewActor,
-  showNewMonthlyEvent,
   showNewPublication,
   login,
   email,
@@ -64,7 +63,6 @@ const Main = ({
   showNewCommentary: boolean,
   showNewEvent: boolean,
   showNewActor: boolean,
-  showNewMonthlyEvent: boolean,
   showNewPublication: boolean,
   login: boolean,
   email: string,
@@ -175,8 +173,6 @@ const Main = ({
               editing={editing}
               email={email}
               onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
-              showNewMonthlyEvent={showNewMonthlyEvent}
-              onCloseNewMonthlyEvent={onCloseNewMonthlyEvent}
             />}
           {showPublicationsPage &&
             <Publications
@@ -219,16 +215,8 @@ React.createClass({
     this.setState({ showNewActor: true })
   },
 
-  onClickNewMonthlyEvent() {
-    this.setState({ showNewMonthlyEvent: true })
-  },
-
   onClickNewPublication() {
     this.setState({ showNewPublication: true })
-  },
-
-  onCloseNewMonthlyEvent() {
-    this.setState({ showNewMonthlyEvent: false })
   },
 
   onCloseNewPublication() {
