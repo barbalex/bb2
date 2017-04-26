@@ -21,12 +21,12 @@ export default React.createClass({
   propTypes: {
     activeEvent: React.PropTypes.object,
     onChangeActiveEvent: React.PropTypes.func,
-    error: React.PropTypes.string
+    error: React.PropTypes.string,
   },
 
   getInitialState() {
     return {
-      error: null
+      error: null,
     }
   },
 
@@ -64,12 +64,6 @@ export default React.createClass({
     }
   },
 
-  onChangeEventType(eventType) {
-    const { activeEvent } = this.props
-    activeEvent.eventType = eventType
-    app.Actions.saveEvent(activeEvent)
-  },
-
   onChangeOrder(e) {
     const { activeEvent, onChangeActiveEvent } = this.props
     activeEvent.order = e.target.value
@@ -96,10 +90,10 @@ export default React.createClass({
     const date = getDateFromEventId(activeEvent._id)
     const alertStyle = {
       marginTop: 10,
-      marginBottom: 10
+      marginBottom: 10,
     }
     const inputStyle = {
-      marginBottom: 20
+      marginBottom: 20,
     }
     return (
       <Modal
@@ -115,9 +109,7 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <FormGroup
-            controlId="eventTitle"
-          >
+          <FormGroup controlId="eventTitle">
             <ControlLabel>Title</ControlLabel>
             <FormControl
               type="text"
@@ -127,17 +119,9 @@ export default React.createClass({
               tabIndex={1}
             />
           </FormGroup>
-          <DateInput
-            date={date}
-            onChangeDatePicker={this.onChangeDatePicker}
-          />
-          <EventTypeButtonGroup
-            eventType={activeEvent.eventType}
-            onChangeEventType={this.onChangeEventType}
-          />
-          <FormGroup
-            controlId="eventOrder"
-          >
+          <DateInput date={date} onChangeDatePicker={this.onChangeDatePicker} />
+          <EventTypeButtonGroup activeEvent={activeEvent} />
+          <FormGroup controlId="eventOrder">
             <ControlLabel>Order</ControlLabel>
             <FormControl
               type="number"
@@ -148,32 +132,21 @@ export default React.createClass({
               style={inputStyle}
             />
           </FormGroup>
-          <TagsInput
-            activeEvent={activeEvent}
-          />
-          <EventLinks
-            activeEvent={activeEvent}
-          />
-          {
-            error &&
-            <Alert
-              bsStyle="danger"
-              style={alertStyle}
-            >
+          <TagsInput activeEvent={activeEvent} />
+          <EventLinks activeEvent={activeEvent} />
+          {error &&
+            <Alert bsStyle="danger" style={alertStyle}>
               {error}
-            </Alert>
-          }
+            </Alert>}
         </Modal.Body>
 
         <Modal.Footer>
-          <Button
-            onClick={this.close}
-          >
+          <Button onClick={this.close}>
             close
           </Button>
         </Modal.Footer>
 
       </Modal>
     )
-  }
+  },
 })

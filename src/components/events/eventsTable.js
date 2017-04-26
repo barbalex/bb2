@@ -1,23 +1,32 @@
+// @flow
 import React from 'react'
 import GeminiScrollbar from 'react-gemini-scrollbar'
+
 import DateRows from './dateRows.js'
+
+const fontSize = window.innerWidth < 500 ? 20 : 24
+const headerStyle = { fontSize }
 
 const Events = ({
   introJumbotronHeight,
   activeEventYears,
   events,
   email,
-  onRemoveEvent
+  onRemoveEvent,
+}: {
+  introJumbotronHeight: number,
+  activeEventYears: Array<number>,
+  events: Array<Object>,
+  email: string,
+  onRemoveEvent: () => void,
 }) => {
   const eventsTableHeadTop = introJumbotronHeight
     ? introJumbotronHeight + 88
     : 173
   const eventsTableHeadStyle = {
     top: eventsTableHeadTop,
-    position: 'absolute'
+    position: 'absolute',
   }
-  const fontSize = window.innerWidth < 500 ? 20 : 24
-  const headerStyle = { fontSize }
 
   return (
     <div className="eventsTable">
@@ -56,15 +65,5 @@ const Events = ({
 }
 
 Events.displayName = 'Events'
-
-Events.propTypes = {
-  events: React.PropTypes.array,
-  yearsOfEvents: React.PropTypes.array,
-  email: React.PropTypes.string,
-  introJumbotronHeight: React.PropTypes.number,
-  activeEventYears: React.PropTypes.array,
-  setActiveEventYears: React.PropTypes.func,
-  onRemoveEvent: React.PropTypes.func
-}
 
 export default Events

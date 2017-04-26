@@ -1,62 +1,73 @@
 import app from 'ampersand-app'
-import React from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import moment from 'moment'
 import { debounce, min } from 'lodash'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+
 import IntroJumbotron from './introJumbotron.js'
 import NewEvent from './newEvent.js'
 import EditEvent from './editEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
 import EventsTable from './eventsTable.js'
 
-export default React.createClass({
-  displayName: 'Events',
+const enhance = compose(
+  inject(`store`),
+  withState('docToRemove', 'changeDocToRemove', null),
+  withState('introJumbotronHeight', 'changeIntroJumbotronHeight', null),
+  observer,
+)
 
-  propTypes: {
-    events: React.PropTypes.array,
-    yearsOfEvents: React.PropTypes.array,
-    activeEvent: React.PropTypes.object,
-    editing: React.PropTypes.bool,
-    email: React.PropTypes.string,
-    onChangeActiveEvent: React.PropTypes.func,
-    showNewEvent: React.PropTypes.bool,
-    docToRemove: React.PropTypes.object,
-    introJumbotronHeight: React.PropTypes.number,
-    activeEventYears: React.PropTypes.array,
-    setActiveEventYears: React.PropTypes.func,
-  },
+class Events extends Component {
+  displayName: 'Events'
 
-  getInitialState() {
-    return {
-      docToRemove: null,
-      introJumbotronHeight: null,
-    }
-  },
+  props: {
+    store: Object,
+    events: Array<Object>,
+    yearsOfEvents: Array<number>,
+    activeEvent: Object,
+    editing: boolean,
+    email: string,
+    onChangeActiveEvent: () => void,
+    showNewEvent: boolean,
+    docToRemove: Object,
+    introJumbotronHeight: number,
+    activeEventYears: Array<number>,
+    setActiveEventYears: () => void,
+    changeDocToRemove: () => void,
+    changeIntroJumbotronHeight: () => void,
+  }
 
   componentDidMount() {
-    app.Actions.getEvents([parseInt(moment().format('YYYY'), 0)])
-    app.Actions.getYearsOfEvents()
+    const { store } = this.props
+    store.events.getEvents([parseInt(moment().format('YYYY'), 0)])
+    store.yearsOfEvents.getYearsOfEvents()
     this.setIntroComponentsHeight()
     window.addEventListener(
       'resize',
       debounce(this.setIntroComponentsHeight, 50),
     )
-  },
+  }
 
   componentWillUnmount() {
     window.removeEventListener(
       'resize',
       debounce(this.setIntroComponentsHeight, 50),
     )
-  },
+  }
 
   onRemoveEvent(docToRemove) {
-    this.setState({ docToRemove })
-  },
+    this.props.changeDocToRemove(docToRemove)
+  }
 
   setIntroComponentsHeight() {
-    const { introJumbotronHeight: introJumbotronHeightOld } = this.state
+    const {
+      introJumbotronHeight: introJumbotronHeightOld,
+      changeIntroJumbotronHeight,
+    } = this.props
     const introJumbotronDomNode = this.introJumbotron
       ? ReactDOM.findDOMNode(this.introJumbotron)
       : null
@@ -67,18 +78,19 @@ export default React.createClass({
       introJumbotronHeight &&
       introJumbotronHeight !== introJumbotronHeightOld
     ) {
-      this.setState({ introJumbotronHeight })
+      changeIntroJumbotronHeight(introJumbotronHeight)
     }
-  },
+  }
 
   setActiveYear(activeEventYears) {
     const { setActiveEventYears } = this.props
     app.Actions.getEvents([activeEventYears])
     setActiveEventYears([activeEventYears])
-  },
+  }
 
   yearButtons() {
     const { yearsOfEvents, activeEventYears } = this.props
+
     return yearsOfEvents.map((year, index) => (
       <Button
         key={index}
@@ -88,13 +100,15 @@ export default React.createClass({
         {year}
       </Button>
     ))
-  },
+  }
 
   removeEvent(remove) {
-    const { docToRemove } = this.state
-    if (remove) app.Actions.removeEvent(docToRemove)
-    this.setState({ docToRemove: null })
-  },
+    const { docToRemove, changeDocToRemove, store } = this.props
+    if (remove) {
+      store.events.removeEvent(docToRemove)
+    }
+    changeDocToRemove(null)
+  }
 
   render() {
     const {
@@ -106,8 +120,9 @@ export default React.createClass({
       onChangeActiveEvent,
       activeEventYears,
       setActiveEventYears,
+      docToRemove,
+      introJumbotronHeight,
     } = this.props
-    const { docToRemove, introJumbotronHeight } = this.state
     const showEventsTable = min(activeEventYears) > 2014
 
     return (
@@ -147,5 +162,6 @@ export default React.createClass({
           <ModalRemoveEvent doc={docToRemove} removeEvent={this.removeEvent} />}
       </div>
     )
-  },
-})
+  }
+}
+export default enhance(Events)
