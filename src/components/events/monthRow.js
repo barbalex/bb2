@@ -1,11 +1,14 @@
+// @flow
 import React from 'react'
 import moment from 'moment'
 
-const MonthRow = ({ dateRowObject: dRO }) => {
+const MonthRow = ({ dateRowObject: dRO }: { dateRowObject: Object }) => {
   const year = parseInt(moment(dRO.date).format('YYYY'), 0)
   const month = moment(dRO.date).format('MMMM')
   const text = `${month} ${year}`
-  const className = month === 'December' ? `eventsTable-body-monthRow yearRow ${year}` : 'eventsTable-body-monthRow'
+  const className = month === 'December'
+    ? `eventsTable-body-monthRow yearRow ${year}`
+    : 'eventsTable-body-monthRow'
 
   return (
     <div className={['eventsTable-body-row', className].join(' ')}>
@@ -17,9 +20,5 @@ const MonthRow = ({ dateRowObject: dRO }) => {
 }
 
 MonthRow.displayName = 'MonthRow'
-
-MonthRow.propTypes = {
-  dateRowObject: React.PropTypes.object
-}
 
 export default MonthRow
