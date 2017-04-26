@@ -68,11 +68,11 @@ const MyNavbar = ({
   onClickNewEvent: () => void,
 }) => {
   const { activePage } = store.page
+  const { activeActor } = store.actors
   const { activeMonthlyEvent } = store.monthlyEvents
   const { activePublication } = store.publications
   const { activeCommentary } = store.commentaries
   const {
-    activeActor,
     email,
     onClickEdit,
     onClickPage,

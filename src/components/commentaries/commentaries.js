@@ -61,7 +61,6 @@ class Commentaries extends Component {
   props: {
     store: Object,
     email: string,
-    showNewCommentary: boolean,
     docToRemove: Object,
     onClickCommentary: () => void,
     onClickCommentaryCollapse: () => void,

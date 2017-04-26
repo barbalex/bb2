@@ -33,42 +33,43 @@ const enhance = compose(
   withState('error', 'changeError', null),
   withHandlers({
     onChangeTitle: props => (e: Object): void => {
-      const { activeEvent, changeError } = props
+      const { store, changeError } = props
       const title = e.target.value
       if (title) {
-        activeEvent.title = title
+        store.events.activeEvent.title = title
         changeError(null)
       } else {
         changeError('Please add a title')
       }
     },
     onBlurTitle: props => (e: Object): void => {
-      const { activeEvent, store } = props
+      const { activeEvent, replaceEvent } = props.store.events
       activeEvent.title = e.target.value
       if (activeEvent.title) {
         activeEvent.date = getDateFromEventId(activeEvent._id)
-        store.events.replaceEvent(activeEvent)
+        replaceEvent(activeEvent)
       }
     },
     onChangeDatePicker: props => (event: Object, picker: Object): void => {
-      const { activeEvent, changeError, store } = props
+      const { changeError, store } = props
+      const { activeEvent, replaceEvent } = store.events
       const datePassed = moment(picker.startDate, 'DD.MM.YYYY')
       if (datePassed) {
         activeEvent.date = datePassed
-        store.events.replaceEvent(activeEvent)
+        replaceEvent(activeEvent)
       } else {
         changeError('Please choose a date')
       }
     },
     onChangeOrder: props => (e: Object): void => {
-      const { activeEvent, changeError } = props
-      activeEvent.order = e.target.value
+      const { store, changeError } = props
+      store.events.activeEvent.order = e.target.value
       changeError(null)
     },
     onBlurOrder: props => (e: Object): void => {
-      const { activeEvent, store } = props
+      const { activeEvent, saveEvent } = props.store.events
       activeEvent.order = e.target.value
-      store.events.saveEvent(activeEvent)
+      saveEvent(activeEvent)
     },
     close: props => (): void => {
       props.store.events.getEvent(null)
@@ -78,7 +79,7 @@ const enhance = compose(
 )
 
 const EditEvent = ({
-  activeEvent,
+  store,
   error,
   changeError,
   onChangeTitle,
@@ -88,7 +89,7 @@ const EditEvent = ({
   onBlurOrder,
   close,
 }: {
-  activeEvent: Object,
+  store: Object,
   error: string,
   changeError: () => void,
   onChangeTitle: () => void,
@@ -110,30 +111,30 @@ const EditEvent = ({
         <ControlLabel>Title</ControlLabel>
         <FormControl
           type="text"
-          value={activeEvent.title}
+          value={store.events.activeEvent.title}
           onChange={onChangeTitle}
           onBlur={onBlurTitle}
           tabIndex={1}
         />
       </FormGroup>
       <DateInput
-        date={getDateFromEventId(activeEvent._id)}
+        date={getDateFromEventId(store.events.activeEvent._id)}
         onChangeDatePicker={onChangeDatePicker}
       />
-      <EventTypeButtonGroup activeEvent={activeEvent} />
+      <EventTypeButtonGroup />
       <FormGroup controlId="eventOrder">
         <ControlLabel>Order</ControlLabel>
         <FormControl
           type="number"
-          value={activeEvent.order}
+          value={store.events.activeEvent.order}
           onChange={onChangeOrder}
           onBlur={onBlurOrder}
           tabIndex={4}
           style={inputStyle}
         />
       </FormGroup>
-      <TagsInput activeEvent={activeEvent} />
-      <EventLinks activeEvent={activeEvent} />
+      <TagsInput />
+      <EventLinks />
       {error &&
         <Alert bsStyle="danger" style={alertStyle}>
           {error}

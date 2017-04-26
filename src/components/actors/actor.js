@@ -22,17 +22,16 @@ const enhance = compose(
 
 const Actor = ({
   store,
-  activeActor,
   showMeta,
   onClickMeta,
   onCloseMeta,
 }: {
   store: Object,
-  activeActor: Object,
   showMeta: boolean,
   onClickMeta: () => void,
   onCloseMeta: () => void,
 }) => {
+  const { activeActor } = store.actors
   const articleEncoded = activeActor.article
   const articleDecoded = Base64.decode(articleEncoded)
   const metaButtonStyle = {

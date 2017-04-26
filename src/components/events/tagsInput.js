@@ -10,8 +10,9 @@ import allTags from './tags'
 const enhance = compose(
   inject(`store`),
   withHandlers({
-    onChangeTag: props => (tag, event, activeEvent) => {
+    onChangeTag: props => (tag, event) => {
       const checked = event.target.checked
+      const { activeEvent } = props.store.events
       if (checked) {
         activeEvent.tags.push(tag)
         props.store.events.saveEvent(activeEvent)
@@ -38,9 +39,9 @@ const labelStyle = {
 }
 
 const EventTags = ({
-  activeEvent,
+  store,
   onChangeTag,
-}: { activeEvent: Object, onChangeTag: () => void }) => (
+}: { store: Object, onChangeTag: () => void }) => (
   <div style={{ marginBottom: 20 }}>
     <div style={labelStyle}>
       Tags
@@ -51,8 +52,8 @@ const EventTags = ({
           <label>
             <input
               type="checkbox"
-              checked={activeEvent.tags.includes(option.tag)}
-              onChange={event => onChangeTag(option.tag, event, activeEvent)}
+              checked={store.events.activeEvent.tags.includes(option.tag)}
+              onChange={event => onChangeTag(option.tag, event)}
             />
             {option.iconText && tagIcon(option)}
             &nbsp;{option.tag}

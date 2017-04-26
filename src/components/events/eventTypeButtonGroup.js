@@ -15,9 +15,9 @@ const enhance = compose(
   inject(`store`),
   withHandlers({
     changeEventType: props => eventType => {
-      const { activeEvent } = props
+      const { activeEvent, saveEvent } = props.store.events
       activeEvent.eventType = eventType
-      props.store.events.saveEvent(activeEvent)
+      saveEvent(activeEvent)
     },
   }),
   observer,
@@ -28,19 +28,18 @@ class EventTypeButtonGroup extends Component {
 
   props: {
     store: Object,
-    activeEvent: Object,
     changeEventType: () => void,
   }
 
   componentDidMount() {
-    const { activeEvent, changeEventType } = this.props
+    const { store, changeEventType } = this.props
     // if no eventType, set migration
-    if (!activeEvent.eventType) changeEventType('migration')
+    if (!store.events.activeEvent.eventType) changeEventType('migration')
   }
 
   render() {
-    const { changeEventType } = this.props
-    const { eventType } = this.props.activeEvent
+    const { changeEventType, store } = this.props
+    const { eventType } = store.events.activeEvent
 
     return (
       <div style={containerStyle}>

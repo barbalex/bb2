@@ -30,7 +30,6 @@ class Publications extends Component {
   props: {
     store: Object,
     email: string,
-    showNewPublication: boolean,
     onClickCategory: () => void,
   }
 

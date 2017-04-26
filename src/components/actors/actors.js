@@ -25,7 +25,7 @@ const enhance = compose(
   withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
     onClickActor: props => (id, e) => {
-      const { activeActor } = props
+      const { activeActor } = props.store.actors
       // prevent higher level panels from reacting
       e.stopPropagation()
       const idToGet = !activeActor || activeActor._id !== id ? id : null
@@ -54,10 +54,7 @@ class Actors extends Component {
 
   props: {
     store: Object,
-    actors: Array<Object>,
-    activeActor: Object,
     email: string,
-    showNewActor: boolean,
     docToRemove: Object,
     changeDocToRemove: () => void,
     onClickActor: () => void,
@@ -71,8 +68,8 @@ class Actors extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.activeActor) {
-      if (!prevProps.activeActor) {
+    if (this.props.store.actors.activeActor) {
+      if (!prevProps.store.actors.activeActor) {
         /**
          * this is first render
          * componentDidUpdate and componentDidMount are actually executed
@@ -83,7 +80,10 @@ class Actors extends Component {
           this.scrollToActivePanel()
         }, 200)
         // window.requestAnimationFrame(() => this.scrollToActivePanel())
-      } else if (this.props.activeActor._id !== prevProps.activeActor._id) {
+      } else if (
+        this.props.store.actors.activeActor._id !==
+        prevProps.store.actors.activeActor._id
+      ) {
         // this is later rerender
         // only scroll into view if the active item changed last render
         this.scrollToActivePanel()
@@ -139,14 +139,8 @@ class Actors extends Component {
   }
 
   actorsComponent() {
-    const {
-      store,
-      activeActor,
-      email,
-      onClickActor,
-      onClickActorCollapse,
-    } = this.props
-    let { actors } = this.props
+    const { store, email, onClickActor, onClickActorCollapse } = this.props
+    let { actors, activeActor } = store.actors
     if (actors.length > 0) {
       actors = sortBy(actors, actor => {
         if (actor.order) return actor.order
@@ -233,7 +227,7 @@ class Actors extends Component {
                 onClick={onClickActorCollapse}
               >
                 <div className="panel-body" style={panelBodyStyle}>
-                  <Actor activeActor={activeActor} />
+                  <Actor />
                 </div>
               </div>}
           </div>
@@ -244,7 +238,8 @@ class Actors extends Component {
   }
 
   render() {
-    const { activeActor, showNewActor, docToRemove } = this.props
+    const { store, docToRemove } = this.props
+    const { activeActor, showNewActor } = store.actors
     const activeId = activeActor ? activeActor._id : null
 
     return (

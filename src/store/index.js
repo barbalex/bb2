@@ -112,6 +112,7 @@ function Store(): void {
     getLogin: null,
     login: null,
     logout: null,
+    email: null,
   }
   /*
    * receives an error object with two keys: title, msg

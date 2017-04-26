@@ -28,7 +28,8 @@ const enhance = compose(
       props.link.url = e.target.value
     },
     onBlurUrl: props => (): void => {
-      const { activeEvent, link: oldLink, link: newLink, store } = props
+      const { store, link: oldLink, link: newLink } = props
+      const { activeEvent } = store.events
       const index = activeEvent.links.findIndex(
         link => link.label === oldLink.label && link.url === oldLink.url,
       )
@@ -39,7 +40,8 @@ const enhance = compose(
       props.link.label = e.target.value
     },
     onBlurLabel: props => (): void => {
-      const { activeEvent, link: oldLink, link: newLink, store } = props
+      const { store, link: oldLink, link: newLink } = props
+      const { activeEvent } = store.events
       const index = activeEvent.links.findIndex(
         link => link.url === oldLink.url && link.label === oldLink.label,
       )
@@ -47,7 +49,8 @@ const enhance = compose(
       store.events.saveEvent(activeEvent)
     },
     onRemoveLink: props => (): void => {
-      const { activeEvent, link: linkToRemove, store } = props
+      const { store, link: linkToRemove } = props
+      const { activeEvent } = store.events
       activeEvent.links = activeEvent.links.filter(
         link =>
           link.label !== linkToRemove.label && link.url !== linkToRemove.url,
@@ -59,7 +62,7 @@ const enhance = compose(
 )
 
 const EventLink = ({
-  activeEvent,
+  store,
   link,
   focus,
   index,
@@ -69,7 +72,7 @@ const EventLink = ({
   onBlurLabel,
   onRemoveLink,
 }: {
-  activeEvent: Object,
+  store: Object,
   link: Object,
   focus: boolean,
   index: number,
