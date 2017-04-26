@@ -1,38 +1,53 @@
-import app from 'ampersand-app'
-import React from 'react'
+// @flow
+import React, { Component } from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
-import { uniq, has } from 'lodash'
+import uniq from 'lodash/uniq'
+import has from 'lodash/has'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
+
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import MonthlyEventsOfYear from './monthlyEventsOfYear.js'
 
-export default React.createClass({
-  displayName: 'MonthlyEvents',
+const containerStyle = {
+  marginBottom: 20,
+}
 
-  propTypes: {
-    monthlyEvents: React.PropTypes.array,
-    activeMonthlyEvent: React.PropTypes.object,
-    activeYear: React.PropTypes.number,
-    editing: React.PropTypes.bool,
-    email: React.PropTypes.string,
-    onSaveMonthlyEventArticle: React.PropTypes.func,
-  },
+const enhance = compose(
+  inject(`store`),
+  withState('activeYear', 'changeActiveYear', null),
+  withHandlers({
+    onClickYear: props => (activeYear: number): void => {
+      const { changeActiveYear, store } = props
+      changeActiveYear(activeYear)
+      // make sure no monthlyEvent is loaded
+      // i.e. if an monthlyEvent was loaded it is unloaded
+      store.monthlyEvents.getMonthlyEvent(null)
+    },
+  }),
+  observer,
+)
 
-  getInitialState() {
-    return {
-      activeYear: null,
-    }
-  },
+class MonthlyEvents extends Component {
+  displayName: 'MonthlyEvents'
+
+  props: {
+    store: Object,
+    monthlyEvents: Array<Object>,
+    activeMonthlyEvent: Object,
+    activeYear: number,
+    editing: boolean,
+    email: string,
+    onSaveMonthlyEventArticle: () => void,
+    changeActiveYear: () => void,
+    onClickYear: () => void,
+  }
 
   componentDidMount() {
-    app.Actions.getMonthlyEvents()
-  },
-
-  onClickYear(activeYear) {
-    this.setState({ activeYear })
-    // make sure no monthlyEvent is loaded
-    // i.e. if an monthlyEvent was loaded it is unloaded
-    app.Actions.getMonthlyEvent(null)
-  },
+    this.props.store.monthlyEvents.getMonthlyEvents()
+  }
 
   yearsOfEvents() {
     const { monthlyEvents } = this.props
@@ -42,12 +57,12 @@ export default React.createClass({
       return years.sort().reverse()
     }
     return []
-  },
+  }
 
   mostRecentYear() {
     const years = this.yearsOfEvents()
     return years[0]
-  },
+  }
 
   eventYearsComponent(activeYear) {
     const {
@@ -55,9 +70,11 @@ export default React.createClass({
       editing,
       email,
       onSaveMonthlyEventArticle,
+      onClickYear,
     } = this.props
     let { monthlyEvents } = this.props
     const years = this.yearsOfEvents()
+
     if (monthlyEvents.length > 0 && years.length > 0) {
       return years.map(year => {
         const className = year === activeYear
@@ -71,7 +88,7 @@ export default React.createClass({
             header={year}
             eventKey={year}
             className={className}
-            onClick={this.onClickYear.bind(this, year)}
+            onClick={onClickYear.bind(this, year)}
           >
             <MonthlyEventsOfYear
               year={year}
@@ -86,7 +103,7 @@ export default React.createClass({
       })
     }
     return null
-  },
+  }
 
   render() {
     const { activeMonthlyEvent } = this.props
@@ -94,16 +111,13 @@ export default React.createClass({
     if (has(activeMonthlyEvent, '_id')) {
       activeYear = getYearFromEventId(activeMonthlyEvent._id)
     } else {
-      activeYear = this.state.activeYear
-        ? this.state.activeYear
+      activeYear = this.props.activeYear
+        ? this.props.activeYear
         : this.mostRecentYear()
-    }
-    const divStyle = {
-      marginBottom: 20,
     }
 
     return (
-      <div id="monthlyEvents" style={divStyle}>
+      <div id="monthlyEvents" style={containerStyle}>
         <h1>
           Events Archive
         </h1>
@@ -112,5 +126,7 @@ export default React.createClass({
         </PanelGroup>
       </div>
     )
-  },
-})
+  }
+}
+
+export default enhance(MonthlyEvents)
