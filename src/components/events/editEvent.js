@@ -1,4 +1,4 @@
-import app from 'ampersand-app'
+// @flow
 import React from 'react'
 import {
   Modal,
@@ -9,144 +9,150 @@ import {
   FormControl,
 } from 'react-bootstrap'
 import moment from 'moment'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
+
 import EventTypeButtonGroup from './eventTypeButtonGroup.js'
 import DateInput from './dateInput.js'
 import TagsInput from './tagsInput.js'
 import EventLinks from './eventLinks.js'
 import getDateFromEventId from '../../modules/getDateFromEventId.js'
 
-export default React.createClass({
-  displayName: 'EditEvent',
+const alertStyle = {
+  marginTop: 10,
+  marginBottom: 10,
+}
+const inputStyle = {
+  marginBottom: 20,
+}
 
-  propTypes: {
-    activeEvent: React.PropTypes.object,
-    onChangeActiveEvent: React.PropTypes.func,
-    error: React.PropTypes.string,
-  },
-
-  getInitialState() {
-    return {
-      error: null,
-    }
-  },
-
-  onChangeTitle(e) {
-    const { activeEvent, onChangeActiveEvent } = this.props
-    const title = e.target.value
-    if (title) {
-      activeEvent.title = title
+const enhance = compose(
+  inject(`store`),
+  withState('error', 'changeError', null),
+  withHandlers({
+    onChangeTitle: props => (e: Object): void => {
+      const { activeEvent, onChangeActiveEvent, changeError } = props
+      const title = e.target.value
+      if (title) {
+        activeEvent.title = title
+        onChangeActiveEvent(activeEvent)
+        changeError(null)
+      } else {
+        changeError('Please add a title')
+      }
+    },
+    onBlurTitle: props => (e: Object): void => {
+      const { activeEvent, store } = props
+      activeEvent.title = e.target.value
+      if (activeEvent.title) {
+        activeEvent.date = getDateFromEventId(activeEvent._id)
+        store.events.replaceEvent(activeEvent)
+      }
+    },
+    onChangeDatePicker: props => (event: Object, picker: Object): void => {
+      const { activeEvent, changeError, store } = props
+      const datePassed = moment(picker.startDate, 'DD.MM.YYYY')
+      if (datePassed) {
+        activeEvent.date = datePassed
+        store.events.replaceEvent(activeEvent)
+      } else {
+        changeError('Please choose a date')
+      }
+    },
+    onChangeOrder: props => (e: Object): void => {
+      const { activeEvent, onChangeActiveEvent, changeError } = props
+      activeEvent.order = e.target.value
       onChangeActiveEvent(activeEvent)
-      this.setState({ error: null })
-    } else {
-      const error = 'Please add a title'
-      this.setState({ error })
-    }
-  },
+      changeError(null)
+    },
+    onBlurOrder: props => (e: Object): void => {
+      const { activeEvent, store } = props
+      activeEvent.order = e.target.value
+      store.events.saveEvent(activeEvent)
+    },
+    close: props => (): void => {
+      props.store.events.getEvent(null)
+    },
+  }),
+  observer,
+)
 
-  onBlurTitle(e) {
-    const { activeEvent } = this.props
-    activeEvent.title = e.target.value
-    if (activeEvent.title) {
-      activeEvent.date = getDateFromEventId(activeEvent._id)
-      app.Actions.replaceEvent(activeEvent)
-    }
-  },
+const EditEvent = ({
+  activeEvent,
+  onChangeActiveEvent,
+  error,
+  changeError,
+  onChangeTitle,
+  onBlurTitle,
+  onChangeDatePicker,
+  onChangeOrder,
+  onBlurOrder,
+  close,
+}: {
+  activeEvent: Object,
+  onChangeActiveEvent: () => void,
+  error: string,
+  changeError: () => void,
+  onChangeTitle: () => void,
+  onBlurTitle: () => void,
+  onChangeDatePicker: () => void,
+  onChangeOrder: () => void,
+  onBlurOrder: () => void,
+  close: () => void,
+}) => (
+  <Modal show onHide={close} bsSize="large" dialogClassName="editEvent">
+    <Modal.Header closeButton>
+      <Modal.Title>
+        Edit event
+      </Modal.Title>
+    </Modal.Header>
 
-  onChangeDatePicker(event, picker) {
-    const { activeEvent } = this.props
-    const datePassed = moment(picker.startDate, 'DD.MM.YYYY')
-    if (datePassed) {
-      activeEvent.date = datePassed
-      app.Actions.replaceEvent(activeEvent)
-    } else {
-      const error = 'Please choose a date'
-      this.setState({ error })
-    }
-  },
+    <Modal.Body>
+      <FormGroup controlId="eventTitle">
+        <ControlLabel>Title</ControlLabel>
+        <FormControl
+          type="text"
+          value={activeEvent.title}
+          onChange={onChangeTitle}
+          onBlur={onBlurTitle}
+          tabIndex={1}
+        />
+      </FormGroup>
+      <DateInput
+        date={getDateFromEventId(activeEvent._id)}
+        onChangeDatePicker={onChangeDatePicker}
+      />
+      <EventTypeButtonGroup activeEvent={activeEvent} />
+      <FormGroup controlId="eventOrder">
+        <ControlLabel>Order</ControlLabel>
+        <FormControl
+          type="number"
+          value={activeEvent.order}
+          onChange={onChangeOrder}
+          onBlur={onBlurOrder}
+          tabIndex={4}
+          style={inputStyle}
+        />
+      </FormGroup>
+      <TagsInput activeEvent={activeEvent} />
+      <EventLinks activeEvent={activeEvent} />
+      {error &&
+        <Alert bsStyle="danger" style={alertStyle}>
+          {error}
+        </Alert>}
+    </Modal.Body>
 
-  onChangeOrder(e) {
-    const { activeEvent, onChangeActiveEvent } = this.props
-    activeEvent.order = e.target.value
-    onChangeActiveEvent(activeEvent)
-    this.setState({ error: null })
-  },
+    <Modal.Footer>
+      <Button onClick={close}>
+        close
+      </Button>
+    </Modal.Footer>
 
-  onBlurOrder(e) {
-    const { activeEvent } = this.props
-    activeEvent.order = e.target.value
-    app.Actions.saveEvent(activeEvent)
-  },
+  </Modal>
+)
 
-  onHide() {
-    // seems that this method is needed ???
-  },
+EditEvent.displayName = 'EditEvent'
 
-  close() {
-    app.Actions.getEvent(null)
-  },
-
-  render() {
-    const { activeEvent, error } = this.props
-    const date = getDateFromEventId(activeEvent._id)
-    const alertStyle = {
-      marginTop: 10,
-      marginBottom: 10,
-    }
-    const inputStyle = {
-      marginBottom: 20,
-    }
-    return (
-      <Modal
-        show
-        onHide={this.close}
-        bsSize="large"
-        dialogClassName="editEvent"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            Edit event
-          </Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <FormGroup controlId="eventTitle">
-            <ControlLabel>Title</ControlLabel>
-            <FormControl
-              type="text"
-              value={activeEvent.title}
-              onChange={this.onChangeTitle}
-              onBlur={this.onBlurTitle}
-              tabIndex={1}
-            />
-          </FormGroup>
-          <DateInput date={date} onChangeDatePicker={this.onChangeDatePicker} />
-          <EventTypeButtonGroup activeEvent={activeEvent} />
-          <FormGroup controlId="eventOrder">
-            <ControlLabel>Order</ControlLabel>
-            <FormControl
-              type="number"
-              value={activeEvent.order}
-              onChange={this.onChangeOrder}
-              onBlur={this.onBlurOrder}
-              tabIndex={4}
-              style={inputStyle}
-            />
-          </FormGroup>
-          <TagsInput activeEvent={activeEvent} />
-          <EventLinks activeEvent={activeEvent} />
-          {error &&
-            <Alert bsStyle="danger" style={alertStyle}>
-              {error}
-            </Alert>}
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button onClick={this.close}>
-            close
-          </Button>
-        </Modal.Footer>
-
-      </Modal>
-    )
-  },
-})
+export default enhance(EditEvent)
