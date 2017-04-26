@@ -77,8 +77,8 @@ class Events extends Component {
   }
 
   setActiveYear(activeEventYears) {
-    const { setActiveEventYears } = this.props
-    app.Actions.getEvents([activeEventYears])
+    const { setActiveEventYears, store } = this.props
+    store.events.getEvents([activeEventYears])
     setActiveEventYears([activeEventYears])
   }
 
