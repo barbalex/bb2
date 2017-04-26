@@ -1,18 +1,31 @@
-import app from 'ampersand-app'
+// @flow
 import React from 'react'
-import {
-  Glyphicon,
-  Tooltip,
-  OverlayTrigger,
-} from 'react-bootstrap'
+import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
 
 const glyphStyle = {
   fontSize: '0.9em',
   paddingLeft: 8,
-  cursor: 'pointer'
+  cursor: 'pointer',
 }
 
-const EditEventGlyph = ({ event }) =>
+const enhance = compose(
+  inject(`store`),
+  withHandlers({
+    onClick: props => () => {
+      props.store.events.getEvent(props.event._id)
+    },
+  }),
+  observer,
+)
+
+const EditEventGlyph = ({
+  store,
+  event,
+  onClick,
+}: { store: Object, event: Object, onClick: () => void }) => (
   <OverlayTrigger
     placement="top"
     overlay={
@@ -21,19 +34,14 @@ const EditEventGlyph = ({ event }) =>
       </Tooltip>
     }
   >
-    <Glyphicon
-      glyph="pencil"
-      style={glyphStyle}
-      onClick={() =>
-        app.Actions.getEvent(event._id)
-      }
-    />
+    <Glyphicon glyph="pencil" style={glyphStyle} onClick={onClick} />
   </OverlayTrigger>
+)
 
 EditEventGlyph.displayName = 'EditEventGlyph'
 
 EditEventGlyph.propTypes = {
-  event: React.PropTypes.object
+  event: React.PropTypes.object,
 }
 
-export default EditEventGlyph
+export default enhance(EditEventGlyph)
