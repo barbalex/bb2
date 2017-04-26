@@ -27,14 +27,14 @@ const enhance = compose(
 )
 
 const Commentary = ({
+  store,
   activeCommentary,
-  editing,
   showMeta,
   onClickMeta,
   onCloseMeta,
 }: {
+  store: Object,
   activeCommentary: Object,
-  editing: boolean,
   showMeta: boolean,
   onClickMeta: () => void,
   onCloseMeta: () => void,
@@ -42,7 +42,7 @@ const Commentary = ({
   const articleEncoded = activeCommentary.article
   const articleDecoded = Base64.decode(articleEncoded)
 
-  if (editing) {
+  if (store.editing) {
     return (
       <div className="commentary">
         {showMeta && <Meta doc={activeCommentary} onCloseMeta={onCloseMeta} />}

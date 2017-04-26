@@ -24,7 +24,7 @@ export default Router.extend({
     actors: 'actors',
     'actors/:category': 'actor',
     login: 'login',
-    '*path': 'home'
+    '*path': 'home',
   },
 
   home() {
@@ -51,7 +51,7 @@ export default Router.extend({
     const id = `commentaries_${year}_${month}_${day}_${title}`
     this.render()
     app.store.page.getPage('pages_commentaries')
-    app.Actions.getCommentary(id)
+    app.store.commentaries.getCommentary(id)
   },
 
   monthlyEvents() {
@@ -63,7 +63,7 @@ export default Router.extend({
     const id = `monthlyEvents_${year}_${month}`
     this.render()
     app.store.page.getPage('pages_monthlyEvents')
-    app.Actions.getMonthlyEvent(id)
+    app.store.monthlyEvents.getMonthlyEvent(id)
   },
 
   publications() {
@@ -81,7 +81,7 @@ export default Router.extend({
     const id = `publications_${category}_${title}`
     this.render()
     app.store.page.getPage('pages_publications')
-    app.Actions.getPublication(id)
+    app.store.publications.getPublication(id)
   },
 
   actors() {
@@ -93,21 +93,21 @@ export default Router.extend({
     const id = `actors_${category}`
     this.render()
     app.store.page.getPage('pages_actors')
-    app.Actions.getActor(id)
+    app.store.actors.getActor(id)
   },
 
   login() {
     ReactDOM.render(
       <Provider store={app.store}><Main login /></Provider>,
-      document.getElementById('root')
+      document.getElementById('root'),
     )
   },
 
   render(id) {
     ReactDOM.render(
       <Provider store={app.store}><Main /></Provider>,
-      document.getElementById('root')
+      document.getElementById('root'),
     )
     if (id) app.store.page.getPage(id)
-  }
+  },
 })

@@ -1,4 +1,4 @@
-import app from 'ampersand-app'
+// @flow
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { ButtonGroup, Button } from 'react-bootstrap'
@@ -26,14 +26,11 @@ class Events extends Component {
 
   props: {
     store: Object,
-    yearsOfEvents: Array<number>,
     activeEvent: Object,
-    editing: boolean,
     email: string,
     showNewEvent: boolean,
     docToRemove: Object,
     introJumbotronHeight: number,
-    setActiveEventYears: () => void,
     changeDocToRemove: () => void,
     changeIntroJumbotronHeight: () => void,
   }
@@ -62,7 +59,8 @@ class Events extends Component {
       changeIntroJumbotronHeight,
     } = this.props
     const introJumbotronDomNode = this.introJumbotron
-      ? ReactDOM.findDOMNode(this.introJumbotron)
+      ? // $FlowIssue
+        ReactDOM.findDOMNode(this.introJumbotron)
       : null
     const introJumbotronHeight = introJumbotronDomNode
       ? introJumbotronDomNode.clientHeight
@@ -88,7 +86,7 @@ class Events extends Component {
       <Button
         key={index}
         active={activeEventYears.includes(year)}
-        onClick={() => this.setActiveEventYears(year)}
+        onClick={() => this.setActiveYear(year)}
       >
         {year}
       </Button>
@@ -106,11 +104,9 @@ class Events extends Component {
   render() {
     const {
       store,
-      yearsOfEvents,
       email,
       showNewEvent,
       activeEvent,
-      setActiveEventYears,
       docToRemove,
       introJumbotronHeight,
     } = this.props
@@ -120,24 +116,21 @@ class Events extends Component {
       <div className="events">
         <IntroJumbotron
           ref={j => {
+            // $FlowIssue
             this.introJumbotron = j
           }}
         />
         <div style={{ textAlign: 'center' }}>
           <ButtonGroup>
             {this.yearButtons()}
-            <Button
-              onClick={() => app.store.page.getPage('pages_monthlyEvents')}
-            >
+            <Button onClick={() => store.page.getPage('pages_monthlyEvents')}>
               2014 - 2011
             </Button>
           </ButtonGroup>
         </div>
         {showEventsTable &&
           <EventsTable
-            yearsOfEvents={yearsOfEvents}
             email={email}
-            setActiveEventYears={setActiveEventYears}
             introJumbotronHeight={introJumbotronHeight}
           />}
         {activeEvent && <EditEvent activeEvent={activeEvent} />}

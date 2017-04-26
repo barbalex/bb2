@@ -36,7 +36,7 @@ export default (store: Object): void => {
           }
         })
         .catch(error =>
-          app.Actions.showError({
+          store.error.showError({
             msg: error,
           }),
         ),
@@ -122,7 +122,7 @@ export default (store: Object): void => {
         })
         .catch(error => {
           store.events.revertCache(oldEvents, oldActiveEventId)
-          app.Actions.showError({
+          store.error.showError({
             title: 'Error saving event:',
             msg: error,
           })
@@ -151,7 +151,7 @@ export default (store: Object): void => {
       app.db.remove(event).catch(error => {
         // oops. Revert optimistic removal
         store.events.revertCache(oldEvents, oldActiveEventId)
-        app.Actions.showError({
+        store.error.showError({
           title: 'Error removing event:',
           msg: error,
         })

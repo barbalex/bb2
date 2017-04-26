@@ -1,5 +1,4 @@
 // @flow
-import app from 'ampersand-app'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
@@ -26,13 +25,13 @@ const enhance = compose(
   withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
     onClickCommentary: props => (id, e) => {
-      const { activeCommentary } = props
+      const { activeCommentary, store } = props
       // prevent higher level panels from reacting
       e.stopPropagation()
       const idToGet = !activeCommentary || activeCommentary._id !== id
         ? id
         : null
-      app.Actions.getCommentary(idToGet)
+      store.commentaries.getCommentary(idToGet)
     },
     // prevent higher level panels from reacting
     onClickCommentaryCollapse: props => event => event.stopPropagation(),
@@ -63,7 +62,6 @@ class Commentaries extends Component {
     store: Object,
     commentaries: Array<Object>,
     activeCommentary: Object,
-    editing: boolean,
     email: string,
     showNewCommentary: boolean,
     docToRemove: Object,
@@ -168,9 +166,9 @@ class Commentaries extends Component {
 
   commentariesComponent() {
     const {
+      store,
       commentaries,
       activeCommentary,
-      editing,
       email,
       onClickCommentary,
       onClickCommentaryCollapse,
@@ -187,8 +185,8 @@ class Commentaries extends Component {
           position: 'relative',
           cursor: 'pointer',
         }
-        const panelBodyPadding = editing ? 0 : 15
-        const panelBodyMarginTop = editing ? '-1px' : 0
+        const panelBodyPadding = store.editing ? 0 : 15
+        const panelBodyMarginTop = store.editing ? '-1px' : 0
         const panelBodyStyle = {
           padding: panelBodyPadding,
           marginTop: panelBodyMarginTop,
@@ -250,10 +248,7 @@ class Commentaries extends Component {
                 onClick={onClickCommentaryCollapse}
               >
                 <div className="panel-body" style={panelBodyStyle}>
-                  <Commentary
-                    activeCommentary={activeCommentary}
-                    editing={editing}
-                  />
+                  <Commentary activeCommentary={activeCommentary} />
                 </div>
               </div>}
           </div>

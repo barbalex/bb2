@@ -37,7 +37,7 @@ export default (store: Object): void => {
           store.actors.triggerStore()
         })
         .catch(error =>
-          app.Actions.showError({
+          store.error.showError({
             msg: error,
           }),
         ),
@@ -117,7 +117,7 @@ export default (store: Object): void => {
         })
         .catch(error => {
           store.actors.revertCache(oldActors, oldActiveActorId)
-          app.Actions.showError({
+          store.error.showError({
             title: 'Error saving actor:',
             msg: error,
           })
@@ -147,7 +147,7 @@ export default (store: Object): void => {
       app.db.remove(actor).catch(error => {
         // oops. Revert optimistic removal
         store.actors.revertCache(oldActors, oldActiveActorId)
-        app.Actions.showError({
+        store.error.showError({
           title: 'Error removing actor:',
           msg: error,
         })

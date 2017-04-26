@@ -32,21 +32,20 @@ class Publications extends Component {
     publications: Array<Object>,
     activePublication: Object,
     activePublicationCategory: string,
-    editing: boolean,
     email: string,
     showNewPublication: boolean,
     onClickCategory: () => void,
   }
 
   componentDidMount() {
-    app.Actions.getPublications()
+    this.props.store.publications.getPublications()
   }
 
   publicationCategoriesComponent(activePublicationCategory) {
     const {
+      store,
       publications,
       activePublication,
-      editing,
       email,
       onClickCategory,
     } = this.props
@@ -95,7 +94,6 @@ class Publications extends Component {
               category={category}
               publications={publications}
               activePublication={activePublication}
-              editing={editing}
               email={email}
             />
           </div>

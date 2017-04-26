@@ -1,6 +1,4 @@
 // @flow
-
-import app from 'ampersand-app'
 import React from 'react'
 import {
   Navbar,
@@ -42,7 +40,7 @@ const enhance = compose(
       props.onToggleNav()
     },
     onClickLogout: props => () => {
-      app.Actions.logout()
+      props.store.login.logout()
       props.onToggleNav()
     },
     onClickNewCommentary: props => () =>
@@ -76,14 +74,13 @@ const MyNavbar = ({
   const {
     activeActor,
     email,
-    editing,
     onClickEdit,
     onClickPage,
     onClickLogout,
     onToggleNav,
     onClickNewActor,
   } = store
-  const glyph = editing ? 'eye-open' : 'pencil'
+  const glyph = store.editing ? 'eye-open' : 'pencil'
   const id = activePage && activePage._id ? activePage._id : null
   const nonEditableIds = [
     'pages_commentaries',
@@ -159,8 +156,8 @@ const MyNavbar = ({
               <OverlayTrigger
                 placement="bottom"
                 overlay={
-                  <Tooltip id={editing ? 'preview' : 'edit'}>
-                    {editing ? 'preview' : 'edit'}
+                  <Tooltip id={store.editing ? 'preview' : 'edit'}>
+                    {store.editing ? 'preview' : 'edit'}
                   </Tooltip>
                 }
               >

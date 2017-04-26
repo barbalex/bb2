@@ -21,14 +21,14 @@ const enhance = compose(
 )
 
 const Page = ({
+  store,
   activePage,
-  editing,
   showMeta,
   onClickMeta,
   onCloseMeta,
 }: {
+  store: Object,
   activePage: Object,
-  editing: boolean,
   showMeta: boolean,
   onClickMeta: () => void,
   onCloseMeta: () => void,
@@ -41,7 +41,7 @@ const Page = ({
     bottom: 10,
     right: 10,
   }
-  if (editing && activePage._id !== 'pages_actors') {
+  if (store.editing && activePage._id !== 'pages_actors') {
     return (
       <div className="page">
         {showMeta && <Meta doc={activePage} onCloseMeta={onCloseMeta} />}

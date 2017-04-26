@@ -23,14 +23,12 @@ const enhance = compose(
 const Actor = ({
   store,
   activeActor,
-  editing,
   showMeta,
   onClickMeta,
   onCloseMeta,
 }: {
   store: Object,
   activeActor: Object,
-  editing: boolean,
   showMeta: boolean,
   onClickMeta: () => void,
   onCloseMeta: () => void,
@@ -42,7 +40,7 @@ const Actor = ({
     bottom: 10,
     right: 10,
   }
-  if (editing) {
+  if (store.editing) {
     return (
       <div className="actor">
         {showMeta && <Meta doc={activeActor} onCloseMeta={onCloseMeta} />}

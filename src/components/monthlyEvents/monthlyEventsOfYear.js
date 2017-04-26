@@ -40,7 +40,6 @@ class MonthlyEventsOfYear extends Component {
     year: string,
     monthlyEvents: Array<Object>,
     activeMonthlyEvent: Object,
-    editing: boolean,
     onClickMonthlyEvent: () => void,
     onClickEventCollapse: () => void,
   }
@@ -86,8 +85,8 @@ class MonthlyEventsOfYear extends Component {
 
   monthlyEventsComponent(year) {
     const {
+      store,
       activeMonthlyEvent,
-      editing,
       onClickMonthlyEvent,
       onClickEventCollapse,
     } = this.props
@@ -156,7 +155,6 @@ class MonthlyEventsOfYear extends Component {
                   activeMonthlyEvent={activeMonthlyEvent}
                   year={year}
                   month={month}
-                  editing={editing}
                 />
               </div>
             </div>}

@@ -34,7 +34,7 @@ export default (store: Object): void => {
           }
         })
         .catch(error =>
-          app.Actions.showError({
+          store.error.showError({
             msg: error,
           }),
         ),
@@ -108,7 +108,7 @@ export default (store: Object): void => {
               oldMonthlyEvents,
               oldActiveMonthlyEventId,
             )
-            app.Actions.showError({
+            store.error.showError({
               title: 'Error saving monthly event:',
               msg: error,
             })

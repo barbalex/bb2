@@ -1,5 +1,4 @@
 // @flow
-import app from 'ampersand-app'
 import React from 'react'
 import {
   Button,
@@ -9,6 +8,8 @@ import {
   InputGroup,
 } from 'react-bootstrap'
 import CopyToClipboard from 'react-copy-to-clipboard'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
 
 import getCouchUrl from '../modules/getCouchUrl.js'
 
@@ -30,12 +31,16 @@ const mediaLeftStyle = {
   position: 'relative',
 }
 
+const enhance = compose(inject(`store`), observer)
+
 const AttachedImage = ({
+  store,
   doc,
   attName,
   urlCopied,
   onCopyUrl,
 }: {
+  store: Object,
   doc: Object,
   attName: string,
   urlCopied: string,
@@ -57,7 +62,7 @@ const AttachedImage = ({
         <Glyphicon
           glyph="remove-circle"
           style={glyphStyle}
-          onClick={() => app.Actions.removePageAttachment(doc, attName)}
+          onClick={() => store.page.removePageAttachment(doc, attName)}
         />
       </div>
       <div className="media-body media-middle">
@@ -80,4 +85,4 @@ const AttachedImage = ({
 
 AttachedImage.displayName = 'AttachedImage'
 
-export default AttachedImage
+export default enhance(AttachedImage)

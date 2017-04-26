@@ -32,19 +32,19 @@ const enhance = compose(
 )
 
 const MonthlyEvent = ({
+  store,
   activeMonthlyEvent,
   year,
   month,
-  editing,
   showMeta,
   onSaveMonthlyEventArticle,
   onClickMeta,
   onCloseMeta,
 }: {
+  store: Object,
   activeMonthlyEvent: Object,
   year: string,
   month: string,
-  editing: boolean,
   showMeta: boolean,
   onSaveMonthlyEventArticle: () => void,
   onClickMeta: () => void,
@@ -53,7 +53,7 @@ const MonthlyEvent = ({
   const articleEncoded = activeMonthlyEvent.article
   const articleDecoded = Base64.decode(articleEncoded)
 
-  if (editing) {
+  if (store.editing) {
     return (
       <div className="monthlyEvent">
         {showMeta &&

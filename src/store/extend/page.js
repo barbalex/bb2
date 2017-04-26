@@ -22,7 +22,7 @@ export default (store: Object): void => {
             app.router.navigate(`/${path}`)
           })
           .catch(error =>
-            app.Actions.showError({
+            store.error.showError({
               title: `Error loading ${id}:`,
               msg: error,
             }),
@@ -38,7 +38,7 @@ export default (store: Object): void => {
           store.page.activePage = doc
         })
         .catch(error =>
-          app.Actions.showError({
+          store.error.showError({
             title: 'Error saving page:',
             msg: error,
           }),

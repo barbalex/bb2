@@ -57,12 +57,7 @@ app.extend({
         this.router = new Router()
         this.router.history.start()
       })
-      .catch(error =>
-        app.Actions.showError({
-          title: 'Fehler in app.js:',
-          msg: error,
-        }),
-      )
+      .catch(error => console.log('Fehler in app.js:', error))
   },
 })
 

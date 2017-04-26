@@ -64,7 +64,6 @@ class PublicationsOfCategory extends Component {
     category: string,
     publications: Array<Object>,
     activePublication: Object,
-    editing: boolean,
     email: string,
     docToRemove: Object,
     changeDocToRemove: () => void,
@@ -167,7 +166,6 @@ class PublicationsOfCategory extends Component {
   publicationsComponent(category) {
     const {
       activePublication,
-      editing,
       email,
       onClickPublication,
       onClickEventCollapse,
@@ -243,10 +241,7 @@ class PublicationsOfCategory extends Component {
               onClick={onClickEventCollapse}
             >
               <div className="panel-body" style={panelBodyStyle}>
-                <Publication
-                  activePublication={activePublication}
-                  editing={editing}
-                />
+                <Publication activePublication={activePublication} />
               </div>
             </div>}
         </div>

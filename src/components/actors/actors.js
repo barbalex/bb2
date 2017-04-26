@@ -56,7 +56,6 @@ class Actors extends Component {
     store: Object,
     actors: Array<Object>,
     activeActor: Object,
-    editing: boolean,
     email: string,
     showNewActor: boolean,
     docToRemove: Object,
@@ -141,8 +140,8 @@ class Actors extends Component {
 
   actorsComponent() {
     const {
+      store,
       activeActor,
-      editing,
       email,
       onClickActor,
       onClickActorCollapse,
@@ -160,8 +159,8 @@ class Actors extends Component {
           position: 'relative',
           cursor: 'pointer',
         }
-        const panelBodyPadding = editing ? 0 : 15
-        const panelBodyMarginTop = editing ? '-1px' : 0
+        const panelBodyPadding = store.editing ? 0 : 15
+        const panelBodyMarginTop = store.editing ? '-1px' : 0
         const panelBodyStyle = {
           padding: panelBodyPadding,
           marginTop: panelBodyMarginTop,
@@ -234,7 +233,7 @@ class Actors extends Component {
                 onClick={onClickActorCollapse}
               >
                 <div className="panel-body" style={panelBodyStyle}>
-                  <Actor activeActor={activeActor} editing={editing} />
+                  <Actor activeActor={activeActor} />
                 </div>
               </div>}
           </div>

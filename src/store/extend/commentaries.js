@@ -37,7 +37,7 @@ export default (store: Object): void => {
           }
         })
         .catch(error =>
-          app.Actions.showError({
+          store.error.showError({
             msg: error,
           }),
         ),
@@ -131,7 +131,7 @@ export default (store: Object): void => {
         })
         .catch(error => {
           store.commentaries.revertCache(oldCommentaries, oldActiveCommentaryId)
-          app.Actions.showError({
+          store.error.showError({
             title: 'Error saving commentary:',
             msg: error,
           })
@@ -163,7 +163,7 @@ export default (store: Object): void => {
       app.db.remove(commentary).catch(error => {
         // oops. Revert optimistic removal
         store.commentaries.revertCache(oldCommentaries, oldActiveCommentaryId)
-        app.Actions.showError({
+        store.error.showError({
           title: 'Error removing commentary:',
           msg: error,
         })

@@ -38,7 +38,7 @@ export default (store: Object): void => {
           }
         })
         .catch(error =>
-          app.Actions.showError({
+          store.error.showError({
             msg: error,
           }),
         ),
@@ -147,7 +147,7 @@ export default (store: Object): void => {
             oldActivePublicationId,
             oldActivePublicationCategory,
           )
-          app.Actions.showError({
+          store.error.showError({
             title: 'Error saving publication:',
             msg: error,
           })
@@ -188,7 +188,7 @@ export default (store: Object): void => {
             oldActivePublicationId,
             oldActivePublicationCategory,
           )
-          app.Actions.showError({
+          store.error.showError({
             title: 'Error removing publication:',
             msg: error,
           })

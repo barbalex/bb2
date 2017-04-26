@@ -21,7 +21,6 @@ const enhance = compose(inject(`store`), observer)
 
 const Main = ({
   store,
-  activePage,
   monthlyEvents,
   activeMonthlyEvent,
   publications,
@@ -30,11 +29,9 @@ const Main = ({
   commentaries,
   activeCommentary,
   events,
-  yearsOfEvents,
   activeEvent,
   actors,
   activeActor,
-  editing,
   showNewCommentary,
   showNewEvent,
   showNewActor,
@@ -44,7 +41,6 @@ const Main = ({
   errors,
 }: {
   store: Object,
-  activePage: Object,
   monthlyEvents: Array<Object>,
   activeMonthlyEvent: Object,
   publications: Array<Object>,
@@ -53,11 +49,9 @@ const Main = ({
   commentaries: Array<Object>,
   activeCommentary: Object,
   events: Array<Object>,
-  yearsOfEvents: Array<number>,
   activeEvent: Object,
   actors: Array<Object>,
   activeActor: Object,
-  editing: boolean,
   showNewCommentary: boolean,
   showNewEvent: boolean,
   showNewActor: boolean,
@@ -66,6 +60,7 @@ const Main = ({
   email: string,
   errors: Array<Object>,
 }) => {
+  const { activePage } = store.page
   const nonSimplePages = [
     'pages_commentaries',
     'pages_monthlyEvents',
@@ -125,15 +120,12 @@ const Main = ({
           activeCommentary={activeCommentary}
           activeActor={activeActor}
           email={email}
-          editing={editing}
         />
         <div className="container">
           {showErrors && <Errors errors={errors} />}
-          {isSimplePage && <Page activePage={activePage} editing={editing} />}
+          {isSimplePage && <Page activePage={activePage} />}
           {showEventsPage &&
             <Events
-              yearsOfEvents={yearsOfEvents}
-              editing={editing}
               email={email}
               activeEvent={activeEvent}
               showNewEvent={showNewEvent}
@@ -142,7 +134,6 @@ const Main = ({
             <Commentaries
               commentaries={commentaries}
               activeCommentary={activeCommentary}
-              editing={editing}
               email={email}
               showNewCommentary={showNewCommentary}
             />}
@@ -150,7 +141,6 @@ const Main = ({
             <Actors
               actors={actors}
               activeActor={activeActor}
-              editing={editing}
               email={email}
               showNewActor={showNewActor}
             />}
@@ -158,7 +148,6 @@ const Main = ({
             <MonthlyEvents
               monthlyEvents={monthlyEvents}
               activeMonthlyEvent={activeMonthlyEvent}
-              editing={editing}
               email={email}
             />}
           {showPublicationsPage &&
@@ -166,7 +155,6 @@ const Main = ({
               publications={publications}
               activePublicationCategory={activePublicationCategory}
               activePublication={activePublication}
-              editing={editing}
               email={email}
               showNewPublication={showNewPublication}
             />}
