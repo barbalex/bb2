@@ -15,12 +15,10 @@ const outerSpanStyle = {
 }
 
 const Event = ({
-  store,
   event,
   email,
   onRemoveEvent,
 }: {
-  store: Object,
   event: Object,
   email: string,
   onRemoveEvent: () => void,
