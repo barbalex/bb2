@@ -1,5 +1,5 @@
-import app from 'ampersand-app'
-import React from 'react'
+// @flow
+import React, { Component } from 'react'
 import {
   Modal,
   Button,
@@ -7,49 +7,54 @@ import {
   ControlLabel,
   FormControl,
 } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
 
-export default React.createClass({
-  displayName: 'MonthlyEventMeta',
+const enhance = compose(inject(`store`), observer)
 
-  propTypes: {
-    activeMonthlyEvent: React.PropTypes.object,
-    year: React.PropTypes.string,
-    month: React.PropTypes.string,
-    onCloseMeta: React.PropTypes.func,
-    arrivals: React.PropTypes.number,
-    victims: React.PropTypes.number
-  },
-
-  getInitialState() {
-    const { activeMonthlyEvent } = this.props
-    return {
+class MonthlyEventsMeta extends Component {
+  constructor(props) {
+    super(props)
+    const { activeMonthlyEvent } = props
+    // $FlowIssue
+    this.state = {
       arrivals: activeMonthlyEvent.arrivals,
-      victims: activeMonthlyEvent.victims
+      victims: activeMonthlyEvent.victims,
     }
-  },
+  }
+
+  displayName: 'MonthlyEventsMeta'
+
+  props: {
+    store: Object,
+    activeMonthlyEvent: Object,
+    year: string,
+    month: string,
+    arrivals: number,
+    victims: number,
+    onCloseMeta: () => void,
+  }
 
   onChangeValue(property, event) {
-    const { activeMonthlyEvent } = this.props
+    const { activeMonthlyEvent, store } = this.props
     const value = parseInt(event.target.value, 10)
     activeMonthlyEvent[property] = value
-    app.Actions.saveMonthlyEvent(activeMonthlyEvent)
+    store.events.saveMonthlyEvent(activeMonthlyEvent)
     this.setState({ [property]: value })
-  },
+  }
 
   close() {
     const { onCloseMeta } = this.props
     onCloseMeta()
-  },
+  }
 
   render() {
     const { year, month } = this.props
+    // $FlowIssue
     const { arrivals, victims } = this.state
+
     return (
-      <Modal
-        show
-        onHide={this.close}
-        bsSize="medium"
-      >
+      <Modal show onHide={this.close} bsSize="medium">
         <Modal.Header>
           <Modal.Title>
             Arrivals & Victims in {month} {year}
@@ -57,9 +62,7 @@ export default React.createClass({
         </Modal.Header>
 
         <Modal.Body>
-          <FormGroup
-            controlId="arrivals"
-          >
+          <FormGroup controlId="arrivals">
             <ControlLabel>Arrivals</ControlLabel>
             <FormControl
               type="number"
@@ -68,9 +71,7 @@ export default React.createClass({
               autoFocus
             />
           </FormGroup>
-          <FormGroup
-            controlId="victims"
-          >
+          <FormGroup controlId="victims">
             <ControlLabel>Victims</ControlLabel>
             <FormControl
               type="number"
@@ -82,10 +83,7 @@ export default React.createClass({
         </Modal.Body>
 
         <Modal.Footer>
-          <Button
-            bsStyle="primary"
-            onClick={this.close}
-          >
+          <Button bsStyle="primary" onClick={this.close}>
             close
           </Button>
         </Modal.Footer>
@@ -93,4 +91,6 @@ export default React.createClass({
       </Modal>
     )
   }
-})
+}
+
+export default enhance(MonthlyEventsMeta)
