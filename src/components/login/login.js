@@ -4,17 +4,28 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
 
 import LoginForm from './loginForm.js'
 
-const enhance = compose(inject(`store`), observer)
+const enhance = compose(
+  inject(`store`),
+  withHandlers({
+    onClick: props => () => props.store.login.logout(),
+  }),
+  observer,
+)
 
-const Login = ({ email, store }: { email: string, store: Object }) => (
+const Login = ({
+  store,
+  email,
+  onClick,
+}: { store: Object, email: string, onClick: () => void }) => (
   <div>
     <h1>Login</h1>
     {!email && <LoginForm />}
     {email &&
-      <Button className="btn-primary" onClick={() => store.login.logout()}>
+      <Button className="btn-primary" onClick={onClick}>
         log out
       </Button>}
   </div>

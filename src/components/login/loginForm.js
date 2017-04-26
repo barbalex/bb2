@@ -29,7 +29,7 @@ const enhance = compose(
       const validEmail = newEmail && validateEmail(newEmail)
       const invalidEmail = !validEmail
       props.changeInvalidEmail(invalidEmail)
-      return validEmail
+      return !!validEmail
     },
     validPassword: props => (password: boolean): boolean => {
       const validPassword = !!password
@@ -113,7 +113,7 @@ const LoginForm = ({
   invalidPassword: boolean,
   newEmail: string,
   password: string,
-  loginError: string,
+  loginError: string | Object,
   onKeyDownEmail: () => void,
   onKeyDownPassword: () => void,
   onBlurEmail: () => void,
@@ -125,6 +125,7 @@ const LoginForm = ({
   const passwordInputBsStyle = invalidPassword ? 'error' : null
   let error = loginError
   if (isObject(loginError)) {
+    // $FlowIssue
     error = loginError.message
   }
   const isError = error && error.length > 0
