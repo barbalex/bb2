@@ -172,7 +172,6 @@ const Main = ({
               activeMonthlyEvent={activeMonthlyEvent}
               editing={editing}
               email={email}
-              onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
             />}
           {showPublicationsPage &&
             <Publications
@@ -221,12 +220,6 @@ React.createClass({
 
   onCloseNewPublication() {
     this.setState({ showNewPublication: false })
-  },
-
-  onSaveMonthlyEventArticle(articleEncoded) {
-    const { activeMonthlyEvent } = this.state
-    activeMonthlyEvent.article = articleEncoded
-    app.Actions.saveMonthlyEvent(activeMonthlyEvent)
   },
 
   onSavePublicationArticle(articleEncoded) {

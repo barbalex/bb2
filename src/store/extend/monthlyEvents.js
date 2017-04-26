@@ -115,54 +115,5 @@ export default (store: Object): void => {
           })
       },
     ),
-    removeMonthlyEventFromCache: action(
-      'removeMonthlyEventFromCache',
-      (monthlyEvent: Object): void => {
-        // first update the monthlyEvent in store.monthlyEvents.monthlyEvents
-        store.monthlyEvents.monthlyEvents = store.monthlyEvents.monthlyEvents.filter(
-          thisMonthlyEvent => thisMonthlyEvent._id !== monthlyEvent._id,
-        )
-        store.monthlyEvents.monthlyEvents = sortMonthlyEvents(
-          store.monthlyEvents.monthlyEvents,
-        )
-        // now update store.monthlyEvents.activeMonthlyEventId if it is the active monthlyEvent's _id
-        const isActiveMonthlyEvent =
-          store.monthlyEvents.activeMonthlyEventId === monthlyEvent._id
-        if (isActiveMonthlyEvent)
-          store.monthlyEvents.activeMonthlyEventId = null
-      },
-    ),
-    removeMonthlyEvent: action(
-      'removeMonthlyEvent',
-      (monthlyEvent: Object): void => {
-        // keep old cache in case of error
-        const oldMonthlyEvents = store.monthlyEvents.monthlyEvents
-        const oldActiveMonthlyEventId = store.monthlyEvents.activeMonthlyEventId
-        // optimistically remove monthlyEvent from cache
-        store.monthlyEvents.removeMonthlyEventFromCache(monthlyEvent)
-        app.db.remove(monthlyEvent).catch(error => {
-          // oops. Revert optimistic removal
-          store.monthlyEvents.revertCache(
-            oldMonthlyEvents,
-            oldActiveMonthlyEventId,
-          )
-          app.Actions.showError({
-            title: 'Error removing monthly event:',
-            msg: error,
-          })
-        })
-      },
-    ),
-    toggleDraftOfMonthlyEvent: action(
-      'toggleDraftOfMonthlyEvent',
-      (monthlyEvent: Object): void => {
-        if (monthlyEvent.draft === true) {
-          delete monthlyEvent.draft
-        } else {
-          monthlyEvent.draft = true
-        }
-        store.monthlyEvents.onSaveMonthlyEvent(monthlyEvent)
-      },
-    ),
   })
 }

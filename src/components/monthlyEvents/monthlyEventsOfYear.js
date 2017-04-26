@@ -1,28 +1,18 @@
 // @flow
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { PanelGroup, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { PanelGroup } from 'react-bootstrap'
 import has from 'lodash/has'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
-import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 
 import MonthlyEvent from './monthlyEvent.js'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import getMonthFromEventId from '../../modules/getMonthFromEventId.js'
-import ModalRemoveMonthlyEvent from './modalRemoveMonthlyEvent.js'
-
-const glyphStyle = {
-  position: 'absolute',
-  right: 8,
-  top: 6,
-  fontSize: '1.5em',
-}
 
 const enhance = compose(
   inject(`store`),
-  withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
     onClickMonthlyEvent: props => (id: string, event: Object): void => {
       const { activeMonthlyEvent, store } = props
@@ -38,26 +28,6 @@ const enhance = compose(
       // prevent higher level panels from reacting
       event.stopPropagation()
     },
-    onRemoveMonthlyEvent: props => (
-      docToRemove: Object,
-      event: Object,
-    ): void => {
-      event.preventDefault()
-      event.stopPropagation()
-      props.changeDocToRemove(docToRemove)
-    },
-    onToggleDraft: props => (doc: Object, event: Object): void => {
-      event.preventDefault()
-      event.stopPropagation()
-      props.store.monthlyEvents.toggleDraftOfMonthlyEvent(doc)
-    },
-    removeMonthlyEvent: props => (remove: boolean): void => {
-      const { docToRemove, changeDocToRemove, store } = props
-      if (remove) {
-        store.monthlyEvents.removeMonthlyEvent(docToRemove)
-      }
-      changeDocToRemove(null)
-    },
   }),
   observer,
 )
@@ -71,15 +41,8 @@ class MonthlyEventsOfYear extends Component {
     monthlyEvents: Array<Object>,
     activeMonthlyEvent: Object,
     editing: boolean,
-    email: string,
-    docToRemove: Object,
-    changeDocToRemove: () => void,
-    onSaveMonthlyEventArticle: () => void,
     onClickMonthlyEvent: () => void,
     onClickEventCollapse: () => void,
-    onRemoveMonthlyEvent: () => void,
-    onToggleDraft: () => void,
-    removeMonthlyEvent: () => void,
   }
 
   componentDidMount() {
@@ -121,63 +84,10 @@ class MonthlyEventsOfYear extends Component {
     }
   }
 
-  removeMonthlyEventGlyph(doc) {
-    const { onRemoveMonthlyEvent } = this.props
-
-    return (
-      <OverlayTrigger
-        placement="top"
-        overlay={
-          <Tooltip id="removeThisMonthlyEvent">
-            remove
-          </Tooltip>
-        }
-      >
-        <Glyphicon
-          glyph="remove-circle"
-          style={glyphStyle}
-          onClick={onRemoveMonthlyEvent.bind(this, doc)}
-        />
-      </OverlayTrigger>
-    )
-  }
-
-  toggleDraftGlyph(doc) {
-    const { onToggleDraft } = this.props
-    const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
-    const color = doc.draft ? 'red' : 'green'
-    const glyphStyle = {
-      position: 'absolute',
-      right: 38,
-      top: 6,
-      fontSize: '1.5em',
-      color,
-    }
-
-    return (
-      <OverlayTrigger
-        placement="top"
-        overlay={
-          <Tooltip id="toggleDraft">
-            {doc.draft ? 'publish' : 'unpublish'}
-          </Tooltip>
-        }
-      >
-        <Glyphicon
-          glyph={glyph}
-          style={glyphStyle}
-          onClick={onToggleDraft.bind(this, doc)}
-        />
-      </OverlayTrigger>
-    )
-  }
-
   monthlyEventsComponent(year) {
     const {
       activeMonthlyEvent,
       editing,
-      email,
-      onSaveMonthlyEventArticle,
       onClickMonthlyEvent,
       onClickEventCollapse,
     } = this.props
@@ -191,7 +101,6 @@ class MonthlyEventsOfYear extends Component {
         ? doc._id === activeMonthlyEvent._id
         : false
       const month = getMonthFromEventId(doc._id)
-      const showEditingGlyphons = !!email
       const panelHeadingStyle = {
         position: 'relative',
       }
@@ -233,8 +142,6 @@ class MonthlyEventsOfYear extends Component {
                 {month}
               </a>
             </h4>
-            {showEditingGlyphons && this.toggleDraftGlyph(doc)}
-            {showEditingGlyphons && this.removeMonthlyEventGlyph(doc)}
           </div>
           {isActiveMonthlyEvent &&
             <div
@@ -250,7 +157,6 @@ class MonthlyEventsOfYear extends Component {
                   year={year}
                   month={month}
                   editing={editing}
-                  onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
                 />
               </div>
             </div>}
@@ -260,12 +166,7 @@ class MonthlyEventsOfYear extends Component {
   }
 
   render() {
-    const {
-      year,
-      activeMonthlyEvent,
-      docToRemove,
-      removeMonthlyEvent,
-    } = this.props
+    const { year, activeMonthlyEvent } = this.props
     const activeEventId = has(activeMonthlyEvent, '_id')
       ? activeMonthlyEvent._id
       : null
@@ -281,11 +182,6 @@ class MonthlyEventsOfYear extends Component {
         accordion
       >
         {this.monthlyEventsComponent(year)}
-        {docToRemove &&
-          <ModalRemoveMonthlyEvent
-            doc={docToRemove}
-            removeMonthlyEvent={removeMonthlyEvent}
-          />}
       </PanelGroup>
     )
   }

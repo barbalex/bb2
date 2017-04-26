@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
@@ -9,7 +10,7 @@ const enhance = compose(inject(`store`), observer)
 
 const PageMeta = ({
   doc,
-  onCloseMeta
+  onCloseMeta,
 }: { doc: Object, onCloseMeta: () => void }) => (
   <Modal show bsSize="large">
     <Modal.Header>

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
@@ -14,9 +15,9 @@ const enhance = compose(
   withState('showMeta', 'changeShowMeta', false),
   withHandlers({
     onClickMeta: props => props.changeShowMeta(!props.showMeta),
-    onCloseMeta: props => props.changeShowMeta(false)
+    onCloseMeta: props => props.changeShowMeta(false),
   }),
-  observer
+  observer,
 )
 
 const Page = ({
@@ -24,13 +25,13 @@ const Page = ({
   editing,
   showMeta,
   onClickMeta,
-  onCloseMeta
+  onCloseMeta,
 }: {
   activePage: Object,
   editing: boolean,
   showMeta: boolean,
   onClickMeta: () => void,
-  onCloseMeta: () => void
+  onCloseMeta: () => void,
 }) => {
   const articleEncoded = activePage.article
   const articleDecoded = Base64.decode(articleEncoded)
@@ -38,7 +39,7 @@ const Page = ({
   const metaButtonStyle = {
     position: 'fixed',
     bottom: 10,
-    right: 10
+    right: 10,
   }
   if (editing && activePage._id !== 'pages_actors') {
     return (

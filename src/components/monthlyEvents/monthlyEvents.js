@@ -39,8 +39,6 @@ class MonthlyEvents extends Component {
     activeMonthlyEvent: Object,
     activeYear: number,
     editing: boolean,
-    email: string,
-    onSaveMonthlyEventArticle: () => void,
     changeActiveYear: () => void,
     onClickYear: () => void,
   }
@@ -65,13 +63,7 @@ class MonthlyEvents extends Component {
   }
 
   eventYearsComponent(activeYear) {
-    const {
-      activeMonthlyEvent,
-      editing,
-      email,
-      onSaveMonthlyEventArticle,
-      onClickYear,
-    } = this.props
+    const { activeMonthlyEvent, editing, onClickYear } = this.props
     let { monthlyEvents } = this.props
     const years = this.yearsOfEvents()
 
@@ -95,8 +87,6 @@ class MonthlyEvents extends Component {
               monthlyEvents={monthlyEvents}
               activeMonthlyEvent={activeMonthlyEvent}
               editing={editing}
-              email={email}
-              onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
             />
           </Panel>
         )

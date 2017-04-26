@@ -1,34 +1,86 @@
-import app from 'ampersand-app'
-import React from 'react'
+// @flow
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
+
 import Publication from './publication.js'
 import ModalRemovePublication from './modalRemovePublication.js'
 
-export default React.createClass({
-  displayName: 'PublicationOfCategory',
+const glyphStyle = {
+  position: 'absolute',
+  right: 8,
+  top: 6,
+  fontSize: '1.5em',
+}
+
+const enhance = compose(
+  inject(`store`),
+  withState('docToRemove', 'changeDocToRemove', null),
+  withHandlers({
+    onClickPublication: props => (id: string, e: Object): void => {
+      // prevent higher level panels from reacting
+      e.stopPropagation()
+      const { activePublication, store } = props
+      const idToGet = !activePublication || activePublication._id !== id
+        ? id
+        : null
+      store.publications.getPublication(idToGet)
+    },
+    onClickEventCollapse: props => (event: Object): void => {
+      // prevent higher level panels from reacting
+      event.stopPropagation()
+    },
+    onRemovePublication: props => (
+      docToRemove: Object,
+      event: Object,
+    ): void => {
+      event.preventDefault()
+      event.stopPropagation()
+      props.changeDocToRemove(docToRemove)
+    },
+    onToggleDraft: props => (doc: Object, event: Object): void => {
+      event.preventDefault()
+      event.stopPropagation()
+      props.store.publications.toggleDraftOfPublication(doc)
+    },
+    removePublication: props => (remove: boolean): void => {
+      const { docToRemove, changeDocToRemove, store } = props
+      if (remove) store.publications.removePublication(docToRemove)
+      changeDocToRemove(null)
+    },
+  }),
+  observer,
+)
+
+class PublicationsOfCategory extends Component {
+  displayName: 'PublicationOfCategory'
 
   propTypes: {
-    category: React.PropTypes.string,
-    publications: React.PropTypes.array,
-    activePublication: React.PropTypes.object,
-    editing: React.PropTypes.bool,
-    email: React.PropTypes.string,
-    onSavePublicationArticle: React.PropTypes.func,
-    docToRemove: React.PropTypes.object
-  },
-
-  getInitialState() {
-    return {
-      docToRemove: null
-    }
-  },
+    store: Object,
+    category: string,
+    publications: Array<Object>,
+    activePublication: Object,
+    editing: boolean,
+    email: string,
+    docToRemove: Object,
+    onSavePublicationArticle: () => void,
+    changeDocToRemove: () => void,
+    onClickPublication: () => void,
+    onClickEventCollapse: () => void,
+    onRemovePublication: () => void,
+    onToggleDraft: () => void,
+    removePublication: () => void,
+  }
 
   componentDidMount() {
     // somehow on first load the panel does not scroll up far enough
     // call for more
     this.scrollToActivePanel('more')
-  },
+  }
 
   componentDidUpdate(prevProps) {
     if (this.props.activePublication) {
@@ -41,36 +93,10 @@ export default React.createClass({
         this.scrollToActivePanel()
       }
     }
-  },
-
-  onClickPublication(id, e) {
-    const { activePublication } = this.props
-    // prevent higher level panels from reacting
-    e.stopPropagation()
-    const idToGet = !activePublication || activePublication._id !== id
-      ? id
-      : null
-    app.Actions.getPublication(idToGet)
-  },
-
-  onClickEventCollapse(event) {
-    // prevent higher level panels from reacting
-    event.stopPropagation()
-  },
-
-  onRemovePublication(docToRemove, event) {
-    event.preventDefault()
-    event.stopPropagation()
-    this.setState({ docToRemove })
-  },
-
-  onToggleDraft(doc, event) {
-    event.preventDefault()
-    event.stopPropagation()
-    app.Actions.toggleDraftOfPublication(doc)
-  },
+  }
 
   scrollToActivePanel(more) {
+    // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activePublicationPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper')
@@ -81,27 +107,17 @@ export default React.createClass({
       if (node.offsetTop) {
         window.$('html, body').animate(
           {
-            scrollTop: node.offsetTop - reduce
+            scrollTop: node.offsetTop - reduce,
           },
-          500
+          500,
         )
       }
     }
-  },
-
-  removePublication(remove) {
-    const { docToRemove } = this.state
-    if (remove) app.Actions.removePublication(docToRemove)
-    this.setState({ docToRemove: null })
-  },
+  }
 
   removePublicationGlyph(doc) {
-    const glyphStyle = {
-      position: 'absolute',
-      right: 8,
-      top: 6,
-      fontSize: '1.5em'
-    }
+    const { onRemovePublication } = this.props
+
     return (
       <OverlayTrigger
         placement="top"
@@ -114,13 +130,14 @@ export default React.createClass({
         <Glyphicon
           glyph="remove-circle"
           style={glyphStyle}
-          onClick={this.onRemovePublication.bind(this, doc)}
+          onClick={onRemovePublication.bind(this, doc)}
         />
       </OverlayTrigger>
     )
-  },
+  }
 
   toggleDraftGlyph(doc) {
+    const { onToggleDraft } = this.props
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : 'green'
     const glyphStyle = {
@@ -128,7 +145,7 @@ export default React.createClass({
       right: 38,
       top: 6,
       fontSize: '1.5em',
-      color
+      color,
     }
     return (
       <OverlayTrigger
@@ -142,23 +159,25 @@ export default React.createClass({
         <Glyphicon
           glyph={glyph}
           style={glyphStyle}
-          onClick={this.onToggleDraft.bind(this, doc)}
+          onClick={onToggleDraft.bind(this, doc)}
         />
       </OverlayTrigger>
     )
-  },
+  }
 
   publicationsComponent(category) {
     const {
       activePublication,
       editing,
       email,
-      onSavePublicationArticle
+      onSavePublicationArticle,
+      onClickPublication,
+      onClickEventCollapse,
     } = this.props
     let { publications } = this.props
     // filter only publication of current category
     publications = publications.filter(
-      publication => publication.category === category
+      publication => publication.category === category,
     )
     publications = publications.sort((a, b) => {
       if (a.order && b.order) {
@@ -174,21 +193,23 @@ export default React.createClass({
         : false
       const showEditingGlyphons = !!email
       const panelHeadingStyle = {
-        position: 'relative'
+        position: 'relative',
       }
       const panelBodyStyle = {
         maxHeight: window.innerHeight - 127,
-        overflowY: 'auto'
+        overflowY: 'auto',
       }
       const ref = isActivePublication
         ? '_activePublicationPanel'
         : `_publicationPanel${doc._id}`
+
       // use pure bootstrap.
       // advantage: can add edit icon to panel-heading
       return (
         <div
           key={dIndex}
           ref={c => {
+            // $FlowIssue
             this[ref] = c
           }}
           className="panel panel-default month"
@@ -197,7 +218,7 @@ export default React.createClass({
             className="panel-heading"
             role="tab"
             id={`heading${dIndex}`}
-            onClick={this.onClickPublication.bind(this, doc._id)}
+            onClick={onClickPublication.bind(this, doc._id)}
             style={panelHeadingStyle}
           >
             <h4 className="panel-title">
@@ -221,7 +242,7 @@ export default React.createClass({
               className="panel-collapse collapse in"
               role="tabpanel"
               aria-labelledby={`heading${dIndex}`}
-              onClick={this.onClickEventCollapse}
+              onClick={onClickEventCollapse}
             >
               <div className="panel-body" style={panelBodyStyle}>
                 <Publication
@@ -234,16 +255,17 @@ export default React.createClass({
         </div>
       )
     })
-  },
+  }
 
   render() {
-    const { category } = this.props
-    const { docToRemove } = this.state
+    const { category, docToRemove, removePublication } = this.props
+
     return (
       <div
         className="panel-group"
         id={category}
         ref={c => {
+          // $FlowIssue
           this[category] = c
         }}
       >
@@ -251,9 +273,10 @@ export default React.createClass({
         {docToRemove &&
           <ModalRemovePublication
             doc={docToRemove}
-            removePublication={this.removePublication}
+            removePublication={removePublication}
           />}
       </div>
     )
   }
-})
+}
+export default enhance(PublicationsOfCategory)

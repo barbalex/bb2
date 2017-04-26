@@ -21,9 +21,6 @@ function Store(): void {
     updateMonthlyEventsInCache: null,
     revertCache: null,
     saveMonthlyEvent: null,
-    removeMonthlyEventFromCache: null,
-    removeMonthlyEvent: null,
-    toggleDraftOfMonthlyEvent: null,
   }
   this.yearsOfEvents = {
     yearsOfEvents: [],
