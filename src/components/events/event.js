@@ -1,21 +1,34 @@
+// @flow
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
+
 import RemoveEventGlyph from './removeEventGlyph.js'
 import EditEventGlyph from './editEventGlyph.js'
 
-const Event = ({ event, email, onRemoveEvent }) => {
+const linkGlyphStyle = {
+  fontSize: `${0.7}em`,
+  paddingRight: 3,
+  verticalAlign: `${10}%`,
+}
+const outerSpanStyle = {
+  paddingLeft: 5,
+}
+
+const Event = ({
+  store,
+  event,
+  email,
+  onRemoveEvent,
+}: {
+  store: Object,
+  event: Object,
+  email: string,
+  onRemoveEvent: () => void,
+}) => {
   const showEditingGlyphons = !!email
   const classNames = event.tags && event.tags.length > 0
     ? event.tags.map(tag => `event-${tag}`).join(' ')
     : []
-  const linkGlyphStyle = {
-    fontSize: `${0.7}em`,
-    paddingRight: 3,
-    verticalAlign: `${10}%`,
-  }
-  const outerSpanStyle = {
-    paddingLeft: 5,
-  }
 
   const links = event.links.map((link, key) => (
     <span key={key} style={outerSpanStyle}>
@@ -39,10 +52,5 @@ const Event = ({ event, email, onRemoveEvent }) => {
 }
 
 Event.displayName = 'Event'
-
-Event.propTypes = {
-  event: React.PropTypes.object,
-  email: React.PropTypes.string,
-}
 
 export default Event
