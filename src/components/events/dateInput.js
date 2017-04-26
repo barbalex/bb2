@@ -13,7 +13,7 @@ const EventDate = ({
   store,
   date,
   onChangeDatePicker,
-}: { store: Object, date: Date, onChangeDatePicker: () => void }) => (
+}: { date: Date, onChangeDatePicker: () => void }) => (
   <FormGroup controlId="date">
     <ControlLabel>Date</ControlLabel>
     <InputGroup
