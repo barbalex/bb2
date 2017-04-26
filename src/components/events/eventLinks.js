@@ -1,85 +1,73 @@
-import app from 'ampersand-app'
+// @flow
 import React from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
+
 import EventLink from './eventLink.js'
 
-const onNewLink = (activeEvent) => {
-  const newLink = {
-    url: '',
-    label: ''
-  }
-  activeEvent.links.push(newLink)
-  app.Actions.saveEvent(activeEvent)
+const titleStyle = {
+  fontWeight: 'bold',
+  marginBottom: 5,
+}
+const labelStyle = {
+  marginBottom: 0,
 }
 
-const eventLinks = (activeEvent) =>
-  activeEvent.links.map((link, index) =>
-    <EventLink
-      activeEvent={activeEvent}
-      link={link}
-      focus={index === activeEvent.links.length - 1}
-      key={index}
-    />
-  )
+const enhance = compose(
+  inject(`store`),
+  withState('showMeta', 'changeShowMeta', false),
+  withHandlers({
+    onNewLink: props => (): void => {
+      const newLink = {
+        url: '',
+        label: '',
+      }
+      props.activeEvent.links.push(newLink)
+      props.store.events.saveEvent(props.activeEvent)
+    },
+    onCloseMeta: props => () => props.changeShowMeta(false),
+  }),
+  observer,
+)
 
-const EventLinks = ({ activeEvent }) => {
-  const labelText = activeEvent.links.length > 0 ? 'Label' : null
-  const urlText = activeEvent.links.length > 0 ? 'Url' : null
-  const titleStyle = {
-    fontWeight: 'bold',
-    marginBottom: 5
-  }
-  const labelStyle = {
-    marginBottom: 0
-  }
-
-  return (
-    <div>
-      <div
-        style={titleStyle}
-      >
-        Links
-      </div>
-      <Row>
-        <Col
-          sm={3}
-          lg={2}
-        >
-          <p
-            style={labelStyle}
-          >
-            {labelText}
-          </p>
-        </Col>
-        <Col
-          sm={7}
-          lg={8}
-        >
-          <p
-            style={labelStyle}
-          >
-            {urlText}
-          </p>
-        </Col>
-        <Col
-          sm={1}
-          lg={1}
-        />
-      </Row>
-      {eventLinks(activeEvent)}
-      <Button
-        onClick={() => onNewLink(activeEvent)}
-      >
-        new link
-      </Button>
+const EventLinks = ({
+  activeEvent,
+  onNewLink,
+}: { activeEvent: Object, onNewLink: () => void }) => (
+  <div>
+    <div style={titleStyle}>
+      Links
     </div>
-  )
-}
+    <Row>
+      <Col sm={3} lg={2}>
+        <p style={labelStyle}>
+          {activeEvent.links.length > 0 ? 'Label' : null}
+        </p>
+      </Col>
+      <Col sm={7} lg={8}>
+        <p style={labelStyle}>
+          {activeEvent.links.length > 0 ? 'Url' : null}
+        </p>
+      </Col>
+      <Col sm={1} lg={1} />
+    </Row>
+    {activeEvent.links.map((link, index) => (
+      <EventLink
+        activeEvent={activeEvent}
+        link={link}
+        focus={index === activeEvent.links.length - 1}
+        key={index}
+      />
+    ))}
+    <Button onClick={onNewLink}>
+      new link
+    </Button>
+  </div>
+)
 
 EventLinks.displayName = 'EventLinks'
 
-EventLinks.propTypes = {
-  activeEvent: React.PropTypes.object
-}
-
-export default EventLinks
+export default enhance(EventLinks)
