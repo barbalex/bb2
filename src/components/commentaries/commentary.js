@@ -28,17 +28,16 @@ const enhance = compose(
 
 const Commentary = ({
   store,
-  activeCommentary,
   showMeta,
   onClickMeta,
   onCloseMeta,
 }: {
   store: Object,
-  activeCommentary: Object,
   showMeta: boolean,
   onClickMeta: () => void,
   onCloseMeta: () => void,
 }) => {
+  const { activeCommentary } = store.commentaries
   const articleEncoded = activeCommentary.article
   const articleDecoded = Base64.decode(articleEncoded)
 
@@ -46,11 +45,7 @@ const Commentary = ({
     return (
       <div className="commentary">
         {showMeta && <Meta doc={activeCommentary} onCloseMeta={onCloseMeta} />}
-        <Editor
-          doc={activeCommentary}
-          docType="commentary"
-          articleDecoded={articleDecoded}
-        />
+        <Editor docType="commentary" articleDecoded={articleDecoded} />
         <Button style={metaButtonStyle} onClick={onClickMeta}>
           images
         </Button>

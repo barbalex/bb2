@@ -60,7 +60,6 @@ class Commentaries extends Component {
 
   props: {
     store: Object,
-    activeCommentary: Object,
     email: string,
     showNewCommentary: boolean,
     docToRemove: Object,
@@ -76,8 +75,8 @@ class Commentaries extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.activeCommentary) {
-      if (!prevProps.activeCommentary) {
+    if (this.props.store.commentaries.activeCommentary) {
+      if (!prevProps.store.commentaries.activeCommentary) {
         /**
          * this is first render
          * componentDidUpdate and componentDidMount are actually executed
@@ -88,7 +87,8 @@ class Commentaries extends Component {
           this.scrollToActivePanel()
         }, 200)
       } else if (
-        this.props.activeCommentary._id !== prevProps.activeCommentary._id
+        this.props.store.commentaries.activeCommentary._id !==
+        prevProps.store.commentaries.activeCommentary._id
       ) {
         // this is later rerender
         // only scroll into view if the active item changed last render
@@ -165,12 +165,11 @@ class Commentaries extends Component {
   commentariesComponent() {
     const {
       store,
-      activeCommentary,
       email,
       onClickCommentary,
       onClickCommentaryCollapse,
     } = this.props
-    const { commentaries } = store.commentaries
+    const { commentaries, activeCommentary } = store.commentaries
 
     if (commentaries.length > 0) {
       return commentaries.map((doc, index) => {
@@ -246,7 +245,7 @@ class Commentaries extends Component {
                 onClick={onClickCommentaryCollapse}
               >
                 <div className="panel-body" style={panelBodyStyle}>
-                  <Commentary activeCommentary={activeCommentary} />
+                  <Commentary />
                 </div>
               </div>}
           </div>
@@ -257,12 +256,8 @@ class Commentaries extends Component {
   }
 
   render() {
-    const {
-      activeCommentary,
-      showNewCommentary,
-      docToRemove,
-      removeCommentary,
-    } = this.props
+    const { store, docToRemove, removeCommentary } = this.props
+    const { activeCommentary, showNewCommentary } = store.commentaries
     const activeCommentaryId = has(activeCommentary, '_id')
       ? activeCommentary._id
       : null

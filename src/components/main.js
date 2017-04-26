@@ -21,7 +21,6 @@ const enhance = compose(inject(`store`), observer)
 
 const Main = ({
   store,
-  activeCommentary,
   events,
   activeEvent,
   actors,
@@ -35,7 +34,6 @@ const Main = ({
   errors,
 }: {
   store: Object,
-  activeCommentary: Object,
   events: Array<Object>,
   activeEvent: Object,
   actors: Array<Object>,
@@ -103,7 +101,6 @@ const Main = ({
         <Header />
         <Navbar
           activePage={activePage}
-          activeCommentary={activeCommentary}
           activeActor={activeActor}
           email={email}
         />
@@ -118,7 +115,6 @@ const Main = ({
             />}
           {showCommentaryPage &&
             <Commentaries
-              activeCommentary={activeCommentary}
               email={email}
               showNewCommentary={showNewCommentary}
             />}
