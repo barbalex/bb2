@@ -21,21 +21,18 @@ const enhance = compose(
 
 const Publication = ({
   store,
-  activePublication,
   onSavePublicationArticle,
 }: {
   store: Object,
-  activePublication: Object,
   onSavePublicationArticle: () => void,
 }) => {
-  const articleEncoded = activePublication.article
+  const articleEncoded = store.publications.activePublication.article
   const articleDecoded = Base64.decode(articleEncoded)
 
   if (store.editing) {
     return (
       <div className="publication">
         <Editor
-          doc={activePublication}
           docType="publication"
           articleDecoded={articleDecoded}
           onSavePublicationArticle={onSavePublicationArticle}

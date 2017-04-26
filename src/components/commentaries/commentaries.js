@@ -25,13 +25,13 @@ const enhance = compose(
   withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
     onClickCommentary: props => (id, e) => {
-      const { activeCommentary, store } = props
+      const { activeCommentary, getCommentary } = props.store.commentaries
       // prevent higher level panels from reacting
       e.stopPropagation()
       const idToGet = !activeCommentary || activeCommentary._id !== id
         ? id
         : null
-      store.commentaries.getCommentary(idToGet)
+      getCommentary(idToGet)
     },
     // prevent higher level panels from reacting
     onClickCommentaryCollapse: props => event => event.stopPropagation(),
@@ -60,7 +60,6 @@ class Commentaries extends Component {
 
   props: {
     store: Object,
-    commentaries: Array<Object>,
     activeCommentary: Object,
     email: string,
     showNewCommentary: boolean,
@@ -73,8 +72,7 @@ class Commentaries extends Component {
   }
 
   componentDidMount() {
-    const { store } = this.props
-    store.commentaries.getCommentaries()
+    this.props.store.commentaries.getCommentaries()
   }
 
   componentDidUpdate(prevProps) {
@@ -167,12 +165,12 @@ class Commentaries extends Component {
   commentariesComponent() {
     const {
       store,
-      commentaries,
       activeCommentary,
       email,
       onClickCommentary,
       onClickCommentaryCollapse,
     } = this.props
+    const { commentaries } = store.commentaries
 
     if (commentaries.length > 0) {
       return commentaries.map((doc, index) => {

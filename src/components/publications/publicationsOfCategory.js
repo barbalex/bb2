@@ -24,11 +24,11 @@ const enhance = compose(
     onClickPublication: props => (id: string, e: Object): void => {
       // prevent higher level panels from reacting
       e.stopPropagation()
-      const { activePublication, store } = props
+      const { activePublication, getPublication } = props.store.publications
       const idToGet = !activePublication || activePublication._id !== id
         ? id
         : null
-      store.publications.getPublication(idToGet)
+      getPublication(idToGet)
     },
     onClickEventCollapse: props => (event: Object): void => {
       // prevent higher level panels from reacting
@@ -62,8 +62,6 @@ class PublicationsOfCategory extends Component {
   propTypes: {
     store: Object,
     category: string,
-    publications: Array<Object>,
-    activePublication: Object,
     email: string,
     docToRemove: Object,
     changeDocToRemove: () => void,
@@ -81,10 +79,11 @@ class PublicationsOfCategory extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.activePublication) {
+    if (this.props.store.publications.activePublication) {
       if (
-        !prevProps.activePublication ||
-        this.props.activePublication._id !== prevProps.activePublication._id
+        !prevProps.store.publications.activePublication ||
+        this.props.store.publications.activePublication._id !==
+          prevProps.store.publications.activePublication._id
       ) {
         // this is later rerender
         // only scroll into view if the active item changed last render
@@ -165,12 +164,12 @@ class PublicationsOfCategory extends Component {
 
   publicationsComponent(category) {
     const {
-      activePublication,
+      store,
       email,
       onClickPublication,
       onClickEventCollapse,
     } = this.props
-    let { publications } = this.props
+    let { publications, activePublication } = store.publications
     // filter only publication of current category
     publications = publications.filter(
       publication => publication.category === category,
@@ -241,7 +240,7 @@ class PublicationsOfCategory extends Component {
               onClick={onClickEventCollapse}
             >
               <div className="panel-body" style={panelBodyStyle}>
-                <Publication activePublication={activePublication} />
+                <Publication />
               </div>
             </div>}
         </div>

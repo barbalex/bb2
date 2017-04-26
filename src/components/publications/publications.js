@@ -29,9 +29,6 @@ class Publications extends Component {
 
   props: {
     store: Object,
-    publications: Array<Object>,
-    activePublication: Object,
-    activePublicationCategory: string,
     email: string,
     showNewPublication: boolean,
     onClickCategory: () => void,
@@ -42,14 +39,9 @@ class Publications extends Component {
   }
 
   publicationCategoriesComponent(activePublicationCategory) {
-    const {
-      store,
-      publications,
-      activePublication,
-      email,
-      onClickCategory,
-    } = this.props
+    const { store, email, onClickCategory } = this.props
     let publicationCategories = app.publicationsStore.getPublicationCategories()
+    const { publications } = store.publications
 
     if (publications.length > 0 && publicationCategories.length > 0) {
       publicationCategories = sortBy(publicationCategories, cat => {
@@ -90,12 +82,7 @@ class Publications extends Component {
                 </a>
               </h4>
             </div>
-            <PublicationsOfCategory
-              category={category}
-              publications={publications}
-              activePublication={activePublication}
-              email={email}
-            />
+            <PublicationsOfCategory category={category} email={email} />
           </div>
         )
       })
@@ -104,7 +91,10 @@ class Publications extends Component {
   }
 
   render() {
-    const { activePublicationCategory, showNewPublication } = this.props
+    const {
+      activePublicationCategory,
+      showNewPublication,
+    } = this.props.store.publications
 
     return (
       <div id="publications" style={containerStyle}>
