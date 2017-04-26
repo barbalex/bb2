@@ -8,7 +8,7 @@ import app from 'ampersand-app'
 import React from 'react'
 import localLinks from 'local-links'
 
-const onClick = (event) => {
+const onClick = event => {
   const pathname = localLinks.getLocalPathname(event)
   if (pathname) {
     event.preventDefault()
@@ -16,18 +16,16 @@ const onClick = (event) => {
   }
 }
 
-const NavHelper = (props) =>
-  <div
-    {...props}
-    onClick={(event) => onClick(event)}
-  >
+const NavHelper = props => (
+  <div {...props} onClick={event => onClick(event)}>
     {props.children}
   </div>
+)
 
 NavHelper.displayName = 'NavHelper'
 
 NavHelper.propTypes = {
-  children: React.PropTypes.node
+  children: React.PropTypes.node,
 }
 
 export default NavHelper

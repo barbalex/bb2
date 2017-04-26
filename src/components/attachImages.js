@@ -1,10 +1,14 @@
-import app from 'ampersand-app'
+// @flow
 import React from 'react'
 import Dropzone from 'react-dropzone'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
 
-const onDrop = (files, doc) => {
+const enhance = compose(inject(`store`), observer)
+
+const onDrop = (store, files, doc) => {
   const attachments = {}
-  files.forEach((file) => {
+  files.forEach(file => {
     /**
      * create an attachments object of this form:
      * {
@@ -27,28 +31,23 @@ const onDrop = (files, doc) => {
     const type = file.type
     attachments[name] = {
       content_type: type,
-      data: file
+      data: file,
     }
   })
-  app.Actions.addPageAttachments(doc, attachments)
+  store.pages.addPageAttachments(doc, attachments)
 }
 
-const AttachImages = ({ doc }) =>
+const AttachImages = ({ store, doc }: { store: Object, doc: Object }) => (
   <div className="dropzone">
-    <Dropzone
-      onDrop={(event) => onDrop(event, doc)}
-    >
+    <Dropzone onDrop={event => onDrop(store, event, doc)}>
       <div>
         Drop some files here.<br />
         Or click to select files to upload.
       </div>
     </Dropzone>
   </div>
+)
 
 AttachImages.displayName = 'AttachImages'
 
-AttachImages.propTypes = {
-  doc: React.PropTypes.object
-}
-
-export default AttachImages
+export default enhance(AttachImages)

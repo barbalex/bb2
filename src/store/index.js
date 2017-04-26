@@ -129,6 +129,8 @@ function Store(): void {
     errors: [],
     showError: null,
   }
+  this.editing = false
+  this.toggleEditing = null
 }
 
 const MyStore = new Store()

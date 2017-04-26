@@ -38,7 +38,7 @@ const enhance = compose(
       if (id !== 'pages_events') props.onToggleNav()
     },
     onClickEdit: props => () => {
-      props.onClickEdit()
+      props.store.toggleEditing()
       props.onToggleNav()
     },
     onClickLogout: props => () => {

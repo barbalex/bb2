@@ -129,7 +129,6 @@ const Main = ({
           activeActor={activeActor}
           email={email}
           editing={editing}
-          onClickEdit={onClickEdit}
           onClickNewEvent={onClickNewEvent}
           onClickNewActor={onClickNewActor}
         />
@@ -196,12 +195,6 @@ Main.displayName = 'Main'
 export default enhance(Main)
 
 React.createClass({
-  onClickEdit() {
-    let { editing } = this.state
-    editing = !editing
-    this.setState({ editing })
-  },
-
   onClickNewEvent() {
     this.setState({ showNewEvent: true })
   },

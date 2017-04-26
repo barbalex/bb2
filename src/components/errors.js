@@ -9,16 +9,18 @@
  * ...then triggers again some time later, passing an empty error object
  */
 
-import app from 'ampersand-app'
 import React from 'react'
 import { Overlay, Glyphicon } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 
 const enhance = compose(
+  inject(`store`),
   withHandlers({
-    onClickGlyph: props => () => app.Actions.showError()
-  })
+    onClickGlyph: props => () => props.store.error.showError(),
+  }),
+  observer,
 )
 
 /**
@@ -32,15 +34,15 @@ const glyphStyle = {
   top: 3,
   right: 3,
   fontSize: 18,
-  cursor: 'pointer'
+  cursor: 'pointer',
 }
 
 const Errors = ({
   errors,
-  onClickGlyph
+  onClickGlyph,
 }: {
   errors: Array<Object>,
-  onClickGlyph: () => void
+  onClickGlyph: () => void,
 }) => (
   <Overlay show={errors.length > 0}>
     <div id="errors">

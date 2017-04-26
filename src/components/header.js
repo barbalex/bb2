@@ -1,6 +1,7 @@
+// @flow
 import React from 'react'
 
-const Header = () =>
+const Header = () => (
   <div className="masthead introHeader">
     <div className="container">
       <div className="row">
@@ -15,6 +16,7 @@ const Header = () =>
       </div>
     </div>
   </div>
+)
 
 Header.displayName = 'Header'
 

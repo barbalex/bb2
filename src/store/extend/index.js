@@ -1,3 +1,4 @@
+// @flow
 import extendPage from './page'
 import extendMonthlyEvents from './monthlyEvents'
 import extendYearsOfEvents from './yearsOfEvents'
@@ -6,6 +7,7 @@ import extendCommentaries from './commentaries'
 import extendPublications from './publications'
 import extendActors from './actors'
 import extendLogin from './login'
+import extendStore from './store'
 
 export default (store: Object): void => {
   extendPage(store)
@@ -16,4 +18,5 @@ export default (store: Object): void => {
   extendPublications(store)
   extendActors(store)
   extendLogin(store)
+  extendStore(store)
 }
