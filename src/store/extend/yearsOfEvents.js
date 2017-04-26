@@ -18,5 +18,11 @@ export default (store: Object): void => {
           ),
         ),
     ),
+
+    activeEventYears: [parseInt(moment().format('YYYY'), 0)],
+
+    setActiveEventYears: action('setActiveEventYears', activeEventYears => {
+      store.yearsOfEvents.activeEventYears = activeEventYears
+    }),
   })
 }

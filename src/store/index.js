@@ -25,6 +25,8 @@ function Store(): void {
   this.yearsOfEvents = {
     yearsOfEvents: [],
     getYearsOfEvents: null,
+    activeEventYears: null,
+    setActiveEventYears: null,
   }
   this.events = {
     events: [],

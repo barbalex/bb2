@@ -33,7 +33,6 @@ class Events extends Component {
     showNewEvent: boolean,
     docToRemove: Object,
     introJumbotronHeight: number,
-    activeEventYears: Array<number>,
     setActiveEventYears: () => void,
     changeDocToRemove: () => void,
     changeIntroJumbotronHeight: () => void,
@@ -76,20 +75,20 @@ class Events extends Component {
     }
   }
 
-  setActiveYear(activeEventYears) {
-    const { setActiveEventYears, store } = this.props
-    store.events.getEvents([activeEventYears])
-    setActiveEventYears([activeEventYears])
+  setActiveYear(year) {
+    const { store } = this.props
+    store.events.getEvents([year])
+    store.yearsOfEvents.etActiveEventYears([year])
   }
 
   yearButtons() {
-    const { yearsOfEvents, activeEventYears } = this.props
+    const { yearsOfEvents, activeEventYears } = this.props.store.yearsOfEvents
 
     return yearsOfEvents.map((year, index) => (
       <Button
         key={index}
         active={activeEventYears.includes(year)}
-        onClick={() => this.setActiveYear(year)}
+        onClick={() => this.setActiveEventYears(year)}
       >
         {year}
       </Button>
@@ -106,16 +105,16 @@ class Events extends Component {
 
   render() {
     const {
+      store,
       yearsOfEvents,
       email,
       showNewEvent,
       activeEvent,
-      activeEventYears,
       setActiveEventYears,
       docToRemove,
       introJumbotronHeight,
     } = this.props
-    const showEventsTable = min(activeEventYears) > 2014
+    const showEventsTable = min(store.yearsOfEvents.activeEventYears) > 2014
 
     return (
       <div className="events">
@@ -138,7 +137,6 @@ class Events extends Component {
           <EventsTable
             yearsOfEvents={yearsOfEvents}
             email={email}
-            activeEventYears={activeEventYears}
             setActiveEventYears={setActiveEventYears}
             introJumbotronHeight={introJumbotronHeight}
           />}

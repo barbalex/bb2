@@ -13,14 +13,10 @@ import getDaterowObjectsSinceOldestEvent
 
 const enhance = compose(inject(`store`), observer)
 
-const DateRows = ({
-  store,
-  email,
-  activeEventYears,
-}: { store: Object, email: string, activeEventYears: Array<number> }) => {
+const DateRows = ({ store, email }: { store: Object, email: string }) => {
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(
     store.events.events,
-    activeEventYears,
+    store.yearsOfEvents.activeEventYears,
   )
   const dateRows = []
   if (dateRowObjects.length > 0) {

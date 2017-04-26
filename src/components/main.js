@@ -1,5 +1,4 @@
 // @flow
-import app from 'ampersand-app'
 import React from 'react'
 import DocumentTitle from 'react-document-title'
 import { observer, inject } from 'mobx-react'
@@ -43,7 +42,6 @@ const Main = ({
   login,
   email,
   errors,
-  activeEventYears,
 }: {
   store: Object,
   activePage: Object,
@@ -67,7 +65,6 @@ const Main = ({
   login: boolean,
   email: string,
   errors: Array<Object>,
-  activeEventYears: Array<number>,
 }) => {
   const nonSimplePages = [
     'pages_commentaries',
@@ -140,8 +137,6 @@ const Main = ({
               email={email}
               activeEvent={activeEvent}
               showNewEvent={showNewEvent}
-              activeEventYears={activeEventYears}
-              setActiveEventYears={setActiveEventYears}
             />}
           {showCommentaryPage &&
             <Commentaries
@@ -189,9 +184,3 @@ const Main = ({
 Main.displayName = 'Main'
 
 export default enhance(Main)
-
-React.createClass({
-  setActiveEventYears(activeEventYears) {
-    this.setState({ activeEventYears })
-  },
-})

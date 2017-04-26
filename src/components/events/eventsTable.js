@@ -9,11 +9,9 @@ const headerStyle = { fontSize }
 
 const Events = ({
   introJumbotronHeight,
-  activeEventYears,
   email,
 }: {
   introJumbotronHeight: number,
-  activeEventYears: Array<number>,
   email: string,
 }) => {
   const eventsTableHeadTop = introJumbotronHeight
@@ -48,7 +46,7 @@ const Events = ({
       </div>
       <div className="eventsTable-body">
         <GeminiScrollbar id="eventsTableBody" autoshow>
-          <DateRows email={email} activeEventYears={activeEventYears} />
+          <DateRows email={email} />
         </GeminiScrollbar>
       </div>
     </div>

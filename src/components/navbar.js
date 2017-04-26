@@ -81,6 +81,7 @@ const MyNavbar = ({
     onClickPage,
     onClickLogout,
     onToggleNav,
+    onClickNewActor,
   } = store
   const glyph = editing ? 'eye-open' : 'pencil'
   const id = activePage && activePage._id ? activePage._id : null
