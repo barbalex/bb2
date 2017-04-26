@@ -57,7 +57,7 @@ app.extend({
         this.router = new Router()
         this.router.history.start()
       })
-      .catch(error => console.log('Fehler in app.js:', error))
+      .catch(error => console.log('Fehler in index.js:', error))
   },
 })
 

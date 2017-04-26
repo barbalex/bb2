@@ -1,17 +1,23 @@
 // @flow
 import React from 'react'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+
 import Event from './event.js'
+
+const enhance = compose(inject(`store`), observer)
 
 const mapEventComponents = (events: Array<Object>, email: string) =>
   events.map((ev, key) => <Event key={key} event={ev} email={email} />)
 
 const MonthlyStatisticsRow = ({
+  store,
   dateRowObject: dRO,
-  email,
 }: {
+  store: Object,
   dateRowObject: Object,
-  email: string,
 }) => {
+  const { email } = store.login
   const migrationEvents = mapEventComponents(dRO.migrationEvents, email)
   const politicsEvents = mapEventComponents(dRO.politicsEvents, email)
 
@@ -39,4 +45,4 @@ const MonthlyStatisticsRow = ({
 
 MonthlyStatisticsRow.displayName = 'MonthlyStatisticsRow'
 
-export default MonthlyStatisticsRow
+export default enhance(MonthlyStatisticsRow)

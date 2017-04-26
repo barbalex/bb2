@@ -1,6 +1,8 @@
 // @flow
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
 
 import RemoveEventGlyph from './removeEventGlyph.js'
 import EditEventGlyph from './editEventGlyph.js'
@@ -14,14 +16,16 @@ const outerSpanStyle = {
   paddingLeft: 5,
 }
 
+const enhance = compose(inject(`store`), observer)
+
 const Event = ({
+  store,
   event,
-  email,
 }: {
+  store: Object,
   event: Object,
-  email: string,
 }) => {
-  const showEditingGlyphons = !!email
+  const showEditingGlyphons = !!store.login.email
   const classNames = event.tags && event.tags.length > 0
     ? event.tags.map(tag => `event-${tag}`).join(' ')
     : []
@@ -49,4 +53,4 @@ const Event = ({
 
 Event.displayName = 'Event'
 
-export default Event
+export default enhance(Event)

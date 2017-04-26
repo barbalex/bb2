@@ -29,7 +29,6 @@ class Publications extends Component {
 
   props: {
     store: Object,
-    email: string,
     onClickCategory: () => void,
   }
 
@@ -38,7 +37,7 @@ class Publications extends Component {
   }
 
   publicationCategoriesComponent(activePublicationCategory) {
-    const { store, email, onClickCategory } = this.props
+    const { store, onClickCategory } = this.props
     let publicationCategories = app.publicationsStore.getPublicationCategories()
     const { publications } = store.publications
 
@@ -81,7 +80,7 @@ class Publications extends Component {
                 </a>
               </h4>
             </div>
-            <PublicationsOfCategory category={category} email={email} />
+            <PublicationsOfCategory category={category} />
           </div>
         )
       })

@@ -1,18 +1,23 @@
 // @flow
 import React from 'react'
 import moment from 'moment'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+
 import Event from './event.js'
 
-const mapEventComponents = (events, email) =>
-  events.map((event, key) => <Event key={key} event={event} email={email} />)
+const enhance = compose(inject(`store`), observer)
+
+const mapEventComponents = events =>
+  events.map((event, key) => <Event key={key} event={event} />)
 
 const DateRow = ({
+  store,
   dateRowObject: dRO,
-  email,
-}: { dateRowObject: Object, email: string }) => {
+}: { store: Object, dateRowObject: Object }) => {
   const day = moment(dRO.date).format('D')
-  const migrationEvents = mapEventComponents(dRO.migrationEvents, email)
-  const politicsEvents = mapEventComponents(dRO.politicsEvents, email)
+  const migrationEvents = mapEventComponents(dRO.migrationEvents)
+  const politicsEvents = mapEventComponents(dRO.politicsEvents)
   const dayClassName = migrationEvents.length > 0 || politicsEvents.length > 0
     ? 'eventsTable-cell-day dayWithEvents'
     : 'eventsTable-cell-day'
@@ -40,4 +45,4 @@ const DateRow = ({
 
 DateRow.displayName = 'DateRow'
 
-export default DateRow
+export default enhance(DateRow)

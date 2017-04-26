@@ -22,17 +22,16 @@ const enhance = compose(
 
 const Page = ({
   store,
-  activePage,
   showMeta,
   onClickMeta,
   onCloseMeta,
 }: {
   store: Object,
-  activePage: Object,
   showMeta: boolean,
   onClickMeta: () => void,
   onCloseMeta: () => void,
 }) => {
+  const { activePage } = store.page
   const articleEncoded = activePage.article
   const articleDecoded = Base64.decode(articleEncoded)
   let title = activePage.title ? activePage.title : activePage.category

@@ -26,7 +26,6 @@ class Events extends Component {
 
   props: {
     store: Object,
-    email: string,
     docToRemove: Object,
     introJumbotronHeight: number,
     changeDocToRemove: () => void,
@@ -100,7 +99,7 @@ class Events extends Component {
   }
 
   render() {
-    const { store, email, docToRemove, introJumbotronHeight } = this.props
+    const { store, docToRemove, introJumbotronHeight } = this.props
     const showEventsTable = min(store.yearsOfEvents.activeEventYears) > 2014
     const { activeEvent, showNewEvent } = store.events
 
@@ -121,10 +120,7 @@ class Events extends Component {
           </ButtonGroup>
         </div>
         {showEventsTable &&
-          <EventsTable
-            email={email}
-            introJumbotronHeight={introJumbotronHeight}
-          />}
+          <EventsTable introJumbotronHeight={introJumbotronHeight} />}
         {activeEvent && <EditEvent />}
         {showNewEvent && <NewEvent />}
         {docToRemove &&

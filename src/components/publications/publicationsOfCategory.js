@@ -62,7 +62,6 @@ class PublicationsOfCategory extends Component {
   propTypes: {
     store: Object,
     category: string,
-    email: string,
     docToRemove: Object,
     changeDocToRemove: () => void,
     onClickPublication: () => void,
@@ -163,12 +162,7 @@ class PublicationsOfCategory extends Component {
   }
 
   publicationsComponent(category) {
-    const {
-      store,
-      email,
-      onClickPublication,
-      onClickEventCollapse,
-    } = this.props
+    const { store, onClickPublication, onClickEventCollapse } = this.props
     let { publications, activePublication } = store.publications
     // filter only publication of current category
     publications = publications.filter(
@@ -186,7 +180,7 @@ class PublicationsOfCategory extends Component {
       const isActivePublication = activePublication
         ? doc._id === activePublication._id
         : false
-      const showEditingGlyphons = !!email
+      const showEditingGlyphons = !!store.login.email
       const panelHeadingStyle = {
         position: 'relative',
       }

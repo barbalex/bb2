@@ -38,20 +38,20 @@ const glyphStyle = {
 }
 
 const Errors = ({
-  errors,
+  store,
   onClickGlyph,
 }: {
-  errors: Array<Object>,
+  store: Object,
   onClickGlyph: () => void,
 }) => (
-  <Overlay show={errors.length > 0}>
+  <Overlay show={store.error.errors.length > 0}>
     <div id="errors">
       <Glyphicon
         glyph="remove-circle"
         style={glyphStyle}
         onClick={onClickGlyph}
       />
-      {errors.map((error, index) => (
+      {store.error.errors.map((error, index) => (
         <div className="errorContainer" key={index}>
           <div className="error">
             {error.title &&
@@ -64,7 +64,7 @@ const Errors = ({
               </em>
             </p>
           </div>
-          {index + 1 < errors.length && <hr />}
+          {index + 1 < store.error.errors.length && <hr />}
         </div>
       ))}
     </div>

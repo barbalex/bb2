@@ -21,30 +21,8 @@ const enhance = compose(inject(`store`), observer)
 
 const Main = ({
   store,
-  events,
-  activeEvent,
-  actors,
-  activeActor,
-  showNewCommentary,
-  showNewEvent,
-  showNewActor,
-  showNewPublication,
-  login,
-  email,
-  errors,
 }: {
   store: Object,
-  events: Array<Object>,
-  activeEvent: Object,
-  actors: Array<Object>,
-  activeActor: Object,
-  showNewCommentary: boolean,
-  showNewEvent: boolean,
-  showNewActor: boolean,
-  showNewPublication: boolean,
-  login: boolean,
-  email: string,
-  errors: Array<Object>,
 }) => {
   const { activePage } = store.page
   const nonSimplePages = [
@@ -93,45 +71,22 @@ const Main = ({
     activePage.type &&
     activePage.type === 'pages' &&
     pagesWitCopyright.includes(activePage._id)
-  const showErrors = errors && errors.length > 0
+  const { errors } = store.error
 
   return (
     <DocumentTitle title={pageTitle}>
       <NavHelper>
         <Header />
-        <Navbar
-          activePage={activePage}
-          activeActor={activeActor}
-          email={email}
-        />
+        <Navbar />
         <div className="container">
-          {showErrors && <Errors errors={errors} />}
-          {isSimplePage && <Page activePage={activePage} />}
-          {showEventsPage &&
-            <Events
-              email={email}
-              activeEvent={activeEvent}
-              showNewEvent={showNewEvent}
-            />}
-          {showCommentaryPage &&
-            <Commentaries
-              email={email}
-              showNewCommentary={showNewCommentary}
-            />}
-          {showActorPage &&
-            <Actors
-              actors={actors}
-              activeActor={activeActor}
-              email={email}
-              showNewActor={showNewActor}
-            />}
-          {showMonthlyEventsPage && <MonthlyEvents email={email} />}
-          {showPublicationsPage &&
-            <Publications
-              email={email}
-              showNewPublication={showNewPublication}
-            />}
-          {login && <Login email={email} />}
+          {errors && errors.length > 0 && <Errors />}
+          {isSimplePage && <Page />}
+          {showEventsPage && <Events />}
+          {showCommentaryPage && <Commentaries />}
+          {showActorPage && <Actors />}
+          {showMonthlyEventsPage && <MonthlyEvents />}
+          {showPublicationsPage && <Publications />}
+          {!store.login.email && <Login />}
           {showCopyright &&
             <p style={{ marginTop: 70 }}>
               © Jürg Martin Gabriel. All Rights Reserved.

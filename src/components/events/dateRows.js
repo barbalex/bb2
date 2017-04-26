@@ -13,7 +13,7 @@ import getDaterowObjectsSinceOldestEvent
 
 const enhance = compose(inject(`store`), observer)
 
-const DateRows = ({ store, email }: { store: Object, email: string }) => {
+const DateRows = ({ store }: { store: Object }) => {
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(
     store.events.events,
     store.yearsOfEvents.activeEventYears,
@@ -55,13 +55,10 @@ const DateRows = ({ store, email }: { store: Object, email: string }) => {
           <MonthlyStatisticsRow
             key={`${index}monthlyStatisticsRow`}
             dateRowObject={dROForMonthlyStatsRow}
-            email={email}
           />,
         )
       }
-      dateRows.push(
-        <DateRow key={index} dateRowObject={dROForDateRow} email={email} />,
-      )
+      dateRows.push(<DateRow key={index} dateRowObject={dROForDateRow} />)
     })
     const renderDateRow = (index, key) => dateRows[index]
 

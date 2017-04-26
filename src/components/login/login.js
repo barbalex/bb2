@@ -16,15 +16,11 @@ const enhance = compose(
   observer,
 )
 
-const Login = ({
-  store,
-  email,
-  onClick,
-}: { store: Object, email: string, onClick: () => void }) => (
+const Login = ({ store, onClick }: { store: Object, onClick: () => void }) => (
   <div>
     <h1>Login</h1>
-    {!email && <LoginForm />}
-    {email &&
+    {!store.login.email && <LoginForm />}
+    {store.login.email &&
       <Button className="btn-primary" onClick={onClick}>
         log out
       </Button>}

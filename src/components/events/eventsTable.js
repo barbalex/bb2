@@ -1,18 +1,22 @@
 // @flow
 import React from 'react'
 import GeminiScrollbar from 'react-gemini-scrollbar'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
 
 import DateRows from './dateRows.js'
 
 const fontSize = window.innerWidth < 500 ? 20 : 24
 const headerStyle = { fontSize }
 
+const enhance = compose(inject(`store`), observer)
+
 const Events = ({
+  store,
   introJumbotronHeight,
-  email,
 }: {
+  store: Object,
   introJumbotronHeight: number,
-  email: string,
 }) => {
   const eventsTableHeadTop = introJumbotronHeight
     ? introJumbotronHeight + 88
@@ -46,7 +50,7 @@ const Events = ({
       </div>
       <div className="eventsTable-body">
         <GeminiScrollbar id="eventsTableBody" autoshow>
-          <DateRows email={email} />
+          <DateRows />
         </GeminiScrollbar>
       </div>
     </div>
@@ -55,4 +59,4 @@ const Events = ({
 
 Events.displayName = 'Events'
 
-export default Events
+export default enhance(Events)

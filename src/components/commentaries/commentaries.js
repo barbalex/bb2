@@ -60,7 +60,6 @@ class Commentaries extends Component {
 
   props: {
     store: Object,
-    email: string,
     docToRemove: Object,
     onClickCommentary: () => void,
     onClickCommentaryCollapse: () => void,
@@ -162,13 +161,9 @@ class Commentaries extends Component {
   }
 
   commentariesComponent() {
-    const {
-      store,
-      email,
-      onClickCommentary,
-      onClickCommentaryCollapse,
-    } = this.props
+    const { store, onClickCommentary, onClickCommentaryCollapse } = this.props
     const { commentaries, activeCommentary } = store.commentaries
+    const { email } = store.login
 
     if (commentaries.length > 0) {
       return commentaries.map((doc, index) => {

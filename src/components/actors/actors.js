@@ -54,7 +54,6 @@ class Actors extends Component {
 
   props: {
     store: Object,
-    email: string,
     docToRemove: Object,
     changeDocToRemove: () => void,
     onClickActor: () => void,
@@ -139,7 +138,7 @@ class Actors extends Component {
   }
 
   actorsComponent() {
-    const { store, email, onClickActor, onClickActorCollapse } = this.props
+    const { store, onClickActor, onClickActorCollapse } = this.props
     let { actors, activeActor } = store.actors
     if (actors.length > 0) {
       actors = sortBy(actors, actor => {
@@ -148,7 +147,7 @@ class Actors extends Component {
       })
       return actors.map((doc, index) => {
         const isActiveActor = activeActor ? doc._id === activeActor._id : false
-        const showEditingGlyphons = !!email
+        const showEditingGlyphons = !!store.login.email
         const panelHeadingStyle = {
           position: 'relative',
           cursor: 'pointer',
