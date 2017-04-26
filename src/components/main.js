@@ -132,8 +132,6 @@ const Main = ({
           onClickEdit={onClickEdit}
           onClickNewEvent={onClickNewEvent}
           onClickNewActor={onClickNewActor}
-          onClickNewMonthlyEvent={onClickNewMonthlyEvent}
-          onClickNewPublication={onClickNewPublication}
         />
         <div className="container">
           {showErrors && <Errors errors={errors} />}
@@ -180,9 +178,7 @@ const Main = ({
               activePublication={activePublication}
               editing={editing}
               email={email}
-              onSavePublicationArticle={onSavePublicationArticle}
               showNewPublication={showNewPublication}
-              onCloseNewPublication={onCloseNewPublication}
             />}
           {login && <Login email={email} />}
           {showCopyright &&
@@ -212,20 +208,6 @@ React.createClass({
 
   onClickNewActor() {
     this.setState({ showNewActor: true })
-  },
-
-  onClickNewPublication() {
-    this.setState({ showNewPublication: true })
-  },
-
-  onCloseNewPublication() {
-    this.setState({ showNewPublication: false })
-  },
-
-  onSavePublicationArticle(articleEncoded) {
-    const { activePublication } = this.state
-    activePublication.article = articleEncoded
-    app.Actions.savePublication(activePublication)
   },
 
   onSaveCommentaryArticle(articleEncoded) {

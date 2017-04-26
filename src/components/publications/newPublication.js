@@ -1,4 +1,4 @@
-import app from 'ampersand-app'
+// @flow
 import React from 'react'
 import {
   Modal,
@@ -6,115 +6,127 @@ import {
   Alert,
   FormGroup,
   ControlLabel,
-  FormControl
+  FormControl,
 } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withState from 'recompose/withState'
+import withHandlers from 'recompose/withHandlers'
 
-export default React.createClass({
-  displayName: 'NewMonthlyEvent',
+const alertStyle = {
+  marginBottom: 10,
+}
+const categoryOptions = publicationCategories => {
+  const options = publicationCategories.map((category, index) => (
+    <option key={index + 1} value={category}>{category}</option>
+  ))
+  options.unshift(<option key={0} value={null} />)
+  return options
+}
 
-  propTypes: {
-    onCloseNewPublication: React.PropTypes.func,
-    title: React.PropTypes.string,
-    category: React.PropTypes.string,
-    error: React.PropTypes.string
-  },
+const enhance = compose(
+  inject(`store`),
+  withState('title', 'changeTitle', ''),
+  withState('category', 'changeCategory', ''),
+  withState('error', 'changeError', ''),
+  withHandlers({
+    onChangeTitle: props => (event: Object): void =>
+      props.changeTitle(event.target.value),
+    onChangeCategory: props => (event: Object): void =>
+      props.changeCategory(event.target.value),
+    createNewPublication: props => () => {
+      const { title, category, changeError, store } = props
+      if (title && category) {
+        store.publications.newPublication(category, title)
+        store.publications.setShowNewPublication(false)
+      } else {
+        const error = title ? 'Please choose a category' : 'Please set a title'
+        changeError(error)
+      }
+    },
+    close: props => () => {
+      props.store.publications.setShowNewPublication(false)
+    },
+  }),
+  observer,
+)
 
-  getInitialState() {
-    return {
-      title: '',
-      category: '',
-      error: null
-    }
-  },
+const NewPublication = ({
+  store,
+  title,
+  category,
+  error,
+  changeTitle,
+  changeCategory,
+  changeError,
+  onChangeTitle,
+  onChangeCategory,
+  createNewPublication,
+  close,
+}: {
+  store: Object,
+  title: string,
+  category: string,
+  error: string,
+  changeTitle: () => void,
+  changeCategory: () => void,
+  changeError: () => void,
+  onChangeTitle: () => void,
+  onChangeCategory: () => void,
+  createNewPublication: () => void,
+  close: () => void,
+}) => {
+  const publicationCategories = store.publications.getPublicationCategories()
 
-  onChangeTitle(event) {
-    const title = event.target.value
-    this.setState({ title })
-  },
+  return (
+    <Modal show onHide={close} bsSize="large">
+      <Modal.Header>
+        <Modal.Title>
+          New publication
+        </Modal.Title>
+      </Modal.Header>
 
-  onChangeCategory(event) {
-    const category = event.target.value
-    this.setState({ category })
-  },
+      <Modal.Body>
+        <FormGroup controlId="event">
+          <ControlLabel>Title</ControlLabel>
+          <FormControl
+            type="text"
+            value={title}
+            onChange={onChangeTitle}
+            tabIndex={1}
+            autoFocus
+          />
+        </FormGroup>
+        <FormGroup controlId="category">
+          <ControlLabel>Category</ControlLabel>
+          <FormControl
+            componentClass="select"
+            value={category}
+            onChange={onChangeCategory}
+            tabIndex={2}
+          >
+            {categoryOptions(publicationCategories)}
+          </FormControl>
+        </FormGroup>
+        {error &&
+          <Alert bsStyle="danger" style={alertStyle}>
+            {error}
+          </Alert>}
+      </Modal.Body>
 
-  createNewPublication() {
-    const { onCloseNewPublication } = this.props
-    const { title, category } = this.state
-    if (title && category) {
-      app.Actions.newPublication(category, title)
-      onCloseNewPublication()
-    } else {
-      let error = 'Please choose a category'
-      if (!title) error = 'Please set a title'
-      this.setState({ error })
-    }
-  },
+      <Modal.Footer>
+        <Button onClick={close}>
+          discard input and close
+        </Button>
+        <Button bsStyle="primary" onClick={createNewPublication}>
+          create new publication
+        </Button>
+      </Modal.Footer>
 
-  close() {
-    const { onCloseNewPublication } = this.props
-    onCloseNewPublication()
-  },
+    </Modal>
+  )
+}
 
-  categoryOptions() {
-    const publicationCategories = app.publicationsStore.getPublicationCategories()
-    const options = publicationCategories.map((category, index) => (
-      <option key={index + 1} value={category}>{category}</option>
-    ))
-    options.unshift(<option key={0} value={null} />)
-    return options
-  },
+NewPublication.displayName = 'NewPublication'
 
-  render() {
-    const { title, category, error } = this.state
-    const alertStyle = {
-      marginBottom: 10
-    }
-    return (
-      <Modal show onHide={this.close} bsSize="large">
-        <Modal.Header>
-          <Modal.Title>
-            New publication
-          </Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <FormGroup controlId="event">
-            <ControlLabel>Title</ControlLabel>
-            <FormControl
-              type="text"
-              value={title}
-              onChange={this.onChangeTitle}
-              tabIndex={1}
-              autoFocus
-            />
-          </FormGroup>
-          <FormGroup controlId="category">
-            <ControlLabel>Category</ControlLabel>
-            <FormControl
-              componentClass="select"
-              value={category}
-              onChange={this.onChangeCategory}
-              tabIndex={2}
-            >
-              {this.categoryOptions()}
-            </FormControl>
-          </FormGroup>
-          {error &&
-            <Alert bsStyle="danger" style={alertStyle}>
-              {error}
-            </Alert>}
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button onClick={this.close}>
-            discard input and close
-          </Button>
-          <Button bsStyle="primary" onClick={this.createNewPublication}>
-            create new publication
-          </Button>
-        </Modal.Footer>
-
-      </Modal>
-    )
-  }
-})
+export default enhance(NewPublication)

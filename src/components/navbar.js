@@ -47,6 +47,9 @@ const enhance = compose(
     },
     onClickNewCommentary: props => () =>
       props.store.commentaries.toggleShowNewCommentary(),
+    onClickNewPublication: props => () => {
+      props.store.publications.setShowNewPublication(true)
+    },
   }),
   observer,
 )
@@ -55,14 +58,16 @@ const MyNavbar = ({
   store,
   navExpanded,
   onClickNewCommentary,
+  onClickNewPublication,
 }: {
   store: Object,
   navExpanded: boolean,
   onClickNewCommentary: () => void,
+  onClickNewPublication: () => void,
 }) => {
   const { activePage } = store.page
-  const { activeMonthlyEvent, onClickNewMonthlyEvent } = store.monthlyEvents
-  const { activePublication, onClickNewPublication } = store.publications
+  const { activeMonthlyEvent } = store.monthlyEvents
+  const { activePublication } = store.publications
   const { activeCommentary } = store.commentaries
   const {
     activeActor,
@@ -94,15 +99,9 @@ const MyNavbar = ({
   const showAddCommentary = email && activePage._id === 'pages_commentaries'
   const showAddEvent = email && activePage._id === 'pages_events'
   const showAddActor = email && activePage._id === 'pages_actors'
-  const showAddMonthlyEvent = email && activePage._id === 'pages_monthlyEvents'
   const showAddPublication = email && activePage._id === 'pages_publications'
   const showNavbarRight =
-    email ||
-    showEdit ||
-    showAddCommentary ||
-    showAddEvent ||
-    showAddActor ||
-    showAddMonthlyEvent
+    email || showEdit || showAddCommentary || showAddEvent || showAddActor
 
   return (
     <Navbar
@@ -202,19 +201,6 @@ const MyNavbar = ({
                 }
               >
                 <NavItem onClick={onClickNewActor}>
-                  <Glyphicon glyph="plus" />
-                </NavItem>
-              </OverlayTrigger>}
-            {showAddMonthlyEvent &&
-              <OverlayTrigger
-                placement="bottom"
-                overlay={
-                  <Tooltip id="newMonthlyEvent">
-                    new monthly event
-                  </Tooltip>
-                }
-              >
-                <NavItem onClick={onClickNewMonthlyEvent}>
                   <Glyphicon glyph="plus" />
                 </NavItem>
               </OverlayTrigger>}

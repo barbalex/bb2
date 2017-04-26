@@ -72,6 +72,8 @@ function Store(): void {
     getPublicationsCallback: null,
     getPublications: null,
     newPublication: null,
+    showNewPublication: null,
+    setShowNewPublication: null,
     getPublication: null,
     updatePublicationInCache: null,
     revertCache: null,

@@ -64,6 +64,11 @@ export default (store: Object): void => {
         store.publications.savePublication(publication)
       },
     ),
+    showNewPublication: null,
+
+    setShowNewPublication: action('setShowNewPublication', show => {
+      store.publications.showNewPublication = show
+    }),
 
     getPublication: action('getPublication', (id: ?string): void => {
       if (!id) {

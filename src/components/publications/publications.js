@@ -1,31 +1,46 @@
+// @flow
 import app from 'ampersand-app'
-import React from 'react'
-import { sortBy } from 'lodash'
+import React, { Component } from 'react'
+import sortBy from 'lodash/sortBy'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+import withHandlers from 'recompose/withHandlers'
+
 import PublicationsOfCategory from './publicationsOfCategory.js'
 import NewPublication from './newPublication.js'
 
-export default React.createClass({
-  displayName: 'Publications',
+const containerStyle = {
+  marginBottom: 20,
+}
 
-  propTypes: {
-    publications: React.PropTypes.array,
-    activePublication: React.PropTypes.object,
-    activePublicationCategory: React.PropTypes.string,
-    editing: React.PropTypes.bool,
-    email: React.PropTypes.string,
-    onSavePublicationArticle: React.PropTypes.func,
-    onCloseNewPublication: React.PropTypes.func,
-    showNewPublication: React.PropTypes.bool
-  },
+const enhance = compose(
+  inject(`store`),
+  withHandlers({
+    onClickCategory: props => (activePublicationCategory: string): void =>
+      props.store.publications.setPublicationCategory(
+        activePublicationCategory,
+      ),
+  }),
+  observer,
+)
+
+class Publications extends Component {
+  displayName: 'Publications'
+
+  props: {
+    store: Object,
+    publications: Array<Object>,
+    activePublication: Object,
+    activePublicationCategory: string,
+    editing: boolean,
+    email: string,
+    showNewPublication: boolean,
+    onClickCategory: () => void,
+  }
 
   componentDidMount() {
     app.Actions.getPublications()
-  },
-
-  onClickCategory(activePublicationCategory) {
-    // console.log('category clicked:', activePublicationCategory)
-    app.Actions.setPublicationCategory(activePublicationCategory)
-  },
+  }
 
   publicationCategoriesComponent(activePublicationCategory) {
     const {
@@ -33,22 +48,22 @@ export default React.createClass({
       activePublication,
       editing,
       email,
-      onSavePublicationArticle
+      onClickCategory,
     } = this.props
     let publicationCategories = app.publicationsStore.getPublicationCategories()
 
     if (publications.length > 0 && publicationCategories.length > 0) {
-      publicationCategories = sortBy(publicationCategories, (cat) => {
+      publicationCategories = sortBy(publicationCategories, cat => {
         const orderByCategory = {
           Academic: 3,
           'European Union': 1,
-          'IOs & NGOs': 2
+          'IOs & NGOs': 2,
         }
         let order = orderByCategory[cat]
         if (!order) order = 4
         return order
       })
-      return publicationCategories.map((category) => {
+      return publicationCategories.map(category => {
         // deactivated when changed to showing open list:
         // const className = (
         //   category === activePublicationCategory ?
@@ -59,13 +74,9 @@ export default React.createClass({
           <div
             key={category}
             className="panel panel-default category active"
-            onClick={this.onClickCategory.bind(this, category)}
+            onClick={onClickCategory.bind(this, category)}
           >
-            <div
-              className="panel-heading"
-              role="tab"
-              id={`heading${category}`}
-            >
+            <div className="panel-heading" role="tab" id={`heading${category}`}>
               <h4 className="panel-title">
                 <a
                   className="collapsed"
@@ -86,47 +97,29 @@ export default React.createClass({
               activePublication={activePublication}
               editing={editing}
               email={email}
-              onSavePublicationArticle={onSavePublicationArticle}
             />
           </div>
         )
       })
     }
     return null
-  },
+  }
 
   render() {
-    const {
-      activePublicationCategory,
-      showNewPublication,
-      onCloseNewPublication
-    } = this.props
-    const divStyle = {
-      marginBottom: 20
-    }
+    const { activePublicationCategory, showNewPublication } = this.props
 
     return (
-      <div
-        id="publications"
-        style={divStyle}
-      >
+      <div id="publications" style={containerStyle}>
         <h1>
           Publications
         </h1>
-        <div
-          className="panel-group"
-          id="publicationsAccordion"
-          role="tablist"
-        >
+        <div className="panel-group" id="publicationsAccordion" role="tablist">
           {this.publicationCategoriesComponent(activePublicationCategory)}
         </div>
-        {
-          showNewPublication &&
-          <NewPublication
-            onCloseNewPublication={onCloseNewPublication}
-          />
-        }
+        {showNewPublication && <NewPublication />}
       </div>
     )
   }
-})
+}
+
+export default enhance(Publications)

@@ -67,7 +67,6 @@ class PublicationsOfCategory extends Component {
     editing: boolean,
     email: string,
     docToRemove: Object,
-    onSavePublicationArticle: () => void,
     changeDocToRemove: () => void,
     onClickPublication: () => void,
     onClickEventCollapse: () => void,
@@ -170,7 +169,6 @@ class PublicationsOfCategory extends Component {
       activePublication,
       editing,
       email,
-      onSavePublicationArticle,
       onClickPublication,
       onClickEventCollapse,
     } = this.props
@@ -248,7 +246,6 @@ class PublicationsOfCategory extends Component {
                 <Publication
                   activePublication={activePublication}
                   editing={editing}
-                  onSavePublicationArticle={onSavePublicationArticle}
                 />
               </div>
             </div>}
