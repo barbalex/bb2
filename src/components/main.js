@@ -73,10 +73,6 @@ const Main = ({
     pagesWitCopyright.includes(activePage._id)
   const { errors } = store.error
 
-  console.log('main: activePage:', activePage)
-  console.log('main: activePage.type:', activePage.type)
-  console.log('main: isSimplePage:', isSimplePage)
-
   return (
     <DocumentTitle title={pageTitle}>
       <NavHelper>

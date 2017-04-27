@@ -1,5 +1,6 @@
 // @flow
 import extendStore from './extend'
+import moment from 'moment'
 
 function Store(): void {
   this.page = {
@@ -23,9 +24,9 @@ function Store(): void {
     saveMonthlyEvent: null,
   }
   this.yearsOfEvents = {
-    yearsOfEvents: [],
+    yearsOfEvents: [parseInt(moment().format('YYYY'), 0)],
     getYearsOfEvents: null,
-    activeEventYears: null,
+    activeEventYears: [parseInt(moment().format('YYYY'), 0)],
     setActiveEventYears: null,
   }
   this.events = {
