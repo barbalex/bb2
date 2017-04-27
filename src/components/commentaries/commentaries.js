@@ -38,18 +38,12 @@ const enhance = compose(
     onRemoveCommentary: props => (docToRemove, event) => {
       event.preventDefault()
       event.stopPropagation()
-      props.changeDocToRemove(docToRemove)
+      props.store.commentaries.setCommentaryToRemove(docToRemove)
     },
     onToggleDraft: props => (doc, event) => {
       event.preventDefault()
       event.stopPropagation()
       props.store.commentaries.toggleDraftOfCommentary(doc)
-    },
-    removeCommentary: props => remove => {
-      if (remove) {
-        props.store.commentaries.removeCommentary(props.docToRemove)
-      }
-      props.changeDocToRemove(null)
     },
   }),
   observer,
@@ -60,12 +54,10 @@ class Commentaries extends Component {
 
   props: {
     store: Object,
-    docToRemove: Object,
     onClickCommentary: () => void,
     onClickCommentaryCollapse: () => void,
     onRemoveCommentary: () => void,
     onToggleDraft: () => void,
-    removeCommentary: () => void,
   }
 
   componentDidMount() {
@@ -249,11 +241,16 @@ class Commentaries extends Component {
   }
 
   render() {
-    const { store, docToRemove, removeCommentary } = this.props
-    const { activeCommentary, showNewCommentary } = store.commentaries
+    const { store } = this.props
+    const {
+      activeCommentary,
+      showNewCommentary,
+      commentaryToRemove,
+    } = store.commentaries
     const activeCommentaryId = has(activeCommentary, '_id')
       ? activeCommentary._id
       : null
+
     return (
       <div className="commentaries">
         <h1>
@@ -267,11 +264,7 @@ class Commentaries extends Component {
           {this.commentariesComponent()}
         </PanelGroup>
         {showNewCommentary && <NewCommentary />}
-        {docToRemove &&
-          <ModalRemoveCommentary
-            doc={docToRemove}
-            removeCommentary={removeCommentary}
-          />}
+        {commentaryToRemove && <ModalRemoveCommentary />}
       </div>
     )
   }
