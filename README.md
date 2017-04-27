@@ -5,7 +5,7 @@ Most mi­grants and re­fu­gees ar­ri­ving in Eu­ro­pe cross the blue bor­
 
 This project succeeds [bb](https://github.com/barbalex/bb).
 
-It was deeply refactored to use new technologies to maximize maintainability.
+It was deeply refactored to use new technologies and maximize maintainability.
 
 ## Used technologies:
 
@@ -16,4 +16,4 @@ It was deeply refactored to use new technologies to maximize maintainability.
 - [MobX](//github.com/mobxjs/mobx): Computed data like in Excel. Simpler than redux
 - [recompose](//github.com/acdlite/recompose): Easily separate logic from interface
 - [React](//facebook.github.io/react): Declarative user interface. Built from components
-- [Flow](//flow.org): Static type checker. Find errors before running the code
+- [Flow](//flow.org): Static type checker. Find errors before the code runs
