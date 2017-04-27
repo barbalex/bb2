@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
-import { has } from 'lodash'
+import has from 'lodash/has'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'

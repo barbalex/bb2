@@ -1,22 +1,21 @@
 import app from 'ampersand-app'
-import { map } from 'lodash'
+import map from 'lodash/map'
 import sortPublications from './sortPublications.js'
 
 const options = {
   include_docs: true,
   startkey: 'publications_',
-  endkey: 'publications_\uffff'
+  endkey: 'publications_\uffff',
 }
 
 export default () =>
   new Promise((resolve, reject) =>
-    app.db.allDocs(options)
-      .then((result) => {
+    app.db
+      .allDocs(options)
+      .then(result => {
         let publications = map(result.rows, 'doc')
         publications = sortPublications(publications)
         resolve(publications)
       })
-      .catch((error) =>
-        reject('Error fetching publications:', error)
-      )
+      .catch(error => reject('Error fetching publications:', error)),
   )

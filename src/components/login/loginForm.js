@@ -9,7 +9,7 @@ import {
   ControlLabel,
   FormControl,
 } from 'react-bootstrap'
-import { isObject } from 'lodash'
+import isObject from 'lodash/isObject'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'

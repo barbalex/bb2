@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { max } from 'lodash'
+import max from 'lodash/max'
 import getDateFromEventId from './getDateFromEventId.js'
 
 export default (events, activeEventYears) => {
