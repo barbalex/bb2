@@ -1,3 +1,4 @@
+// @flow
 import app from 'ampersand-app'
 import PouchDB from 'pouchdb'
 import pouchdbUpsert from 'pouchdb-upsert'

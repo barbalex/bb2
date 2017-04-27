@@ -1,3 +1,4 @@
+// @flow
 import app from 'ampersand-app'
 import map from 'lodash/map'
 import sortActors from './sortActors.js'
@@ -8,14 +9,12 @@ const options = {
   endkey: 'actors_\uffff',
 }
 
-export default () =>
-  new Promise((resolve, reject) =>
-    app.db
-      .allDocs(options)
-      .then(result => {
-        let actors = map(result.rows, 'doc')
-        actors = sortActors(actors)
-        resolve(actors)
-      })
-      .catch(error => reject('Error fetching actors:', error)),
-  )
+export default (store: Object): Promise<Array<Object>> =>
+  app.db
+    .allDocs(options)
+    .then(result => {
+      let actors = map(result.rows, 'doc')
+      actors = sortActors(actors)
+      return actors
+    })
+    .catch(error => store.error.showError('Error fetching actors:', error))

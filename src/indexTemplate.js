@@ -1,6 +1,5 @@
-'use strict'
-
-module.exports = () => {
+// @flow
+module.exports = (): string => {
   const isDev = process.env.NODE_ENV !== 'production'
   const jsPath = isDev ? '/app.js' : '/bb.1.0.0.js'
   const cssPath = isDev ? '' : '/bb.1.0.0.css'
