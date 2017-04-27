@@ -19,7 +19,11 @@ const Publication = ({
   if (store.editing) {
     return (
       <div className="publication">
-        <Editor docType="publication" articleDecoded={articleDecoded} />
+        <Editor
+          docType="publication"
+          doc={store.publications.activePublication}
+          articleDecoded={articleDecoded}
+        />
       </div>
     )
   }

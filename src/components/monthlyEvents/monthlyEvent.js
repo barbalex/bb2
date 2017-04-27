@@ -53,7 +53,11 @@ const MonthlyEvent = ({
             month={month}
             onCloseMeta={onCloseMeta}
           />}
-        <Editor docType="monthlyEvent" articleDecoded={articleDecoded} />
+        <Editor
+          docType="monthlyEvent"
+          doc={store.monthlyEvents.activeMonthlyEvent}
+          articleDecoded={articleDecoded}
+        />
         <Button style={metaButtonStyle} onClick={onClickMeta}>
           arrivals & victims
         </Button>

@@ -32,11 +32,9 @@ import 'tinymce/plugins/autosave'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
-import withState from 'recompose/withState'
 
 const enhance = compose(
   inject(`store`),
-  withState('doc', 'changeDoc', {}),
   withHandlers({
     onSavePageArticle: props => articleEncoded => {
       const { activePage } = props.store.page
@@ -44,7 +42,6 @@ const enhance = compose(
       props.store.page.savePage(activePage)
     },
     onSaveCommentaryArticle: props => articleEncoded => {
-      console.log('saving commentary')
       const { activeCommentary } = props.store.commentaries
       activeCommentary.article = articleEncoded
       props.store.commentaries.saveCommentary(activeCommentary)
@@ -94,7 +91,6 @@ class Editor extends Component {
       onSavePublicationArticle,
       onSaveCommentaryArticle,
       onSaveActorArticle,
-      changeDoc,
     } = this.props
     // height = window - menu height - (menubar + iconbar)
     let height = window.innerHeight - 52 - 74
@@ -107,43 +103,35 @@ class Editor extends Component {
     // need to add specific classes to the iframe body because my css will not apply otherwise
     let bodyClass = ''
     let saveFunction = () => {}
-    let localDoc = {}
     switch (docType) {
       case 'page':
         bodyClass = ''
-        localDoc = store.page.activePage
         saveFunction = onSavePageArticle
         break
       case 'monthlyEvent':
         bodyClass = 'monthlyEvent'
-        localDoc = store.monthlyEvents.activeMonthlyEvent
         saveFunction = onSaveMonthlyEventArticle
         break
       case 'publication':
         bodyClass = 'publication'
-        localDoc = store.publications.activePublication
         saveFunction = onSavePublicationArticle
         break
       case 'commentary':
         bodyClass = 'commentary'
-        localDoc = store.commentaries.activeCommentary
         saveFunction = onSaveCommentaryArticle
         break
       case 'actor':
         bodyClass = 'actor'
-        localDoc = store.actors.activeActor
         saveFunction = onSaveActorArticle
         break
       default:
         return store.error.showEdit('no or wrong docType passed to editor.js')
     }
-    changeDoc(localDoc)
-    console.log('componentDidMount, localDoc._id:', localDoc._id)
 
     // see: https://www.ephox.com/blog/how-to-integrate-react-with-tinymce
     // add codemirror? see: https://github.com/christiaan/tinymce-codemirror
     tinymce.init({
-      selector: `#${localDoc._id}`,
+      selector: `#${doc._id}`,
       theme: 'modern',
       plugins: [
         'advlist autolink link image lists charmap print hr anchor pagebreak',
@@ -164,13 +152,12 @@ class Editor extends Component {
         editor.on('change undo redo', () => {
           const articleDecoded = editor.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
-          console.log('saving')
           saveFunction(articleEncoded)
         })
       },
     })
     // scroll editor to top in pages
-    if (localDoc.type === 'pages') {
+    if (doc.type === 'pages') {
       window.$('html, body').animate(
         {
           scrollTop: 140,
@@ -195,7 +182,6 @@ class Editor extends Component {
 
   render() {
     const { doc, articleDecoded } = this.props
-    console.log('render, doc._id:', doc._id)
     return <textarea id={doc._id} defaultValue={articleDecoded} />
   }
 }

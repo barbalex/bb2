@@ -48,7 +48,11 @@ const Page = ({
     return (
       <div className="page">
         {showMeta && <Meta doc={activePage} onCloseMeta={onCloseMeta} />}
-        <Editor docType="page" articleDecoded={articleDecoded} />
+        <Editor
+          docType="page"
+          doc={activePage}
+          articleDecoded={articleDecoded}
+        />
         <Button style={metaButtonStyle} onClick={onClickMeta}>
           images
         </Button>

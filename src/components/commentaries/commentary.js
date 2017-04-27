@@ -45,7 +45,11 @@ const Commentary = ({
     return (
       <div className="commentary">
         {showMeta && <Meta doc={activeCommentary} onCloseMeta={onCloseMeta} />}
-        <Editor docType="commentary" articleDecoded={articleDecoded} />
+        <Editor
+          docType="commentary"
+          doc={activeCommentary}
+          articleDecoded={articleDecoded}
+        />
         <Button style={metaButtonStyle} onClick={onClickMeta}>
           images
         </Button>
