@@ -5,7 +5,7 @@ export default (store: Object): void => {
   extendObservable(store.login, {
     getLogin: action('getLogin', (): ?string => window.localStorage.email),
 
-    email: computed(() => window.localStorage.email),
+    email: computed(() => window.localStorage.email, { name: 'email' }),
 
     login: action('login', (email: string): void => {
       // change email only if it was passed
