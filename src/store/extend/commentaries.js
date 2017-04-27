@@ -122,6 +122,7 @@ export default (store: Object): void => {
           })
         })
     }),
+
     removeCommentaryFromCache: action(
       'removeCommentaryFromCache',
       (commentary: Object): void => {

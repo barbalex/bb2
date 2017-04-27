@@ -142,6 +142,12 @@ export default (store: Object): void => {
       })
     }),
 
+    actorToRemove: null,
+
+    setActorToRemove: action('setActorToRemove', (actor: Object): void => {
+      store.actors.actorToRemove = actor
+    }),
+
     toggleDraftOfActor: action('toggleDraftOfActor', (actor: Object): void => {
       if (actor.draft === true) {
         delete actor.draft

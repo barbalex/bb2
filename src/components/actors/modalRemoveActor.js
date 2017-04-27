@@ -8,28 +8,37 @@ import withHandlers from 'recompose/withHandlers'
 const enhance = compose(
   inject(`store`),
   withHandlers({
-    remove: props => () => props.store.actors.removeActor(props.doc),
-    abort: props => () => props.store.actors.setShowNewActor(false),
+    remove: props => () => {
+      const {
+        actorToRemove,
+        removeActor,
+        setActorToRemove,
+      } = props.store.actors
+      removeActor(actorToRemove)
+      setActorToRemove(null)
+    },
+    abort: props => () => props.store.actors.setActorToRemove(null),
   }),
   observer,
 )
 
 const ModalRemoveActor = ({
   store,
-  doc,
   remove,
   abort,
-}: { store: Object, doc: Object, remove: () => void, abort: () => void }) => (
+}: { store: Object, remove: () => void, abort: () => void }) => (
   <div className="static-modal">
     <Modal.Dialog>
       <Modal.Header>
         <Modal.Title>
-          Remove actor "{doc.category}"
+          Remove actor "{store.actors.actorToRemove.category}"
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
-          Are you sure you want to remove actor "{doc.category}"?
+          Are you sure you want to remove actor "
+          {store.actors.actorToRemove.category}
+          "?
         </p>
       </Modal.Body>
       <Modal.Footer>

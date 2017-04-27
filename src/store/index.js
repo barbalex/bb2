@@ -102,6 +102,8 @@ function Store(): void {
     saveActor: null,
     removeActorFromCache: null,
     removeActor: null,
+    actorToRemove: null,
+    setActorToRemove: null,
     toggleDraftOfActor: null,
   }
   /*

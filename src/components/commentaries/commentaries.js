@@ -5,7 +5,6 @@ import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
 import has from 'lodash/has'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
-import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 
 import Commentary from './commentary.js'
@@ -22,7 +21,6 @@ const glyphStyle = {
 
 const enhance = compose(
   inject(`store`),
-  withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
     onClickCommentary: props => (id, e) => {
       const { activeCommentary, getCommentary } = props.store.commentaries

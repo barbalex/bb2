@@ -5,7 +5,6 @@ import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
 import sortBy from 'lodash/sortBy'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
-import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 
 import Actor from './actor.js'
@@ -22,7 +21,6 @@ const glyphStyle = {
 
 const enhance = compose(
   inject(`store`),
-  withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
     onClickActor: props => (id, e) => {
       const { activeActor } = props.store.actors
@@ -38,7 +36,7 @@ const enhance = compose(
     onRemoveActor: props => (docToRemove, event) => {
       event.preventDefault()
       event.stopPropagation()
-      props.changeDocToRemove(props.docToRemove)
+      props.store.actors.setActorToRemove(docToRemove)
     },
     onToggleDraft: props => (doc, event) => {
       event.preventDefault()
@@ -54,8 +52,6 @@ class Actors extends Component {
 
   props: {
     store: Object,
-    docToRemove: Object,
-    changeDocToRemove: () => void,
     onClickActor: () => void,
     onClickActorCollapse: () => void,
     onRemoveActor: () => void,
@@ -237,7 +233,7 @@ class Actors extends Component {
   }
 
   render() {
-    const { store, docToRemove } = this.props
+    const { store } = this.props
     const { activeActor, showNewActor } = store.actors
     const activeId = activeActor ? activeActor._id : null
 
@@ -247,7 +243,7 @@ class Actors extends Component {
           {this.actorsComponent()}
         </PanelGroup>
         {showNewActor && <NewActor />}
-        {docToRemove && <ModalRemoveActor doc={docToRemove} />}
+        {store.actors.actorToRemove && <ModalRemoveActor />}
       </div>
     )
   }
