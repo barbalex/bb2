@@ -5,7 +5,7 @@ import { Base64 } from 'js-base64'
 import slug from 'slug'
 
 import getPublications from '../../modules/getPublications.js'
-import getPathFromDoc from '../../modules/getPathFromDoc.js'
+import getPathFromDocId from '../../modules/getPathFromDocId'
 import sortPublications from '../../modules/sortPublications.js'
 import uniq from 'lodash/uniq'
 
@@ -28,8 +28,8 @@ export default (store: Object): void => {
 
     getPublicationsCallback: null,
 
-    getPublications: action('getPublications', (): void =>
-      getPublications()
+    getPublications: action('getPublications', (): void => {
+      getPublications(store)
         .then(publications => {
           store.publications.publications = publications
           if (store.publications.getPublicationsCallback) {
@@ -41,8 +41,8 @@ export default (store: Object): void => {
           store.error.showError({
             msg: error,
           }),
-        ),
-    ),
+        )
+    }),
 
     newPublication: action(
       'newPublication',
@@ -76,25 +76,8 @@ export default (store: Object): void => {
         store.publications.activePublicationId = null
       } else {
         store.publications.activePublicationId = id
-        if (store.publications.publications.length === 0) {
-          // on first load publications is empty
-          // need to wait until onGetPublications fires
-          store.publications.getPublicationsCallback = () => {
-            const publication = store.publications.publications.find(
-              p => p._id === id,
-            )
-            store.publications.activePublicationCategory = publication.category
-            const path = getPathFromDoc(publication)
-            app.router.navigate(`/${path}`)
-          }
-        } else {
-          const publication = store.publications.publications.find(
-            p => p._id === id,
-          )
-          store.publications.activePublicationCategory = publication.category
-          const path = getPathFromDoc(publication)
-          app.router.navigate(`/${path}`)
-        }
+        const path = getPathFromDocId(id)
+        app.router.navigate(`/${path}`)
       }
     }),
 

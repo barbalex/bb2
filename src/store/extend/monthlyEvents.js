@@ -3,7 +3,7 @@ import { extendObservable, action } from 'mobx'
 import app from 'ampersand-app'
 
 import getMonthlyEvents from '../../modules/getMonthlyEvents.js'
-import getPathFromDoc from '../../modules/getPathFromDoc.js'
+import getPathFromDocId from '../../modules/getPathFromDocId'
 import sortMonthlyEvents from '../../modules/sortMonthlyEvents.js'
 
 export default (store: Object): void => {
@@ -24,8 +24,8 @@ export default (store: Object): void => {
 
     getMonthlyEventsCallback: null,
 
-    getMonthlyEvents: action('getMonthlyEvents', (): void =>
-      getMonthlyEvents()
+    getMonthlyEvents: action('getMonthlyEvents', (): void => {
+      getMonthlyEvents(store)
         .then(monthlyEvents => {
           store.monthlyEvents.monthlyEvents = monthlyEvents
           if (store.monthlyEvents.getMonthlyEventsCallback) {
@@ -37,32 +37,16 @@ export default (store: Object): void => {
           store.error.showError({
             msg: error,
           }),
-        ),
-    ),
+        )
+    }),
     getMonthlyEvent: action('getMonthlyEvent', (id: ?string): void => {
       if (!id) {
         app.router.navigate('/monthlyEvents')
         store.monthlyEvents.activeMonthlyEventId = null
       } else {
-        if (store.monthlyEvents.monthlyEvents.length === 0) {
-          // on first load monthlyEvents is empty
-          // need to wait until onGetMonthlyEvents fires
-          store.monthlyEvents.getMonthlyEventsCallback = () => {
-            const monthlyEvent = store.monthlyEvents.monthlyEvents.find(
-              me => me._id === id,
-            )
-            const path = getPathFromDoc(monthlyEvent)
-            app.router.navigate(`/${path}`)
-            store.monthlyEvents.activeMonthlyEventId = id
-          }
-        } else {
-          const monthlyEvent = store.monthlyEvents.monthlyEvents.find(
-            me => me._id === id,
-          )
-          const path = getPathFromDoc(monthlyEvent)
-          app.router.navigate(`/${path}`)
-          store.monthlyEvents.activeMonthlyEventId = id
-        }
+        store.monthlyEvents.activeMonthlyEventId = id
+        const path = getPathFromDocId(id)
+        app.router.navigate(`/${path}`)
       }
     }),
     updateMonthlyEventsInCache: action(
