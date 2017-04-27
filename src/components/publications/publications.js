@@ -1,5 +1,4 @@
 // @flow
-import app from 'ampersand-app'
 import React, { Component } from 'react'
 import sortBy from 'lodash/sortBy'
 import { observer, inject } from 'mobx-react'
