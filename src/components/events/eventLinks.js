@@ -25,8 +25,8 @@ const enhance = compose(
         url: '',
         label: '',
       }
-      props.activeEvent.links.push(newLink)
-      props.store.events.saveEvent(props.activeEvent)
+      props.store.events.activeEvent.links.push(newLink)
+      props.store.events.saveEvent(props.store.events.activeEvent)
     },
     onCloseMeta: props => () => props.changeShowMeta(false),
   }),

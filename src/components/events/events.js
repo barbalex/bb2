@@ -90,16 +90,8 @@ class Events extends Component {
     ))
   }
 
-  removeEvent(remove) {
-    const { docToRemove, changeDocToRemove, store } = this.props
-    if (remove) {
-      store.events.removeEvent(docToRemove)
-    }
-    changeDocToRemove(null)
-  }
-
   render() {
-    const { store, docToRemove, introJumbotronHeight } = this.props
+    const { store, introJumbotronHeight } = this.props
     const showEventsTable = min(store.yearsOfEvents.activeEventYears) > 2014
     const { activeEvent, showNewEvent } = store.events
 
@@ -123,8 +115,7 @@ class Events extends Component {
           <EventsTable introJumbotronHeight={introJumbotronHeight} />}
         {activeEvent && <EditEvent />}
         {showNewEvent && <NewEvent />}
-        {docToRemove &&
-          <ModalRemoveEvent doc={docToRemove} removeEvent={this.removeEvent} />}
+        {store.events.eventToRemove && <ModalRemoveEvent />}
       </div>
     )
   }

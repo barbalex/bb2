@@ -9,44 +9,46 @@ const enhance = compose(
   inject(`store`),
   withState('showMeta', 'changeShowMeta', false),
   withHandlers({
-    abort: props => () => props.store.events.setShowNewEvent(false),
+    abort: props => () => props.store.events.setEventToRemove(null),
+    remove: props => () => {
+      props.store.events.removeEvent(props.store.events.eventToRemove)
+      props.store.events.setEventToRemove(null)
+    },
   }),
   observer,
 )
 
 const ModalRemoveEvent = ({
   store,
-  doc,
-  removeEvent,
+  remove,
   abort,
 }: {
   store: Object,
-  doc: Object,
-  removeEvent: () => void,
+  remove: () => void,
   abort: () => void,
 }) => (
-  <div className="static-modal">
-    <Modal.Dialog>
-      <Modal.Header>
-        <Modal.Title>
-          Remove event "{doc.title}"
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>
-          Are you sure you want to remove event "{doc.title}"?
-        </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button bsStyle="danger" onClick={removeEvent}>
-          yes, remove!
-        </Button>
-        <Button onClick={abort}>
-          no!
-        </Button>
-      </Modal.Footer>
-    </Modal.Dialog>
-  </div>
+  <Modal show onHide={abort}>
+    <Modal.Header>
+      <Modal.Title>
+        Remove event "{store.events.eventToRemove.title}"
+      </Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <p>
+        Are you sure you want to remove event "
+        {store.events.eventToRemove.title}
+        "?
+      </p>
+    </Modal.Body>
+    <Modal.Footer>
+      <Button bsStyle="danger" onClick={remove}>
+        yes, remove!
+      </Button>
+      <Button onClick={abort}>
+        no!
+      </Button>
+    </Modal.Footer>
+  </Modal>
 )
 
 ModalRemoveEvent.displayName = 'ModalRemoveEvent'

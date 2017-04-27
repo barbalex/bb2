@@ -36,6 +36,7 @@ const enhance = compose(
       const { title, date, store } = props
       if (title && date) {
         store.events.newEvent({ date, title })
+        props.store.events.setShowNewEvent(false)
       } else {
         const error = !!title ? 'Please choose a date' : 'Please add a title'
         props.changeError(error)
@@ -52,6 +53,7 @@ const NewEvent = ({
   error,
   onChangeTitle,
   onChangeDatePicker,
+  close,
   createNewEvent,
 }: {
   store: Object,
@@ -60,6 +62,7 @@ const NewEvent = ({
   error: string,
   onChangeTitle: () => void,
   onChangeDatePicker: () => void,
+  close: () => void,
   createNewEvent: () => void,
 }) => (
   <Modal show onHide={close} bsSize="large" dialogClassName="editEvent">
