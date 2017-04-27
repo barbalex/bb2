@@ -11,7 +11,7 @@ export default (store: Object): void => {
     showMeta: false,
     getPage: action('getPage', (id: string): void => {
       const get =
-        !store.page.activePage ||
+        !store.page.activePage._id ||
         (store.page.activePage._id && store.page.activePage._id !== id)
       if (get) {
         app.db

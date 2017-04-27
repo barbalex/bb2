@@ -8,6 +8,7 @@ import extendPublications from './publications'
 import extendActors from './actors'
 import extendLogin from './login'
 import extendStore from './store'
+import extendError from './error'
 
 export default (store: Object): void => {
   extendPage(store)
@@ -19,4 +20,5 @@ export default (store: Object): void => {
   extendActors(store)
   extendLogin(store)
   extendStore(store)
+  extendError(store)
 }

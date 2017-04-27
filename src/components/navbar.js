@@ -57,15 +57,25 @@ const enhance = compose(
 const MyNavbar = ({
   store,
   navExpanded,
+  onToggleNav,
+  onClickPage,
+  onClickEdit,
+  onClickLogout,
   onClickNewCommentary,
   onClickNewPublication,
   onClickNewEvent,
+  onClickNewActor,
 }: {
   store: Object,
   navExpanded: boolean,
+  onToggleNav: () => void,
+  onClickPage: () => void,
+  onClickEdit: () => void,
+  onClickLogout: () => void,
   onClickNewCommentary: () => void,
   onClickNewPublication: () => void,
   onClickNewEvent: () => void,
+  onClickNewActor: () => void,
 }) => {
   const { activePage } = store.page
   const { activeActor } = store.actors
@@ -73,13 +83,6 @@ const MyNavbar = ({
   const { activePublication } = store.publications
   const { activeCommentary } = store.commentaries
   const { email } = store.login
-  const {
-    onClickEdit,
-    onClickPage,
-    onClickLogout,
-    onToggleNav,
-    onClickNewActor,
-  } = store
   const glyph = store.editing ? 'eye-open' : 'pencil'
   const id = activePage && activePage._id ? activePage._id : null
   const nonEditableIds = [

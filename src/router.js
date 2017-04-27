@@ -104,6 +104,7 @@ export default Router.extend({
   },
 
   render(id) {
+    console.log('router: id:', id)
     ReactDOM.render(
       <Provider store={app.store}><Main /></Provider>,
       document.getElementById('root'),
