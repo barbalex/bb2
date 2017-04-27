@@ -43,11 +43,7 @@ const Actor = ({
     return (
       <div className="actor">
         {showMeta && <Meta doc={activeActor} onCloseMeta={onCloseMeta} />}
-        <Editor
-          doc={activeActor}
-          docType="actor"
-          articleDecoded={articleDecoded}
-        />
+        <Editor docType="actor" articleDecoded={articleDecoded} />
         <Button style={metaButtonStyle} onClick={onClickMeta}>
           images
         </Button>

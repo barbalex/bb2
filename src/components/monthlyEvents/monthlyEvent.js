@@ -22,11 +22,6 @@ const enhance = compose(
   withHandlers({
     onClickMeta: props => () => props.changeShowMeta(!props.showMeta),
     onCloseMeta: props => () => props.changeShowMeta(false),
-    onSaveMonthlyEventArticle: props => articleEncoded => {
-      const { activeMonthlyEvent, saveMonthlyEvent } = props.store.monthlyEvents
-      activeMonthlyEvent.article = articleEncoded
-      saveMonthlyEvent(activeMonthlyEvent)
-    },
   }),
   observer,
 )
@@ -36,7 +31,6 @@ const MonthlyEvent = ({
   year,
   month,
   showMeta,
-  onSaveMonthlyEventArticle,
   onClickMeta,
   onCloseMeta,
 }: {
@@ -44,7 +38,6 @@ const MonthlyEvent = ({
   year: string,
   month: string,
   showMeta: boolean,
-  onSaveMonthlyEventArticle: () => void,
   onClickMeta: () => void,
   onCloseMeta: () => void,
 }) => {
@@ -60,11 +53,7 @@ const MonthlyEvent = ({
             month={month}
             onCloseMeta={onCloseMeta}
           />}
-        <Editor
-          docType="monthlyEvent"
-          articleDecoded={articleDecoded}
-          onSaveMonthlyEventArticle={onSaveMonthlyEventArticle}
-        />
+        <Editor docType="monthlyEvent" articleDecoded={articleDecoded} />
         <Button style={metaButtonStyle} onClick={onClickMeta}>
           arrivals & victims
         </Button>
