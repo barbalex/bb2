@@ -1,8 +1,12 @@
+// @flow
 import moment from 'moment'
 import max from 'lodash/max'
 import getDateFromEventId from './getDateFromEventId.js'
 
-export default (events, activeEventYears) => {
+export default (
+  events: Array<Object>,
+  activeEventYears: Array<number>,
+): Array<Object> => {
   const oldestEvent = events[events.length - 1]
   if (oldestEvent) {
     const oldestDate = getDateFromEventId(oldestEvent._id)

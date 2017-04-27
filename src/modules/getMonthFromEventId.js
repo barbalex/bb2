@@ -1,7 +1,8 @@
-import getMonths from './getMonths.js'
+// @flow
+import months from './months.js'
 
-export default (id) => {
+export default (id: string): string => {
   const idArray = id.split('_')
   const month = idArray[2]
-  return getMonths()[month]
+  return months[month]
 }
