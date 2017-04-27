@@ -1,11 +1,12 @@
 // @flow
-import { extendObservable, action, computed } from 'mobx'
+import { extendObservable, action } from 'mobx'
+import app from 'ampersand-app'
 
 export default (store: Object): void => {
   extendObservable(store.login, {
     getLogin: action('getLogin', (): ?string => window.localStorage.email),
 
-    email: computed(() => window.localStorage.email, { name: 'email' }),
+    email: window.localStorage.email,
 
     login: action('login', (email: string): void => {
       // change email only if it was passed
@@ -18,9 +19,14 @@ export default (store: Object): void => {
           email = lsEmail
         }
         window.localStorage.email = email
+        store.login.email = email
+        app.router.navigate('/home')
       }
     }),
 
-    logout: action('logout', () => delete window.localStorage.email),
+    logout: action('logout', () => {
+      delete window.localStorage.email
+      store.login.email = ''
+    }),
   })
 }

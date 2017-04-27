@@ -21,8 +21,10 @@ const enhance = compose(inject(`store`), observer)
 
 const Main = ({
   store,
+  login,
 }: {
   store: Object,
+  login: boolean,
 }) => {
   const { activePage } = store.page
   const nonSimplePages = [
@@ -86,7 +88,7 @@ const Main = ({
           {showActorPage && <Actors />}
           {showMonthlyEventsPage && <MonthlyEvents />}
           {showPublicationsPage && <Publications />}
-          {!store.login.email && <Login />}
+          {login && !store.login.email && <Login />}
           {showCopyright &&
             <p style={{ marginTop: 70 }}>
               © Jürg Martin Gabriel. All Rights Reserved.

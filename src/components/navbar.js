@@ -42,6 +42,7 @@ const enhance = compose(
     onClickLogout: props => () => {
       props.store.login.logout()
       props.onToggleNav()
+      // need to force update
     },
     onClickNewCommentary: props => () =>
       props.store.commentaries.toggleShowNewCommentary(),
@@ -82,7 +83,7 @@ const MyNavbar = ({
   const { activeMonthlyEvent } = store.monthlyEvents
   const { activePublication } = store.publications
   const { activeCommentary } = store.commentaries
-  const { email } = store.login
+  const email = store.login.email
   const glyph = store.editing ? 'eye-open' : 'pencil'
   const id = activePage && activePage._id ? activePage._id : null
   const nonEditableIds = [

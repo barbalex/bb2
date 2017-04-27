@@ -163,7 +163,6 @@ class Commentaries extends Component {
   commentariesComponent() {
     const { store, onClickCommentary, onClickCommentaryCollapse } = this.props
     const { commentaries, activeCommentary } = store.commentaries
-    const { email } = store.login
 
     if (commentaries.length > 0) {
       return commentaries.map((doc, index) => {
@@ -171,7 +170,7 @@ class Commentaries extends Component {
         const isActiveCommentary = isCommentary
           ? doc._id === activeCommentary._id
           : false
-        const showEditingGlyphons = !!email
+        const showEditingGlyphons = !!store.login.email
         const panelHeadingStyle = {
           position: 'relative',
           cursor: 'pointer',
