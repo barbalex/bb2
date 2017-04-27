@@ -1,7 +1,7 @@
 {
   "name": "bb2",
   "version": "2.0.0",
-  "description": "There are land or 'green' borders, and there are maritime or 'blue' borders. The focus of this website is on the latter - and on migration",
+  "description": "Most mi­grants and re­fu­gees ar­ri­ving in Eu­ro­pe cross the blue bor­­ders of the Eas­­tern and Cen­­tral Me­diterrane­an. The flow is massive and high­ly com­plex. This web­­si­te provides a rough over­­view by co­ve­­ring chro­­no­­lo­­gi­­cal­­ly both ma­ri­­ti­me and political events",
   "private": true,
   "dependencies": {
     "ampersand-app": "2.0.0",
