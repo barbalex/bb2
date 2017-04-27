@@ -18,7 +18,7 @@ export default (store: Object): void => {
 
     activeActor: computed(
       (): ?Object =>
-        store.publications.actors.find(
+        store.actors.actors.find(
           actor => actor._id === store.actors.activeActorId,
         ),
       { name: `activeActor` },

@@ -8,6 +8,10 @@ import {
   FormControl,
   InputGroup,
 } from 'react-bootstrap'
+import { observer, inject } from 'mobx-react'
+import compose from 'recompose/compose'
+
+const enhance = compose(inject(`store`), observer)
 
 const EventDate = ({
   store,
@@ -43,4 +47,4 @@ const EventDate = ({
 
 EventDate.displayName = 'EventDate'
 
-export default EventDate
+export default enhance(EventDate)

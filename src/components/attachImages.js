@@ -34,7 +34,7 @@ const onDrop = (store, files, doc) => {
       data: file,
     }
   })
-  store.pages.addPageAttachments(doc, attachments)
+  store.page.addPageAttachments(doc, attachments)
 }
 
 const AttachImages = ({ store, doc }: { store: Object, doc: Object }) => (

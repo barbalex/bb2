@@ -7,8 +7,8 @@ import Event from './event.js'
 
 const enhance = compose(inject(`store`), observer)
 
-const mapEventComponents = (events: Array<Object>, email: string) =>
-  events.map((ev, key) => <Event key={key} event={ev} email={email} />)
+const mapEventComponents = (events: Array<Object>) =>
+  events.map((event, key) => <Event key={key} event={event} />)
 
 const MonthlyStatisticsRow = ({
   store,
@@ -17,9 +17,8 @@ const MonthlyStatisticsRow = ({
   store: Object,
   dateRowObject: Object,
 }) => {
-  const { email } = store.login
-  const migrationEvents = mapEventComponents(dRO.migrationEvents, email)
-  const politicsEvents = mapEventComponents(dRO.politicsEvents, email)
+  const migrationEvents = mapEventComponents(dRO.migrationEvents)
+  const politicsEvents = mapEventComponents(dRO.politicsEvents)
 
   if (migrationEvents.length > 0 || politicsEvents.length > 0) {
     return (

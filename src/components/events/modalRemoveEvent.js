@@ -9,10 +9,6 @@ const enhance = compose(
   inject(`store`),
   withState('showMeta', 'changeShowMeta', false),
   withHandlers({
-    remove: props => () => {
-      props.store.events.removeEvent(props.doc)
-      props.store.events.setShowNewEvent(false)
-    },
     abort: props => () => props.store.events.setShowNewEvent(false),
   }),
   observer,
@@ -21,9 +17,14 @@ const enhance = compose(
 const ModalRemoveEvent = ({
   store,
   doc,
-  remove,
+  removeEvent,
   abort,
-}: { store: Object, doc: Object, remove: () => void, abort: () => void }) => (
+}: {
+  store: Object,
+  doc: Object,
+  removeEvent: () => void,
+  abort: () => void,
+}) => (
   <div className="static-modal">
     <Modal.Dialog>
       <Modal.Header>
@@ -37,7 +38,7 @@ const ModalRemoveEvent = ({
         </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button bsStyle="danger" onClick={remove}>
+        <Button bsStyle="danger" onClick={removeEvent}>
           yes, remove!
         </Button>
         <Button onClick={abort}>

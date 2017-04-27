@@ -11,17 +11,20 @@ import LoginForm from './loginForm.js'
 const enhance = compose(
   inject(`store`),
   withHandlers({
-    onClick: props => () => props.store.login.logout(),
+    onClickLogout: props => () => props.store.login.logout(),
   }),
   observer,
 )
 
-const Login = ({ store, onClick }: { store: Object, onClick: () => void }) => (
+const Login = ({
+  store,
+  onClickLogout,
+}: { store: Object, onClickLogout: () => void }) => (
   <div>
     <h1>Login</h1>
     {!store.login.email && <LoginForm />}
     {store.login.email &&
-      <Button className="btn-primary" onClick={onClick}>
+      <Button className="btn-primary" onClick={onClickLogout}>
         log out
       </Button>}
   </div>

@@ -10,6 +10,12 @@ import withState from 'recompose/withState'
 import Editor from '../editor.js'
 import Meta from './pageMeta.js'
 
+const metaButtonStyle = {
+  position: 'fixed',
+  bottom: 10,
+  right: 10,
+}
+
 const enhance = compose(
   inject(`store`),
   withState('showMeta', 'changeShowMeta', false),
@@ -25,21 +31,19 @@ const Page = ({
   showMeta,
   onClickMeta,
   onCloseMeta,
+  changeShowMeta,
 }: {
   store: Object,
   showMeta: boolean,
   onClickMeta: () => void,
   onCloseMeta: () => void,
+  changeShowMeta: () => void,
 }) => {
   const { activePage } = store.page
   const articleEncoded = activePage.article
   const articleDecoded = Base64.decode(articleEncoded)
   let title = activePage.title ? activePage.title : activePage.category
-  const metaButtonStyle = {
-    position: 'fixed',
-    bottom: 10,
-    right: 10,
-  }
+
   if (store.editing && activePage._id !== 'pages_actors') {
     return (
       <div className="page">

@@ -1,12 +1,12 @@
 // @flow
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
+import { observer } from 'mobx-react'
 import compose from 'recompose/compose'
 
 import AttachedImages from '../attachedImages.js'
 
-const enhance = compose(inject(`store`), observer)
+const enhance = compose(observer)
 
 const PageMeta = ({
   doc,

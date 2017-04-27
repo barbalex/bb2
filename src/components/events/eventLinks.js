@@ -34,39 +34,43 @@ const enhance = compose(
 )
 
 const EventLinks = ({
-  activeEvent,
+  store,
   onNewLink,
-}: { activeEvent: Object, onNewLink: () => void }) => (
-  <div>
-    <div style={titleStyle}>
-      Links
+}: { store: Object, onNewLink: () => void }) => {
+  const { activeEvent } = store.events
+
+  return (
+    <div>
+      <div style={titleStyle}>
+        Links
+      </div>
+      <Row>
+        <Col sm={3} lg={2}>
+          <p style={labelStyle}>
+            {activeEvent.links.length > 0 ? 'Label' : null}
+          </p>
+        </Col>
+        <Col sm={7} lg={8}>
+          <p style={labelStyle}>
+            {activeEvent.links.length > 0 ? 'Url' : null}
+          </p>
+        </Col>
+        <Col sm={1} lg={1} />
+      </Row>
+      {activeEvent.links.map((link, index) => (
+        <EventLink
+          link={link}
+          focus={index === activeEvent.links.length - 1}
+          key={index}
+          index={index}
+        />
+      ))}
+      <Button onClick={onNewLink}>
+        new link
+      </Button>
     </div>
-    <Row>
-      <Col sm={3} lg={2}>
-        <p style={labelStyle}>
-          {activeEvent.links.length > 0 ? 'Label' : null}
-        </p>
-      </Col>
-      <Col sm={7} lg={8}>
-        <p style={labelStyle}>
-          {activeEvent.links.length > 0 ? 'Url' : null}
-        </p>
-      </Col>
-      <Col sm={1} lg={1} />
-    </Row>
-    {activeEvent.links.map((link, index) => (
-      <EventLink
-        activeEvent={activeEvent}
-        link={link}
-        focus={index === activeEvent.links.length - 1}
-        key={index}
-      />
-    ))}
-    <Button onClick={onNewLink}>
-      new link
-    </Button>
-  </div>
-)
+  )
+}
 
 EventLinks.displayName = 'EventLinks'
 

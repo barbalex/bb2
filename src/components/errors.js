@@ -15,14 +15,6 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 
-const enhance = compose(
-  inject(`store`),
-  withHandlers({
-    onClickGlyph: props => () => props.store.error.showError(),
-  }),
-  observer,
-)
-
 /**
  * BEWARE OF BOOTSTRAP
  * wanted to use styled-components to styled
@@ -36,6 +28,14 @@ const glyphStyle = {
   fontSize: 18,
   cursor: 'pointer',
 }
+
+const enhance = compose(
+  inject(`store`),
+  withHandlers({
+    onClickGlyph: props => () => props.store.error.showError(),
+  }),
+  observer,
+)
 
 const Errors = ({
   store,

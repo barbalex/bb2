@@ -46,21 +46,21 @@ const alertStyle = {
 }
 
 const NewCommentary = ({
+  title,
+  date,
+  error,
   onCloseNewCommentary,
   onChangeTitle,
   onChangeDate,
   createNewCommentary,
-  title,
-  date,
-  error,
 }: {
+  title: string,
+  date: Date,
+  error: string,
   onCloseNewCommentary: () => void,
   onChangeTitle: () => void,
   onChangeDate: () => void,
   createNewCommentary: () => void,
-  title: string,
-  date: Date,
-  error: string,
 }) => (
   <Modal show bsSize="large">
     <Modal.Header>

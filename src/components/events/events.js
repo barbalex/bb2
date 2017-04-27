@@ -73,7 +73,7 @@ class Events extends Component {
   setActiveYear(year) {
     const { store } = this.props
     store.events.getEvents([year])
-    store.yearsOfEvents.etActiveEventYears([year])
+    store.yearsOfEvents.setActiveEventYears([year])
   }
 
   yearButtons() {

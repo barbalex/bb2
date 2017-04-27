@@ -8,8 +8,6 @@ import withHandlers from 'recompose/withHandlers'
 const enhance = compose(
   inject(`store`),
   withHandlers({
-    remove: props => event =>
-      props.store.commentaries.removeCommentary(props.doc),
     abort: props => event =>
       props.store.commentaries.setCommentaryToRemove(null),
   }),
@@ -18,9 +16,9 @@ const enhance = compose(
 
 const ModalRemoveCommentary = ({
   doc,
-  remove,
+  removeCommentary,
   abort,
-}: { doc: Object, remove: () => void, abort: () => void }) => (
+}: { doc: Object, removeCommentary: () => void, abort: () => void }) => (
   <div className="static-modal">
     <Modal.Dialog>
       <Modal.Header>
@@ -34,7 +32,7 @@ const ModalRemoveCommentary = ({
         </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button bsStyle="danger" onClick={remove}>
+        <Button bsStyle="danger" onClick={removeCommentary}>
           yes, remove!
         </Button>
         <Button onClick={abort}>
