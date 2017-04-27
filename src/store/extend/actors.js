@@ -3,7 +3,7 @@ import { extendObservable, action, computed } from 'mobx'
 import app from 'ampersand-app'
 import slug from 'slug'
 
-import getPathFromDoc from '../../modules/getPathFromDoc.js'
+import getPathFromDocId from '../../modules/getPathFromDocId'
 import getActors from '../../modules/getActors.js'
 import sortActors from '../../modules/sortActors.js'
 
@@ -26,8 +26,8 @@ export default (store: Object): void => {
 
     getActorsCallback: null,
 
-    getActors: action('getActors', (): void =>
-      getActors()
+    getActors: action('getActors', (): void => {
+      getActors(store)
         .then(actors => {
           store.actors.actors = actors
           if (store.actors.getActorsCallback) {
@@ -39,8 +39,8 @@ export default (store: Object): void => {
           store.error.showError({
             msg: error,
           }),
-        ),
-    ),
+        )
+    }),
 
     newActor: action('newActor', (category: string): void => {
       const categorySlugified = slug(category, { lower: true })
@@ -64,19 +64,8 @@ export default (store: Object): void => {
         store.actors.activeActorId = null
       } else {
         store.actors.activeActorId = id
-        if (store.actors.actors.length === 0) {
-          // on first load actors is empty
-          // need to wait until onGetActors fires
-          store.actors.getActorsCallback = () => {
-            const actor = store.actors.actors.find(a => a._id === id)
-            const path = getPathFromDoc(actor)
-            app.router.navigate(`/${path}`)
-          }
-        } else {
-          const actor = store.actors.actors.find(a => a._id === id)
-          const path = getPathFromDoc(actor)
-          app.router.navigate(`/${path}`)
-        }
+        const path = getPathFromDocId(id)
+        app.router.navigate(`/${path}`)
       }
     }),
 

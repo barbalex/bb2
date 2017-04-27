@@ -27,7 +27,7 @@ export default (store: Object): void => {
     getEventsCallback: null,
 
     getEvents: action('getEvents', (years: Array<number>) =>
-      getEvents(years)
+      getEvents(store, years)
         .then(events => {
           store.events.events = events
           if (store.events.getEventsCallback) {

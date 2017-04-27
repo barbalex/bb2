@@ -4,7 +4,7 @@ import app from 'ampersand-app'
 import moment from 'moment'
 
 import getCommentaries from '../../modules/getCommentaries.js'
-import getPathFromDoc from '../../modules/getPathFromDoc.js'
+import getPathFromDocId from '../../modules/getPathFromDocId'
 import sortCommentaries from '../../modules/sortCommentaries.js'
 
 export default (store: Object): void => {
@@ -27,8 +27,8 @@ export default (store: Object): void => {
 
     getCommentariesCallback: null,
 
-    getCommentaries: action('getCommentaries', (): void =>
-      getCommentaries()
+    getCommentaries: action('getCommentaries', (): void => {
+      getCommentaries(store)
         .then(commentaries => {
           store.commentaries.commentaries = commentaries
           if (store.commentaries.getCommentariesCallback) {
@@ -40,8 +40,8 @@ export default (store: Object): void => {
           store.error.showError({
             msg: error,
           }),
-        ),
-    ),
+        )
+    }),
 
     showNewCommentary: false,
 
@@ -73,23 +73,8 @@ export default (store: Object): void => {
         store.commentaries.activeCommentaryId = null
       } else {
         store.commentaries.activeCommentaryId = id
-        if (store.commentaries.commentaries.length === 0) {
-          // on first load commentaries is empty
-          // need to wait until onGetCommentaries fires
-          store.commentaries.getCommentariesCallback = () => {
-            const commentary = store.commentaries.commentaries.find(
-              c => c._id === id,
-            )
-            const path = getPathFromDoc(commentary)
-            app.router.navigate(`/${path}`)
-          }
-        } else {
-          const commentary = store.commentaries.commentaries.find(
-            c => c._id === id,
-          )
-          const path = getPathFromDoc(commentary)
-          app.router.navigate(`/${path}`)
-        }
+        const path = getPathFromDocId(id)
+        app.router.navigate(`/${path}`)
       }
     }),
 
