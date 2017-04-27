@@ -44,6 +44,7 @@ const enhance = compose(
       props.store.page.savePage(activePage)
     },
     onSaveCommentaryArticle: props => articleEncoded => {
+      console.log('saving commentary')
       const { activeCommentary } = props.store.commentaries
       activeCommentary.article = articleEncoded
       props.store.commentaries.saveCommentary(activeCommentary)
@@ -137,6 +138,7 @@ class Editor extends Component {
         return store.error.showEdit('no or wrong docType passed to editor.js')
     }
     changeDoc(localDoc)
+    console.log('componentDidMount, localDoc._id:', localDoc._id)
 
     // see: https://www.ephox.com/blog/how-to-integrate-react-with-tinymce
     // add codemirror? see: https://github.com/christiaan/tinymce-codemirror
@@ -162,12 +164,13 @@ class Editor extends Component {
         editor.on('change undo redo', () => {
           const articleDecoded = editor.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
+          console.log('saving')
           saveFunction(articleEncoded)
         })
       },
     })
     // scroll editor to top in pages
-    if (doc.type === 'pages') {
+    if (localDoc.type === 'pages') {
       window.$('html, body').animate(
         {
           scrollTop: 140,
@@ -192,6 +195,7 @@ class Editor extends Component {
 
   render() {
     const { doc, articleDecoded } = this.props
+    console.log('render, doc._id:', doc._id)
     return <textarea id={doc._id} defaultValue={articleDecoded} />
   }
 }

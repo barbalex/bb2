@@ -17,7 +17,6 @@ export default (store: Object): void => {
         } else {
           email = lsEmail
         }
-        store.login.trigger(email)
         window.localStorage.email = email
       }
     }),

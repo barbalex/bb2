@@ -34,7 +34,6 @@ export default (store: Object): void => {
             store.actors.getActorsCallback()
             store.actors.getActorsCallback = null
           }
-          store.actors.triggerStore()
         })
         .catch(error =>
           store.error.showError({

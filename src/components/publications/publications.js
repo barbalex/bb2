@@ -38,7 +38,7 @@ class Publications extends Component {
 
   publicationCategoriesComponent(activePublicationCategory) {
     const { store, onClickCategory } = this.props
-    let publicationCategories = app.publicationsStore.getPublicationCategories()
+    let publicationCategories = store.publications.getPublicationCategories()
     const { publications } = store.publications
 
     if (publications.length > 0 && publicationCategories.length > 0) {
