@@ -11,9 +11,16 @@ It was deeply refactored to use new technologies and maximize maintainability.
 
 - [create-react-app](//github.com/facebookincubator/create-react-app):
   - minimize build configuration
-  - update easily
-  - easily serve in production
-- [MobX](//github.com/mobxjs/mobx): Computed data like in Excel. Simpler than redux
-- [recompose](//github.com/acdlite/recompose): Easily separate logic from interface
-- [React](//facebook.github.io/react): Declarative user interface. Built from components
-- [Flow](//flow.org): Static type checker. Find errors before the code runs
+  - simple updates
+  - serve production app from static files
+- [MobX](//github.com/mobxjs/mobx):
+  - simple yet powerful state management
+  - computed data like in Excel
+- [recompose](//github.com/acdlite/recompose):
+  - clear separation of logic and user interface
+- [React](//facebook.github.io/react):
+  - declarative user interface is a function of state
+  - built from components
+- [Flow](//flow.org):
+  - static type checker
+  - find errors before the code runs
