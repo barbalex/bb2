@@ -62,27 +62,11 @@ class Actors extends Component {
     this.props.store.actors.getActors()
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     if (this.props.store.actors.activeActor) {
-      if (!prevProps.store.actors.activeActor) {
-        /**
-         * this is first render
-         * componentDidUpdate and componentDidMount are actually executed
-         * BEFORE the dom elements are done being drawn,
-         * but AFTER they've been passed from React to the browser's DOM
-         */
-        window.setTimeout(() => {
-          this.scrollToActivePanel()
-        }, 200)
-        // window.requestAnimationFrame(() => this.scrollToActivePanel())
-      } else if (
-        this.props.store.actors.activeActor._id !==
-        prevProps.store.actors.activeActor._id
-      ) {
-        // this is later rerender
-        // only scroll into view if the active item changed last render
+      window.setTimeout(() => {
         this.scrollToActivePanel()
-      }
+      }, 200)
     }
   }
 

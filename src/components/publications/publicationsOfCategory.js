@@ -79,15 +79,9 @@ class PublicationsOfCategory extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.store.publications.activePublication) {
-      if (
-        !prevProps.store.publications.activePublication ||
-        this.props.store.publications.activePublication._id !==
-          prevProps.store.publications.activePublication._id
-      ) {
-        // this is later rerender
-        // only scroll into view if the active item changed last render
+      window.setTimeout(() => {
         this.scrollToActivePanel()
-      }
+      }, 200)
     }
   }
 

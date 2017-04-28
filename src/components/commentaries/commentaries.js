@@ -62,26 +62,12 @@ class Commentaries extends Component {
     this.props.store.commentaries.getCommentaries()
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.store.commentaries.activeCommentary) {
-      if (!prevProps.store.commentaries.activeCommentary) {
-        /**
-         * this is first render
-         * componentDidUpdate and componentDidMount are actually executed
-         * BEFORE the dom elements are done being drawn,
-         * but AFTER they've been passed from React to the browser's DOM
-         */
-        window.setTimeout(() => {
-          this.scrollToActivePanel()
-        }, 200)
-      } else if (
-        this.props.store.commentaries.activeCommentary._id !==
-        prevProps.store.commentaries.activeCommentary._id
-      ) {
-        // this is later rerender
-        // only scroll into view if the active item changed last render
+  componentDidUpdate() {
+    const { activeCommentary } = this.props.store.commentaries
+    if (activeCommentary) {
+      window.setTimeout(() => {
         this.scrollToActivePanel()
-      }
+      }, 200)
     }
   }
 

@@ -11,6 +11,11 @@ import NewPublication from './newPublication.js'
 const containerStyle = {
   marginBottom: 20,
 }
+const orderByCategory = {
+  Academic: 3,
+  'European Union': 1,
+  'IOs & NGOs': 2,
+}
 
 const enhance = compose(
   inject(`store`),
@@ -42,11 +47,6 @@ class Publications extends Component {
 
     if (publications.length > 0 && publicationCategories.length > 0) {
       publicationCategories = sortBy(publicationCategories, cat => {
-        const orderByCategory = {
-          Academic: 3,
-          'European Union': 1,
-          'IOs & NGOs': 2,
-        }
         let order = orderByCategory[cat]
         if (!order) order = 4
         return order
