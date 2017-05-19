@@ -1,3 +1,4 @@
+// @flow
 /*
  * this component converts links that would create a full page load
  * to internal links thant transition without a full page load
@@ -16,16 +17,12 @@ const onClick = event => {
   }
 }
 
-const NavHelper = props => (
+const NavHelper = (props: Object) => (
   <div {...props} onClick={event => onClick(event)}>
     {props.children}
   </div>
 )
 
 NavHelper.displayName = 'NavHelper'
-
-NavHelper.propTypes = {
-  children: React.PropTypes.node,
-}
 
 export default NavHelper

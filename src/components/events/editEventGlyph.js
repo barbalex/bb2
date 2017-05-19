@@ -25,7 +25,11 @@ const EditEventGlyph = ({
   store,
   event,
   onClick,
-}: { store: Object, event: Object, onClick: () => void }) => (
+}: {
+  store: Object,
+  event: Object,
+  onClick: () => void,
+}) => (
   <OverlayTrigger
     placement="top"
     overlay={
@@ -39,9 +43,5 @@ const EditEventGlyph = ({
 )
 
 EditEventGlyph.displayName = 'EditEventGlyph'
-
-EditEventGlyph.propTypes = {
-  event: React.PropTypes.object,
-}
 
 export default enhance(EditEventGlyph)
