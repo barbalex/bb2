@@ -18,13 +18,7 @@ const outerSpanStyle = {
 
 const enhance = compose(inject(`store`), observer)
 
-const Event = ({
-  store,
-  event,
-}: {
-  store: Object,
-  event: Object,
-}) => {
+const Event = ({ store, event }: { store: Object, event: Object }) => {
   const showEditingGlyphons = !!store.login.email
   const classNames = event.tags && event.tags.length > 0
     ? event.tags.map(tag => `event-${tag}`).join(' ')
@@ -33,7 +27,7 @@ const Event = ({
   const links = event.links.map((link, key) => (
     <span key={key} style={outerSpanStyle}>
       {key > 0 && ' '}
-      <a href={link.url} target="_blank">
+      <a href={link.url} target="_blank" rel="noopener noreferrer">
         <Glyphicon glyph="new-window" style={linkGlyphStyle} />
         {link.label}
       </a>
