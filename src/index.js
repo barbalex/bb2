@@ -3,6 +3,8 @@ import app from 'ampersand-app'
 import PouchDB from 'pouchdb'
 import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
+
+import registerServiceWorker from './registerServiceWorker'
 import Router from './router.js'
 import store from './store'
 import couchUrl from './modules/getCouchUrl.js'
@@ -12,6 +14,8 @@ import 'babel-polyfill'
 // make webpack import styles
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
+
+registerServiceWorker()
 
 // some old browsers can't deal with ArrayBuffer
 // pouchdb needs it
