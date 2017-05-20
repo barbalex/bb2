@@ -9,6 +9,7 @@
     "babel-polyfill": "6.23.0",
     "bootstrap": "3.3.7",
     "classnames": "2.2.5",
+    "create-react-class": "15.5.3",
     "gemini-scrollbar": "1.5.1",
     "isdev": "1.0.1",
     "js-base64": "2.1.9",
