@@ -3,7 +3,7 @@
   "name": "blue-borders",
   "icons": [
     {
-      "src": "./favicons/favicon.ico",
+      "src": "favicon.ico",
       "sizes": "192x192",
       "type": "image/png"
     }

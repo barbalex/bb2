@@ -30,6 +30,46 @@ server.register(Inert, function() {
 
   server.route({
     method: 'GET',
+    path: '/manifest.json',
+    handler: function(request, reply) {
+      reply.file('manifest.json')
+    },
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/asset-manifest.json',
+    handler: function(request, reply) {
+      reply.file('asset-manifest.json')
+    },
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/service-worker.js',
+    handler: function(request, reply) {
+      reply.file('service-worker.js').type('text/javascript')
+    },
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/tinymce.css',
+    handler: function(request, reply) {
+      reply.file('tinymce.css')
+    },
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/favicon.ico',
+    handler: function(request, reply) {
+      reply.file('favicon.ico')
+    },
+  })
+
+  server.route({
+    method: 'GET',
     path: '/{path*}',
     handler: {
       file: 'index.html',
@@ -64,6 +104,17 @@ server.register(Inert, function() {
     handler: {
       directory: {
         path: 'static/media',
+        index: false,
+      },
+    },
+  })
+
+  server.route({
+    method: 'GET',
+    path: '/favicons/{param*}',
+    handler: {
+      directory: {
+        path: 'favicons',
         index: false,
       },
     },
