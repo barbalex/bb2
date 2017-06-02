@@ -15,8 +15,8 @@
     "js-base64": "2.1.9",
     "local-links": "1.4.1",
     "lodash": "4.17.4",
-    "mobx": "3.1.9",
-    "mobx-react": "4.1.8",
+    "mobx": "3.1.11",
+    "mobx-react": "4.2.1",
     "moment": "2.18.1",
     "pouchdb": "6.2.0",
     "pouchdb-authentication": "0.5.5",
@@ -27,20 +27,20 @@
     "react-copy-to-clipboard": "5.0.0",
     "react-document-title": "2.0.3",
     "react-dom": "15.5.4",
-    "react-dropzone": "3.13.1",
+    "react-dropzone": "3.13.2",
     "react-gemini-scrollbar": "2.3.0",
     "react-list": "0.8.6",
     "recompose": "0.23.4",
     "slug": "0.9.1",
-    "styled-components": "1.4.6",
-    "tinymce": "4.6.1"
+    "styled-components": "2.0.0",
+    "tinymce": "4.6.3"
   },
   "devDependencies": {
-    "css-loader": "0.28.1",
-    "flow-bin": "0.46.0",
+    "css-loader": "0.28.4",
+    "flow-bin": "0.47.0",
     "html-loader": "0.4.5",
     "postcss-loader": "2.0.5",
-    "react-scripts": "1.0.0"
+    "react-scripts": "1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
