@@ -1,7 +1,7 @@
 // @flow
 import { extendObservable, action, computed } from 'mobx'
 import app from 'ampersand-app'
-import slug from 'slug'
+import slug from 'speakingurl'
 
 import getPathFromDocId from '../../modules/getPathFromDocId'
 import getActors from '../../modules/getActors.js'

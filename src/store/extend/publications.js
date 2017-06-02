@@ -2,7 +2,7 @@
 import { extendObservable, action, computed } from 'mobx'
 import app from 'ampersand-app'
 import { Base64 } from 'js-base64'
-import slug from 'slug'
+import slug from 'speakingurl'
 
 import getPublications from '../../modules/getPublications.js'
 import getPathFromDocId from '../../modules/getPathFromDocId'

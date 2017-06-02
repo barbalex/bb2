@@ -2,7 +2,7 @@
 import { extendObservable, action, computed } from 'mobx'
 import app from 'ampersand-app'
 import moment from 'moment'
-import slug from 'slug'
+import slug from 'speakingurl'
 
 import getEvents from '../../modules/getEvents.js'
 import sortEvents from '../../modules/sortEvents.js'
@@ -47,6 +47,7 @@ export default (store: Object): void => {
       const month = moment(event.date).format('MM')
       const day = moment(event.date).format('DD')
       const _id = `events_${year}_${month}_${day}_${slug(title)}`
+      console.log('slug(title):', slug(title))
       const type = 'events'
       const eventType = event.eventType || 'migration'
       const links = event.links || []
