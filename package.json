@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "ampersand-app": "2.0.0",
-    "ampersand-router": "4.0.0",
+    "ampersand-router": "5.0.0",
     "babel-polyfill": "6.23.0",
     "bootstrap": "3.3.7",
     "classnames": "2.2.5",
@@ -15,7 +15,7 @@
     "js-base64": "2.1.9",
     "local-links": "1.4.1",
     "lodash": "4.17.4",
-    "mobx": "3.1.11",
+    "mobx": "3.1.14",
     "mobx-react": "4.2.1",
     "moment": "2.18.1",
     "pouchdb": "6.2.0",
@@ -28,11 +28,11 @@
     "react-document-title": "2.0.3",
     "react-dom": "15.5.4",
     "react-dropzone": "3.13.2",
-    "react-gemini-scrollbar": "2.3.0",
+    "react-gemini-scrollbar": "2.3.2",
     "react-list": "0.8.6",
-    "recompose": "0.23.4",
+    "recompose": "0.23.5",
     "speakingurl": "13.0.0",
-    "styled-components": "2.0.0",
+    "styled-components": "2.0.1",
     "tinymce": "4.6.3"
   },
   "devDependencies": {
