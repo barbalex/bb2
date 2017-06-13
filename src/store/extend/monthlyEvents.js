@@ -1,5 +1,5 @@
 // @flow
-import { extendObservable, action } from 'mobx'
+import { extendObservable, action, computed } from 'mobx'
 import app from 'ampersand-app'
 
 import getMonthlyEvents from '../../modules/getMonthlyEvents.js'
@@ -15,11 +15,11 @@ export default (store: Object): void => {
     // but if id is used, this can be cached
     activeMonthlyEventId: null,
 
-    activeMonthlyEvent: action('activeMonthlyEvent', (): ?Object =>
+    activeMonthlyEvent: computed((): ?Object =>
       store.monthlyEvents.monthlyEvents.find(
         monthlyEvent =>
-          monthlyEvent._id === store.monthlyEvents.activeMonthlyEventId,
-      ),
+          monthlyEvent._id === store.monthlyEvents.activeMonthlyEventId
+      )
     ),
 
     getMonthlyEventsCallback: null,
@@ -36,7 +36,7 @@ export default (store: Object): void => {
         .catch(error =>
           store.error.showError({
             msg: error,
-          }),
+          })
         )
     }),
     getMonthlyEvent: action('getMonthlyEvent', (id: ?string): void => {
@@ -54,23 +54,23 @@ export default (store: Object): void => {
       (monthlyEvent: Object): void => {
         // first update the monthlyEvent in this.monthlyEvents
         store.monthlyEvents.monthlyEvents = store.monthlyEvents.monthlyEvents.filter(
-          me => me._id !== monthlyEvent._id,
+          me => me._id !== monthlyEvent._id
         )
         store.monthlyEvents.monthlyEvents.push(monthlyEvent)
         store.monthlyEvents.monthlyEvents = sortMonthlyEvents(
-          store.monthlyEvents.monthlyEvents,
+          store.monthlyEvents.monthlyEvents
         )
-      },
+      }
     ),
     revertCache: action(
       'revertCache',
       (
         oldMonthlyEvents: Array<Object>,
-        oldActiveMonthlyEventId: string,
+        oldActiveMonthlyEventId: string
       ): void => {
         store.monthlyEvents.monthlyEvents = oldMonthlyEvents
         store.monthlyEvents.activeMonthlyEventId = oldActiveMonthlyEventId
-      },
+      }
     ),
     saveMonthlyEvent: action(
       'saveMonthlyEvent',
@@ -90,14 +90,14 @@ export default (store: Object): void => {
           .catch(error => {
             store.monthlyEvents.revertCache(
               oldMonthlyEvents,
-              oldActiveMonthlyEventId,
+              oldActiveMonthlyEventId
             )
             store.error.showError({
               title: 'Error saving monthly event:',
               msg: error,
             })
           })
-      },
+      }
     ),
   })
 }
