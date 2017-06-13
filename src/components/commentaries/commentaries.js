@@ -44,7 +44,7 @@ const enhance = compose(
       props.store.commentaries.toggleDraftOfCommentary(doc)
     },
   }),
-  observer,
+  observer
 )
 
 class Commentaries extends Component {
@@ -71,7 +71,7 @@ class Commentaries extends Component {
     }
   }
 
-  scrollToActivePanel() {
+  scrollToActivePanel = () => {
     // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activeCommentaryPanel)
     if (node) {
@@ -83,13 +83,13 @@ class Commentaries extends Component {
           {
             scrollTop: node.offsetTop - reduce,
           },
-          500,
+          500
         )
       }
     }
   }
 
-  removeCommentaryGlyph = doc => (
+  removeCommentaryGlyph = doc =>
     <OverlayTrigger
       placement="top"
       overlay={
@@ -104,9 +104,8 @@ class Commentaries extends Component {
         onClick={this.props.onRemoveCommentary.bind(this, doc)}
       />
     </OverlayTrigger>
-  )
 
-  toggleDraftGlyph(doc) {
+  toggleDraftGlyph = doc => {
     const { onToggleDraft } = this.props
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : '#00D000'
@@ -136,7 +135,7 @@ class Commentaries extends Component {
     )
   }
 
-  commentariesComponent() {
+  commentariesComponent = () => {
     const { store, onClickCommentary, onClickCommentaryCollapse } = this.props
     const { commentaries, activeCommentary } = store.commentaries
 

@@ -44,7 +44,7 @@ const enhance = compose(
       props.store.actors.toggleDraftOfActor(doc)
     },
   }),
-  observer,
+  observer
 )
 
 class Actors extends Component {
@@ -70,7 +70,7 @@ class Actors extends Component {
     }
   }
 
-  scrollToActivePanel() {
+  scrollToActivePanel = () => {
     // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activeActorPanel)
     if (node) {
@@ -82,13 +82,13 @@ class Actors extends Component {
           {
             scrollTop: node.offsetTop - reduce,
           },
-          500,
+          500
         )
       }
     }
   }
 
-  toggleDraftGlyph(doc) {
+  toggleDraftGlyph = doc => {
     const { onToggleDraft } = this.props
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : '#00D000'
@@ -117,7 +117,7 @@ class Actors extends Component {
     )
   }
 
-  actorsComponent() {
+  actorsComponent = () => {
     const { store, onClickActor, onClickActorCollapse } = this.props
     let { actors, activeActor } = store.actors
     if (actors.length > 0) {

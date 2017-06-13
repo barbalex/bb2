@@ -27,7 +27,7 @@ const enhance = compose(
       store.monthlyEvents.getMonthlyEvent(null)
     },
   }),
-  observer,
+  observer
 )
 
 class MonthlyEvents extends Component {
@@ -44,7 +44,7 @@ class MonthlyEvents extends Component {
     this.props.store.monthlyEvents.getMonthlyEvents()
   }
 
-  yearsOfEvents() {
+  yearsOfEvents = () => {
     const { monthlyEvents } = this.props.store.monthlyEvents
     const allYears = monthlyEvents.map(doc => getYearFromEventId(doc._id))
     if (allYears.length > 0) {
@@ -54,12 +54,12 @@ class MonthlyEvents extends Component {
     return []
   }
 
-  mostRecentYear() {
+  mostRecentYear = () => {
     const years = this.yearsOfEvents()
     return years[0]
   }
 
-  eventYearsComponent(activeYear) {
+  eventYearsComponent = activeYear => {
     const { store, onClickYear } = this.props
     let { monthlyEvents } = store.monthlyEvents
     const years = this.yearsOfEvents()

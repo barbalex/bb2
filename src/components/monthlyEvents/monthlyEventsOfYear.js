@@ -29,7 +29,7 @@ const enhance = compose(
       event.stopPropagation()
     },
   }),
-  observer,
+  observer
 )
 
 class MonthlyEventsOfYear extends Component {
@@ -62,7 +62,7 @@ class MonthlyEventsOfYear extends Component {
     }
   }
 
-  scrollToActivePanel(more) {
+  scrollToActivePanel = more => {
     // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activeMonthlyEventPanel)
     if (node) {
@@ -76,18 +76,18 @@ class MonthlyEventsOfYear extends Component {
           {
             scrollTop: node.offsetTop - reduce,
           },
-          500,
+          500
         )
       }
     }
   }
 
-  monthlyEventsComponent(year) {
+  monthlyEventsComponent = year => {
     const { store, onClickMonthlyEvent, onClickEventCollapse } = this.props
     let { monthlyEvents, activeMonthlyEvent } = store.monthlyEvents
     // filter only events of current year
     monthlyEvents = monthlyEvents.filter(
-      monthlyEvent => getYearFromEventId(monthlyEvent._id) === year,
+      monthlyEvent => getYearFromEventId(monthlyEvent._id) === year
     )
     return monthlyEvents.map((doc, dIndex) => {
       const isActiveMonthlyEvent = has(activeMonthlyEvent, '_id')

@@ -34,7 +34,7 @@ class MonthlyEventsMeta extends Component {
     onCloseMeta: () => void,
   }
 
-  onChangeValue(property, event) {
+  onChangeValue = (property, event) => {
     const { store } = this.props
     const { activeMonthlyEvent, saveMonthlyEvent } = store.monthlyEvents
     const value = parseInt(event.target.value, 10)
@@ -43,7 +43,7 @@ class MonthlyEventsMeta extends Component {
     this.setState({ [property]: value })
   }
 
-  close() {
+  close = () => {
     const { onCloseMeta } = this.props
     onCloseMeta()
   }

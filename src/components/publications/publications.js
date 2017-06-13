@@ -22,10 +22,10 @@ const enhance = compose(
   withHandlers({
     onClickCategory: props => (activePublicationCategory: string): void =>
       props.store.publications.setPublicationCategory(
-        activePublicationCategory,
+        activePublicationCategory
       ),
   }),
-  observer,
+  observer
 )
 
 class Publications extends Component {
@@ -40,7 +40,7 @@ class Publications extends Component {
     this.props.store.publications.getPublications()
   }
 
-  publicationCategoriesComponent(activePublicationCategory) {
+  publicationCategoriesComponent = activePublicationCategory => {
     const { store, onClickCategory } = this.props
     let publicationCategories = store.publications.getPublicationCategories()
     const { publications } = store.publications

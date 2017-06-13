@@ -36,7 +36,7 @@ const enhance = compose(
     },
     onRemovePublication: props => (
       docToRemove: Object,
-      event: Object,
+      event: Object
     ): void => {
       event.preventDefault()
       event.stopPropagation()
@@ -53,7 +53,7 @@ const enhance = compose(
       changeDocToRemove(null)
     },
   }),
-  observer,
+  observer
 )
 
 class PublicationsOfCategory extends Component {
@@ -85,7 +85,7 @@ class PublicationsOfCategory extends Component {
     }
   }
 
-  scrollToActivePanel(more) {
+  scrollToActivePanel = more => {
     // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activePublicationPanel)
     if (node) {
@@ -99,13 +99,13 @@ class PublicationsOfCategory extends Component {
           {
             scrollTop: node.offsetTop - reduce,
           },
-          500,
+          500
         )
       }
     }
   }
 
-  removePublicationGlyph(doc) {
+  removePublicationGlyph = doc => {
     const { onRemovePublication } = this.props
 
     return (
@@ -126,7 +126,7 @@ class PublicationsOfCategory extends Component {
     )
   }
 
-  toggleDraftGlyph(doc) {
+  toggleDraftGlyph = doc => {
     const { onToggleDraft } = this.props
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : 'green'
@@ -155,12 +155,12 @@ class PublicationsOfCategory extends Component {
     )
   }
 
-  publicationsComponent(category) {
+  publicationsComponent = category => {
     const { store, onClickPublication, onClickEventCollapse } = this.props
     let { publications, activePublication } = store.publications
     // filter only publication of current category
     publications = publications.filter(
-      publication => publication.category === category,
+      publication => publication.category === category
     )
     publications = publications.sort((a, b) => {
       if (a.order && b.order) {
