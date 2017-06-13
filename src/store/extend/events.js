@@ -19,9 +19,9 @@ export default (store: Object): void => {
     activeEvent: computed(
       (): ?Object =>
         store.events.events.find(
-          event => event._id === store.events.activeEventId,
+          event => event._id === store.events.activeEventId
         ),
-      { name: `activeEvent` },
+      { name: `activeEvent` }
     ),
 
     getEventsCallback: null,
@@ -38,8 +38,8 @@ export default (store: Object): void => {
         .catch(error =>
           store.error.showError({
             msg: error,
-          }),
-        ),
+          })
+        )
     ),
     newEvent: action('newEvent', (event: Object): void => {
       const title = event.title
@@ -47,7 +47,6 @@ export default (store: Object): void => {
       const month = moment(event.date).format('MM')
       const day = moment(event.date).format('DD')
       const _id = `events_${year}_${month}_${day}_${slug(title)}`
-      console.log('slug(title):', slug(title))
       const type = 'events'
       const eventType = event.eventType || 'migration'
       const links = event.links || []
@@ -93,11 +92,11 @@ export default (store: Object): void => {
       (event: Object): void => {
         // first update the event
         store.events.events = store.events.events.filter(
-          thisEvent => thisEvent._id !== event._id,
+          thisEvent => thisEvent._id !== event._id
         )
         store.events.events.push(event)
         store.events.events = sortEvents(store.events.events)
-      },
+      }
     ),
 
     revertCache: action(
@@ -105,7 +104,7 @@ export default (store: Object): void => {
       (oldEvents: Array<Object>, oldActiveEventId: string): void => {
         store.events.events = oldEvents
         store.events.activeEventId = oldActiveEventId
-      },
+      }
     ),
 
     saveEvent: action('saveEvent', (event: Object): void => {
@@ -134,13 +133,13 @@ export default (store: Object): void => {
       (event: Object): void => {
         // first update the event in store.events.events
         store.events.events = store.events.events.filter(
-          thisEvent => thisEvent._id !== event._id,
+          thisEvent => thisEvent._id !== event._id
         )
         store.events.events = sortEvents(store.events.events)
         // now update it in store.events.activeEvent if it is the active event
         const isActiveEvent = store.events.activeEventId === event._id
         if (isActiveEvent) store.events.activeEventId = null
-      },
+      }
     ),
 
     removeEvent: action('removeEvent', (event: Object): void => {
