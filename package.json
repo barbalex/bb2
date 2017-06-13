@@ -9,13 +9,13 @@
     "babel-polyfill": "6.23.0",
     "bootstrap": "3.3.7",
     "classnames": "2.2.5",
-    "create-react-class": "15.5.3",
+    "create-react-class": "15.5.4",
     "gemini-scrollbar": "1.5.1",
     "isdev": "1.0.1",
     "js-base64": "2.1.9",
     "local-links": "1.4.1",
     "lodash": "4.17.4",
-    "mobx": "3.1.14",
+    "mobx": "3.1.15",
     "mobx-react": "4.2.1",
     "moment": "2.18.1",
     "pouchdb": "6.2.0",
@@ -33,11 +33,11 @@
     "recompose": "0.23.5",
     "speakingurl": "13.0.0",
     "styled-components": "2.0.1",
-    "tinymce": "4.6.3"
+    "tinymce": "4.6.4"
   },
   "devDependencies": {
     "css-loader": "0.28.4",
-    "flow-bin": "0.47.0",
+    "flow-bin": "0.48.0",
     "html-loader": "0.4.5",
     "postcss-loader": "2.0.5",
     "react-scripts": "1.0.7"
