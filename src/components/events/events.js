@@ -19,7 +19,7 @@ const enhance = compose(
   inject(`store`),
   withState('docToRemove', 'changeDocToRemove', null),
   withState('introJumbotronHeight', 'changeIntroJumbotronHeight', null),
-  observer,
+  observer
 )
 
 class Events extends Component {
@@ -40,18 +40,18 @@ class Events extends Component {
     this.setIntroComponentsHeight()
     window.addEventListener(
       'resize',
-      debounce(this.setIntroComponentsHeight, 50),
+      debounce(this.setIntroComponentsHeight, 50)
     )
   }
 
   componentWillUnmount() {
     window.removeEventListener(
       'resize',
-      debounce(this.setIntroComponentsHeight, 50),
+      debounce(this.setIntroComponentsHeight, 50)
     )
   }
 
-  setIntroComponentsHeight() {
+  setIntroComponentsHeight = () => {
     const {
       introJumbotronHeight: introJumbotronHeightOld,
       changeIntroJumbotronHeight,
@@ -71,16 +71,16 @@ class Events extends Component {
     }
   }
 
-  setActiveYear(year) {
+  setActiveYear = year => {
     const { store } = this.props
     store.events.getEvents([year])
     store.yearsOfEvents.setActiveEventYears([year])
   }
 
-  yearButtons() {
+  yearButtons = () => {
     const { yearsOfEvents, activeEventYears } = this.props.store.yearsOfEvents
 
-    return yearsOfEvents.map((year, index) => (
+    return yearsOfEvents.map((year, index) =>
       <Button
         key={index}
         active={activeEventYears.includes(year)}
@@ -88,7 +88,7 @@ class Events extends Component {
       >
         {year}
       </Button>
-    ))
+    )
   }
 
   render() {
