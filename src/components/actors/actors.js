@@ -6,18 +6,27 @@ import sortBy from 'lodash/sortBy'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
 import Actor from './actor.js'
 import NewActor from './newActor.js'
 import ModalRemoveActor from './modalRemoveActor.js'
 
-const glyphStyle = {
-  position: 'absolute',
-  right: 10,
-  top: 6,
-  fontSize: `${1.5}em`,
-  color: '#edf4f8',
-}
+const ToggleDraftGlyphicon = styled(Glyphicon)`
+  position: absolute !important;
+  right: 40px !important;
+  top: 6px !important;
+  font-size: 1.5em;
+  color: ${props => props.color};
+`
+
+const RemoveGlyphicon = styled(Glyphicon)`
+  position: absolute !important;
+  right: 10px !important;
+  top: 6px !important;
+  font-size: 1.5em;
+  color: #edf4f8;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -92,13 +101,7 @@ class Actors extends Component {
     const { onToggleDraft } = this.props
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : '#00D000'
-    const glyphStyle = {
-      position: 'absolute',
-      right: 40,
-      top: 6,
-      fontSize: '1.5em',
-      color,
-    }
+
     return (
       <OverlayTrigger
         placement="top"
@@ -108,10 +111,10 @@ class Actors extends Component {
           </Tooltip>
         }
       >
-        <Glyphicon
+        <ToggleDraftGlyphicon
           glyph={glyph}
-          style={glyphStyle}
           onClick={onToggleDraft.bind(this, doc)}
+          color={color}
         />
       </OverlayTrigger>
     )
@@ -184,15 +187,10 @@ class Actors extends Component {
               {showEditingGlyphons &&
                 <OverlayTrigger
                   placement="top"
-                  overlay={
-                    <Tooltip id="removeThisActor">
-                      remove
-                    </Tooltip>
-                  }
+                  overlay={<Tooltip id="removeThisActor">remove</Tooltip>}
                 >
-                  <Glyphicon
+                  <RemoveGlyphicon
                     glyph="remove-circle"
-                    style={glyphStyle}
                     onClick={event => this.props.onRemoveActor(doc, event)}
                   />
                 </OverlayTrigger>}
