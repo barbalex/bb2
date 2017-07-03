@@ -6,15 +6,16 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
 import Editor from '../editor.js'
 import MonthlyEventMeta from './monthlyEventMeta.js'
 
-const metaButtonStyle = {
-  position: 'fixed',
-  bottom: 10,
-  right: 10,
-}
+const MetaButton = styled(Button)`
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -23,7 +24,7 @@ const enhance = compose(
     onClickMeta: props => () => props.changeShowMeta(!props.showMeta),
     onCloseMeta: props => () => props.changeShowMeta(false),
   }),
-  observer,
+  observer
 )
 
 const MonthlyEvent = ({
@@ -58,9 +59,7 @@ const MonthlyEvent = ({
           doc={store.monthlyEvents.activeMonthlyEvent}
           articleDecoded={articleDecoded}
         />
-        <Button style={metaButtonStyle} onClick={onClickMeta}>
-          arrivals & victims
-        </Button>
+        <MetaButton onClick={onClickMeta}>arrivals & victims</MetaButton>
       </div>
     )
   }
