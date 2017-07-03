@@ -4,13 +4,12 @@ import sortBy from 'lodash/sortBy'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
 import PublicationsOfCategory from './publicationsOfCategory.js'
 import NewPublication from './newPublication.js'
 
-const containerStyle = {
-  marginBottom: 20,
-}
+const Container = styled.div`margin-bottom: 20px;`
 const orderByCategory = {
   Academic: 3,
   'European Union': 1,
@@ -94,15 +93,13 @@ class Publications extends Component {
     } = this.props.store.publications
 
     return (
-      <div id="publications" style={containerStyle}>
-        <h1>
-          Publications
-        </h1>
+      <Container id="publications">
+        <h1>Publications</h1>
         <div className="panel-group" id="publicationsAccordion" role="tablist">
           {this.publicationCategoriesComponent(activePublicationCategory)}
         </div>
         {showNewPublication && <NewPublication />}
-      </div>
+      </Container>
     )
   }
 }
