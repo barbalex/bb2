@@ -12,8 +12,13 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
 import DateInput from '../events/dateInput.js'
+
+const ErrorAlert = styled(Alert)`
+  magrin-bottom: 10px;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -38,12 +43,8 @@ const enhance = compose(
     onCloseNewCommentary: props => () =>
       props.store.commentaries.toggleShowNewCommentary(),
   }),
-  observer,
+  observer
 )
-
-const alertStyle = {
-  marginBottom: 10,
-}
 
 const NewCommentary = ({
   title,
@@ -61,12 +62,10 @@ const NewCommentary = ({
   onChangeTitle: () => void,
   onChangeDate: () => void,
   createNewCommentary: () => void,
-}) => (
+}) =>
   <Modal show bsSize="large">
     <Modal.Header>
-      <Modal.Title>
-        New commentary
-      </Modal.Title>
+      <Modal.Title>New commentary</Modal.Title>
     </Modal.Header>
 
     <Modal.Body>
@@ -82,22 +81,18 @@ const NewCommentary = ({
       </FormGroup>
       <DateInput date={date} onChangeDatePicker={onChangeDate} />
       {error &&
-        <Alert bsStyle="danger" style={alertStyle}>
+        <ErrorAlert bsStyle="danger">
           {error}
-        </Alert>}
+        </ErrorAlert>}
     </Modal.Body>
 
     <Modal.Footer>
-      <Button onClick={onCloseNewCommentary}>
-        discard input and close
-      </Button>
+      <Button onClick={onCloseNewCommentary}>discard input and close</Button>
       <Button bsStyle="primary" onClick={createNewCommentary}>
         create new commentary
       </Button>
     </Modal.Footer>
-
   </Modal>
-)
 
 NewCommentary.displayName = 'NewCommentary'
 
