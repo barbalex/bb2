@@ -7,13 +7,12 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import MonthlyEventsOfYear from './monthlyEventsOfYear.js'
 
-const containerStyle = {
-  marginBottom: 20,
-}
+const Container = styled.div`margin-bottom: 20px;`
 
 const enhance = compose(
   inject(`store`),
@@ -66,9 +65,8 @@ class MonthlyEvents extends Component {
 
     if (monthlyEvents.length > 0 && years.length > 0) {
       return years.map(year => {
-        const className = year === activeYear
-          ? 'year active'
-          : 'year not-active'
+        const className =
+          year === activeYear ? 'year active' : 'year not-active'
         // wanted to only build MonthlyEventsOfYear if isActiveYear
         // but opening a year was way to hideous
         return (
@@ -100,14 +98,12 @@ class MonthlyEvents extends Component {
     }
 
     return (
-      <div id="monthlyEvents" style={containerStyle}>
-        <h1>
-          Events Archive
-        </h1>
+      <Container id="monthlyEvents">
+        <h1>Events Archive</h1>
         <PanelGroup activeKey={activeYear} accordion>
           {this.eventYearsComponent(activeYear)}
         </PanelGroup>
-      </div>
+      </Container>
     )
   }
 }
