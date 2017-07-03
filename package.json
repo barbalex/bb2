@@ -22,7 +22,7 @@
     "pouchdb-upsert": "2.2.0",
     "react": "15.6.1",
     "react-bootstrap": "0.31.0",
-    "react-bootstrap-daterangepicker": "3.2.2",
+    "react-bootstrap-daterangepicker": "~3.2.2",
     "react-copy-to-clipboard": "5.0.0",
     "react-document-title": "2.0.3",
     "react-dom": "15.6.1",
