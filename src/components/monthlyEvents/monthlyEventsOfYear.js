@@ -6,10 +6,17 @@ import has from 'lodash/has'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
 import MonthlyEvent from './monthlyEvent.js'
 import getYearFromEventId from '../../modules/getYearFromEventId.js'
 import getMonthFromEventId from '../../modules/getMonthFromEventId.js'
+
+const PanelHeading = styled.div`position: relative;`
+const PanelBody = styled.div`
+  max-height: ${window.innerHeight - 127}px;
+  overflow-y: auto;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -18,10 +25,11 @@ const enhance = compose(
       const { activeMonthlyEvent, getMonthlyEvent } = props.store.monthlyEvents
       // prevent higher level panels from reacting
       event.stopPropagation()
-      const idToGet = !activeMonthlyEvent ||
+      const idToGet =
+        !activeMonthlyEvent ||
         (activeMonthlyEvent._id && activeMonthlyEvent._id !== id)
-        ? id
-        : null
+          ? id
+          : null
       getMonthlyEvent(idToGet)
     },
     onClickEventCollapse: props => (event: Object): void => {
@@ -94,13 +102,6 @@ class MonthlyEventsOfYear extends Component {
         ? doc._id === activeMonthlyEvent._id
         : false
       const month = getMonthFromEventId(doc._id)
-      const panelHeadingStyle = {
-        position: 'relative',
-      }
-      const panelBodyStyle = {
-        maxHeight: window.innerHeight - 127,
-        overflowY: 'auto',
-      }
       const ref = isActiveMonthlyEvent
         ? '_activeMonthlyEventPanel'
         : `_monthlyEventPanel${doc._id}`
@@ -116,12 +117,11 @@ class MonthlyEventsOfYear extends Component {
           }}
           className="panel panel-default month"
         >
-          <div
+          <PanelHeading
             className="panel-heading"
             role="tab"
             id={`heading${dIndex}`}
             onClick={onClickMonthlyEvent.bind(this, doc._id)}
-            style={panelHeadingStyle}
           >
             <h4 className="panel-title">
               <a
@@ -135,7 +135,7 @@ class MonthlyEventsOfYear extends Component {
                 {month}
               </a>
             </h4>
-          </div>
+          </PanelHeading>
           {isActiveMonthlyEvent &&
             <div
               id={`#collapse${dIndex}`}
@@ -144,9 +144,9 @@ class MonthlyEventsOfYear extends Component {
               aria-labelledby={`heading${dIndex}`}
               onClick={onClickEventCollapse}
             >
-              <div className="panel-body" style={panelBodyStyle}>
+              <PanelBody className="panel-body">
                 <MonthlyEvent year={year} month={month} />
-              </div>
+              </PanelBody>
             </div>}
         </div>
       )
