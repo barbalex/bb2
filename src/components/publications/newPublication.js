@@ -12,14 +12,18 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
-const alertStyle = {
-  marginBottom: 10,
-}
+const ErrorAlert = styled(Alert)`
+  magrin-bottom: 10px;
+`
+
 const categoryOptions = publicationCategories => {
-  const options = publicationCategories.map((category, index) => (
-    <option key={index + 1} value={category}>{category}</option>
-  ))
+  const options = publicationCategories.map((category, index) =>
+    <option key={index + 1} value={category}>
+      {category}
+    </option>
+  )
   options.unshift(<option key={0} value={null} />)
   return options
 }
@@ -48,7 +52,7 @@ const enhance = compose(
       props.store.publications.setShowNewPublication(false)
     },
   }),
-  observer,
+  observer
 )
 
 const NewPublication = ({
@@ -81,9 +85,7 @@ const NewPublication = ({
   return (
     <Modal show onHide={close} bsSize="large">
       <Modal.Header>
-        <Modal.Title>
-          New publication
-        </Modal.Title>
+        <Modal.Title>New publication</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -109,20 +111,17 @@ const NewPublication = ({
           </FormControl>
         </FormGroup>
         {error &&
-          <Alert bsStyle="danger" style={alertStyle}>
+          <ErrorAlert bsStyle="danger">
             {error}
-          </Alert>}
+          </ErrorAlert>}
       </Modal.Body>
 
       <Modal.Footer>
-        <Button onClick={close}>
-          discard input and close
-        </Button>
+        <Button onClick={close}>discard input and close</Button>
         <Button bsStyle="primary" onClick={createNewPublication}>
           create new publication
         </Button>
       </Modal.Footer>
-
     </Modal>
   )
 }
