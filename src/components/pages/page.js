@@ -6,24 +6,25 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
+import styled from 'styled-components'
 
 import Editor from '../editor.js'
 import Meta from './pageMeta.js'
 
-const metaButtonStyle = {
-  position: 'fixed',
-  bottom: 10,
-  right: 10,
-}
+const MetaButton = styled(Button)`
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+`
 
 const enhance = compose(
   inject(`store`),
   withState('showMeta', 'changeShowMeta', false),
   withHandlers({
-    onClickMeta: props => props.changeShowMeta(!props.showMeta),
-    onCloseMeta: props => props.changeShowMeta(false),
+    onClickMeta: props => () => props.changeShowMeta(!props.showMeta),
+    onCloseMeta: props => () => props.changeShowMeta(false),
   }),
-  observer,
+  observer
 )
 
 const Page = ({
@@ -53,9 +54,7 @@ const Page = ({
           doc={activePage}
           articleDecoded={articleDecoded}
         />
-        <Button style={metaButtonStyle} onClick={onClickMeta}>
-          images
-        </Button>
+        <MetaButton onClick={onClickMeta}>images</MetaButton>
       </div>
     )
   }
