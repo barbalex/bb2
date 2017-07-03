@@ -6,16 +6,29 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
 import Publication from './publication.js'
 import ModalRemovePublication from './modalRemovePublication.js'
 
-const glyphStyle = {
-  position: 'absolute',
-  right: 8,
-  top: 6,
-  fontSize: '1.5em',
-}
+const ToggleDraftGlyphicon = styled(Glyphicon)`
+  position: absolute !important;
+  right: 40px !important;
+  top: 6px !important;
+  font-size: 1.5em;
+  color: ${props => props.color};
+`
+const RemoveGlyphicon = styled(Glyphicon)`
+  position: absolute !important;
+  right: 8px !important;
+  top: 6px !important;
+  font-size: 1.5em;
+`
+const PanelHeading = styled.div`position: relative;`
+const PanelBody = styled.div`
+  max-height: ${window.innerHeight - 127}px;
+  overflow-y: auto;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -25,9 +38,8 @@ const enhance = compose(
       // prevent higher level panels from reacting
       e.stopPropagation()
       const { activePublication, getPublication } = props.store.publications
-      const idToGet = !activePublication || activePublication._id !== id
-        ? id
-        : null
+      const idToGet =
+        !activePublication || activePublication._id !== id ? id : null
       getPublication(idToGet)
     },
     onClickEventCollapse: props => (event: Object): void => {
@@ -111,15 +123,10 @@ class PublicationsOfCategory extends Component {
     return (
       <OverlayTrigger
         placement="top"
-        overlay={
-          <Tooltip id="removeThisPublication">
-            remove
-          </Tooltip>
-        }
+        overlay={<Tooltip id="removeThisPublication">remove</Tooltip>}
       >
-        <Glyphicon
+        <RemoveGlyphicon
           glyph="remove-circle"
-          style={glyphStyle}
           onClick={onRemovePublication.bind(this, doc)}
         />
       </OverlayTrigger>
@@ -130,13 +137,7 @@ class PublicationsOfCategory extends Component {
     const { onToggleDraft } = this.props
     const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
     const color = doc.draft ? 'red' : 'green'
-    const glyphStyle = {
-      position: 'absolute',
-      right: 38,
-      top: 6,
-      fontSize: '1.5em',
-      color,
-    }
+
     return (
       <OverlayTrigger
         placement="top"
@@ -146,9 +147,9 @@ class PublicationsOfCategory extends Component {
           </Tooltip>
         }
       >
-        <Glyphicon
+        <ToggleDraftGlyphicon
           glyph={glyph}
-          style={glyphStyle}
+          color={color}
           onClick={onToggleDraft.bind(this, doc)}
         />
       </OverlayTrigger>
@@ -175,13 +176,6 @@ class PublicationsOfCategory extends Component {
         ? doc._id === activePublication._id
         : false
       const showEditingGlyphons = !!store.login.email
-      const panelHeadingStyle = {
-        position: 'relative',
-      }
-      const panelBodyStyle = {
-        maxHeight: window.innerHeight - 127,
-        overflowY: 'auto',
-      }
       const ref = isActivePublication
         ? '_activePublicationPanel'
         : `_publicationPanel${doc._id}`
@@ -197,12 +191,11 @@ class PublicationsOfCategory extends Component {
           }}
           className="panel panel-default month"
         >
-          <div
+          <PanelHeading
             className="panel-heading"
             role="tab"
             id={`heading${dIndex}`}
             onClick={onClickPublication.bind(this, doc._id)}
-            style={panelHeadingStyle}
           >
             <h4 className="panel-title">
               <a
@@ -218,7 +211,7 @@ class PublicationsOfCategory extends Component {
             </h4>
             {showEditingGlyphons && this.toggleDraftGlyph(doc)}
             {showEditingGlyphons && this.removePublicationGlyph(doc)}
-          </div>
+          </PanelHeading>
           {isActivePublication &&
             <div
               id={`#collapse${dIndex}`}
@@ -227,9 +220,9 @@ class PublicationsOfCategory extends Component {
               aria-labelledby={`heading${dIndex}`}
               onClick={onClickEventCollapse}
             >
-              <div className="panel-body" style={panelBodyStyle}>
+              <PanelBody className="panel-body">
                 <Publication />
-              </div>
+              </PanelBody>
             </div>}
         </div>
       )
