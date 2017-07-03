@@ -12,10 +12,11 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
-const alertStyle = {
-  marginBottom: 10,
-}
+const ErrorAlert = styled(Alert)`
+  magrin-bottom: 10px;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -37,7 +38,7 @@ const enhance = compose(
       props.store.actors.setShowNewActor(false)
     },
   }),
-  observer,
+  observer
 )
 
 const NewActor = ({
@@ -54,12 +55,10 @@ const NewActor = ({
   closeNewActor: () => void,
   onChangeCategory: () => void,
   createNewActor: () => void,
-}) => (
+}) =>
   <Modal show bsSize="large">
     <Modal.Header>
-      <Modal.Title>
-        New actor category
-      </Modal.Title>
+      <Modal.Title>New actor category</Modal.Title>
     </Modal.Header>
 
     <Modal.Body>
@@ -73,22 +72,18 @@ const NewActor = ({
         />
       </FormGroup>
       {error &&
-        <Alert bsStyle="danger" style={alertStyle}>
+        <ErrorAlert bsStyle="danger">
           {error}
-        </Alert>}
+        </ErrorAlert>}
     </Modal.Body>
 
     <Modal.Footer>
-      <Button onClick={closeNewActor}>
-        discard input and close
-      </Button>
+      <Button onClick={closeNewActor}>discard input and close</Button>
       <Button bsStyle="primary" onClick={createNewActor}>
         create new actor
       </Button>
     </Modal.Footer>
-
   </Modal>
-)
 
 NewActor.displayName = 'NewActor'
 
