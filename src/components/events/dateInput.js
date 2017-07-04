@@ -10,6 +10,11 @@ import {
 } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
+import styled from 'styled-components'
+
+const StyledInputGroup = styled(InputGroup)`
+  width: 100%;
+`
 
 const enhance = compose(inject(`store`), observer)
 
@@ -17,14 +22,13 @@ const EventDate = ({
   store,
   date,
   onChangeDatePicker,
-}: { date: Date, onChangeDatePicker: () => void }) => (
+}: {
+  date: Date,
+  onChangeDatePicker: () => void,
+}) =>
   <FormGroup controlId="date">
     <ControlLabel>Date</ControlLabel>
-    <InputGroup
-      style={{
-        width: `${100}%`,
-      }}
-    >
+    <StyledInputGroup>
       <DateRangePicker
         singleDatePicker
         drops="down"
@@ -41,9 +45,8 @@ const EventDate = ({
           tabIndex={2}
         />
       </DateRangePicker>
-    </InputGroup>
+    </StyledInputGroup>
   </FormGroup>
-)
 
 EventDate.displayName = 'EventDate'
 
