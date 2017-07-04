@@ -151,17 +151,6 @@ a:link {
   left: -23px;
 }
 
-a.typeahead-token-close {
-  margin-left: 5px;
-}
-.typeahead-selector .list-group-item:focus,
-.typeahead-selector .list-group-item:hover {
-  color: #555;
-  text-decoration: none;
-  background-color: #f5f5f5;
-  cursor: pointer;
-}
-
 h4.modal-title {
   font-weight: bold;
   font-size: 1.3em;
