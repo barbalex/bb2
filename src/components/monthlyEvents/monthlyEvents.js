@@ -11,6 +11,7 @@ import styled from 'styled-components'
 
 import getYearFromEventId from '../../modules/getYearFromEventId'
 import MonthlyEventsOfYear from './monthlyEventsOfYear'
+import oceanDarkImage from '../../images/oceanDark.jpg'
 
 const Container = styled.div`
   margin-bottom: 20px !important;
@@ -43,10 +44,23 @@ const Container = styled.div`
   .panel.month:last-of-type {
     border-bottom-width: 0 !important;
   }
-
   .panel.month .panel-body table {
     margin-left: 0 !important;
     width: 100% !important;
+  }
+`
+const StyledPanel = styled(({ activeYear, children, ...rest }) =>
+  <Panel {...rest}>
+    {children}
+  </Panel>
+)`
+  &> .panel-heading {
+    background-image: url(${oceanDarkImage});
+    border-radius: ${props => (props.activeYear ? 'inherit' : '3px')};
+  }
+  &> .panel-heading a {
+    color: #edf4f8;
+    font-weight: bold;
   }
 `
 
@@ -100,23 +114,19 @@ class MonthlyEvents extends Component {
     const years = this.yearsOfEvents()
 
     if (monthlyEvents.length > 0 && years.length > 0) {
-      return years.map(year => {
-        const className =
-          year === activeYear ? 'year active' : 'year not-active'
-        // wanted to only build MonthlyEventsOfYear if isActiveYear
-        // but opening a year was way to hideous
-        return (
-          <Panel
-            key={year}
-            header={year}
-            eventKey={year}
-            className={className}
-            onClick={onClickYear.bind(this, year)}
-          >
-            <MonthlyEventsOfYear year={year} />
-          </Panel>
-        )
-      })
+      // wanted to only build MonthlyEventsOfYear if isActiveYear
+      // but opening a year was way to hideous
+      return years.map(year =>
+        <StyledPanel
+          key={year}
+          header={year}
+          eventKey={year}
+          onClick={onClickYear.bind(this, year)}
+          activeYear={activeYear}
+        >
+          <MonthlyEventsOfYear year={year} />
+        </StyledPanel>
+      )
     }
     return null
   }

@@ -38,12 +38,7 @@ const Container = styled.div`
     border-bottom-width: 0 !important;
   }
 `
-const PanelGroup = styled.div`
-  margin-bottom: 0 !important;
-  .year > .panel-heading {
-    background-color: transparent;
-  }
-`
+const PanelGroup = styled.div`margin-bottom: 0 !important;`
 const orderByCategory = {
   Academic: 3,
   'European Union': 1,

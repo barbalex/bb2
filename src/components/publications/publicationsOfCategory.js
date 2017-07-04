@@ -24,12 +24,7 @@ const RemoveGlyphicon = styled(Glyphicon)`
   top: 6px !important;
   font-size: 1.5em;
 `
-const PanelGroup = styled.div`
-  margin-bottom: 0 !important;
-  .year > .panel-heading {
-    background-color: transparent;
-  }
-`
+const PanelGroup = styled.div`margin-bottom: 0 !important;`
 const PanelHeading = styled.div`position: relative;`
 const PanelBody = styled.div`
   max-height: ${window.innerHeight - 127}px;
