@@ -16,11 +16,6 @@ a:link {
   cursor: pointer;
 }
 
-.no-break-inside {
-  break-inside: avoid-column;
-  page-break-inside: avoid;
-}
-
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
