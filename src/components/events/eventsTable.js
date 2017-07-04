@@ -3,11 +3,16 @@ import React from 'react'
 import GeminiScrollbar from 'react-gemini-scrollbar'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
+import styled from 'styled-components'
 
 import DateRows from './dateRows.js'
 
-const fontSize = window.innerWidth < 500 ? 20 : 24
-const headerStyle = { fontSize }
+const Header = styled.div`
+  position: absolute;
+  top: ${props => props.top}px;
+`
+const HeaderCell = styled.div`font-size: ${props => props.fontSize}px;`
+const headerCellFontSize = window.innerWidth < 500 ? 20 : 24
 
 const enhance = compose(inject(`store`), observer)
 
@@ -18,36 +23,30 @@ const Events = ({
   store: Object,
   introJumbotronHeight: number,
 }) => {
-  const eventsTableHeadTop = introJumbotronHeight
-    ? introJumbotronHeight + 88
-    : 173
-  const eventsTableHeadStyle = {
-    top: eventsTableHeadTop,
-    position: 'absolute',
-  }
+  const headerTop = introJumbotronHeight ? introJumbotronHeight + 88 : 173
 
   return (
     <div className="eventsTable">
-      <div style={eventsTableHeadStyle} className="eventsTable-header">
+      <Header top={headerTop} className="eventsTable-header">
         <div className="eventsTable-header-row">
-          <div
+          <HeaderCell
             className="eventsTable-header-cell eventsTable-cell-day"
-            style={headerStyle}
+            fontSize={headerCellFontSize}
           />
-          <div
+          <HeaderCell
             className="eventsTable-header-cell eventsTable-cell-migration"
-            style={headerStyle}
+            fontSize={headerCellFontSize}
           >
             Maritime Events
-          </div>
-          <div
+          </HeaderCell>
+          <HeaderCell
             className="eventsTable-header-cell eventsTable-cell-politics"
-            style={headerStyle}
+            fontSize={headerCellFontSize}
           >
             Political Events
-          </div>
+          </HeaderCell>
         </div>
-      </div>
+      </Header>
       <div className="eventsTable-body">
         <GeminiScrollbar id="eventsTableBody" autoshow>
           <DateRows />
