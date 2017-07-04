@@ -18,9 +18,6 @@ import EventsTable from './eventsTable'
 
 const Container = styled.div`
   position: relative !important;
-  .monthlyStatisticsRow {
-    background-color: rgba(0, 109, 255, 0.05) !important;
-  }
   p.event-weather {
     position: relative !important;
   }

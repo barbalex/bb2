@@ -34,6 +34,31 @@ const BodyCellPolitics = BodyCell.extend`
   word-wrap: break-word;
   padding-left: 10px;
 `
+const BodyRow = styled.div`
+  display: flex;
+  border-top: 1px solid #ececec !important;
+  border-radius: 4px;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+  ul {
+    padding-left: 10px;
+    margin-bottom: 0;
+  }
+  ul li {
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
+  ul li + li {
+    margin-top: 10px;
+  }
+  p {
+    margin-bottom: 0;
+  }
+  a {
+    white-space: nowrap;
+  }
+`
 
 const enhance = compose(inject(`store`), observer)
 
@@ -53,7 +78,7 @@ const DateRow = ({
   const dayWithEvents = migrationEvents.length > 0 || politicsEvents.length > 0
 
   return (
-    <div className="eventsTable-body-row">
+    <BodyRow>
       {dayWithEvents &&
         <BodyCellDayWithEvents>
           <p>
@@ -76,7 +101,7 @@ const DateRow = ({
           {politicsEvents}
         </ul>
       </BodyCellPolitics>
-    </div>
+    </BodyRow>
   )
 }
 

@@ -15,7 +15,7 @@ const BodyRow = styled.div`
   display: flex;
   border-top: 1px solid #ececec !important;
   border-radius: 4px;
-  :hover {
+  &:hover {
     background-color: #f5f5f5;
   }
 `

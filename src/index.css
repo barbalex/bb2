@@ -47,53 +47,6 @@ a:link {
 /*--------------------------------*\
     3. #Events
 \*--------------------------------*/
-
-.eventsTable-body-cell {
-  padding: 5px;
-  flex: 1;
-}
-
-.eventsTable-header-row,
-.eventsTable-body-row {
-  display: flex;
-}
-
-.eventsTable-body-row {
-  border-top: 1px solid #ececec !important;
-  border-radius: 4px;
-}
-.eventsTable-body-row:hover {
-  background-color: #f5f5f5;
-}
-.eventsTable-body-monthRow {
-  background-image: url('./images/oceanDark.jpg');
-  color: #edf4f8;
-  font-weight: bold;
-}
-.eventsTable-body-monthRow .eventsTable-body-cell {
-  padding-left: 10px;
-}
-
-.eventsTable-body-row ul {
-  padding-left: 10px;
-  margin-bottom: 0;
-}
-.eventsTable-body-row ul li {
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
-.eventsTable-body-row ul li + li {
-  margin-top: 10px;
-}
-.eventsTable-body-row p {
-  margin-bottom: 0;
-}
-
-/* make sure glyphicon and link text are on same line */
-.eventsTable-body-row a {
-  white-space: nowrap;
-}
-
 /**
  * unfortunately content does not seem to
  * come over correctly in object literal

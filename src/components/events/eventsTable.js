@@ -52,6 +52,7 @@ const Body = styled.div`
   border-bottom: 1px solid #ececec;
   width: 100%;
 `
+const HeaderRow = styled.div`display: flex;`
 
 const enhance = compose(inject(`store`), observer)
 
@@ -67,11 +68,11 @@ const Events = ({
   return (
     <Container>
       <Header top={headerTop} className="eventsTable-header">
-        <div className="eventsTable-header-row">
+        <HeaderRow>
           <HeaderCellDay />
           <HeaderCellMigration>Maritime Events</HeaderCellMigration>
           <HeaderCellPolitics>Political Events</HeaderCellPolitics>
-        </div>
+        </HeaderRow>
       </Header>
       <Body>
         <GeminiScrollbar id="eventsTableBody" autoshow>
