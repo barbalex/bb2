@@ -22,19 +22,6 @@ a:link {
   background-color: rgba(0, 109, 255, 0.05) !important;
 }
 
-.category > .panel-heading {
-  background-image: url('./images/oceanDark.jpg');
-}
-
-.category.not-active > .panel-heading {
-  border-radius: 3px;
-}
-
-.category > .panel-heading a {
-  color: #edf4f8;
-  font-weight: bold;
-}
-
 .col400,
 .col500 {
   column-count: 1;

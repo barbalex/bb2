@@ -8,6 +8,7 @@ import styled from 'styled-components'
 
 import PublicationsOfCategory from './publicationsOfCategory'
 import NewPublication from './newPublication'
+import oceanDarkImage from '../../images/oceanDark.jpg'
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -38,7 +39,19 @@ const Container = styled.div`
     border-bottom-width: 0 !important;
   }
 `
-const PanelGroup = styled.div`margin-bottom: 0 !important;`
+const PanelGroup = styled.div`
+  margin-bottom: 0 !important;
+  > div > .panel-heading {
+    background-image: url(${oceanDarkImage});
+  }
+  &.not-active > .panel-heading {
+    border-radius: 3px;
+  }
+  > div > .panel-heading a {
+    color: #edf4f8;
+    font-weight: bold;
+  }
+`
 const orderByCategory = {
   Academic: 3,
   'European Union': 1,
@@ -80,12 +93,6 @@ class Publications extends Component {
         return order
       })
       return publicationCategories.map(category => {
-        // deactivated when changed to showing open list:
-        // const className = (
-        //   category === activePublicationCategory ?
-        //   'panel panel-default category active' :
-        //   'panel panel-default category not-active'
-        // )
         return (
           <div
             key={category}
