@@ -12,99 +12,15 @@ import Editor from '../editor'
 import MonthlyEventMeta from './monthlyEventMeta'
 
 const Container = styled.div`
-  table.new {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid black;
+  table > thead > tr > th {
+    border-bottom: 0 solid #dddddd !important;
+    line-height: .3;
   }
-  .new thead {
-    background-color: rgb(250, 191, 143);
-  }
-  .new tr,
-  .new th,
-  .new td {
-    border: 1px solid black;
-    padding: 5px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
-  .new h1,
-  .new h2,
-  .new p {
-    text-align: center;
-  }
-  .new h1 {
-    font-size: 1em;
-    font-weight: bold;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-  }
-  .new h1 + h1 {
-    margin-top: -15px;
-  }
-  .new h2 {
-    font-size: 0.8em;
-    font-weight: bold;
-    text-decoration: underline;
-    margin-top: 10px;
-  }
-  .new p {
-    font-size: 0.8em;
-    font-weight: normal;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  .new p.bold {
-    font-weight: bold;
-  }
-  table.new {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid black;
-  }
-  .new thead {
-    background-color: rgb(250, 191, 143);
-  }
-  .new tr,
-  .new th,
-  .new td {
-    border: 1px solid black;
-    padding: 5px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
-  .new h1,
-  .new h2,
-  .new p {
-    text-align: center;
-  }
-  .new h1 {
-    font-size: 1em;
-    font-weight: bold;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-  }
-  .new h1 + h1 {
-    margin-top: -15px;
-  }
-  .new h2 {
-    font-size: 0.8em;
-    font-weight: bold;
-    text-decoration: underline;
-    margin-top: 10px;
-  }
-  .new p {
-    font-size: 0.8em;
-    font-weight: normal;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  .new p.bold {
-    font-weight: bold;
+  table > thead > tr.totals > td {
+    border-top: 0;
+    border-bottom: 2px solid #dddddd !important;
+    line-height: .6;
+    color: #9c9c9c;
   }
 `
 const MetaButton = styled(Button)`

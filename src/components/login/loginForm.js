@@ -21,6 +21,11 @@ import validateEmail from './validateEmail'
 const StyledAlert = styled(Alert)`
   margin-bottom: 8px;
 `
+const ValidateDivAfterRBC = styled.div`
+  color: #a94442;
+  margin-top: -15px;
+  margin-bottom: 5px;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -149,7 +154,7 @@ const LoginForm = ({
           />
         </FormGroup>
         {invalidEmail &&
-          <div className="validateDivAfterRBC">Please check email</div>}
+          <ValidateDivAfterRBC>Please check email</ValidateDivAfterRBC>}
       </div>
       <div className="formGroup">
         <FormGroup controlId="password">
@@ -166,7 +171,7 @@ const LoginForm = ({
           />
         </FormGroup>
         {invalidPassword &&
-          <div className="validateDivAfterRBC">Please check password</div>}
+          <ValidateDivAfterRBC>Please check password</ValidateDivAfterRBC>}
       </div>
       {isError &&
         <StyledAlert bsStyle="danger" onDismiss={onAlertDismiss}>
