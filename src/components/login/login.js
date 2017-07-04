@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 
-import LoginForm from './loginForm.js'
+import LoginForm from './loginForm'
 
 const enhance = compose(
   inject(`store`),

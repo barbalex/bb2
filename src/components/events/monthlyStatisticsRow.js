@@ -3,7 +3,7 @@ import React from 'react'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 
-import Event from './event.js'
+import Event from './event'
 
 const enhance = compose(inject(`store`), observer)
 

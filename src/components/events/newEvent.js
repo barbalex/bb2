@@ -15,7 +15,7 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import DateInput from './dateInput.js'
+import DateInput from './dateInput'
 
 const StyledAlert = styled(Alert)`
   margin-top: 10px;

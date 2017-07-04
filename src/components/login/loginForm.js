@@ -16,7 +16,7 @@ import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import styled from 'styled-components'
 
-import validateEmail from './validateEmail.js'
+import validateEmail from './validateEmail'
 
 const StyledAlert = styled(Alert)`
   margin-bottom: 8px;

@@ -3,29 +3,26 @@ import React from 'react'
 import DocumentTitle from 'react-document-title'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
+import styled from 'styled-components'
 
-import NavHelper from '../components/navHelper.js'
-import Header from '../components/header.js'
-import Navbar from '../components/navbar.js'
-import Page from './pages/page.js'
-import Events from './events/events.js'
-import Commentaries from './commentaries/commentaries.js'
-import Actors from './actors/actors.js'
-import MonthlyEvents from './monthlyEvents/monthlyEvents.js'
-import Publications from './publications/publications.js'
-import Login from './login/login.js'
-import Errors from './errors.js'
-import getPageNameFromDoc from '../modules/getPageNameFromDoc.js'
+import NavHelper from '../components/navHelper'
+import Header from '../components/header'
+import Navbar from '../components/navbar'
+import Page from './pages/page'
+import Events from './events/events'
+import Commentaries from './commentaries/commentaries'
+import Actors from './actors/actors'
+import MonthlyEvents from './monthlyEvents/monthlyEvents'
+import Publications from './publications/publications'
+import Login from './login/login'
+import Errors from './errors'
+import getPageNameFromDoc from '../modules/getPageNameFromDoc'
+
+const P = styled.p`margin-top: 70px;`
 
 const enhance = compose(inject(`store`), observer)
 
-const Main = ({
-  store,
-  login,
-}: {
-  store: Object,
-  login: boolean,
-}) => {
+const Main = ({ store, login }: { store: Object, login: boolean }) => {
   const { activePage } = store.page
   const nonSimplePages = [
     'pages_commentaries',
@@ -89,10 +86,7 @@ const Main = ({
           {showMonthlyEventsPage && <MonthlyEvents />}
           {showPublicationsPage && <Publications />}
           {login && !store.login.email && <Login />}
-          {showCopyright &&
-            <p style={{ marginTop: 70 }}>
-              © Jürg Martin Gabriel. All Rights Reserved.
-            </p>}
+          {showCopyright && <P>© Jürg Martin Gabriel. All Rights Reserved.</P>}
         </div>
       </NavHelper>
     </DocumentTitle>
