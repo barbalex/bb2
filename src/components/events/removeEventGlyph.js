@@ -4,13 +4,14 @@ import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
-const glyphStyle = {
-  fontSize: '0.9em',
-  color: 'red',
-  paddingLeft: 8,
-  cursor: 'pointer',
-}
+const StyledGlyphicon = styled(Glyphicon)`
+  font-size: 0.9em;
+  color: red;
+  padding-left: 8px;
+  cursor: pointer;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -18,29 +19,24 @@ const enhance = compose(
     onRemoveEvent: props => () =>
       props.store.events.setEventToRemove(props.event),
   }),
-  observer,
+  observer
 )
 
 const RemoveEventGlyph = ({
   store,
   event,
   onRemoveEvent,
-}: { store: Object, event: Object, onRemoveEvent: () => void }) => (
+}: {
+  store: Object,
+  event: Object,
+  onRemoveEvent: () => void,
+}) =>
   <OverlayTrigger
     placement="top"
-    overlay={
-      <Tooltip id="removeThisEvent">
-        remove
-      </Tooltip>
-    }
+    overlay={<Tooltip id="removeThisEvent">remove</Tooltip>}
   >
-    <Glyphicon
-      glyph="remove-circle"
-      style={glyphStyle}
-      onClick={onRemoveEvent}
-    />
+    <StyledGlyphicon glyph="remove-circle" onClick={onRemoveEvent} />
   </OverlayTrigger>
-)
 
 RemoveEventGlyph.displayName = 'RemoveEventGlyph'
 
