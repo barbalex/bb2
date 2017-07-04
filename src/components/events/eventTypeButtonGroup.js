@@ -4,12 +4,13 @@ import { ButtonGroup, Button } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
-const labelStyle = {
-  fontWeight: 'bold',
-  marginBottom: 5,
-}
-const containerStyle = { marginBottom: 20 }
+const Container = styled.div`margin-bottom: 20px;`
+const Label = styled.div`
+  font-weight: bold;
+  margin-bottom: 5px;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -20,7 +21,7 @@ const enhance = compose(
       saveEvent(activeEvent)
     },
   }),
-  observer,
+  observer
 )
 
 class EventTypeButtonGroup extends Component {
@@ -42,10 +43,8 @@ class EventTypeButtonGroup extends Component {
     const { eventType } = store.events.activeEvent
 
     return (
-      <div style={containerStyle}>
-        <div style={labelStyle}>
-          Column
-        </div>
+      <Container>
+        <Label>Column</Label>
         <ButtonGroup>
           <Button
             className={eventType === 'migration' ? 'active' : ''}
@@ -60,7 +59,7 @@ class EventTypeButtonGroup extends Component {
             political events / total statistics
           </Button>
         </ButtonGroup>
-      </div>
+      </Container>
     )
   }
 }
