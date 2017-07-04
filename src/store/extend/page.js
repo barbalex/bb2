@@ -2,7 +2,7 @@
 import { extendObservable, action } from 'mobx'
 import app from 'ampersand-app'
 
-import getPathFromDocId from '../../modules/getPathFromDocId.js'
+import getPathFromDocId from '../../modules/getPathFromDocId'
 
 export default (store: Object): void => {
   extendObservable(store.page, {

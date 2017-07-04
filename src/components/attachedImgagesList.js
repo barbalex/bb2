@@ -4,20 +4,25 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
-import AttachedImage from './attachedImage.js'
+import AttachedImage from './attachedImage'
 
-const divStyle = {
-  overflow: 'auto',
-  maxHeight: 400,
-  paddingBottom: 5,
-}
+const Container = styled.div`
+  overflow: auto;
+  max-height: 400px;
+  padding-bottom: 5px;
+`
 
 const images = ({
   doc,
   onCopyUrl,
   urlCopied,
-}: { doc: Object, onCopyUrl: () => void, urlCopied: string }) => {
+}: {
+  doc: Object,
+  onCopyUrl: () => void,
+  urlCopied: string,
+}) => {
   const wantedContentTypes = ['image/jpeg', 'image/png']
   const imageNameArray = []
   if (!doc._attachments || Object.keys(doc._attachments).length === 0) {
@@ -28,7 +33,7 @@ const images = ({
       imageNameArray.push(key)
     }
   })
-  const images = imageNameArray.map((imageName, index) => (
+  const images = imageNameArray.map((imageName, index) =>
     <AttachedImage
       key={index}
       doc={doc}
@@ -36,7 +41,7 @@ const images = ({
       urlCopied={urlCopied}
       onCopyUrl={onCopyUrl}
     />
-  ))
+  )
   return images
 }
 
@@ -48,7 +53,7 @@ const enhance = compose(
       props.changeUrlCopied(urlCopied)
     },
   }),
-  observer,
+  observer
 )
 
 const AttachedImagesList = ({
@@ -61,11 +66,10 @@ const AttachedImagesList = ({
   urlCopied: string,
   onCopyUrl: () => void,
   changeUrlCopied: () => void,
-}) => (
-  <div className="media" style={divStyle}>
+}) =>
+  <Container className="media">
     {images({ doc, onCopyUrl, urlCopied })}
-  </div>
-)
+  </Container>
 
 AttachedImagesList.displayName = 'AttachedImagesList'
 

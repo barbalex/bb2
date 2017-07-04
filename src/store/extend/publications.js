@@ -4,9 +4,9 @@ import app from 'ampersand-app'
 import { Base64 } from 'js-base64'
 import slug from 'speakingurl'
 
-import getPublications from '../../modules/getPublications.js'
+import getPublications from '../../modules/getPublications'
 import getPathFromDocId from '../../modules/getPathFromDocId'
-import sortPublications from '../../modules/sortPublications.js'
+import sortPublications from '../../modules/sortPublications'
 import uniq from 'lodash/uniq'
 
 export default (store: Object): void => {

@@ -2,7 +2,7 @@
 import { extendObservable, action } from 'mobx'
 import moment from 'moment'
 
-import getYearsOfEvents from '../../modules/getYearsOfEvents.js'
+import getYearsOfEvents from '../../modules/getYearsOfEvents'
 
 export default (store: Object): void => {
   extendObservable(store.yearsOfEvents, {
