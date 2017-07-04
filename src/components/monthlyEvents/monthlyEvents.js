@@ -9,8 +9,8 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import getYearFromEventId from '../../modules/getYearFromEventId.js'
-import MonthlyEventsOfYear from './monthlyEventsOfYear.js'
+import getYearFromEventId from '../../modules/getYearFromEventId'
+import MonthlyEventsOfYear from './monthlyEventsOfYear'
 
 const Container = styled.div`margin-bottom: 20px;`
 

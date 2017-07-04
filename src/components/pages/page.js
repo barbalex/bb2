@@ -8,8 +8,8 @@ import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import styled from 'styled-components'
 
-import Editor from '../editor.js'
-import Meta from './pageMeta.js'
+import Editor from '../editor'
+import Meta from './pageMeta'
 
 const MetaButton = styled(Button)`
   position: fixed;

@@ -8,8 +8,8 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import Editor from '../editor.js'
-import MonthlyEventMeta from './monthlyEventMeta.js'
+import Editor from '../editor'
+import MonthlyEventMeta from './monthlyEventMeta'
 
 const MetaButton = styled(Button)`
   position: fixed;

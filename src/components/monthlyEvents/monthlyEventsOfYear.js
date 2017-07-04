@@ -8,9 +8,9 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import MonthlyEvent from './monthlyEvent.js'
-import getYearFromEventId from '../../modules/getYearFromEventId.js'
-import getMonthFromEventId from '../../modules/getMonthFromEventId.js'
+import MonthlyEvent from './monthlyEvent'
+import getYearFromEventId from '../../modules/getYearFromEventId'
+import getMonthFromEventId from '../../modules/getMonthFromEventId'
 
 const PanelHeading = styled.div`position: relative;`
 const PanelBody = styled.div`
