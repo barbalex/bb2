@@ -16,6 +16,42 @@ import EditEvent from './editEvent'
 import ModalRemoveEvent from './modalRemoveEvent'
 import EventsTable from './eventsTable'
 
+const Container = styled.div`
+  position: relative !important;
+  .monthlyStatisticsRow {
+    background-color: rgba(0, 109, 255, 0.05) !important;
+  }
+  .dayWithEvents p {
+    margin-top: 5px !important;
+  }
+  p.event-weather {
+    position: relative !important;
+  }
+  li.event-weather {
+    list-style-type: none !important;
+  }
+
+  p.event-statistics,
+  p.event-monthlyStatistics {
+    position: relative;
+  }
+  li.event-statistics,
+  li.event-monthlyStatistics {
+    list-style-type: none;
+  }
+  p.event-victims {
+    position: relative;
+  }
+  li.event-victims {
+    list-style-type: none;
+  }
+  p.event-highlighted {
+    position: relative;
+  }
+  li.event-highlighted {
+    list-style-type: none;
+  }
+`
 const YearButtonsContainer = styled.div`text-align: center;`
 
 const enhance = compose(
@@ -100,7 +136,7 @@ class Events extends Component {
     const { activeEvent, showNewEvent } = store.events
 
     return (
-      <div className="events">
+      <Container className="events">
         <IntroJumbotron
           ref={j => {
             // $FlowIssue
@@ -120,7 +156,7 @@ class Events extends Component {
         {activeEvent && <EditEvent />}
         {showNewEvent && <NewEvent />}
         {store.events.eventToRemove && <ModalRemoveEvent />}
-      </div>
+      </Container>
     )
   }
 }

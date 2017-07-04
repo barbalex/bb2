@@ -56,11 +56,6 @@ a:link {
 /*--------------------------------*\
     3. #Events
 \*--------------------------------*/
-
-/* fix table header */
-.events {
-  position: relative;
-}
 .eventsTable-body {
   overflow-x: visible;
   overflow-y: auto;
@@ -111,18 +106,11 @@ a:link {
   padding-left: 10px;
 }
 
-.events .monthlyStatisticsRow {
-  background-color: rgba(0, 109, 255, 0.05);
-}
-
 .eventsTable-cell-day {
   width: 60px;
   max-width: 60px;
   padding-right: 20px;
   text-align: right;
-}
-.events .dayWithEvents p {
-  margin-top: 5px;
 }
 .eventsTable-cell-migration,
 .eventsTable-cell-politics {
@@ -155,13 +143,11 @@ a:link {
 .eventsTable-body-row a {
   white-space: nowrap;
 }
-
-.events p.event-weather {
-  position: relative;
-}
-.events li.event-weather {
-  list-style-type: none;
-}
+/**
+ * unfortunately content does not seem to
+ * come over correctly in object literal
+ * so need to keep this here
+ */
 .events p.event-weather:before {
   font-family: 'Glyphicons Halflings';
   content: '\2601';
@@ -169,15 +155,6 @@ a:link {
   position: absolute;
   top: -3px;
   left: -26px;
-}
-
-.events p.event-statistics,
-.events p.event-monthlyStatistics {
-  position: relative;
-}
-.events li.event-statistics,
-.events li.event-monthlyStatistics {
-  list-style-type: none;
 }
 .events p.event-statistics:before,
 .events p.event-monthlyStatistics:before {
@@ -188,13 +165,6 @@ a:link {
   top: -2px;
   left: -23px;
 }
-
-.events p.event-victims {
-  position: relative;
-}
-.events li.event-victims {
-  list-style-type: none;
-}
 .events p.event-victims:before {
   font-family: 'Glyphicons Halflings';
   content: '\e101';
@@ -202,13 +172,6 @@ a:link {
   position: absolute;
   top: -4px;
   left: -26px;
-}
-
-.events p.event-highlighted {
-  position: relative;
-}
-.events li.event-highlighted {
-  list-style-type: none;
 }
 .events p.event-highlighted:before {
   font-family: 'Glyphicons Halflings';
