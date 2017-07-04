@@ -14,8 +14,17 @@ const Container = styled.div`
 const Header = styled.div`
   position: absolute;
   top: ${props => props.top}px;
+  width: 100%;
+  font-weight: bold;
 `
-const HeaderCell = styled.div`font-size: ${props => props.fontSize}px;`
+const HeaderCell = styled.div`
+  font-size: ${props => props.fontSize}px;
+  padding: 5px;
+  flex: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+`
 const headerCellFontSize = window.innerWidth < 500 ? 20 : 24
 const Body = styled.div`
   overflow-x: visible;
@@ -43,17 +52,17 @@ const Events = ({
       <Header top={headerTop} className="eventsTable-header">
         <div className="eventsTable-header-row">
           <HeaderCell
-            className="eventsTable-header-cell eventsTable-cell-day"
+            className="eventsTable-cell-day"
             fontSize={headerCellFontSize}
           />
           <HeaderCell
-            className="eventsTable-header-cell eventsTable-cell-migration"
+            className="eventsTable-cell-migration"
             fontSize={headerCellFontSize}
           >
             Maritime Events
           </HeaderCell>
           <HeaderCell
-            className="eventsTable-header-cell eventsTable-cell-politics"
+            className="eventsTable-cell-politics"
             fontSize={headerCellFontSize}
           >
             Political Events

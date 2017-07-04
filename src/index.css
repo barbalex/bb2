@@ -47,23 +47,10 @@ a:link {
 /*--------------------------------*\
     3. #Events
 \*--------------------------------*/
-.eventsTable-header {
-  width: 100%;
-}
-.eventsTable-header {
-  font-weight: bold;
-}
 
-.eventsTable-header-cell,
 .eventsTable-body-cell {
   padding: 5px;
   flex: 1;
-}
-
-.eventsTable-header-cell {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  text-align: center;
 }
 
 .eventsTable-header-row,
