@@ -5,11 +5,11 @@ import ReactList from 'react-list'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 
-import DateRow from './dateRow.js'
-import MonthRow from './monthRow.js'
-import MonthlyStatisticsRow from './monthlyStatisticsRow.js'
+import DateRow from './dateRow'
+import MonthRow from './monthRow'
+import MonthlyStatisticsRow from './monthlyStatisticsRow'
 import getDaterowObjectsSinceOldestEvent
-  from '../../modules/getDaterowObjectsSinceOldestEvent.js'
+  from '../../modules/getDaterowObjectsSinceOldestEvent'
 
 const enhance = compose(inject(`store`), observer)
 

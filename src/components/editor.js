@@ -125,7 +125,7 @@ class Editor extends Component {
         saveFunction = onSaveActorArticle
         break
       default:
-        return store.error.showEdit('no or wrong docType passed to editor.js')
+        return store.error.showEdit('no or wrong docType passed to editor')
     }
 
     // see: https://www.ephox.com/blog/how-to-integrate-react-with-tinymce
