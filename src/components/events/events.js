@@ -21,9 +21,6 @@ const Container = styled.div`
   .monthlyStatisticsRow {
     background-color: rgba(0, 109, 255, 0.05) !important;
   }
-  .dayWithEvents p {
-    margin-top: 5px !important;
-  }
   p.event-weather {
     position: relative !important;
   }

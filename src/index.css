@@ -74,24 +74,6 @@ a:link {
   padding-left: 10px;
 }
 
-.eventsTable-cell-day {
-  width: 60px;
-  max-width: 60px;
-  padding-right: 20px;
-  text-align: right;
-}
-.eventsTable-cell-migration,
-.eventsTable-cell-politics {
-  width: 50%;
-  max-width: 50%;
-  word-wrap: break-word;
-}
-.eventsTable-cell-migration {
-  padding-right: 10px;
-}
-.eventsTable-cell-politics {
-  padding-left: 10px;
-}
 .eventsTable-body-row ul {
   padding-left: 10px;
   margin-bottom: 0;
