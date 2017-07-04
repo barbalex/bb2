@@ -17,6 +17,15 @@ const Header = styled.div`
 `
 const HeaderCell = styled.div`font-size: ${props => props.fontSize}px;`
 const headerCellFontSize = window.innerWidth < 500 ? 20 : 24
+const Body = styled.div`
+  overflow-x: visible;
+  overflow-y: auto;
+  height: calc(100vh - 94px);
+  margin-top: 77px;
+  border-top: 1px solid #ececec;
+  border-bottom: 1px solid #ececec;
+  width: 100%;
+`
 
 const enhance = compose(inject(`store`), observer)
 
@@ -51,11 +60,11 @@ const Events = ({
           </HeaderCell>
         </div>
       </Header>
-      <div className="eventsTable-body">
+      <Body>
         <GeminiScrollbar id="eventsTableBody" autoshow>
           <DateRows />
         </GeminiScrollbar>
-      </div>
+      </Body>
     </Container>
   )
 }
