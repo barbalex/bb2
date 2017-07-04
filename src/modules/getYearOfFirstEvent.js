@@ -1,6 +1,6 @@
 // @flow
 import app from 'ampersand-app'
-import getYearFromEventId from './getYearFromEventId.js'
+import getYearFromEventId from './getYearFromEventId'
 
 const options = {
   include_docs: false,

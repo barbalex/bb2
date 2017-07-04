@@ -1,7 +1,7 @@
 // @flow
 import app from 'ampersand-app'
 import map from 'lodash/map'
-import sortMonthlyEvents from './sortMonthlyEvents.js'
+import sortMonthlyEvents from './sortMonthlyEvents'
 
 const options = {
   include_docs: true,

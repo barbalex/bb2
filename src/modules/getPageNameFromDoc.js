@@ -1,6 +1,6 @@
 // @flow
-import getYearFromEventId from './getYearFromEventId.js'
-import getMonthFromEventId from './getMonthFromEventId.js'
+import getYearFromEventId from './getYearFromEventId'
+import getMonthFromEventId from './getMonthFromEventId'
 
 export default (doc: Object): string => {
   const docIsEmpty = Object.keys(doc).length === 0

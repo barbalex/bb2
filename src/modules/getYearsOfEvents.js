@@ -1,6 +1,6 @@
 // @flow
 import moment from 'moment'
-import getYearOfFirstEvent from './getYearOfFirstEvent.js'
+import getYearOfFirstEvent from './getYearOfFirstEvent'
 
 export default (store: Object): Promise<Array<number>> =>
   getYearOfFirstEvent(store)
