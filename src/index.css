@@ -11,28 +11,23 @@ body .navbar {
 }
 
 body .navbar-inverse .navbar-brand {
-  color: #EDF4F8;
+  color: #edf4f8;
   cursor: pointer;
 }
 
 p,
 div {
-	font-size: medium;
+  font-size: medium;
 }
 
 a,
 a:link {
-	cursor: pointer;
-}
-
-.home-title h2 {
-	margin-top: 30px;
-	margin-bottom: 50px;
+  cursor: pointer;
 }
 
 .introHeader {
   margin-top: 42px;
-	height: 150px;
+  height: 150px;
   padding: 15px;
 }
 
@@ -50,11 +45,12 @@ a:link {
 }
 
 .introText {
-	font-size: 28px;
-	font-weight: 600;
-	line-height: 30px;
-	color: #FFF;
-	text-shadow: 2px 2px 3px black, -2px -2px 3px black, 2px -2px 3px black, -2px 2px 3px black;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 30px;
+  color: #fff;
+  text-shadow: 2px 2px 3px black, -2px -2px 3px black, 2px -2px 3px black,
+    -2px 2px 3px black;
 }
 
 .introText {
@@ -62,17 +58,17 @@ a:link {
 }
 
 .introTitle {
-	margin-top: 20px;
-	font-size: 42px;
-	font-weight: 800;
-	line-height: 46px;
+  margin-top: 20px;
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 46px;
 }
 
 body .navbar {
-	border-radius: 0;
+  border-radius: 0;
 }
 body .navbar a {
-  color: #EDF4F8 !important;
+  color: #edf4f8 !important;
 }
 
 .no-break-inside {
@@ -81,7 +77,7 @@ body .navbar a {
 }
 
 .navbar-inverse {
-	background-image: url('./images/oceanDark.jpg');
+  background-image: url('./images/oceanDark.jpg');
 }
 
 /* bootstrap only padds jumbotron above 768px screen width!*/
@@ -101,7 +97,9 @@ body .navbar a {
   font-size: 18px;
 }
 
-.btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
   background-color: rgba(0, 109, 255, 0.05) !important;
 }
 
@@ -125,14 +123,14 @@ body .navbar a {
 .category > .panel-heading a,
 .commentaries .panel-heading a,
 .actors .panel-heading a {
-  color: #EDF4F8;
+  color: #edf4f8;
   font-weight: bold;
 }
 
 .col400,
 .col500 {
-	column-count: 1;
-	column-gap: 20px;
+  column-count: 1;
+  column-gap: 20px;
 }
 
 .commentaries a.list-group-item {
@@ -142,14 +140,14 @@ body .navbar a {
 .commentary p,
 .commentary	.row,
 .commentary	table {
-	margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 .commentary	h2 {
-	text-align: center;
-	font-size: x-large;
-	font-weight: 800;
-	margin-top: 60px;
-	margin-bottom: 20px;
+  text-align: center;
+  font-size: x-large;
+  font-weight: 800;
+  margin-top: 60px;
+  margin-bottom: 20px;
 }
 .commentaries .h2-subtitle {
   text-align: center;
@@ -176,14 +174,14 @@ body .navbar a {
 
 .actors,
 .actors h1 {
-	font-size: x-large;
-	font-weight: 700;
+  font-size: x-large;
+  font-weight: 700;
 }
 .actors	h2 {
-	font-size: large;
-	font-weight: 700;
-	margin-top: 40px;
-	margin-bottom: 20px;
+  font-size: large;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 .publication h2 {
@@ -194,10 +192,10 @@ body .navbar a {
 }
 
 .tab-content .actors {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
-.page h1{
+.page h1 {
   font-size: 36px;
   font-weight: 500;
 }
@@ -237,8 +235,8 @@ body .navbar a {
   overflow-y: auto;
   height: calc(100vh - 94px);
   margin-top: 77px;
-  border-top: 1px solid #ECECEC;
-  border-bottom: 1px solid #ECECEC;
+  border-top: 1px solid #ececec;
+  border-bottom: 1px solid #ececec;
 }
 
 .eventsTable-header,
@@ -267,14 +265,14 @@ body .navbar a {
 }
 
 .eventsTable-body-row {
-  border-top: 1px solid #ECECEC !important;
+  border-top: 1px solid #ececec !important;
 }
 .eventsTable-body-row:hover {
   background-color: #f5f5f5;
 }
 .eventsTable-body-monthRow {
   background-image: url('./images/oceanDark.jpg');
-  color: #EDF4F8;
+  color: #edf4f8;
   font-weight: bold;
 }
 .eventsTable-body-monthRow .eventsTable-body-cell {
@@ -314,7 +312,7 @@ body .navbar a {
   margin-bottom: 5px;
   margin-top: 5px;
 }
-.eventsTable-body-row ul li+li {
+.eventsTable-body-row ul li + li {
   margin-top: 10px;
 }
 .eventsTable-body-row p {
@@ -400,20 +398,64 @@ a.typeahead-token-close {
   cursor: pointer;
 }
 
-.editEvent .col-xs-1, .editEvent .col-sm-1, .editEvent .col-md-1, .editEvent .col-lg-1, .editEvent .col-xs-2, .editEvent .col-sm-2, .editEvent .col-md-2, .editEvent .col-lg-2, .editEvent .col-xs-3, .editEvent .col-sm-3, .editEvent .col-md-3, .editEvent .col-lg-3, .editEvent .col-xs-4, .editEvent .col-sm-4, .editEvent .col-md-4, .editEvent .col-lg-4, .editEvent .col-xs-5, .editEvent .col-sm-5, .editEvent .col-md-5, .editEvent .col-lg-5, .editEvent .col-xs-6, .editEvent .col-sm-6, .editEvent .col-md-6, .editEvent .col-lg-6, .editEvent .col-xs-7, .editEvent .col-sm-7, .editEvent .col-md-7, .editEvent .col-lg-7, .editEvent .col-xs-8, .editEvent .col-sm-8, .editEvent .col-md-8, .editEvent .col-lg-8, .editEvent .col-xs-9, .editEvent .col-sm-9, .editEvent .col-md-9, .editEvent .col-lg-9, .editEvent .col-xs-10, .editEvent .col-sm-10, .editEvent .col-md-10, .editEvent .col-lg-10, .editEvent .col-xs-11, .editEvent .col-sm-11, .editEvent .col-md-11, .editEvent .col-lg-11, .editEvent .col-xs-12, .editEvent .col-sm-12, .editEvent .col-md-12, .editEvent .col-lg-12 {
+.editEvent .col-xs-1,
+.editEvent .col-sm-1,
+.editEvent .col-md-1,
+.editEvent .col-lg-1,
+.editEvent .col-xs-2,
+.editEvent .col-sm-2,
+.editEvent .col-md-2,
+.editEvent .col-lg-2,
+.editEvent .col-xs-3,
+.editEvent .col-sm-3,
+.editEvent .col-md-3,
+.editEvent .col-lg-3,
+.editEvent .col-xs-4,
+.editEvent .col-sm-4,
+.editEvent .col-md-4,
+.editEvent .col-lg-4,
+.editEvent .col-xs-5,
+.editEvent .col-sm-5,
+.editEvent .col-md-5,
+.editEvent .col-lg-5,
+.editEvent .col-xs-6,
+.editEvent .col-sm-6,
+.editEvent .col-md-6,
+.editEvent .col-lg-6,
+.editEvent .col-xs-7,
+.editEvent .col-sm-7,
+.editEvent .col-md-7,
+.editEvent .col-lg-7,
+.editEvent .col-xs-8,
+.editEvent .col-sm-8,
+.editEvent .col-md-8,
+.editEvent .col-lg-8,
+.editEvent .col-xs-9,
+.editEvent .col-sm-9,
+.editEvent .col-md-9,
+.editEvent .col-lg-9,
+.editEvent .col-xs-10,
+.editEvent .col-sm-10,
+.editEvent .col-md-10,
+.editEvent .col-lg-10,
+.editEvent .col-xs-11,
+.editEvent .col-sm-11,
+.editEvent .col-md-11,
+.editEvent .col-lg-11,
+.editEvent .col-xs-12,
+.editEvent .col-sm-12,
+.editEvent .col-md-12,
+.editEvent .col-lg-12 {
   padding-right: 0;
 }
 .editEvent .form-group {
   margin-bottom: 5px;
 }
 
-
 h4.modal-title {
   font-weight: bold;
   font-size: 1.3em;
 }
-
-
 
 /* validate div after react bootstrap component */
 .validateDivAfterRBC {
@@ -428,8 +470,6 @@ h4.modal-title {
   height: 147px !important;
   padding: 5px;
 }
-
-
 
 .editEvent .event-tags {
   column-width: 250px;
@@ -449,10 +489,6 @@ h4.modal-title {
 #date {
   border-radius: 4px;
 }
-
-
-
-
 
 /*--------------------------------*\
     3. #Monthly Events
@@ -536,7 +572,7 @@ h4.modal-title {
   margin-right: auto;
   margin-bottom: 20px;
 }
-.monthlyEvent .new h1+h1 {
+.monthlyEvent .new h1 + h1 {
   margin-top: -15px;
 }
 .monthlyEvent .new h2 {
@@ -555,23 +591,19 @@ h4.modal-title {
   font-weight: bold;
 }
 
-
-
-
-
 /*--------------------------------*\
        #archive
        #tables
 \*--------------------------------*/
 table > thead > tr > th {
-	border-bottom: 0 solid #dddddd !important;
-	line-height: .3;
+  border-bottom: 0 solid #dddddd !important;
+  line-height: .3;
 }
 table > thead > tr.totals > td {
-	border-top: 0;
-	border-bottom: 2px solid #dddddd !important;
-	line-height: .6;
-	color: #9C9C9C;
+  border-top: 0;
+  border-bottom: 2px solid #dddddd !important;
+  line-height: .6;
+  color: #9c9c9c;
 }
 
 /*--------------------------------*\
@@ -594,79 +626,22 @@ table > thead > tr.totals > td {
   width: 96vw !important;
 }
 
-/*--------------------------------*\
-       #errors
-\*--------------------------------*/
-
-#errors {
-  position: absolute;
-  /* misteriously a top and left value of 0
-  // are added directly to the element
-  // must be react-bootstraps Overlay element
-  // but is not documented?
-  // > counter it */
-  top: auto !important;
-  left: auto !important;
-  bottom: 8px;
-  right: 8px;
-  margin-left: 8px;
-  background-color: orange;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  border: 1px solid #CCC;
-  border-radius: 3px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  z-index: 3;
-}
-
-#errors .errorContainer {
-  border: none;
-}
-
-#errors .errorContainer:first-of-type .error {
-  padding-right: 27px;
-}
-
-#errors .error {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-#errors .error p {
-  margin-bottom: 0;
-}
-#errors .error p+p {
-  margin-bottom: -2px;
-}
-
-#errors hr {
-  margin-top: 8px;
-  margin-bottom: 8px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  border: 1px solid #CCC;
-}
-
-
 @media (min-width 786px) {
-	.col400 {
-		column-count: 2;
-	}
+  .col400 {
+    column-count: 2;
+  }
   .modal-lg.modal-dialog {
     width: 700px;
   }
 }
 
 @media (min-width 992px) {
-	.home-title h2 {
-		margin-top: 70px;
-		margin-bottom: 70px;
-	}
-	.col400 {
-		column-count: 3;
-	}
-	.col500 {
-		column-count: 2;
-	}
+  .col400 {
+    column-count: 3;
+  }
+  .col500 {
+    column-count: 2;
+  }
   .modal-lg.modal-dialog {
     width: 950px;
   }
@@ -683,7 +658,6 @@ table > thead > tr.totals > td {
     width: 1100px;
   }
 }
-
 
 /* formally tynimce.css */
 .monthlyEvent table.new {
@@ -715,7 +689,7 @@ table > thead > tr.totals > td {
   margin-right: auto;
   margin-bottom: 20px;
 }
-.monthlyEvent .new h1+h1 {
+.monthlyEvent .new h1 + h1 {
   margin-top: -15px;
 }
 .monthlyEvent .new h2 {
