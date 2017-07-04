@@ -13,6 +13,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
 import EventTypeButtonGroup from './eventTypeButtonGroup.js'
 import DateInput from './dateInput.js'
@@ -20,13 +21,13 @@ import TagsInput from './tagsInput.js'
 import EventLinks from './eventLinks.js'
 import getDateFromEventId from '../../modules/getDateFromEventId.js'
 
-const alertStyle = {
-  marginTop: 10,
-  marginBottom: 10,
-}
-const inputStyle = {
-  marginBottom: 20,
-}
+const EventOrder = styled(FormControl)`
+  margin-bottom: 20px;
+`
+const StyledAlert = styled(Alert)`
+  margin-top: 10px;
+  margin-bottom: 10px;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -75,7 +76,7 @@ const enhance = compose(
       props.store.events.getEvent(null)
     },
   }),
-  observer,
+  observer
 )
 
 const EditEvent = ({
@@ -98,12 +99,10 @@ const EditEvent = ({
   onChangeOrder: () => void,
   onBlurOrder: () => void,
   close: () => void,
-}) => (
+}) =>
   <Modal show onHide={close} bsSize="large" dialogClassName="editEvent">
     <Modal.Header closeButton>
-      <Modal.Title>
-        Edit event
-      </Modal.Title>
+      <Modal.Title>Edit event</Modal.Title>
     </Modal.Header>
 
     <Modal.Body>
@@ -124,31 +123,26 @@ const EditEvent = ({
       <EventTypeButtonGroup />
       <FormGroup controlId="eventOrder">
         <ControlLabel>Order</ControlLabel>
-        <FormControl
+        <EventOrder
           type="number"
           value={store.events.activeEvent.order}
           onChange={onChangeOrder}
           onBlur={onBlurOrder}
           tabIndex={4}
-          style={inputStyle}
         />
       </FormGroup>
       <TagsInput />
       <EventLinks />
       {error &&
-        <Alert bsStyle="danger" style={alertStyle}>
+        <StyledAlert bsStyle="danger">
           {error}
-        </Alert>}
+        </StyledAlert>}
     </Modal.Body>
 
     <Modal.Footer>
-      <Button onClick={close}>
-        close
-      </Button>
+      <Button onClick={close}>close</Button>
     </Modal.Footer>
-
   </Modal>
-)
 
 EditEvent.displayName = 'EditEvent'
 
