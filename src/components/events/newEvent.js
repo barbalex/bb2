@@ -13,13 +13,14 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
 import DateInput from './dateInput.js'
 
-const alertStyle = {
-  marginTop: 10,
-  marginBottom: 10,
-}
+const StyledAlert = styled(Alert)`
+  margin-top: 10px;
+  margin-bottom: 10px;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -43,7 +44,7 @@ const enhance = compose(
       }
     },
   }),
-  observer,
+  observer
 )
 
 const NewEvent = ({
@@ -64,12 +65,10 @@ const NewEvent = ({
   onChangeDatePicker: () => void,
   close: () => void,
   createNewEvent: () => void,
-}) => (
+}) =>
   <Modal show onHide={close} bsSize="large" dialogClassName="editEvent">
     <Modal.Header>
-      <Modal.Title>
-        New event
-      </Modal.Title>
+      <Modal.Title>New event</Modal.Title>
     </Modal.Header>
 
     <Modal.Body>
@@ -85,22 +84,18 @@ const NewEvent = ({
       </FormGroup>
       <DateInput date={date} onChangeDatePicker={onChangeDatePicker} />
       {error &&
-        <Alert bsStyle="danger" style={alertStyle}>
+        <StyledAlert bsStyle="danger">
           {error}
-        </Alert>}
+        </StyledAlert>}
     </Modal.Body>
 
     <Modal.Footer>
-      <Button onClick={close}>
-        discard input and close
-      </Button>
+      <Button onClick={close}>discard input and close</Button>
       <Button bsStyle="primary" onClick={createNewEvent}>
         create new event
       </Button>
     </Modal.Footer>
-
   </Modal>
-)
 
 NewEvent.displayName = 'NewEvent'
 
