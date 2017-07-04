@@ -27,6 +27,20 @@ const RemoveGlyphicon = styled(Glyphicon)`
   font-size: 1.5em;
   color: #edf4f8;
 `
+const PanelHeading = styled.div`
+  position: relative;
+  cursor: pointer;
+  border-bottom-right-radius: ${props =>
+    !props.isActiveCommentary ? '3px' : 0};
+  border-bottom-left-radius: ${props =>
+    !props.isActiveCommentary ? '3px' : 0};
+`
+const PanelBody = styled.div`
+  padding: ${props => props.panelBodyPadding};
+  margin-top: ${props => props.panelBodyMarginTop};
+  max-height: ${window.innerHeight - 141}px;
+  overflow-y: auto;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -142,25 +156,8 @@ class Commentaries extends Component {
           ? doc._id === activeCommentary._id
           : false
         const showEditingGlyphons = !!store.login.email
-        const panelHeadingStyle = {
-          position: 'relative',
-          cursor: 'pointer',
-        }
-        const panelBodyPadding = store.editing ? 0 : 15
+        const panelBodyPadding = store.editing ? 0 : '15px'
         const panelBodyMarginTop = store.editing ? '-1px' : 0
-        const panelBodyStyle = {
-          padding: panelBodyPadding,
-          marginTop: panelBodyMarginTop,
-          maxHeight: window.innerHeight - 141,
-          overflowY: 'auto',
-        }
-        if (!isActiveCommentary) {
-          // $FlowIssue
-          Object.assign(panelHeadingStyle, {
-            borderBottomRightRadius: 3,
-            borderBottomLeftRadius: 3,
-          })
-        }
 
         // use pure bootstrap.
         // advantage: can add edit icon to panel-heading
@@ -178,12 +175,11 @@ class Commentaries extends Component {
             }}
             className="panel panel-default"
           >
-            <div
+            <PanelHeading
               className="panel-heading"
               role="tab"
               id={`heading${index}`}
               onClick={onClickCommentary.bind(this, doc._id)}
-              style={panelHeadingStyle}
             >
               <h4 className="panel-title">
                 <a
@@ -199,7 +195,7 @@ class Commentaries extends Component {
               </h4>
               {showEditingGlyphons && this.toggleDraftGlyph(doc)}
               {showEditingGlyphons && this.removeCommentaryGlyph(doc)}
-            </div>
+            </PanelHeading>
             {isActiveCommentary &&
               <div
                 id={`#collapse${index}`}
@@ -208,9 +204,13 @@ class Commentaries extends Component {
                 aria-labelledby={`heading${index}`}
                 onClick={onClickCommentaryCollapse}
               >
-                <div className="panel-body" style={panelBodyStyle}>
+                <PanelBody
+                  className="panel-body"
+                  panelBodyPadding={panelBodyPadding}
+                  panelBodyMarginTop={panelBodyMarginTop}
+                >
                   <Commentary />
-                </div>
+                </PanelBody>
               </div>}
           </div>
         )
