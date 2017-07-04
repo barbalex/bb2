@@ -12,7 +12,43 @@ import styled from 'styled-components'
 import getYearFromEventId from '../../modules/getYearFromEventId'
 import MonthlyEventsOfYear from './monthlyEventsOfYear'
 
-const Container = styled.div`margin-bottom: 20px;`
+const Container = styled.div`
+  margin-bottom: 20px !important;
+  .panel-body {
+    padding: 0 0 !important;
+  }
+  .panel-group {
+    margin-bottom: 0 !important;
+  }
+  .panel.month {
+    margin-top: 0 !important;
+    border-radius: 0 !important;
+    border-top-width: 0 !important;
+    border-right-width: 0 !important;
+    border-left-width: 0 !important;
+  }
+  .panel.month > .panel-heading {
+    background-color: transparent !important;
+  }
+  .panel.month .panel-heading:hover {
+    background-color: #f5f5f5 !important;
+  }
+  .panel-heading {
+    cursor: pointer !important;
+  }
+  .panel.month > .panel-heading h4 {
+    font-weight: bold !important;
+    z-index: 0 !important;
+  }
+  .panel.month:last-of-type {
+    border-bottom-width: 0 !important;
+  }
+
+  .panel.month .panel-body table {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+`
 
 const enhance = compose(
   inject(`store`),
