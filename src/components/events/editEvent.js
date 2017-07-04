@@ -15,11 +15,11 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import EventTypeButtonGroup from './eventTypeButtonGroup.js'
-import DateInput from './dateInput.js'
-import TagsInput from './tagsInput.js'
-import EventLinks from './eventLinks.js'
-import getDateFromEventId from '../../modules/getDateFromEventId.js'
+import EventTypeButtonGroup from './eventTypeButtonGroup'
+import DateInput from './dateInput'
+import TagsInput from './tagsInput'
+import EventLinks from './eventLinks'
+import getDateFromEventId from '../../modules/getDateFromEventId'
 
 const EventOrder = styled(FormControl)`
   margin-bottom: 20px;

@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
 
-import DateRows from './dateRows.js'
+import DateRows from './dateRows'
 
 const Header = styled.div`
   position: absolute;

@@ -7,7 +7,7 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import EventLink from './eventLink.js'
+import EventLink from './eventLink'
 
 const Title = styled.div`
   font-weight: bold;

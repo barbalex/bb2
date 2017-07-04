@@ -10,11 +10,11 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import styled from 'styled-components'
 
-import IntroJumbotron from './introJumbotron.js'
-import NewEvent from './newEvent.js'
-import EditEvent from './editEvent.js'
-import ModalRemoveEvent from './modalRemoveEvent.js'
-import EventsTable from './eventsTable.js'
+import IntroJumbotron from './introJumbotron'
+import NewEvent from './newEvent'
+import EditEvent from './editEvent'
+import ModalRemoveEvent from './modalRemoveEvent'
+import EventsTable from './eventsTable'
 
 const YearButtonsContainer = styled.div`text-align: center;`
 
