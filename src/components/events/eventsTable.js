@@ -18,14 +18,31 @@ const Header = styled.div`
   font-weight: bold;
 `
 const HeaderCell = styled.div`
-  font-size: ${props => props.fontSize}px;
+  font-size: ${window.innerWidth < 500 ? 20 : 24}px;
   padding: 5px;
   flex: 1;
   white-space: nowrap;
   text-overflow: ellipsis;
   text-align: center;
 `
-const headerCellFontSize = window.innerWidth < 500 ? 20 : 24
+const HeaderCellDay = HeaderCell.extend`
+  width: 60px;
+  max-width: 60px;
+  padding-right: 20px;
+  text-align: right;
+`
+const HeaderCellMigration = HeaderCell.extend`
+  width: 50%;
+  max-width: 50%;
+  word-wrap: break-word;
+  padding-right: 10px;
+`
+const HeaderCellPolitics = HeaderCell.extend`
+  width: 50%;
+  max-width: 50%;
+  word-wrap: break-word;
+  padding-left: 10px;
+`
 const Body = styled.div`
   overflow-x: visible;
   overflow-y: auto;
@@ -51,22 +68,9 @@ const Events = ({
     <Container>
       <Header top={headerTop} className="eventsTable-header">
         <div className="eventsTable-header-row">
-          <HeaderCell
-            className="eventsTable-cell-day"
-            fontSize={headerCellFontSize}
-          />
-          <HeaderCell
-            className="eventsTable-cell-migration"
-            fontSize={headerCellFontSize}
-          >
-            Maritime Events
-          </HeaderCell>
-          <HeaderCell
-            className="eventsTable-cell-politics"
-            fontSize={headerCellFontSize}
-          >
-            Political Events
-          </HeaderCell>
+          <HeaderCellDay />
+          <HeaderCellMigration>Maritime Events</HeaderCellMigration>
+          <HeaderCellPolitics>Political Events</HeaderCellPolitics>
         </div>
       </Header>
       <Body>
