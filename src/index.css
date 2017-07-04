@@ -49,10 +49,6 @@ a:link {
   column-gap: 20px;
 }
 
-.manualHyphens {
-  hyphens: manual;
-}
-
 /*--------------------------------*\
     3. #Events
 \*--------------------------------*/
@@ -193,60 +189,6 @@ a.typeahead-token-close {
   cursor: pointer;
 }
 
-.editEvent .col-xs-1,
-.editEvent .col-sm-1,
-.editEvent .col-md-1,
-.editEvent .col-lg-1,
-.editEvent .col-xs-2,
-.editEvent .col-sm-2,
-.editEvent .col-md-2,
-.editEvent .col-lg-2,
-.editEvent .col-xs-3,
-.editEvent .col-sm-3,
-.editEvent .col-md-3,
-.editEvent .col-lg-3,
-.editEvent .col-xs-4,
-.editEvent .col-sm-4,
-.editEvent .col-md-4,
-.editEvent .col-lg-4,
-.editEvent .col-xs-5,
-.editEvent .col-sm-5,
-.editEvent .col-md-5,
-.editEvent .col-lg-5,
-.editEvent .col-xs-6,
-.editEvent .col-sm-6,
-.editEvent .col-md-6,
-.editEvent .col-lg-6,
-.editEvent .col-xs-7,
-.editEvent .col-sm-7,
-.editEvent .col-md-7,
-.editEvent .col-lg-7,
-.editEvent .col-xs-8,
-.editEvent .col-sm-8,
-.editEvent .col-md-8,
-.editEvent .col-lg-8,
-.editEvent .col-xs-9,
-.editEvent .col-sm-9,
-.editEvent .col-md-9,
-.editEvent .col-lg-9,
-.editEvent .col-xs-10,
-.editEvent .col-sm-10,
-.editEvent .col-md-10,
-.editEvent .col-lg-10,
-.editEvent .col-xs-11,
-.editEvent .col-sm-11,
-.editEvent .col-md-11,
-.editEvent .col-lg-11,
-.editEvent .col-xs-12,
-.editEvent .col-sm-12,
-.editEvent .col-md-12,
-.editEvent .col-lg-12 {
-  padding-right: 0;
-}
-.editEvent .form-group {
-  margin-bottom: 5px;
-}
-
 h4.modal-title {
   font-weight: bold;
   font-size: 1.3em;
@@ -257,28 +199,6 @@ h4.modal-title {
   color: #a94442;
   margin-top: -15px;
   margin-bottom: 5px;
-}
-
-.dropzone > div {
-  width: 220px !important;
-  margin-left: 5px;
-  height: 147px !important;
-  padding: 5px;
-}
-
-.editEvent .event-tags {
-  column-width: 250px;
-  break-inside: avoid;
-}
-
-.editEvent .event-tag input {
-  position: relative;
-  top: 2px;
-}
-.editEvent .event-tag span {
-  font-weight: normal;
-  margin-left: 7px;
-  cursor: pointer;
 }
 
 /*--------------------------------*\

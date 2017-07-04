@@ -39,15 +39,16 @@ const IntroText = styled.div`
   text-shadow: 2px 2px 3px black, -2px -2px 3px black, 2px -2px 3px black,
     -2px 2px 3px black;
 `
+const RowContent = styled.div`hyphens: manual;`
 
 const Header = () =>
   <Container className="masthead introHeader">
     <div className="container">
       <div className="row">
-        <div className="col-xs-12 manualHyphens">
+        <RowContent className="col-xs-12">
           <IntroTitle>blue borders</IntroTitle>
           <IntroText>central & eastern mediterranean</IntroText>
-        </div>
+        </RowContent>
       </div>
     </div>
   </Container>

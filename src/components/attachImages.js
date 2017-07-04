@@ -3,6 +3,14 @@ import React from 'react'
 import Dropzone from 'react-dropzone'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
+import styled from 'styled-components'
+
+const DropzoneDiv = styled.div`
+  width: 220px !important;
+  margin-left: 5px;
+  height: 147px !important;
+  padding: 5px;
+`
 
 const enhance = compose(inject(`store`), observer)
 
@@ -37,16 +45,15 @@ const onDrop = (store, files, doc) => {
   store.page.addPageAttachments(doc, attachments)
 }
 
-const AttachImages = ({ store, doc }: { store: Object, doc: Object }) => (
+const AttachImages = ({ store, doc }: { store: Object, doc: Object }) =>
   <div className="dropzone">
     <Dropzone onDrop={event => onDrop(store, event, doc)}>
-      <div>
+      <DropzoneDiv>
         Drop some files here.<br />
         Or click to select files to upload.
-      </div>
+      </DropzoneDiv>
     </Dropzone>
   </div>
-)
 
 AttachImages.displayName = 'AttachImages'
 
