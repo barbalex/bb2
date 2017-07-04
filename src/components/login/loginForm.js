@@ -14,8 +14,13 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
+import styled from 'styled-components'
 
 import validateEmail from './validateEmail.js'
+
+const StyledAlert = styled(Alert)`
+  margin-bottom: 8px;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -87,12 +92,8 @@ const enhance = compose(
     onClickLogin: props => () =>
       props.checkSignin(props.newEmail, props.password),
   }),
-  observer,
+  observer
 )
-
-const styleAlert = {
-  marginBottom: 8,
-}
 
 const LoginForm = ({
   store,
@@ -148,9 +149,7 @@ const LoginForm = ({
           />
         </FormGroup>
         {invalidEmail &&
-          <div className="validateDivAfterRBC">
-            Please check email
-          </div>}
+          <div className="validateDivAfterRBC">Please check email</div>}
       </div>
       <div className="formGroup">
         <FormGroup controlId="password">
@@ -167,14 +166,12 @@ const LoginForm = ({
           />
         </FormGroup>
         {invalidPassword &&
-          <div className="validateDivAfterRBC">
-            Please check password
-          </div>}
+          <div className="validateDivAfterRBC">Please check password</div>}
       </div>
       {isError &&
-        <Alert bsStyle="danger" onDismiss={onAlertDismiss} style={styleAlert}>
+        <StyledAlert bsStyle="danger" onDismiss={onAlertDismiss}>
           Error: {error}
-        </Alert>}
+        </StyledAlert>}
       <Button className="btn-primary" onClick={onClickLogin}>
         log in
       </Button>
