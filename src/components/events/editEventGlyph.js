@@ -4,12 +4,13 @@ import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
-const glyphStyle = {
-  fontSize: '0.9em',
-  paddingLeft: 8,
-  cursor: 'pointer',
-}
+const StyledGlyphicon = styled(Glyphicon)`
+  font-size: 0.9em;
+  padding-left: 8px;
+  cursor: pointer;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -18,7 +19,7 @@ const enhance = compose(
       props.store.events.getEvent(props.event._id)
     },
   }),
-  observer,
+  observer
 )
 
 const EditEventGlyph = ({
@@ -29,18 +30,13 @@ const EditEventGlyph = ({
   store: Object,
   event: Object,
   onClick: () => void,
-}) => (
+}) =>
   <OverlayTrigger
     placement="top"
-    overlay={
-      <Tooltip id="editThisEvent">
-        edit
-      </Tooltip>
-    }
+    overlay={<Tooltip id="editThisEvent">edit</Tooltip>}
   >
-    <Glyphicon glyph="pencil" style={glyphStyle} onClick={onClick} />
+    <StyledGlyphicon glyph="pencil" onClick={onClick} />
   </OverlayTrigger>
-)
 
 EditEventGlyph.displayName = 'EditEventGlyph'
 
