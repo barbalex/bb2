@@ -4,8 +4,19 @@ import { Glyphicon } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
 import allTags from './tags'
+
+const Container = styled.div`margin-bottom: 20px;`
+const Label = styled.div`
+  font-weight: bold;
+  margin-bottom: 2px;
+`
+const StyledGlyphicon = styled(Glyphicon)`
+  top: ${props => props.top} !important;
+  font-size: 1.5em;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -22,32 +33,26 @@ const enhance = compose(
       }
     },
   }),
-  observer,
+  observer
 )
 
-const tagIcon = option => {
-  const top = option.top ? option.top : 0
-  const glyphStyle = {
-    top,
-    fontSize: '1.5em',
-  }
-  return <Glyphicon glyph={option.iconText} style={glyphStyle} />
-}
-const labelStyle = {
-  fontWeight: 'bold',
-  marginBottom: 2,
-}
+const tagIcon = option =>
+  <StyledGlyphicon
+    glyph={option.iconText}
+    top={option.top ? `${option.top}px` : 0}
+  />
 
 const EventTags = ({
   store,
   onChangeTag,
-}: { store: Object, onChangeTag: () => void }) => (
-  <div style={{ marginBottom: 20 }}>
-    <div style={labelStyle}>
-      Tags
-    </div>
+}: {
+  store: Object,
+  onChangeTag: () => void,
+}) =>
+  <Container>
+    <Label>Tags</Label>
     <div className="event-tags">
-      {allTags.map((option, index) => (
+      {allTags.map((option, index) =>
         <div key={index} className="form-group event-tag">
           <label>
             <input
@@ -59,10 +64,9 @@ const EventTags = ({
             &nbsp;{option.tag}
           </label>
         </div>
-      ))}
+      )}
     </div>
-  </div>
-)
+  </Container>
 
 EventTags.displayName = 'EventTags'
 
