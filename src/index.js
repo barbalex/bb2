@@ -5,9 +5,9 @@ import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
 
 import registerServiceWorker from './registerServiceWorker'
-import Router from './router.js'
+import Router from './router'
 import store from './store'
-import couchUrl from './modules/getCouchUrl.js'
+import couchUrl from './modules/getCouchUrl'
 // need this polyfill to transform promise.all
 // without it IE 11 and lower bark
 import 'babel-polyfill'

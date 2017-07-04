@@ -6,8 +6,8 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import PublicationsOfCategory from './publicationsOfCategory.js'
-import NewPublication from './newPublication.js'
+import PublicationsOfCategory from './publicationsOfCategory'
+import NewPublication from './newPublication'
 
 const Container = styled.div`margin-bottom: 20px;`
 const orderByCategory = {

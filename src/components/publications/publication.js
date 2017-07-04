@@ -4,7 +4,7 @@ import { Base64 } from 'js-base64'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 
-import Editor from '../editor.js'
+import Editor from '../editor'
 
 const enhance = compose(inject(`store`), observer)
 
