@@ -10,26 +10,21 @@ import {
 import CopyToClipboard from 'react-copy-to-clipboard'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
+import styled from 'styled-components'
 
-import getCouchUrl from '../modules/getCouchUrl.js'
+import getCouchUrl from '../modules/getCouchUrl'
 
-const divStyle = {
-  padding: 5,
-}
-const imgStyle = {
-  width: 220,
-}
-const glyphStyle = {
-  position: 'absolute',
-  top: 10,
-  left: 175,
-  fontSize: '2em',
-  color: 'red',
-  cursor: 'pointer',
-}
-const mediaLeftStyle = {
-  position: 'relative',
-}
+const Container = styled.div`padding: 5px;`
+const Image = styled.img`width: 220px;`
+const StyledGlyphicon = styled(Glyphicon)`
+  position: absolute !important;
+  top: 10px !important;
+  left: 175px;
+  font-size: 2em;
+  color: red;
+  cursor: pointer;
+`
+const MediaLeft = styled.div`position: relative;`
 
 const enhance = compose(inject(`store`), observer)
 
@@ -51,20 +46,14 @@ const AttachedImage = ({
   const urlCopiedButtonBsStyle = urlCopied === url ? 'success' : 'default'
 
   return (
-    <div key={id} style={divStyle}>
-      <div className="media-left" style={mediaLeftStyle}>
-        <img
-          src={url}
-          className="media-object"
-          alt={attName}
-          style={imgStyle}
-        />
-        <Glyphicon
+    <Container key={id}>
+      <MediaLeft className="media-left">
+        <Image src={url} className="media-object" alt={attName} />
+        <StyledGlyphicon
           glyph="remove-circle"
-          style={glyphStyle}
           onClick={() => store.page.removePageAttachment(doc, attName)}
         />
-      </div>
+      </MediaLeft>
       <div className="media-body media-middle">
         <FormGroup>
           <InputGroup>
@@ -79,7 +68,7 @@ const AttachedImage = ({
           </InputGroup>
         </FormGroup>
       </div>
-    </div>
+    </Container>
   )
 }
 

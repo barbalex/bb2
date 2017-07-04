@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
-import AttachedImgagesList from './attachedImgagesList.js'
-import AttachImages from './attachImages.js'
+import AttachedImgagesList from './attachedImgagesList'
+import AttachImages from './attachImages'
 
 const AttachedImages = ({ doc }: { doc: Object }) => (
   <div>
