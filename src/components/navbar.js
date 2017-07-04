@@ -13,6 +13,22 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
+import styled from 'styled-components'
+
+import oceanDarkImage from '../images/oceanDark.jpg'
+
+const StyledNavbar = styled(Navbar)`
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
+  background-image: url(${oceanDarkImage});
+  a {
+    color: #edf4f8 !important;
+  }
+  .navbar-brand {
+    color: #edf4f8 !important;
+    cursor: pointer;
+  }
+`
 
 const isNavMobile = () => {
   const documentWidth = document.getElementById('root').clientWidth
@@ -52,7 +68,7 @@ const enhance = compose(
     onClickNewEvent: props => () => props.store.events.setShowNewEvent(true),
     onClickNewActor: props => () => props.store.actors.setShowNewActor(true),
   }),
-  observer,
+  observer
 )
 
 const MyNavbar = ({
@@ -108,7 +124,7 @@ const MyNavbar = ({
     email || showEdit || showAddCommentary || showAddEvent || showAddActor
 
   return (
-    <Navbar
+    <StyledNavbar
       id="nav-wrapper"
       inverse
       fixedTop
@@ -172,11 +188,7 @@ const MyNavbar = ({
             {showAddCommentary &&
               <OverlayTrigger
                 placement="bottom"
-                overlay={
-                  <Tooltip id="newCommentary">
-                    new commentary
-                  </Tooltip>
-                }
+                overlay={<Tooltip id="newCommentary">new commentary</Tooltip>}
               >
                 <NavItem onClick={onClickNewCommentary}>
                   <Glyphicon glyph="plus" />
@@ -185,11 +197,7 @@ const MyNavbar = ({
             {showAddEvent &&
               <OverlayTrigger
                 placement="bottom"
-                overlay={
-                  <Tooltip id="newEvent">
-                    new event
-                  </Tooltip>
-                }
+                overlay={<Tooltip id="newEvent">new event</Tooltip>}
               >
                 <NavItem onClick={onClickNewEvent}>
                   <Glyphicon glyph="plus" />
@@ -198,11 +206,7 @@ const MyNavbar = ({
             {showAddActor &&
               <OverlayTrigger
                 placement="bottom"
-                overlay={
-                  <Tooltip id="newActor">
-                    new actor
-                  </Tooltip>
-                }
+                overlay={<Tooltip id="newActor">new actor</Tooltip>}
               >
                 <NavItem onClick={onClickNewActor}>
                   <Glyphicon glyph="plus" />
@@ -211,11 +215,7 @@ const MyNavbar = ({
             {showAddPublication &&
               <OverlayTrigger
                 placement="bottom"
-                overlay={
-                  <Tooltip id="newPublication">
-                    new publication
-                  </Tooltip>
-                }
+                overlay={<Tooltip id="newPublication">new publication</Tooltip>}
               >
                 <NavItem onClick={onClickNewPublication}>
                   <Glyphicon glyph="plus" />
@@ -223,11 +223,7 @@ const MyNavbar = ({
               </OverlayTrigger>}
             <OverlayTrigger
               placement="bottom"
-              overlay={
-                <Tooltip id="logout">
-                  log out
-                </Tooltip>
-              }
+              overlay={<Tooltip id="logout">log out</Tooltip>}
             >
               <NavItem onClick={onClickLogout}>
                 <Glyphicon glyph="log-out" />
@@ -235,7 +231,7 @@ const MyNavbar = ({
             </OverlayTrigger>
           </Nav>}
       </Navbar.Collapse>
-    </Navbar>
+    </StyledNavbar>
   )
 }
 

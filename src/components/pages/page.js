@@ -11,6 +11,20 @@ import styled from 'styled-components'
 import Editor from '../editor'
 import Meta from './pageMeta'
 
+const Container = styled.div`
+  h1 {
+    font-size: 36px;
+    font-weight: 500;
+  }
+  h2 {
+    font-size: x-large;
+    font-weight: 700;
+  }
+  h3 {
+    font-size: large;
+    font-weight: 700;
+  }
+`
 const MetaButton = styled(Button)`
   position: fixed;
   bottom: 10px;
@@ -60,12 +74,12 @@ const Page = ({
   }
   const createMarkup = () => ({ __html: articleDecoded })
   return (
-    <div className="page">
+    <Container className="page">
       <h1>
         {title}
       </h1>
       <div dangerouslySetInnerHTML={createMarkup()} />
-    </div>
+    </Container>
   )
 }
 

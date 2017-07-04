@@ -6,15 +6,6 @@ body {
   hyphens: auto;
 }
 
-body .navbar {
-  margin-bottom: 0;
-}
-
-body .navbar-inverse .navbar-brand {
-  color: #edf4f8;
-  cursor: pointer;
-}
-
 p,
 div {
   font-size: medium;
@@ -25,20 +16,9 @@ a:link {
   cursor: pointer;
 }
 
-body .navbar {
-  border-radius: 0;
-}
-body .navbar a {
-  color: #edf4f8 !important;
-}
-
 .no-break-inside {
   break-inside: avoid-column;
   page-break-inside: avoid;
-}
-
-.navbar-inverse {
-  background-image: url('./images/oceanDark.jpg');
 }
 
 .btn-default:active,
@@ -69,19 +49,6 @@ body .navbar a {
   column-gap: 20px;
 }
 
-.page h1 {
-  font-size: 36px;
-  font-weight: 500;
-}
-.page h2 {
-  font-size: x-large;
-  font-weight: 700;
-}
-.page h3 {
-  font-size: large;
-  font-weight: 700;
-}
-
 .manualHyphens {
   hyphens: manual;
 }
@@ -89,16 +56,6 @@ body .navbar a {
 /*--------------------------------*\
     3. #Events
 \*--------------------------------*/
-
-.eventsIntro {
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-
-.eventsTable {
-  width: 100%;
-  margin-bottom: 0;
-}
 
 /* fix table header */
 .events {

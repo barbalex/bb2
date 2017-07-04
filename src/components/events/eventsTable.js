@@ -7,6 +7,10 @@ import styled from 'styled-components'
 
 import DateRows from './dateRows'
 
+const Container = styled.div`
+  width: 100%;
+  margin-bottom: 0;
+`
 const Header = styled.div`
   position: absolute;
   top: ${props => props.top}px;
@@ -26,7 +30,7 @@ const Events = ({
   const headerTop = introJumbotronHeight ? introJumbotronHeight + 88 : 173
 
   return (
-    <div className="eventsTable">
+    <Container>
       <Header top={headerTop} className="eventsTable-header">
         <div className="eventsTable-header-row">
           <HeaderCell
@@ -52,7 +56,7 @@ const Events = ({
           <DateRows />
         </GeminiScrollbar>
       </div>
-    </div>
+    </Container>
   )
 }
 
