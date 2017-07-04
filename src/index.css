@@ -111,6 +111,7 @@ a:link {
 .eventsTable-body-row a {
   white-space: nowrap;
 }
+
 /**
  * unfortunately content does not seem to
  * come over correctly in object literal
