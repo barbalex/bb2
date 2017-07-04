@@ -12,12 +12,13 @@ import {
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import styled from 'styled-components'
 
-const glyphStyle = {
-  fontSize: '1.5em',
-  color: 'red',
-  cursor: 'pointer',
-}
+const StyledGlyphicon = styled(Glyphicon)`
+  font-size: 1.5em;
+  color: red;
+  cursor: pointer;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -31,7 +32,7 @@ const enhance = compose(
       const { store, link: oldLink, link: newLink } = props
       const { activeEvent } = store.events
       const index = activeEvent.links.findIndex(
-        link => link.label === oldLink.label && link.url === oldLink.url,
+        link => link.label === oldLink.label && link.url === oldLink.url
       )
       activeEvent.links[index] = newLink
       store.events.saveEvent(activeEvent)
@@ -43,7 +44,7 @@ const enhance = compose(
       const { store, link: oldLink, link: newLink } = props
       const { activeEvent } = store.events
       const index = activeEvent.links.findIndex(
-        link => link.url === oldLink.url && link.label === oldLink.label,
+        link => link.url === oldLink.url && link.label === oldLink.label
       )
       activeEvent.links[index] = newLink
       store.events.saveEvent(activeEvent)
@@ -53,12 +54,12 @@ const enhance = compose(
       const { activeEvent } = store.events
       activeEvent.links = activeEvent.links.filter(
         link =>
-          link.label !== linkToRemove.label && link.url !== linkToRemove.url,
+          link.label !== linkToRemove.label && link.url !== linkToRemove.url
       )
       store.events.saveEvent(activeEvent)
     },
   }),
-  observer,
+  observer
 )
 
 const EventLink = ({
@@ -81,7 +82,7 @@ const EventLink = ({
   onChangeLabel: () => void,
   onBlurLabel: () => void,
   onRemoveLink: () => void,
-}) => (
+}) =>
   <Row key={index}>
     <Col sm={3} lg={2}>
       <FormGroup controlId="eventLink">
@@ -109,21 +110,12 @@ const EventLink = ({
     <Col sm={1} lg={1}>
       <OverlayTrigger
         placement="right"
-        overlay={
-          <Tooltip id="removeLink">
-            remove
-          </Tooltip>
-        }
+        overlay={<Tooltip id="removeLink">remove</Tooltip>}
       >
-        <Glyphicon
-          glyph="remove-circle"
-          style={glyphStyle}
-          onClick={onRemoveLink}
-        />
+        <StyledGlyphicon glyph="remove-circle" onClick={onRemoveLink} />
       </OverlayTrigger>
     </Col>
   </Row>
-)
 
 EventLink.displayName = 'EventLink'
 
