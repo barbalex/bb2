@@ -1,7 +1,7 @@
 // @flow
 import app from 'ampersand-app'
 import map from 'lodash/map'
-import sortCommentaries from './sortCommentaries.js'
+import sortCommentaries from './sortCommentaries'
 
 const options = {
   include_docs: true,

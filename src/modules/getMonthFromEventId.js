@@ -1,5 +1,5 @@
 // @flow
-import months from './months.js'
+import months from './months'
 
 export default (id: string): string => {
   const idArray = id.split('_')

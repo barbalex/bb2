@@ -3,7 +3,7 @@ import app from 'ampersand-app'
 import map from 'lodash/map'
 import min from 'lodash/min'
 import max from 'lodash/max'
-import sortEvents from './sortEvents.js'
+import sortEvents from './sortEvents'
 
 export default (
   store: Object,

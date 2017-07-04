@@ -1,7 +1,7 @@
 // @flow
 import moment from 'moment'
 import max from 'lodash/max'
-import getDateFromEventId from './getDateFromEventId.js'
+import getDateFromEventId from './getDateFromEventId'
 
 export default (
   events: Array<Object>,
