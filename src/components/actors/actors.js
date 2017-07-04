@@ -8,9 +8,10 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import Actor from './actor.js'
-import NewActor from './newActor.js'
-import ModalRemoveActor from './modalRemoveActor.js'
+import Actor from './actor'
+import NewActor from './newActor'
+import ModalRemoveActor from './modalRemoveActor'
+import SwallowPanelGroupProps from '../SwallowPanelGroupProps'
 
 const ToggleDraftGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -222,7 +223,9 @@ class Actors extends Component {
     return (
       <div className="actors">
         <PanelGroup activeKey={activeId} id="actorsAccordion" accordion>
-          {this.actorsComponent()}
+          <SwallowPanelGroupProps>
+            {this.actorsComponent()}
+          </SwallowPanelGroupProps>
         </PanelGroup>
         {showNewActor && <NewActor />}
         {store.actors.actorToRemove && <ModalRemoveActor />}
