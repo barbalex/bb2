@@ -5,7 +5,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'mobx-react'
 
-import Main from './components/main.js'
+import Main from './components/main'
 
 export default Router.extend({
   routes: {

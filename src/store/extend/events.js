@@ -4,8 +4,8 @@ import app from 'ampersand-app'
 import moment from 'moment'
 import slug from 'speakingurl'
 
-import getEvents from '../../modules/getEvents.js'
-import sortEvents from '../../modules/sortEvents.js'
+import getEvents from '../../modules/getEvents'
+import sortEvents from '../../modules/sortEvents'
 
 export default (store: Object): void => {
   extendObservable(store.events, {

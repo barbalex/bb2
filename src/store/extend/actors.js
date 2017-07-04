@@ -4,8 +4,8 @@ import app from 'ampersand-app'
 import slug from 'speakingurl'
 
 import getPathFromDocId from '../../modules/getPathFromDocId'
-import getActors from '../../modules/getActors.js'
-import sortActors from '../../modules/sortActors.js'
+import getActors from '../../modules/getActors'
+import sortActors from '../../modules/sortActors'
 
 export default (store: Object): void => {
   extendObservable(store.actors, {

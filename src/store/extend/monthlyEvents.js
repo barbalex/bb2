@@ -2,9 +2,9 @@
 import { extendObservable, action, computed } from 'mobx'
 import app from 'ampersand-app'
 
-import getMonthlyEvents from '../../modules/getMonthlyEvents.js'
+import getMonthlyEvents from '../../modules/getMonthlyEvents'
 import getPathFromDocId from '../../modules/getPathFromDocId'
-import sortMonthlyEvents from '../../modules/sortMonthlyEvents.js'
+import sortMonthlyEvents from '../../modules/sortMonthlyEvents'
 
 export default (store: Object): void => {
   extendObservable(store.monthlyEvents, {

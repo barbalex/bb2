@@ -3,9 +3,9 @@ import { extendObservable, action, computed } from 'mobx'
 import app from 'ampersand-app'
 import moment from 'moment'
 
-import getCommentaries from '../../modules/getCommentaries.js'
+import getCommentaries from '../../modules/getCommentaries'
 import getPathFromDocId from '../../modules/getPathFromDocId'
-import sortCommentaries from '../../modules/sortCommentaries.js'
+import sortCommentaries from '../../modules/sortCommentaries'
 
 export default (store: Object): void => {
   extendObservable(store.commentaries, {
