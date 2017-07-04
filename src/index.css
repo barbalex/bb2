@@ -48,9 +48,7 @@ body .navbar a {
 }
 
 .year > .panel-heading,
-.category > .panel-heading,
-.commentaries .panel-heading,
-.actors .panel-heading {
+.category > .panel-heading {
   background-image: url('./images/oceanDark.jpg');
 }
 
@@ -59,14 +57,8 @@ body .navbar a {
   border-radius: 3px;
 }
 
-.panel-group .year > .panel-heading {
-  background-color: transparent;
-}
-
 .year > .panel-heading a,
-.category > .panel-heading a,
-.commentaries .panel-heading a,
-.actors .panel-heading a {
+.category > .panel-heading a {
   color: #edf4f8;
   font-weight: bold;
 }
@@ -75,68 +67,6 @@ body .navbar a {
 .col500 {
   column-count: 1;
   column-gap: 20px;
-}
-
-.commentaries a.list-group-item {
-  padding-right: 50px;
-}
-
-.commentary p,
-.commentary	.row,
-.commentary	table {
-  margin-bottom: 20px;
-}
-.commentary	h2 {
-  text-align: center;
-  font-size: x-large;
-  font-weight: 800;
-  margin-top: 60px;
-  margin-bottom: 20px;
-}
-.commentaries .h2-subtitle {
-  text-align: center;
-  font-size: large;
-  font-weight: 800;
-  margin-top: -10px;
-  margin-bottom: 0;
-}
-
-.commentaries .h2-subtitle-top {
-  text-align: center;
-  font-size: large;
-  font-weight: 800;
-  margin-bottom: -40px;
-}
-
-.commentary h3 {
-  text-align: center;
-  font-size: large;
-  font-weight: 800;
-  margin-top: 40px;
-  margin-bottom: 20px;
-}
-
-.actors,
-.actors h1 {
-  font-size: x-large;
-  font-weight: 700;
-}
-.actors	h2 {
-  font-size: large;
-  font-weight: 700;
-  margin-top: 40px;
-  margin-bottom: 20px;
-}
-
-.publication h2 {
-  font-size: medium;
-  font-weight: 700;
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-
-.tab-content .actors {
-  margin-top: 20px;
 }
 
 .page h1 {
@@ -438,44 +368,33 @@ h4.modal-title {
     3. #Monthly Events
 \*--------------------------------*/
 
-#monthlyEvents .panel-body,
-#publications .category > .panel-collapse > .panel-body {
+#monthlyEvents .panel-body {
   padding: 0 0;
 }
-#publications .panel-body .publication .mce-tinymce {
-  margin: -15px;
-}
-#monthlyEvents .panel-group,
-#publications .panel-group {
+#monthlyEvents .panel-group {
   margin-bottom: 0;
 }
-#monthlyEvents .panel.month,
-#publications .panel.month {
+#monthlyEvents .panel.month {
   margin-top: 0;
   border-radius: 0;
   border-top-width: 0;
   border-right-width: 0;
   border-left-width: 0;
 }
-#monthlyEvents .panel.month > .panel-heading,
-#publications .panel.month .panel-heading {
+#monthlyEvents .panel.month > .panel-heading {
   background-color: transparent;
 }
-#monthlyEvents .panel.month .panel-heading:hover,
-#publications .panel.month .panel-heading:hover {
+#monthlyEvents .panel.month .panel-heading:hover {
   background-color: #f5f5f5;
 }
-#monthlyEvents .panel-heading,
-#publications .panel-heading {
+#monthlyEvents .panel-heading {
   cursor: pointer;
 }
-#monthlyEvents .panel.month > .panel-heading h4,
-#publications .panel.month > .panel-heading h4 {
+#monthlyEvents .panel.month > .panel-heading h4 {
   font-weight: bold;
   z-index: 0;
 }
-#monthlyEvents .panel.month:last-of-type,
-#publications .panel.month:last-of-type {
+#monthlyEvents .panel.month:last-of-type {
   border-bottom-width: 0;
 }
 

@@ -12,7 +12,29 @@ import Actor from './actor'
 import NewActor from './newActor'
 import ModalRemoveActor from './modalRemoveActor'
 import SwallowPanelGroupProps from '../SwallowPanelGroupProps'
+import oceanDarkImage from '../../images/oceanDark.jpg'
 
+const Container = styled.div`
+  font-size: x-large;
+  font-weight: 700;
+  h1 {
+    font-size: x-large;
+    font-weight: 700;
+  }
+  h2 {
+    font-size: large;
+    font-weight: 700;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  .panel-heading {
+    background-image: url(${oceanDarkImage});
+  }
+  .panel-heading a {
+    color: #edf4f8;
+    font-weight: bold;
+  }
+`
 const ToggleDraftGlyphicon = styled(Glyphicon)`
   position: absolute !important;
   right: 40px !important;
@@ -219,7 +241,7 @@ class Actors extends Component {
     const activeId = activeActor ? activeActor._id : null
 
     return (
-      <div className="actors">
+      <Container>
         <PanelGroup activeKey={activeId} id="actorsAccordion" accordion>
           <SwallowPanelGroupProps>
             {this.actorsComponent()}
@@ -227,7 +249,7 @@ class Actors extends Component {
         </PanelGroup>
         {showNewActor && <NewActor />}
         {store.actors.actorToRemove && <ModalRemoveActor />}
-      </div>
+      </Container>
     )
   }
 }

@@ -11,6 +11,27 @@ import styled from 'styled-components'
 import Editor from '../editor'
 import Meta from '../pages/pageMeta'
 
+const Container = styled.div`
+  p,
+  .row,
+  table {
+    margin-bottom: 20px;
+  }
+  h2 {
+    text-align: center;
+    font-size: x-large;
+    font-weight: 800;
+    margin-top: 60px;
+    margin-bottom: 20px;
+  }
+  h3 {
+    text-align: center;
+    font-size: large;
+    font-weight: 800;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+`
 const MetaButton = styled(Button)`
   position: fixed;
   bottom: 10px;
@@ -44,7 +65,7 @@ const Commentary = ({
 
   if (store.editing) {
     return (
-      <div className="commentary">
+      <Container>
         {showMeta && <Meta doc={activeCommentary} onCloseMeta={onCloseMeta} />}
         <Editor
           docType="commentary"
@@ -52,14 +73,14 @@ const Commentary = ({
           articleDecoded={articleDecoded}
         />
         <MetaButton onClick={onClickMeta}>images</MetaButton>
-      </div>
+      </Container>
     )
   }
   const createMarkup = () => ({ __html: articleDecoded })
   return (
-    <div className="commentary">
+    <Container>
       <div dangerouslySetInnerHTML={createMarkup()} />
-    </div>
+    </Container>
   )
 }
 

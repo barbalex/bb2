@@ -12,7 +12,34 @@ import Commentary from './commentary'
 import NewCommentary from './newCommentary'
 import ModalRemoveCommentary from './modalRemoveCommentary'
 import SwallowPanelGroupProps from '../SwallowPanelGroupProps'
+import oceanDarkImage from '../../images/oceanDark.jpg'
 
+const Container = styled.div`
+  a.list-group-item {
+    padding-right: 50px !important;
+  }
+  .h2-subtitle {
+    text-align: center !important;
+    font-size: large !important;
+    font-weight: 800 !important;
+    margin-top: -10px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .h2-subtitle-top {
+    text-align: center !important;
+    font-size: large !important;
+    font-weight: 800 !important;
+    margin-bottom: -40px !important;
+  }
+  .panel-heading {
+    background-image: url(${oceanDarkImage});
+  }
+  .panel-heading a {
+    color: #edf4f8;
+    font-weight: bold;
+  }
+`
 const ToggleDraftGlyphicon = styled(Glyphicon)`
   position: absolute !important;
   right: 40px !important;
@@ -231,7 +258,7 @@ class Commentaries extends Component {
       : null
 
     return (
-      <div className="commentaries">
+      <Container>
         <h1>Commentaries</h1>
         <PanelGroup
           activeKey={activeCommentaryId}
@@ -244,7 +271,7 @@ class Commentaries extends Component {
         </PanelGroup>
         {showNewCommentary && <NewCommentary />}
         {commentaryToRemove && <ModalRemoveCommentary />}
-      </div>
+      </Container>
     )
   }
 }

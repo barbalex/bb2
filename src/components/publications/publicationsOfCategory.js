@@ -24,6 +24,12 @@ const RemoveGlyphicon = styled(Glyphicon)`
   top: 6px !important;
   font-size: 1.5em;
 `
+const PanelGroup = styled.div`
+  margin-bottom: 0 !important;
+  .year > .panel-heading {
+    background-color: transparent;
+  }
+`
 const PanelHeading = styled.div`position: relative;`
 const PanelBody = styled.div`
   max-height: ${window.innerHeight - 127}px;
@@ -233,7 +239,7 @@ class PublicationsOfCategory extends Component {
     const { category, docToRemove, removePublication } = this.props
 
     return (
-      <div
+      <PanelGroup
         className="panel-group"
         id={category}
         ref={c => {
@@ -247,7 +253,7 @@ class PublicationsOfCategory extends Component {
             doc={docToRemove}
             removePublication={removePublication}
           />}
-      </div>
+      </PanelGroup>
     )
   }
 }

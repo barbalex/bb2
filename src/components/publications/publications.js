@@ -9,7 +9,41 @@ import styled from 'styled-components'
 import PublicationsOfCategory from './publicationsOfCategory'
 import NewPublication from './newPublication'
 
-const Container = styled.div`margin-bottom: 20px;`
+const Container = styled.div`
+  margin-bottom: 20px;
+  .category > .panel-collapse > .panel-body {
+    padding: 0 0 !important;
+  }
+  .panel.month {
+    margin-top: 0 !important;
+    border-radius: 0 0 !important;
+    border-top-width: 0 0 !important;
+    border-right-width: 0 0 !important;
+    border-left-width: 0 0 !important;
+  }
+  .panel.month .panel-heading {
+    background-color: transparent;
+  }
+  .panel.month .panel-heading:hover {
+    background-color: #f5f5f5;
+  }
+  .panel-heading {
+    cursor: pointer;
+  }
+  .panel.month > .panel-heading h4 {
+    font-weight: bold;
+    z-index: 0;
+  }
+  .panel.month:last-of-type {
+    border-bottom-width: 0 !important;
+  }
+`
+const PanelGroup = styled.div`
+  margin-bottom: 0;
+  .year > .panel-heading {
+    background-color: transparent;
+  }
+`
 const orderByCategory = {
   Academic: 3,
   'European Union': 1,
@@ -93,11 +127,15 @@ class Publications extends Component {
     } = this.props.store.publications
 
     return (
-      <Container id="publications">
+      <Container>
         <h1>Publications</h1>
-        <div className="panel-group" id="publicationsAccordion" role="tablist">
+        <PanelGroup
+          className="panel-group"
+          id="publicationsAccordion"
+          role="tablist"
+        >
           {this.publicationCategoriesComponent(activePublicationCategory)}
-        </div>
+        </PanelGroup>
         {showNewPublication && <NewPublication />}
       </Container>
     )
