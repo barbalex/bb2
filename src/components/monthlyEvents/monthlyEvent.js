@@ -11,6 +11,102 @@ import styled from 'styled-components'
 import Editor from '../editor'
 import MonthlyEventMeta from './monthlyEventMeta'
 
+const Container = styled.div`
+  table.new {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
+  .new thead {
+    background-color: rgb(250, 191, 143);
+  }
+  .new tr,
+  .new th,
+  .new td {
+    border: 1px solid black;
+    padding: 5px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  .new h1,
+  .new h2,
+  .new p {
+    text-align: center;
+  }
+  .new h1 {
+    font-size: 1em;
+    font-weight: bold;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+  .new h1 + h1 {
+    margin-top: -15px;
+  }
+  .new h2 {
+    font-size: 0.8em;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-top: 10px;
+  }
+  .new p {
+    font-size: 0.8em;
+    font-weight: normal;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .new p.bold {
+    font-weight: bold;
+  }
+  table.new {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
+  .new thead {
+    background-color: rgb(250, 191, 143);
+  }
+  .new tr,
+  .new th,
+  .new td {
+    border: 1px solid black;
+    padding: 5px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  .new h1,
+  .new h2,
+  .new p {
+    text-align: center;
+  }
+  .new h1 {
+    font-size: 1em;
+    font-weight: bold;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+  .new h1 + h1 {
+    margin-top: -15px;
+  }
+  .new h2 {
+    font-size: 0.8em;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-top: 10px;
+  }
+  .new p {
+    font-size: 0.8em;
+    font-weight: normal;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .new p.bold {
+    font-weight: bold;
+  }
+`
 const MetaButton = styled(Button)`
   position: fixed;
   bottom: 10px;
@@ -47,7 +143,7 @@ const MonthlyEvent = ({
 
   if (store.editing) {
     return (
-      <div className="monthlyEvent">
+      <Container>
         {showMeta &&
           <MonthlyEventMeta
             year={year}
@@ -60,14 +156,14 @@ const MonthlyEvent = ({
           articleDecoded={articleDecoded}
         />
         <MetaButton onClick={onClickMeta}>arrivals & victims</MetaButton>
-      </div>
+      </Container>
     )
   }
   const createMarkup = () => ({ __html: articleDecoded })
   return (
-    <div className="monthlyEvent">
+    <Container>
       <div dangerouslySetInnerHTML={createMarkup()} />
-    </div>
+    </Container>
   )
 }
 
