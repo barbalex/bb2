@@ -8,12 +8,15 @@ import min from 'lodash/min'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
+import styled from 'styled-components'
 
 import IntroJumbotron from './introJumbotron.js'
 import NewEvent from './newEvent.js'
 import EditEvent from './editEvent.js'
 import ModalRemoveEvent from './modalRemoveEvent.js'
 import EventsTable from './eventsTable.js'
+
+const YearButtonsContainer = styled.div`text-align: center;`
 
 const enhance = compose(
   inject(`store`),
@@ -104,14 +107,14 @@ class Events extends Component {
             this.introJumbotron = j
           }}
         />
-        <div style={{ textAlign: 'center' }}>
+        <YearButtonsContainer>
           <ButtonGroup>
             {this.yearButtons()}
             <Button onClick={() => store.page.getPage('pages_monthlyEvents')}>
               2014 - 2011
             </Button>
           </ButtonGroup>
-        </div>
+        </YearButtonsContainer>
         {showEventsTable &&
           <EventsTable introJumbotronHeight={introJumbotronHeight} />}
         {activeEvent && <EditEvent />}
