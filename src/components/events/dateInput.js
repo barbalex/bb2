@@ -12,6 +12,9 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
 
+const StyledFormControl = styled(FormControl)`
+  border-radius: 4px !important;
+`
 const StyledInputGroup = styled(InputGroup)`
   width: 100%;
 `
@@ -35,7 +38,7 @@ const EventDate = ({
         opens="left"
         onApply={onChangeDatePicker}
       >
-        <FormControl
+        <StyledFormControl
           type="text"
           value={moment(date, 'DD.MM.YYYY').format('DD.MM.YYYY')}
           onChange={() => {

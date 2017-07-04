@@ -16,10 +16,10 @@ const Container = styled.div`
   }
   .panel.month {
     margin-top: 0 !important;
-    border-radius: 0 0 !important;
-    border-top-width: 0 0 !important;
-    border-right-width: 0 0 !important;
-    border-left-width: 0 0 !important;
+    border-radius: 0 !important;
+    border-top-width: 0 !important;
+    border-right-width: 0 !important;
+    border-left-width: 0 !important;
   }
   .panel.month .panel-heading {
     background-color: transparent;
@@ -39,7 +39,7 @@ const Container = styled.div`
   }
 `
 const PanelGroup = styled.div`
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
   .year > .panel-heading {
     background-color: transparent;
   }
