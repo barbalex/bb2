@@ -8,9 +8,10 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import Commentary from './commentary.js'
-import NewCommentary from './newCommentary.js'
-import ModalRemoveCommentary from './modalRemoveCommentary.js'
+import Commentary from './commentary'
+import NewCommentary from './newCommentary'
+import ModalRemoveCommentary from './modalRemoveCommentary'
+import SwallowPanelGroupProps from '../SwallowPanelGroupProps'
 
 const ToggleDraftGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -237,7 +238,9 @@ class Commentaries extends Component {
           id="commentariesAccordion"
           accordion
         >
-          {this.commentariesComponent()}
+          <SwallowPanelGroupProps>
+            {this.commentariesComponent()}
+          </SwallowPanelGroupProps>
         </PanelGroup>
         {showNewCommentary && <NewCommentary />}
         {commentaryToRemove && <ModalRemoveCommentary />}
