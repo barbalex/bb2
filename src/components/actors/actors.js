@@ -20,13 +20,24 @@ const ToggleDraftGlyphicon = styled(Glyphicon)`
   font-size: 1.5em;
   color: ${props => props.color};
 `
-
 const RemoveGlyphicon = styled(Glyphicon)`
   position: absolute !important;
   right: 10px !important;
   top: 6px !important;
   font-size: 1.5em;
   color: #edf4f8;
+`
+const PanelHeading = styled.div`
+  position: relative;
+  cursor: pointer;
+  border-bottom-right-radius: ${props => (!props.isActiveActor ? '3px' : 0)};
+  border-bottom-left-radius: ${props => (!props.isActiveActor ? '3px' : 0)};
+`
+const PanelBody = styled.div`
+  padding: ${props => props.panelBodyPadding};
+  margin-top: ${props => props.panelBodyMarginTop};
+  max-height: ${window.innerHeight - 141}px;
+  overflow-y: auto;
 `
 
 const enhance = compose(
@@ -132,25 +143,8 @@ class Actors extends Component {
       return actors.map((doc, index) => {
         const isActiveActor = activeActor ? doc._id === activeActor._id : false
         const showEditingGlyphons = !!store.login.email
-        const panelHeadingStyle = {
-          position: 'relative',
-          cursor: 'pointer',
-        }
-        const panelBodyPadding = store.editing ? 0 : 15
+        const panelBodyPadding = store.editing ? 0 : '15px'
         const panelBodyMarginTop = store.editing ? '-1px' : 0
-        const panelBodyStyle = {
-          padding: panelBodyPadding,
-          marginTop: panelBodyMarginTop,
-          maxHeight: window.innerHeight - 141,
-          overflowY: 'auto',
-        }
-        if (!isActiveActor) {
-          // $FlowIssue
-          Object.assign(panelHeadingStyle, {
-            borderBottomRightRadius: 3,
-            borderBottomLeftRadius: 3,
-          })
-        }
         const ref = isActiveActor
           ? '_activeActorPanel'
           : `_actorPanel${doc._id}`
@@ -165,12 +159,12 @@ class Actors extends Component {
             }}
             className="panel panel-default"
           >
-            <div
+            <PanelHeading
               className="panel-heading"
               role="tab"
               id={`heading${index}`}
               onClick={onClickActor.bind(this, doc._id)}
-              style={panelHeadingStyle}
+              isActiveActor={isActiveActor}
             >
               <h4 className="panel-title">
                 <a
@@ -195,7 +189,7 @@ class Actors extends Component {
                     onClick={event => this.props.onRemoveActor(doc, event)}
                   />
                 </OverlayTrigger>}
-            </div>
+            </PanelHeading>
             {isActiveActor &&
               <div
                 id={`#collapse${index}`}
@@ -204,9 +198,13 @@ class Actors extends Component {
                 aria-labelledby={`heading${index}`}
                 onClick={onClickActorCollapse}
               >
-                <div className="panel-body" style={panelBodyStyle}>
+                <PanelBody
+                  className="panel-body"
+                  panelBodyPadding={panelBodyPadding}
+                  panelBodyMarginTop={panelBodyMarginTop}
+                >
                   <Actor />
-                </div>
+                </PanelBody>
               </div>}
           </div>
         )
