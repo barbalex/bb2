@@ -37,7 +37,7 @@ const AttachedImagesList = ({
   changeUrlCopied: () => void,
 }) =>
   <Container className="media">
-    {Object.keys(doc._attachments).map(key =>
+    {Object.keys(doc._attachments || []).map(key =>
       <AttachedImage
         key={key}
         doc={doc}
