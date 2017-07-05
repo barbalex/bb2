@@ -6,8 +6,8 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import PublicationsOfCategory from './publicationsOfCategory'
-import NewPublication from './newPublication'
+import PublicationsOfCategory from './PublicationsOfCategory'
+import NewPublication from './NewPublication'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 
 const Container = styled.div`

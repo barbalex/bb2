@@ -5,7 +5,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'mobx-react'
 
-import Main from './components/main'
+import Main from './components/Main'
 
 export default Router.extend({
   routes: {
@@ -99,15 +99,19 @@ export default Router.extend({
 
   login() {
     ReactDOM.render(
-      <Provider store={app.store}><Main login /></Provider>,
-      document.getElementById('root'),
+      <Provider store={app.store}>
+        <Main login />
+      </Provider>,
+      document.getElementById('root')
     )
   },
 
   render(id) {
     ReactDOM.render(
-      <Provider store={app.store}><Main /></Provider>,
-      document.getElementById('root'),
+      <Provider store={app.store}>
+        <Main />
+      </Provider>,
+      document.getElementById('root')
     )
     if (id) app.store.page.getPage(id)
   },

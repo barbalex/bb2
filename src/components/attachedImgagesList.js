@@ -6,7 +6,7 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import AttachedImage from './attachedImage'
+import AttachedImage from './AttachedImage'
 
 const Container = styled.div`
   overflow: auto !important;

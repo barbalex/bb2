@@ -8,7 +8,7 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import Editor from '../editor'
+import Editor from '../Editor'
 import MonthlyEventMeta from './monthlyEventMeta'
 
 const Container = styled.div`

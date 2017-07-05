@@ -8,9 +8,9 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import Actor from './actor'
-import NewActor from './newActor'
-import ModalRemoveActor from './modalRemoveActor'
+import Actor from './Actor'
+import NewActor from './NewActor'
+import ModalRemoveActor from './ModalRemoveActor'
 import SwallowPanelGroupProps from '../SwallowPanelGroupProps'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 

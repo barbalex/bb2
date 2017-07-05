@@ -8,8 +8,8 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import Publication from './publication'
-import ModalRemovePublication from './modalRemovePublication'
+import Publication from './Publication'
+import ModalRemovePublication from './ModalRemovePublication'
 
 const ToggleDraftGlyphicon = styled(Glyphicon)`
   position: absolute !important;

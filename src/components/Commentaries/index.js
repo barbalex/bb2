@@ -8,9 +8,9 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import Commentary from './commentary'
-import NewCommentary from './newCommentary'
-import ModalRemoveCommentary from './modalRemoveCommentary'
+import Commentary from './Commentary'
+import NewCommentary from './NewCommentary'
+import ModalRemoveCommentary from './ModalRemoveCommentary'
 import SwallowPanelGroupProps from '../SwallowPanelGroupProps'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 
