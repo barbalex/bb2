@@ -68,13 +68,10 @@ const AttachImages = ({
   onDrop: () => void,
 }) =>
   <Container>
-    <Dropzone onDrop={onDrop} accept="image/jpeg, image/png">
+    <Dropzone onDrop={onDrop} accept="image/*">
       <DropzoneDiv>
         Drop some images here.<br />
-        Or click to select images.<br />
-        <br />
-        Accepted file types:<br />
-        jpg, png
+        Or click to select.
       </DropzoneDiv>
     </Dropzone>
   </Container>

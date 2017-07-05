@@ -71,6 +71,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
     activePage.type === 'pages' &&
     pagesWitCopyright.includes(activePage._id)
   const { errors } = store.error
+  console.log('rendering Main')
 
   return (
     <DocumentTitle title={pageTitle}>

@@ -4,7 +4,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react'
 import compose from 'recompose/compose'
 
-import AttachedImgagesList from '../shared/AttachedImgagesList'
+import AttachedImagesList from '../shared/AttachedImagesList'
 import AttachImages from '../shared/AttachImages'
 
 const enhance = compose(observer)
@@ -15,25 +15,29 @@ const PageMeta = ({
 }: {
   doc: Object,
   onCloseMeta: () => void,
-}) =>
-  <Modal show bsSize="large">
-    <Modal.Header>
-      <Modal.Title>
-        Images for "{doc.title ? doc.title : doc.category}"
-      </Modal.Title>
-    </Modal.Header>
+}) => {
+  console.log('rendering PageMeta')
+  return (
+    <Modal show bsSize="large">
+      <Modal.Header>
+        <Modal.Title>
+          Images for "{doc.title ? doc.title : doc.category}"
+        </Modal.Title>
+      </Modal.Header>
 
-    <Modal.Body>
-      <AttachedImgagesList doc={doc} />
-      <AttachImages doc={doc} />
-    </Modal.Body>
+      <Modal.Body>
+        <AttachedImagesList doc={doc} />
+        <AttachImages doc={doc} />
+      </Modal.Body>
 
-    <Modal.Footer>
-      <Button bsStyle="primary" onClick={onCloseMeta}>
-        close
-      </Button>
-    </Modal.Footer>
-  </Modal>
+      <Modal.Footer>
+        <Button bsStyle="primary" onClick={onCloseMeta}>
+          close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  )
+}
 
 PageMeta.displayName = 'PageMeta'
 

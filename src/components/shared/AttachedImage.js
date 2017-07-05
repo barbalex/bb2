@@ -44,6 +44,7 @@ const AttachedImage = ({
   const id = doc._id
   const url = `${getCouchUrl()}/${id}/${attName}`
   const urlCopiedButtonBsStyle = urlCopied === url ? 'success' : 'default'
+  console.log('rendering AttachedImage')
 
   return (
     <Container key={id}>

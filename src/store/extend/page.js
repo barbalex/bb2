@@ -36,6 +36,8 @@ export default (store: Object): void => {
           // resp.rev is new rev
           doc._rev = resp.rev
           store.page.activePage = doc
+          // get doc again -
+          // otherwise removing attachment does not update
           return app.db.get(doc._id)
         })
         .then(doc => {
