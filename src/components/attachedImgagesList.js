@@ -14,37 +14,6 @@ const Container = styled.div`
   padding-bottom: 5px;
 `
 
-const images = ({
-  doc,
-  onCopyUrl,
-  urlCopied,
-}: {
-  doc: Object,
-  onCopyUrl: () => void,
-  urlCopied: string,
-}) => {
-  const wantedContentTypes = ['image/jpeg', 'image/png']
-  const imageNameArray = []
-  if (!doc._attachments || Object.keys(doc._attachments).length === 0) {
-    return []
-  }
-  Object.keys(doc._attachments).forEach(key => {
-    if (wantedContentTypes.includes(doc._attachments[key].content_type)) {
-      imageNameArray.push(key)
-    }
-  })
-  const images = imageNameArray.map((imageName, index) =>
-    <AttachedImage
-      key={index}
-      doc={doc}
-      attName={imageName}
-      urlCopied={urlCopied}
-      onCopyUrl={onCopyUrl}
-    />
-  )
-  return images
-}
-
 const enhance = compose(
   inject(`store`),
   withState('urlCopied', 'changeUrlCopied', null),
@@ -68,7 +37,16 @@ const AttachedImagesList = ({
   changeUrlCopied: () => void,
 }) =>
   <Container className="media">
-    {images({ doc, onCopyUrl, urlCopied })}
+    {Object.keys(doc._attachments).map(key =>
+      <AttachedImage
+        key={key}
+        doc={doc}
+        attName={key}
+        urlCopied={urlCopied}
+        onCopyUrl={onCopyUrl}
+        attachments={doc._attachments}
+      />
+    )}
   </Container>
 
 AttachedImagesList.displayName = 'AttachedImagesList'
