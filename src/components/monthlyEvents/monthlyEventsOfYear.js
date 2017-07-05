@@ -11,6 +11,7 @@ import styled from 'styled-components'
 import MonthlyEvent from './monthlyEvent'
 import getYearFromEventId from '../../modules/getYearFromEventId'
 import getMonthFromEventId from '../../modules/getMonthFromEventId'
+import SwallowPanelGroupProps from '../SwallowPanelGroupProps'
 
 const PanelHeading = styled.div`position: relative;`
 const PanelBody = styled.div`
@@ -170,7 +171,9 @@ class MonthlyEventsOfYear extends Component {
         }}
         accordion
       >
-        {this.monthlyEventsComponent(year)}
+        <SwallowPanelGroupProps>
+          {this.monthlyEventsComponent(year)}
+        </SwallowPanelGroupProps>
       </PanelGroup>
     )
   }
