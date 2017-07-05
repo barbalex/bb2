@@ -12,7 +12,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
 
-import getCouchUrl from '../modules/getCouchUrl'
+import getCouchUrl from '../../modules/getCouchUrl'
 
 const Container = styled.div`padding: 5px;`
 const Image = styled.img`width: 220px;`

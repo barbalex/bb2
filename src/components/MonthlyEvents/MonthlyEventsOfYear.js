@@ -11,7 +11,7 @@ import styled from 'styled-components'
 import MonthlyEvent from './MonthlyEvent'
 import getYearFromEventId from '../../modules/getYearFromEventId'
 import getMonthFromEventId from '../../modules/getMonthFromEventId'
-import SwallowPanelGroupProps from '../SwallowPanelGroupProps'
+import SwallowPanelGroupProps from '../shared/SwallowPanelGroupProps'
 
 const PanelHeading = styled.div`position: relative;`
 const PanelBody = styled.div`

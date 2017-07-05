@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
 
-import Editor from '../Editor'
+import Editor from '../shared/Editor'
 
 const Container = styled.div`
   h2 {

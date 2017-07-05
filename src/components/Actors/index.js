@@ -11,7 +11,7 @@ import styled from 'styled-components'
 import Actor from './Actor'
 import NewActor from './NewActor'
 import ModalRemoveActor from './ModalRemoveActor'
-import SwallowPanelGroupProps from '../SwallowPanelGroupProps'
+import SwallowPanelGroupProps from '../shared/SwallowPanelGroupProps'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 
 const Container = styled.div`

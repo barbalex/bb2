@@ -4,8 +4,8 @@ import { Modal, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react'
 import compose from 'recompose/compose'
 
-import AttachedImgagesList from '../AttachedImgagesList'
-import AttachImages from '../AttachImages'
+import AttachedImgagesList from '../shared/AttachedImgagesList'
+import AttachImages from '../shared/AttachImages'
 
 const enhance = compose(observer)
 

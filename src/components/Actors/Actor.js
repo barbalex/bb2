@@ -8,7 +8,7 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import Editor from '../Editor'
+import Editor from '../shared/Editor'
 import Meta from '../Page/PageMeta'
 
 const MetaButton = styled(Button)`

@@ -11,7 +11,7 @@ import styled from 'styled-components'
 import Commentary from './Commentary'
 import NewCommentary from './NewCommentary'
 import ModalRemoveCommentary from './ModalRemoveCommentary'
-import SwallowPanelGroupProps from '../SwallowPanelGroupProps'
+import SwallowPanelGroupProps from '../shared/SwallowPanelGroupProps'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 
 const Container = styled.div`

@@ -9,7 +9,7 @@ import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import styled from 'styled-components'
 
-import Editor from '../Editor'
+import Editor from '../shared/Editor'
 import Meta from './PageMeta'
 
 const Container = styled.div`
