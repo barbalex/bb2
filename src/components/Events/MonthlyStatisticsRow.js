@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
 
-import Event from './event'
+import Event from './Event'
 
 const BodyCell = styled.div`
   padding: 5px;

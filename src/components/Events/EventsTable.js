@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
 
-import DateRows from './dateRows'
+import DateRows from './DateRows'
 
 const Container = styled.div`
   width: 100%;

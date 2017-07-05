@@ -6,9 +6,9 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
 
-import DateRow from './dateRow'
-import MonthRow from './monthRow'
-import MonthlyStatisticsRow from './monthlyStatisticsRow'
+import DateRow from './DateRow'
+import MonthRow from './MonthRow'
+import MonthlyStatisticsRow from './MonthlyStatisticsRow'
 import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent'
 
 const BodyRow = styled.div`

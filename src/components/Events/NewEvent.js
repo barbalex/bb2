@@ -15,7 +15,7 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import DateInput from './dateInput'
+import DateInput from './DateInput'
 
 const StyledModal = styled(Modal)`
   .col-xs-1,

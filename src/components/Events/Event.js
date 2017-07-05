@@ -5,8 +5,8 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
 
-import RemoveEventGlyph from './removeEventGlyph'
-import EditEventGlyph from './editEventGlyph'
+import RemoveEventGlyph from './RemoveEventGlyph'
+import EditEventGlyph from './EditEventGlyph'
 
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 0.7em;

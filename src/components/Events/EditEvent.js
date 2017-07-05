@@ -15,10 +15,10 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import EventTypeButtonGroup from './eventTypeButtonGroup'
-import DateInput from './dateInput'
-import TagsInput from './tagsInput'
-import EventLinks from './eventLinks'
+import EventTypeButtonGroup from './EventTypeButtonGroup'
+import DateInput from './DateInput'
+import TagsInput from './TagsInput'
+import EventLinks from './EventLinks'
 import getDateFromEventId from '../../modules/getDateFromEventId'
 
 const StyledModal = styled(Modal)`

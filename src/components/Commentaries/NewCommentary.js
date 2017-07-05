@@ -14,7 +14,7 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import DateInput from '../Events/dateInput'
+import DateInput from '../Events/DateInput'
 
 const ErrorAlert = styled(Alert)`
   magrin-bottom: 10px;

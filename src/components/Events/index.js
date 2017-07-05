@@ -10,11 +10,11 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import styled from 'styled-components'
 
-import IntroJumbotron from './introJumbotron'
-import NewEvent from './newEvent'
-import EditEvent from './editEvent'
-import ModalRemoveEvent from './modalRemoveEvent'
-import EventsTable from './eventsTable'
+import IntroJumbotron from './IntroJumbotron'
+import NewEvent from './NewEvent'
+import EditEvent from './EditEvent'
+import ModalRemoveEvent from './ModalRemoveEvent'
+import EventsTable from './EventsTable'
 
 const Container = styled.div`
   position: relative !important;
