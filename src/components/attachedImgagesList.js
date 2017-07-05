@@ -9,9 +9,8 @@ import styled from 'styled-components'
 import AttachedImage from './attachedImage'
 
 const Container = styled.div`
-  overflow: auto;
-  max-height: 400px;
-  padding-bottom: 5px;
+  overflow: auto !important;
+  max-height: 500px !important;
 `
 
 const enhance = compose(

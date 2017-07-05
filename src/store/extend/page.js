@@ -49,7 +49,6 @@ export default (store: Object): void => {
       'addPageAttachments',
       (doc: Object, attachments: Object): void => {
         if (!doc._attachments) doc._attachments = {}
-        // doc._attachments = Object.assign(doc._attachments, attachments)
         doc._attachments = { ...doc._attachments, ...attachments }
         store.page.savePage(doc)
       }

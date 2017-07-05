@@ -7,8 +7,11 @@ import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
 const Container = styled.div`
+  padding-top: 10px;
+  padding-left: 5px;
   div {
     width: 220px !important;
+    height: 124px !important;
   }
 `
 const DropzoneDiv = styled.div`
@@ -43,13 +46,12 @@ const enhance = compose(
        * }
        * note: react-dropzone built the blob itself! It is file
        */
-        const name = file.name
-        const type = file.type
-        attachments[name] = {
-          content_type: type,
+        attachments[file.name] = {
+          content_type: file.type,
           data: file,
         }
       })
+
       store.page.addPageAttachments(doc, attachments)
     },
   }),
@@ -69,7 +71,6 @@ const AttachImages = ({
     <Dropzone onDrop={onDrop} accept="image/jpeg, image/png">
       <DropzoneDiv>
         Drop some images here.<br />
-        <br />
         Or click to select images.<br />
         <br />
         Accepted file types:<br />
