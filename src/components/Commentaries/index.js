@@ -183,7 +183,7 @@ class Commentaries extends Component {
           ? doc._id === activeCommentary._id
           : false
         const showEditingGlyphons = !!store.login.email
-        const panelBodyPadding = store.editing ? 0 : '15px'
+        const panelBodyPadding = store.editing ? '0 !important' : '15px'
         const panelBodyMarginTop = store.editing ? '-1px' : 0
 
         // use pure bootstrap.
