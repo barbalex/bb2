@@ -9,7 +9,7 @@ import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
 import Editor from '../Editor'
-import MonthlyEventMeta from './monthlyEventMeta'
+import MonthlyEventMeta from './MonthlyEventMeta'
 
 const Container = styled.div`
   table > thead > tr > th {

@@ -10,7 +10,7 @@ import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
 import getYearFromEventId from '../../modules/getYearFromEventId'
-import MonthlyEventsOfYear from './monthlyEventsOfYear'
+import MonthlyEventsOfYear from './MonthlyEventsOfYear'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 
 const Container = styled.div`

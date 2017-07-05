@@ -8,7 +8,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-import MonthlyEvent from './monthlyEvent'
+import MonthlyEvent from './MonthlyEvent'
 import getYearFromEventId from '../../modules/getYearFromEventId'
 import getMonthFromEventId from '../../modules/getMonthFromEventId'
 import SwallowPanelGroupProps from '../SwallowPanelGroupProps'

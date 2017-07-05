@@ -9,7 +9,7 @@ import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
 import Editor from '../Editor'
-import Meta from '../pages/pageMeta'
+import Meta from '../Page/PageMeta'
 
 const MetaButton = styled(Button)`
   position: fixed;

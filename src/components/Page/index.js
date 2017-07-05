@@ -10,7 +10,7 @@ import withState from 'recompose/withState'
 import styled from 'styled-components'
 
 import Editor from '../Editor'
-import Meta from './pageMeta'
+import Meta from './PageMeta'
 
 const Container = styled.div`
   h1 {
