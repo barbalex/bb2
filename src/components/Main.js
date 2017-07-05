@@ -1,7 +1,6 @@
 // @flow
 import React from 'react'
 import DocumentTitle from 'react-document-title'
-import { toJS } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
@@ -72,7 +71,6 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
     activePage.type === 'pages' &&
     pagesWitCopyright.includes(activePage._id)
   const { errors } = store.error
-  console.log('main: attachments:', toJS(store.page.activePage._attachments))
 
   return (
     <DocumentTitle title={pageTitle}>

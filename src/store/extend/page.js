@@ -36,6 +36,10 @@ export default (store: Object): void => {
           // resp.rev is new rev
           doc._rev = resp.rev
           store.page.activePage = doc
+          return app.db.get(doc._id)
+        })
+        .then(doc => {
+          store.page.activePage = doc
         })
         .catch(error =>
           store.error.showError({

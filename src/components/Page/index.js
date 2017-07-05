@@ -2,7 +2,6 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
-import { toJS } from 'mobx'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
@@ -59,7 +58,6 @@ const Page = ({
   const articleEncoded = activePage.article
   const articleDecoded = Base64.decode(articleEncoded)
   let title = activePage.title ? activePage.title : activePage.category
-  console.log('page: attachments:', toJS(activePage._attachments))
 
   if (store.editing && activePage._id !== 'pages_actors') {
     return (
