@@ -9,6 +9,7 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
+import { withRouter } from 'react-router'
 
 import getYearFromEventId from '../../modules/getYearFromEventId'
 import MonthlyEventsOfYear from './MonthlyEventsOfYear'
@@ -67,6 +68,7 @@ const StyledPanel = styled(({ activeYear, children, ...rest }) =>
 
 const enhance = compose(
   inject(`store`),
+  withRouter,
   withState('activeYear', 'changeActiveYear', null),
   withHandlers({
     onClickYear: props => (activeYear: number): void => {
@@ -74,7 +76,7 @@ const enhance = compose(
       changeActiveYear(activeYear)
       // make sure no monthlyEvent is loaded
       // i.e. if an monthlyEvent was loaded it is unloaded
-      store.monthlyEvents.getMonthlyEvent(null)
+      store.monthlyEvents.getMonthlyEvent(null, props.history)
     },
   }),
   observer

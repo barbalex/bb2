@@ -39,16 +39,19 @@ export default (store: Object): void => {
           })
         )
     }),
-    getMonthlyEvent: action('getMonthlyEvent', (id: ?string): void => {
-      if (!id) {
-        app.router.navigate('/monthlyEvents')
-        store.monthlyEvents.activeMonthlyEventId = null
-      } else {
-        store.monthlyEvents.activeMonthlyEventId = id
-        const path = getPathFromDocId(id)
-        app.router.navigate(`/${path}`)
+    getMonthlyEvent: action(
+      'getMonthlyEvent',
+      (id: ?string, history: Object): void => {
+        if (!id) {
+          history.push('/monthlyEvents')
+          store.monthlyEvents.activeMonthlyEventId = null
+        } else {
+          store.monthlyEvents.activeMonthlyEventId = id
+          const path = getPathFromDocId(id)
+          history.push(`/${path}`)
+        }
       }
-    }),
+    ),
     updateMonthlyEventsInCache: action(
       'updateMonthlyEventsInCache',
       (monthlyEvent: Object): void => {

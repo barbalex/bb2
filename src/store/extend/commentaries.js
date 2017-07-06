@@ -19,10 +19,9 @@ export default (store: Object): void => {
     activeCommentary: computed(
       (): ?Object =>
         store.commentaries.commentaries.find(
-          commentary =>
-            commentary._id === store.commentaries.activeCommentaryId,
+          commentary => commentary._id === store.commentaries.activeCommentaryId
         ),
-      { name: `activeCommentary` },
+      { name: `activeCommentary` }
     ),
 
     getCommentariesCallback: null,
@@ -39,7 +38,7 @@ export default (store: Object): void => {
         .catch(error =>
           store.error.showError({
             msg: error,
-          }),
+          })
         )
     }),
 
@@ -49,7 +48,7 @@ export default (store: Object): void => {
       'toggleShowNewCommentary',
       (): void =>
         (store.commentaries.showNewCommentary = !store.commentaries
-          .showNewCommentary),
+          .showNewCommentary)
     ),
 
     newCommentary: action(
@@ -64,32 +63,35 @@ export default (store: Object): void => {
         const type = 'commentaries'
         const commentary = { _id, title, draft, article, type }
         store.commentaries.saveCommentary(commentary)
-      },
+      }
     ),
 
-    getCommentary: action('getCommentary', (id: ?string): void => {
-      if (!id) {
-        app.router.navigate('/commentaries')
-        store.commentaries.activeCommentaryId = null
-      } else {
-        store.commentaries.activeCommentaryId = id
-        const path = getPathFromDocId(id)
-        app.router.navigate(`/${path}`)
+    getCommentary: action(
+      'getCommentary',
+      (id: ?string, history: Object): void => {
+        if (!id) {
+          history.push('/commentaries')
+          store.commentaries.activeCommentaryId = null
+        } else {
+          store.commentaries.activeCommentaryId = id
+          const path = getPathFromDocId(id)
+          history.push(`/${path}`)
+        }
       }
-    }),
+    ),
 
     updateCommentariesInCache: action(
       'updateCommentariesInCache',
       (commentary: Object): void => {
         // first update the commentary in store.commentaries.commentaries
         store.commentaries.commentaries = store.commentaries.commentaries.filter(
-          c => c._id !== commentary._id,
+          c => c._id !== commentary._id
         )
         store.commentaries.commentaries.push(commentary)
         store.commentaries.commentaries = sortCommentaries(
-          store.commentaries.commentaries,
+          store.commentaries.commentaries
         )
-      },
+      }
     ),
 
     revertCache: action(
@@ -97,7 +99,7 @@ export default (store: Object): void => {
       (oldCommentaries: Object, oldActiveCommentaryId: string): void => {
         store.commentaries.commentaries = oldCommentaries
         store.commentaries.activeCommentaryId = oldActiveCommentaryId
-      },
+      }
     ),
 
     saveCommentary: action('saveCommentary', (commentary: Object): void => {
@@ -128,16 +130,16 @@ export default (store: Object): void => {
       (commentary: Object): void => {
         // first update the commentary in store.commentaries.commentaries
         store.commentaries.commentaries = store.commentaries.commentaries.filter(
-          thisCommentary => thisCommentary._id !== commentary._id,
+          thisCommentary => thisCommentary._id !== commentary._id
         )
         store.commentaries.commentaries = sortCommentaries(
-          store.commentaries.commentaries,
+          store.commentaries.commentaries
         )
         // now update store.commentaries.activeCommentaryId if it is the active commentary's _id
         const isActiveCommentary =
           store.commentaries.activeCommentaryId === commentary._id
         if (isActiveCommentary) store.commentaries.activeCommentaryId = null
-      },
+      }
     ),
 
     removeCommentary: action('removeCommentary', (commentary: Object): void => {
@@ -162,7 +164,7 @@ export default (store: Object): void => {
       'setCommentaryToRemove',
       (commentary: Object): void => {
         store.commentaries.commentaryToRemove = commentary
-      },
+      }
     ),
 
     toggleDraftOfCommentary: action(
@@ -174,7 +176,7 @@ export default (store: Object): void => {
           commentary.draft = true
         }
         store.commentaries.saveCommentary(commentary)
-      },
+      }
     ),
   })
 }

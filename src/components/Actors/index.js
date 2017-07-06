@@ -8,6 +8,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
+import { withRouter } from 'react-router'
 
 import Actor from './Actor'
 import NewActor from './NewActor'
@@ -65,13 +66,14 @@ const PanelBody = styled.div`
 
 const enhance = compose(
   inject(`store`),
+  withRouter,
   withHandlers({
     onClickActor: props => (id, e) => {
       const { activeActor } = props.store.actors
       // prevent higher level panels from reacting
       e.stopPropagation()
       const idToGet = !activeActor || activeActor._id !== id ? id : null
-      props.store.actors.getActor(idToGet)
+      props.store.actors.getActor(idToGet, props.history)
     },
     onClickActorCollapse: props => event => {
       // prevent higher level panels from reacting

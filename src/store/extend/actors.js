@@ -58,15 +58,14 @@ export default (store: Object): void => {
       store.actors.showNewActor = show
     }),
 
-    getActor: action('getActor', (id: ?string): void => {
+    getActor: action('getActor', (id: ?string, history: Object): void => {
       if (!id) {
-        app.router.navigate('/actors')
-        // router.history.push???
+        history.push('/actors')
         store.actors.activeActorId = null
       } else {
         store.actors.activeActorId = id
         const path = getPathFromDocId(id)
-        app.router.navigate(`/${path}`)
+        history.push(`/${path}`)
       }
     }),
 

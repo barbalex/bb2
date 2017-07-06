@@ -2,8 +2,6 @@
 import { extendObservable, action } from 'mobx'
 import app from 'ampersand-app'
 
-import getPathFromDocId from '../../modules/getPathFromDocId'
-
 export default (store: Object): void => {
   extendObservable(store.page, {
     activePage: {},
@@ -18,8 +16,6 @@ export default (store: Object): void => {
           .get(id, { include_docs: true })
           .then(doc => {
             store.page.activePage = doc
-            const path = getPathFromDocId(id)
-            // app.router.navigate(`/${path}`)
           })
           .catch(error =>
             store.error.showError({

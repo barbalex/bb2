@@ -7,6 +7,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
+import { withRouter } from 'react-router'
 
 import MonthlyEvent from './MonthlyEvent'
 import getYearFromEventId from '../../modules/getYearFromEventId'
@@ -21,6 +22,7 @@ const PanelBody = styled.div`
 
 const enhance = compose(
   inject(`store`),
+  withRouter,
   withHandlers({
     onClickMonthlyEvent: props => (id: string, event: Object): void => {
       const { activeMonthlyEvent, getMonthlyEvent } = props.store.monthlyEvents
@@ -31,7 +33,7 @@ const enhance = compose(
         (activeMonthlyEvent._id && activeMonthlyEvent._id !== id)
           ? id
           : null
-      getMonthlyEvent(idToGet)
+      getMonthlyEvent(idToGet, props.history)
     },
     onClickEventCollapse: props => (event: Object): void => {
       // prevent higher level panels from reacting

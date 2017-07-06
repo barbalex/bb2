@@ -1,6 +1,5 @@
 // @flow
 import { extendObservable, action } from 'mobx'
-import app from 'ampersand-app'
 
 export default (store: Object): void => {
   extendObservable(store.login, {
@@ -8,7 +7,7 @@ export default (store: Object): void => {
 
     email: window.localStorage.email,
 
-    login: action('login', (email: string): void => {
+    login: action('login', (email: string, history: Object): void => {
       // change email only if it was passed
       const changeEmail = email !== undefined
       let lsEmail = window.localStorage.email
@@ -20,7 +19,7 @@ export default (store: Object): void => {
         }
         window.localStorage.email = email
         store.login.email = email
-        app.router.navigate('/home')
+        history.push('/events')
       }
     }),
 

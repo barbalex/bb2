@@ -82,7 +82,7 @@ const enhance = compose(
       e.stopPropagation()
       const idToGet =
         !activeCommentary || activeCommentary._id !== id ? id : null
-      getCommentary(idToGet)
+      getCommentary(idToGet, props.history)
     },
     // prevent higher level panels from reacting
     onClickCommentaryCollapse: props => event => event.stopPropagation(),
@@ -255,9 +255,6 @@ class Commentaries extends Component {
 
   render() {
     const { store, match, location, history } = this.props
-    console.log('Commentaries: match:', match)
-    console.log('Commentaries: location:', location)
-    console.log('Commentaries: history:', history)
     const {
       activeCommentary,
       showNewCommentary,
