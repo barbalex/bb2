@@ -19,10 +19,6 @@ import oceanDarkImage from '../../images/oceanDark.jpg'
 const Container = styled.div`
   font-size: x-large;
   font-weight: 700;
-  h1 {
-    font-size: x-large;
-    font-weight: 700;
-  }
   h2 {
     font-size: large;
     font-weight: 700;
@@ -246,6 +242,7 @@ class Actors extends Component {
     return (
       <DocumentTitle title="blue-borders | Actors">
         <Container>
+          <h1>Actors</h1>
           <PanelGroup activeKey={activeId} id="actorsAccordion" accordion>
             <SwallowPanelGroupProps>
               {this.actorsComponent()}

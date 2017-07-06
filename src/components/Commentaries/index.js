@@ -254,7 +254,7 @@ class Commentaries extends Component {
   }
 
   render() {
-    const { store, match, location, history } = this.props
+    const { store } = this.props
     const {
       activeCommentary,
       showNewCommentary,
