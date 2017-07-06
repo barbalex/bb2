@@ -1,11 +1,14 @@
 // @flow
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'mobx-react'
 import app from 'ampersand-app'
 import PouchDB from 'pouchdb'
 import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
 
+import Main from './components/Main'
 import registerServiceWorker from './registerServiceWorker'
-import Router from './router'
 import store from './store'
 import couchUrl from './modules/getCouchUrl'
 // need this polyfill to transform promise.all
@@ -29,7 +32,7 @@ Bitte versuchen Sie es mit einer aktuellen Version von (zum Beispiel):
 - Firefox
 - Safari
 - Internet Explorer (ab Version 10)
-- Edge`,
+- Edge`
   )
 }
 
@@ -57,17 +60,14 @@ window.PouchDB = PouchDB
 app.extend({
   init() {
     this.store = store
-    Promise.all([(this.db = new PouchDB(couchUrl()))])
-      .then(() => {
-        this.router = new Router()
-        this.router.history.start()
-      })
-      .catch(error => console.log('Fehler in index.js:', error))
+    this.db = new PouchDB(couchUrl())
   },
 })
-
-/**
- * o.k., everything necessary is prepared
- * now lauch the app
- */
 app.init()
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Main />
+  </Provider>,
+  document.getElementById('root')
+)

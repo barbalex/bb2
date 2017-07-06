@@ -7,6 +7,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
+import DocumentTitle from 'react-document-title'
 
 import Commentary from './Commentary'
 import NewCommentary from './NewCommentary'
@@ -68,6 +69,7 @@ const PanelBody = styled.div`
   max-height: ${window.innerHeight - 141}px;
   overflow-y: auto;
 `
+const Copyright = styled.p`margin-top: 70px;`
 
 const enhance = compose(
   inject(`store`),
@@ -101,6 +103,7 @@ class Commentaries extends Component {
 
   props: {
     store: Object,
+    match: Object,
     onClickCommentary: () => void,
     onClickCommentaryCollapse: () => void,
     onRemoveCommentary: () => void,
@@ -247,7 +250,8 @@ class Commentaries extends Component {
   }
 
   render() {
-    const { store } = this.props
+    const { store, match } = this.props
+    console.log('Commentaries: match:', match)
     const {
       activeCommentary,
       showNewCommentary,
@@ -258,20 +262,23 @@ class Commentaries extends Component {
       : null
 
     return (
-      <Container>
-        <h1>Commentaries</h1>
-        <PanelGroup
-          activeKey={activeCommentaryId}
-          id="commentariesAccordion"
-          accordion
-        >
-          <SwallowPanelGroupProps>
-            {this.commentariesComponent()}
-          </SwallowPanelGroupProps>
-        </PanelGroup>
-        {showNewCommentary && <NewCommentary />}
-        {commentaryToRemove && <ModalRemoveCommentary />}
-      </Container>
+      <DocumentTitle title="blue-borders | Commentaries">
+        <Container>
+          <h1>Commentaries</h1>
+          <PanelGroup
+            activeKey={activeCommentaryId}
+            id="commentariesAccordion"
+            accordion
+          >
+            <SwallowPanelGroupProps>
+              {this.commentariesComponent()}
+            </SwallowPanelGroupProps>
+          </PanelGroup>
+          {showNewCommentary && <NewCommentary />}
+          {commentaryToRemove && <ModalRemoveCommentary />}
+          <Copyright>© Jürg Martin Gabriel. All Rights Reserved.</Copyright>
+        </Container>
+      </DocumentTitle>
     )
   }
 }

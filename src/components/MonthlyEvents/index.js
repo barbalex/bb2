@@ -8,6 +8,7 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
+import DocumentTitle from 'react-document-title'
 
 import getYearFromEventId from '../../modules/getYearFromEventId'
 import MonthlyEventsOfYear from './MonthlyEventsOfYear'
@@ -144,12 +145,14 @@ class MonthlyEvents extends Component {
     }
 
     return (
-      <Container id="monthlyEvents">
-        <h1>Events Archive</h1>
-        <PanelGroup activeKey={activeYear} accordion>
-          {this.eventYearsComponent(activeYear)}
-        </PanelGroup>
-      </Container>
+      <DocumentTitle title="blue-borders | Events">
+        <Container id="monthlyEvents">
+          <h1>Events Archive</h1>
+          <PanelGroup activeKey={activeYear} accordion>
+            {this.eventYearsComponent(activeYear)}
+          </PanelGroup>
+        </Container>
+      </DocumentTitle>
     )
   }
 }

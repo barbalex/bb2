@@ -7,6 +7,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import styled from 'styled-components'
+import DocumentTitle from 'react-document-title'
 
 import Editor from '../shared/Editor'
 import Meta from './PageMeta'
@@ -43,12 +44,14 @@ const enhance = compose(
 
 const Page = ({
   store,
+  match,
   showMeta,
   onClickMeta,
   onCloseMeta,
   changeShowMeta,
 }: {
   store: Object,
+  match: Object,
   showMeta: boolean,
   onClickMeta: () => void,
   onCloseMeta: () => void,
@@ -58,6 +61,7 @@ const Page = ({
   const articleEncoded = activePage.article
   const articleDecoded = Base64.decode(articleEncoded)
   let title = activePage.title ? activePage.title : activePage.category
+  console.log('Page: match:', match)
 
   if (store.editing && activePage._id !== 'pages_actors') {
     return (
@@ -74,12 +78,14 @@ const Page = ({
   }
   const createMarkup = () => ({ __html: articleDecoded })
   return (
-    <Container className="page">
-      <h1>
-        {title}
-      </h1>
-      <div dangerouslySetInnerHTML={createMarkup()} />
-    </Container>
+    <DocumentTitle title={`blue-borders | ${title}`}>
+      <Container className="page">
+        <h1>
+          {title}
+        </h1>
+        <div dangerouslySetInnerHTML={createMarkup()} />
+      </Container>
+    </DocumentTitle>
   )
 }
 

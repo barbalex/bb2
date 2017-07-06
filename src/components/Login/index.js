@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
+import DocumentTitle from 'react-document-title'
 
 import LoginForm from './LoginForm'
 
@@ -23,14 +24,16 @@ const Login = ({
   store: Object,
   onClickLogout: () => void,
 }) =>
-  <div>
-    <h1>Login</h1>
-    {!store.login.email && <LoginForm />}
-    {store.login.email &&
-      <Button className="btn-primary" onClick={onClickLogout}>
-        log out
-      </Button>}
-  </div>
+  <DocumentTitle title="blue-borders | Login">
+    <div>
+      <h1>Login</h1>
+      {!store.login.email && <LoginForm />}
+      {store.login.email &&
+        <Button className="btn-primary" onClick={onClickLogout}>
+          log out
+        </Button>}
+    </div>
+  </DocumentTitle>
 
 Login.displayName = 'Login'
 

@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
+import DocumentTitle from 'react-document-title'
 
 import PublicationsOfCategory from './PublicationsOfCategory'
 import NewPublication from './NewPublication'
@@ -129,17 +130,19 @@ class Publications extends Component {
     } = this.props.store.publications
 
     return (
-      <Container>
-        <h1>Publications</h1>
-        <PanelGroup
-          className="panel-group"
-          id="publicationsAccordion"
-          role="tablist"
-        >
-          {this.publicationCategoriesComponent(activePublicationCategory)}
-        </PanelGroup>
-        {showNewPublication && <NewPublication />}
-      </Container>
+      <DocumentTitle title="blue-borders | Publications">
+        <Container>
+          <h1>Publications</h1>
+          <PanelGroup
+            className="panel-group"
+            id="publicationsAccordion"
+            role="tablist"
+          >
+            {this.publicationCategoriesComponent(activePublicationCategory)}
+          </PanelGroup>
+          {showNewPublication && <NewPublication />}
+        </Container>
+      </DocumentTitle>
     )
   }
 }

@@ -19,9 +19,9 @@ export default (store: Object): void => {
     activeActor: computed(
       (): ?Object =>
         store.actors.actors.find(
-          actor => actor._id === store.actors.activeActorId,
+          actor => actor._id === store.actors.activeActorId
         ),
-      { name: `activeActor` },
+      { name: `activeActor` }
     ),
 
     getActorsCallback: null,
@@ -38,7 +38,7 @@ export default (store: Object): void => {
         .catch(error =>
           store.error.showError({
             msg: error,
-          }),
+          })
         )
     }),
 
@@ -61,6 +61,7 @@ export default (store: Object): void => {
     getActor: action('getActor', (id: ?string): void => {
       if (!id) {
         app.router.navigate('/actors')
+        // router.history.push???
         store.actors.activeActorId = null
       } else {
         store.actors.activeActorId = id
@@ -74,11 +75,11 @@ export default (store: Object): void => {
       (actor: Object): void => {
         // first update the actor in store.actors.actors
         store.actors.actors = store.actors.actors.filter(
-          a => a._id !== actor._id,
+          a => a._id !== actor._id
         )
         store.actors.actors.push(actor)
         store.actors.actors = sortActors(store.actors.actors)
-      },
+      }
     ),
 
     revertCache: action(
@@ -86,7 +87,7 @@ export default (store: Object): void => {
       (oldActors: Array<Object>, oldActiveActorId: string): void => {
         store.actors.actors = oldActors
         store.actors.activeActorId = oldActiveActorId
-      },
+      }
     ),
 
     saveActor: action('saveActor', (actor: Object): void => {
@@ -117,13 +118,13 @@ export default (store: Object): void => {
       (actor: Object): void => {
         // first update the actor in store.actors.actors
         store.actors.actors = store.actors.actors.filter(
-          thisActor => thisActor._id !== actor._id,
+          thisActor => thisActor._id !== actor._id
         )
         store.actors.actors = sortActors(store.actors.actors)
         // now update store.actors.activeActorId if it is the active actor's _id
         const isActiveActor = store.actors.activeActorId === actor._id
         if (isActiveActor) store.actors.activeActorId = null
-      },
+      }
     ),
 
     removeActor: action('removeActor', (actor: Object): void => {

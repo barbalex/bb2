@@ -7,6 +7,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
+import DocumentTitle from 'react-document-title'
 
 import Actor from './Actor'
 import NewActor from './NewActor'
@@ -241,15 +242,17 @@ class Actors extends Component {
     const activeId = activeActor ? activeActor._id : null
 
     return (
-      <Container>
-        <PanelGroup activeKey={activeId} id="actorsAccordion" accordion>
-          <SwallowPanelGroupProps>
-            {this.actorsComponent()}
-          </SwallowPanelGroupProps>
-        </PanelGroup>
-        {showNewActor && <NewActor />}
-        {store.actors.actorToRemove && <ModalRemoveActor />}
-      </Container>
+      <DocumentTitle title="blue-borders | Actors">
+        <Container>
+          <PanelGroup activeKey={activeId} id="actorsAccordion" accordion>
+            <SwallowPanelGroupProps>
+              {this.actorsComponent()}
+            </SwallowPanelGroupProps>
+          </PanelGroup>
+          {showNewActor && <NewActor />}
+          {store.actors.actorToRemove && <ModalRemoveActor />}
+        </Container>
+      </DocumentTitle>
     )
   }
 }

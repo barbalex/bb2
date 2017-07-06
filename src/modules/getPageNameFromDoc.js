@@ -1,4 +1,7 @@
 // @flow
+/**
+ * TODO: unused after refactoring routing?
+ */
 import getYearFromEventId from './getYearFromEventId'
 import getMonthFromEventId from './getMonthFromEventId'
 

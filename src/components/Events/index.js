@@ -9,6 +9,7 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import styled from 'styled-components'
+import DocumentTitle from 'react-document-title'
 
 import IntroJumbotron from './IntroJumbotron'
 import NewEvent from './NewEvent'
@@ -130,27 +131,29 @@ class Events extends Component {
     const { activeEvent, showNewEvent } = store.events
 
     return (
-      <Container className="events">
-        <IntroJumbotron
-          ref={j => {
-            // $FlowIssue
-            this.introJumbotron = j
-          }}
-        />
-        <YearButtonsContainer>
-          <ButtonGroup>
-            {this.yearButtons()}
-            <Button onClick={() => store.page.getPage('pages_monthlyEvents')}>
-              2014 - 2011
-            </Button>
-          </ButtonGroup>
-        </YearButtonsContainer>
-        {showEventsTable &&
-          <EventsTable introJumbotronHeight={introJumbotronHeight} />}
-        {activeEvent && <EditEvent />}
-        {showNewEvent && <NewEvent />}
-        {store.events.eventToRemove && <ModalRemoveEvent />}
-      </Container>
+      <DocumentTitle title="blue-borders | Events">
+        <Container className="events">
+          <IntroJumbotron
+            ref={j => {
+              // $FlowIssue
+              this.introJumbotron = j
+            }}
+          />
+          <YearButtonsContainer>
+            <ButtonGroup>
+              {this.yearButtons()}
+              <Button onClick={() => store.page.getPage('pages_monthlyEvents')}>
+                2014 - 2011
+              </Button>
+            </ButtonGroup>
+          </YearButtonsContainer>
+          {showEventsTable &&
+            <EventsTable introJumbotronHeight={introJumbotronHeight} />}
+          {activeEvent && <EditEvent />}
+          {showNewEvent && <NewEvent />}
+          {store.events.eventToRemove && <ModalRemoveEvent />}
+        </Container>
+      </DocumentTitle>
     )
   }
 }
