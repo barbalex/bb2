@@ -7,6 +7,7 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
+import { withRouter } from 'react-router'
 
 import Publication from './Publication'
 import ModalRemovePublication from './ModalRemovePublication'
@@ -33,6 +34,7 @@ const PanelBody = styled.div`
 
 const enhance = compose(
   inject(`store`),
+  withRouter,
   withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
     onClickPublication: props => (id: string, e: Object): void => {
@@ -41,7 +43,7 @@ const enhance = compose(
       const { activePublication, getPublication } = props.store.publications
       const idToGet =
         !activePublication || activePublication._id !== id ? id : null
-      getPublication(idToGet)
+      getPublication(idToGet, props.history)
     },
     onClickEventCollapse: props => (event: Object): void => {
       // prevent higher level panels from reacting

@@ -10,6 +10,7 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
+import { withRouter } from 'react-router'
 
 import IntroJumbotron from './IntroJumbotron'
 import NewEvent from './NewEvent'
@@ -51,6 +52,7 @@ const YearButtonsContainer = styled.div`text-align: center;`
 
 const enhance = compose(
   inject(`store`),
+  withRouter,
   withState('docToRemove', 'changeDocToRemove', null),
   withState('introJumbotronHeight', 'changeIntroJumbotronHeight', null),
   observer
@@ -61,6 +63,7 @@ class Events extends Component {
 
   props: {
     store: Object,
+    history: Object,
     docToRemove: Object,
     introJumbotronHeight: number,
     changeDocToRemove: () => void,
@@ -126,7 +129,7 @@ class Events extends Component {
   }
 
   render() {
-    const { store, introJumbotronHeight } = this.props
+    const { store, introJumbotronHeight, history } = this.props
     const showEventsTable = min(store.yearsOfEvents.activeEventYears) > 2014
     const { activeEvent, showNewEvent } = store.events
 
@@ -142,7 +145,12 @@ class Events extends Component {
           <YearButtonsContainer>
             <ButtonGroup>
               {this.yearButtons()}
-              <Button onClick={() => store.page.getPage('pages_monthlyEvents')}>
+              <Button
+                onClick={() => {
+                  history.push('/monthlyEvents')
+                  store.page.getPage('pages_monthlyEvents')
+                }}
+              >
                 2014 - 2011
               </Button>
             </ButtonGroup>

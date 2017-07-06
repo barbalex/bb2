@@ -44,14 +44,12 @@ const enhance = compose(
 
 const Page = ({
   store,
-  match,
   showMeta,
   onClickMeta,
   onCloseMeta,
   changeShowMeta,
 }: {
   store: Object,
-  match: Object,
   showMeta: boolean,
   onClickMeta: () => void,
   onCloseMeta: () => void,
@@ -61,7 +59,6 @@ const Page = ({
   const articleEncoded = activePage.article
   const articleDecoded = Base64.decode(articleEncoded)
   let title = activePage.title ? activePage.title : activePage.category
-  console.log('Page: match:', match)
 
   if (store.editing && activePage._id !== 'pages_actors') {
     return (
