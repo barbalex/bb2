@@ -6,13 +6,14 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom'
+import Loadable from 'react-loadable'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 
 import Header from '../components/Header'
 import Navbar from '../components/Navbar'
 import Page from './Page'
-import Events from './Events'
+import AsyncEvents from './AsyncEvents'
 import Commentaries from './Commentaries'
 import Actors from './Actors'
 import MonthlyEvents from './MonthlyEvents'
@@ -37,11 +38,12 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             path="/events"
             render={() => {
               store.page.getPage('pages_events')
-              return <Events />
+              return <AsyncEvents />
             }}
           />
           <Route
             path="/monthlyEvents/:year/:month"
+            exact
             render={({ match }) => {
               const { year, month } = match.params
               store.page.getPage('pages_monthlyEvents')
@@ -51,6 +53,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           />
           <Route
             path="/monthlyEvents"
+            exact
             render={() => {
               store.page.getPage('pages_monthlyEvents')
               return <MonthlyEvents />
@@ -58,6 +61,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           />
           <Route
             path="/commentaries/:year/:month/:day/:title"
+            exact
             render={({ match }) => {
               const { year, month, day, title } = match.params
               store.page.getPage('pages_commentaries')
@@ -67,6 +71,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           />
           <Route
             path="/commentaries"
+            exact
             render={() => {
               store.page.getPage('pages_commentaries')
               return <Commentaries />
@@ -74,6 +79,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           />
           <Route
             path="/actors/:category"
+            exact
             render={({ match }) => {
               const { category } = match.params
               store.page.getPage('pages_actors')
@@ -83,6 +89,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           />
           <Route
             path="/actors"
+            exact
             render={() => {
               store.page.getPage('pages_actors')
               return <Actors />
@@ -90,6 +97,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           />
           <Route
             path="/publications/:category/:title"
+            exact
             render={({ match }) => {
               const { category, title } = match.params
               store.page.getPage('pages_publications')
@@ -99,6 +107,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           />
           <Route
             path="/publications"
+            exact
             render={() => {
               store.page.getPage('pages_publications')
               return <Publications />
@@ -106,6 +115,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           />
           <Route
             path="/links"
+            exact
             render={() => {
               store.page.getPage('pages_links')
               return <Page />
@@ -113,12 +123,13 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           />
           <Route
             path="/aboutUs"
+            exact
             render={() => {
               store.page.getPage('pages_aboutUs')
               return <Page />
             }}
           />
-          <Route path="/login" component={Login} />
+          <Route path="/login" exact component={Login} />
           <Route component={NotFound} />
         </Switch>
         {errors && errors.length > 0 && <Errors />}

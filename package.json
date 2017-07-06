@@ -28,6 +28,7 @@
     "react-dropzone": "3.13.3",
     "react-gemini-scrollbar": "2.3.2",
     "react-list": "0.8.6",
+    "react-loadable": "4.0.3",
     "react-router": "4.1.1",
     "react-router-dom": "4.1.1",
     "recompose": "0.23.5",
