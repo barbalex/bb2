@@ -19,7 +19,7 @@ export default (store: Object): void => {
           .then(doc => {
             store.page.activePage = doc
             const path = getPathFromDocId(id)
-            app.router.navigate(`/${path}`)
+            // app.router.navigate(`/${path}`)
           })
           .catch(error =>
             store.error.showError({

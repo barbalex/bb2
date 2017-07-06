@@ -14,6 +14,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import styled from 'styled-components'
+import { withRouter } from 'react-router'
 
 import oceanDarkImage from '../images/oceanDark.jpg'
 
@@ -37,6 +38,7 @@ const isNavMobile = () => {
 
 const enhance = compose(
   inject(`store`),
+  withRouter,
   withState('navExpanded', 'changeNavExpanded', false),
   withHandlers({
     onToggleNav: props => () => {
@@ -46,10 +48,35 @@ const enhance = compose(
     },
   }),
   withHandlers({
-    onClickPage: props => id => {
-      props.store.page.getPage(id)
+    onClickEvents: props => () => {
+      props.store.page.getPage('pages_events')
+      props.history.push('/events')
       // if home was clicked, do not toggle nav
-      if (id !== 'pages_events') props.onToggleNav()
+    },
+    onClickCommentaries: props => () => {
+      props.store.page.getPage('pages_commentaries')
+      props.history.push('/commentaries')
+      props.onToggleNav()
+    },
+    onClickActors: props => () => {
+      props.store.page.getPage('pages_actors')
+      props.history.push('/actors')
+      props.onToggleNav()
+    },
+    onClickPublications: props => () => {
+      props.store.page.getPage('pages_publications')
+      props.history.push('/publications')
+      props.onToggleNav()
+    },
+    onClickLinks: props => () => {
+      props.store.page.getPage('pages_links')
+      props.history.push('/links')
+      props.onToggleNav()
+    },
+    onClickAboutUs: props => () => {
+      props.store.page.getPage('pages_aboutUs')
+      props.history.push('/aboutUs')
+      props.onToggleNav()
     },
     onClickEdit: props => () => {
       props.store.toggleEditing()
@@ -73,9 +100,17 @@ const enhance = compose(
 
 const MyNavbar = ({
   store,
+  match,
+  location,
+  history,
   navExpanded,
   onToggleNav,
-  onClickPage,
+  onClickEvents,
+  onClickCommentaries,
+  onClickActors,
+  onClickPublications,
+  onClickLinks,
+  onClickAboutUs,
   onClickEdit,
   onClickLogout,
   onClickNewCommentary,
@@ -84,9 +119,17 @@ const MyNavbar = ({
   onClickNewActor,
 }: {
   store: Object,
+  match: Object,
+  location: Object,
+  history: Object,
   navExpanded: boolean,
   onToggleNav: () => void,
-  onClickPage: () => void,
+  onClickEvents: () => void,
+  onClickCommentaries: () => void,
+  onClickActors: () => void,
+  onClickPublications: () => void,
+  onClickLinks: () => void,
+  onClickAboutUs: () => void,
   onClickEdit: () => void,
   onClickLogout: () => void,
   onClickNewCommentary: () => void,
@@ -132,41 +175,30 @@ const MyNavbar = ({
       onToggle={onToggleNav}
     >
       <Navbar.Header>
-        <Navbar.Brand onClick={() => onClickPage('pages_events')}>
-          Events
-        </Navbar.Brand>
+        <Navbar.Brand onClick={onClickEvents}>Events</Navbar.Brand>
         <Navbar.Toggle />
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav>
           <NavItem
             active={id === 'pages_commentaries'}
-            onClick={() => onClickPage('pages_commentaries')}
+            onClick={onClickCommentaries}
           >
             Commentaries
           </NavItem>
-          <NavItem
-            active={id === 'pages_actors'}
-            onClick={() => onClickPage('pages_actors')}
-          >
+          <NavItem active={id === 'pages_actors'} onClick={onClickActors}>
             Actors
           </NavItem>
           <NavItem
             active={id === 'pages_publications'}
-            onClick={() => onClickPage('pages_publications')}
+            onClick={onClickPublications}
           >
             Publications
           </NavItem>
-          <NavItem
-            active={id === 'pages_links'}
-            onClick={() => onClickPage('pages_links')}
-          >
+          <NavItem active={id === 'pages_links'} onClick={onClickLinks}>
             Links
           </NavItem>
-          <NavItem
-            active={id === 'pages_aboutUs'}
-            onClick={() => onClickPage('pages_aboutUs')}
-          >
+          <NavItem active={id === 'pages_aboutUs'} onClick={onClickAboutUs}>
             About us
           </NavItem>
         </Nav>

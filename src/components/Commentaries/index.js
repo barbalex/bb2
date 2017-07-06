@@ -8,6 +8,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
+import { withRouter } from 'react-router'
 
 import Commentary from './Commentary'
 import NewCommentary from './NewCommentary'
@@ -73,6 +74,7 @@ const Copyright = styled.p`margin-top: 70px;`
 
 const enhance = compose(
   inject(`store`),
+  withRouter,
   withHandlers({
     onClickCommentary: props => (id, e) => {
       const { activeCommentary, getCommentary } = props.store.commentaries
@@ -104,6 +106,8 @@ class Commentaries extends Component {
   props: {
     store: Object,
     match: Object,
+    location: Object,
+    history: Object,
     onClickCommentary: () => void,
     onClickCommentaryCollapse: () => void,
     onRemoveCommentary: () => void,
@@ -250,8 +254,10 @@ class Commentaries extends Component {
   }
 
   render() {
-    const { store, match } = this.props
+    const { store, match, location, history } = this.props
     console.log('Commentaries: match:', match)
+    console.log('Commentaries: location:', location)
+    console.log('Commentaries: history:', history)
     const {
       activeCommentary,
       showNewCommentary,
