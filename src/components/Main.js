@@ -8,7 +8,6 @@ import {
 } from 'react-router-dom'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
-import app from 'ampersand-app'
 
 import Header from '../components/Header'
 import Navbar from '../components/Navbar'
@@ -37,71 +36,85 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           <Route
             path="/events"
             render={() => {
-              app.store.page.getPage('pages_events')
+              store.page.getPage('pages_events')
               return <Events />
             }}
           />
-          <Route path="/monthlyEvents" component={MonthlyEvents} />
+          <Route
+            path="/monthlyEvents/:year/:month"
+            render={({ match }) => {
+              const { year, month } = match.params
+              store.page.getPage('pages_monthlyEvents')
+              store.monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
+              return <MonthlyEvents />
+            }}
+          />
           <Route
             path="/monthlyEvents"
             render={() => {
-              app.store.page.getPage('pages_monthlyEvents')
+              store.page.getPage('pages_monthlyEvents')
               return <MonthlyEvents />
             }}
           />
           <Route
             path="/commentaries/:year/:month/:day/:title"
-            render={() => {
-              app.store.page.getPage('pages_commentaries')
+            render={({ match }) => {
+              const { year, month, day, title } = match.params
+              store.page.getPage('pages_commentaries')
+              store.commentaries.activeCommentaryId = `commentaries_${year}_${month}_${day}_${title}`
               return <Commentaries />
             }}
           />
           <Route
             path="/commentaries"
             render={() => {
-              app.store.page.getPage('pages_commentaries')
+              store.page.getPage('pages_commentaries')
               return <Commentaries />
             }}
           />
           <Route
-            path="/actors/:title"
-            render={() => {
-              app.store.page.getPage('pages_actors')
+            path="/actors/:category"
+            render={({ match }) => {
+              const { category } = match.params
+              store.page.getPage('pages_actors')
+              store.actors.activeActorId = `actors_${category}`
               return <Actors />
             }}
           />
           <Route
             path="/actors"
             render={() => {
-              app.store.page.getPage('pages_actors')
+              store.page.getPage('pages_actors')
               return <Actors />
             }}
           />
           <Route
             path="/publications/:category/:title"
-            render={() => {
-              app.store.page.getPage('pages_publications')
+            render={({ match }) => {
+              const { category, title } = match.params
+              store.page.getPage('pages_publications')
+              store.publications.activePublicationId = `publications_${category}_${title}`
               return <Publications />
             }}
           />
           <Route
             path="/publications"
             render={() => {
-              app.store.page.getPage('pages_publications')
+              store.page.getPage('pages_publications')
               return <Publications />
             }}
           />
           <Route
             path="/links"
             render={() => {
-              app.store.page.getPage('pages_links')
+              store.page.getPage('pages_links')
               return <Page />
             }}
           />
           <Route
             path="/aboutUs"
             render={() => {
-              app.store.page.getPage('pages_aboutUs')
+              store.page.getPage('pages_aboutUs')
               return <Page />
             }}
           />

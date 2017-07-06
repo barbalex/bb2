@@ -16,6 +16,7 @@ const Container = styled.div`
   }
   .mce-tinymce {
     margin: -15px;
+    width: calc(100% + 27px) !important;
   }
 `
 
