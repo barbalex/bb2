@@ -6,19 +6,18 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom'
-import Loadable from 'react-loadable'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 
 import Header from '../components/Header'
 import Navbar from '../components/Navbar'
-import Page from './Page'
+import AsyncPage from './AsyncPage'
 import AsyncEvents from './AsyncEvents'
-import Commentaries from './Commentaries'
-import Actors from './Actors'
-import MonthlyEvents from './MonthlyEvents'
-import Publications from './Publications'
-import Login from './Login'
+import AsyncCommentaries from './AsyncCommentaries'
+import AsyncActors from './AsyncActors'
+import AsyncMonthlyEvents from './AsyncMonthlyEvents'
+import AsyncPublications from './AsyncPublications'
+import AsyncLogin from './AsyncLogin'
 import Errors from './Errors'
 import NotFound from './NotFound'
 
@@ -48,7 +47,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
               const { year, month } = match.params
               store.page.getPage('pages_monthlyEvents')
               store.monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
-              return <MonthlyEvents />
+              return <AsyncMonthlyEvents />
             }}
           />
           <Route
@@ -56,7 +55,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             exact
             render={() => {
               store.page.getPage('pages_monthlyEvents')
-              return <MonthlyEvents />
+              return <AsyncMonthlyEvents />
             }}
           />
           <Route
@@ -66,7 +65,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
               const { year, month, day, title } = match.params
               store.page.getPage('pages_commentaries')
               store.commentaries.activeCommentaryId = `commentaries_${year}_${month}_${day}_${title}`
-              return <Commentaries />
+              return <AsyncCommentaries />
             }}
           />
           <Route
@@ -74,7 +73,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             exact
             render={() => {
               store.page.getPage('pages_commentaries')
-              return <Commentaries />
+              return <AsyncCommentaries />
             }}
           />
           <Route
@@ -84,7 +83,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
               const { category } = match.params
               store.page.getPage('pages_actors')
               store.actors.activeActorId = `actors_${category}`
-              return <Actors />
+              return <AsyncActors />
             }}
           />
           <Route
@@ -92,7 +91,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             exact
             render={() => {
               store.page.getPage('pages_actors')
-              return <Actors />
+              return <AsyncActors />
             }}
           />
           <Route
@@ -102,7 +101,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
               const { category, title } = match.params
               store.page.getPage('pages_publications')
               store.publications.activePublicationId = `publications_${category}_${title}`
-              return <Publications />
+              return <AsyncPublications />
             }}
           />
           <Route
@@ -110,7 +109,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             exact
             render={() => {
               store.page.getPage('pages_publications')
-              return <Publications />
+              return <AsyncPublications />
             }}
           />
           <Route
@@ -118,7 +117,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             exact
             render={() => {
               store.page.getPage('pages_links')
-              return <Page />
+              return <AsyncPage />
             }}
           />
           <Route
@@ -126,10 +125,10 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             exact
             render={() => {
               store.page.getPage('pages_aboutUs')
-              return <Page />
+              return <AsyncPage />
             }}
           />
-          <Route path="/login" exact component={Login} />
+          <Route path="/login" exact component={AsyncLogin} />
           <Route component={NotFound} />
         </Switch>
         {errors && errors.length > 0 && <Errors />}
