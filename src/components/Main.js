@@ -105,6 +105,14 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             }}
           />
           <Route
+            path="/publications/:category"
+            exact
+            render={() => {
+              store.page.getPage('pages_publications')
+              return <AsyncPublications />
+            }}
+          />
+          <Route
             path="/publications"
             exact
             render={() => {
