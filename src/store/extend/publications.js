@@ -28,20 +28,19 @@ export default (store: Object): void => {
 
     getPublicationsCallback: null,
 
-    getPublications: action('getPublications', (): void => {
-      getPublications(store)
-        .then(publications => {
-          store.publications.publications = publications
-          if (store.publications.getPublicationsCallback) {
-            store.publications.getPublicationsCallback()
-            store.publications.getPublicationsCallback = null
-          }
+    getPublications: action('getPublications', async () => {
+      try {
+        const publications = await getPublications(store)
+        store.publications.publications = publications
+        if (store.publications.getPublicationsCallback) {
+          store.publications.getPublicationsCallback()
+          store.publications.getPublicationsCallback = null
+        }
+      } catch (error) {
+        store.error.showError({
+          msg: error,
         })
-        .catch(error =>
-          store.error.showError({
-            msg: error,
-          })
-        )
+      }
     }),
 
     newPublication: action(
@@ -111,7 +110,7 @@ export default (store: Object): void => {
       }
     ),
 
-    savePublication: action('savePublication', (publication: Object): void => {
+    savePublication: action('savePublication', async (publication: Object) => {
       // keep old cache in case of error
       const oldPublications = store.publications.publications
       const oldActivePublicationId = store.publications.activePublicationId
@@ -119,25 +118,25 @@ export default (store: Object): void => {
         store.publications.activePublicationCategory
       // optimistically update in cache
       store.publications.updatePublicationInCache(publication)
-      app.db
-        .put(publication)
-        .then(resp => {
-          // resp.rev is new rev
-          publication._rev = resp.rev
-          // definitely update in cache
-          store.publications.updatePublicationInCache(publication)
+      try {
+        console.log('publication:', publication)
+        const resp = await app.db.put(publication)
+        console.log('resp:', resp)
+        // resp.rev is new rev
+        publication._rev = resp.rev
+        // definitely update in cache
+        store.publications.updatePublicationInCache(publication)
+      } catch (error) {
+        store.publications.revertCache(
+          oldPublications,
+          oldActivePublicationId,
+          oldActivePublicationCategory
+        )
+        store.error.showError({
+          title: 'Error saving publication:',
+          msg: error,
         })
-        .catch(error => {
-          store.publications.revertCache(
-            oldPublications,
-            oldActivePublicationId,
-            oldActivePublicationCategory
-          )
-          store.error.showError({
-            title: 'Error saving publication:',
-            msg: error,
-          })
-        })
+      }
     }),
 
     removePublicationFromCache: action(
@@ -204,13 +203,13 @@ export default (store: Object): void => {
 
     setPublicationCategory: action(
       'setPublicationCategory',
-      (category: Object): void => {
+      (category: Object, history: Object): void => {
         if (store.publications.activePublicationCategory !== category) {
           store.publications.activePublicationId = null
         }
         store.publications.activePublicationCategory = category
         const categorySlugified = slug(category)
-        app.router.navigate(`/publications/${categorySlugified}`)
+        history.push(`/publications/${categorySlugified}`)
       }
     ),
   })
