@@ -24,3 +24,5 @@ It was deeply refactored to use new technologies and maximize maintainability.
 - [Flow](//flow.org):
   - static type checker
   - find errors before the code runs
+- [react router 4](https://reacttraining.com/react-router) with [react-loadable](https://github.com/thejameskyle/react-loadable)
+  - splitting code to accelerate first load
