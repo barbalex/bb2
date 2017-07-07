@@ -58,15 +58,15 @@ const enhance = compose(
     },
   }),
   withHandlers({
-    checkSignin: props => (newEmail, password) => {
+    checkSignin: props => async (newEmail, password): Promise<void> => {
       if (props.validSignin(newEmail, password)) {
-        app.db
-          .login(newEmail, password)
-          .then(() => props.store.login.login(newEmail, props.history))
-          .catch(error => {
-            props.changeNewEmail(null)
-            props.changeLoginError(error)
-          })
+        try {
+          await app.db.login(newEmail, password)
+          props.store.login.login(newEmail, props.history)
+        } catch (error) {
+          props.changeNewEmail(null)
+          props.changeLoginError(error)
+        }
       }
     },
   }),

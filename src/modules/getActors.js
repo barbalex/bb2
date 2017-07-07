@@ -9,12 +9,14 @@ const options = {
   endkey: 'actors_\uffff',
 }
 
-export default (store: Object): Promise<Array<Object>> =>
-  app.db
-    .allDocs(options)
-    .then(result => {
-      let actors = map(result.rows, 'doc')
-      actors = sortActors(actors)
-      return actors
-    })
-    .catch(error => store.error.showError('Error fetching actors:', error))
+export default async (store: Object): Promise<Array<Object>> => {
+  try {
+    const result = await app.db.allDocs(options)
+    let actors = map(result.rows, 'doc')
+    actors = sortActors(actors)
+    return actors
+  } catch (error) {
+    store.error.showError('Error fetching actors:', error)
+    return []
+  }
+}

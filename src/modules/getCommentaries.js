@@ -9,14 +9,14 @@ const options = {
   endkey: 'commentaries_\uffff',
 }
 
-export default (store: Object): Promise<Array<Object>> =>
-  app.db
-    .allDocs(options)
-    .then(result => {
-      let commentaries = map(result.rows, 'doc')
-      commentaries = sortCommentaries(commentaries)
-      return commentaries
-    })
-    .catch(error =>
-      store.error.showError('Error fetching commentaries:', error),
-    )
+export default async (store: Object): Promise<Array<Object>> => {
+  try {
+    const result = await app.db.allDocs(options)
+    let commentaries = map(result.rows, 'doc')
+    commentaries = sortCommentaries(commentaries)
+    return commentaries
+  } catch (error) {
+    store.error.showError('Error fetching commentaries:', error)
+    return []
+  }
+}
