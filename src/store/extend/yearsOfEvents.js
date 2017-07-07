@@ -8,7 +8,7 @@ export default (store: Object): void => {
   extendObservable(store.yearsOfEvents, {
     yearsOfEvents: [parseInt(moment().format('YYYY'), 0)],
 
-    getYearsOfEvents: action('getYearsOfEvents', async () => {
+    getYearsOfEvents: action('getYearsOfEvents', async (): Promise<void> => {
       try {
         const years = await getYearsOfEvents(store)
         store.yearsOfEvents.yearsOfEvents = years

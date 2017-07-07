@@ -28,7 +28,7 @@ export default (store: Object): void => {
 
     getPublicationsCallback: null,
 
-    getPublications: action('getPublications', async () => {
+    getPublications: action('getPublications', async (): Promise<void> => {
       try {
         const publications = await getPublications(store)
         store.publications.publications = publications
@@ -110,34 +110,35 @@ export default (store: Object): void => {
       }
     ),
 
-    savePublication: action('savePublication', async (publication: Object) => {
-      // keep old cache in case of error
-      const oldPublications = store.publications.publications
-      const oldActivePublicationId = store.publications.activePublicationId
-      const oldActivePublicationCategory =
-        store.publications.activePublicationCategory
-      // optimistically update in cache
-      store.publications.updatePublicationInCache(publication)
-      try {
-        console.log('publication:', publication)
-        const resp = await app.db.put(publication)
-        console.log('resp:', resp)
-        // resp.rev is new rev
-        publication._rev = resp.rev
-        // definitely update in cache
+    savePublication: action(
+      'savePublication',
+      async (publication: Object): Promise<void> => {
+        // keep old cache in case of error
+        const oldPublications = store.publications.publications
+        const oldActivePublicationId = store.publications.activePublicationId
+        const oldActivePublicationCategory =
+          store.publications.activePublicationCategory
+        // optimistically update in cache
         store.publications.updatePublicationInCache(publication)
-      } catch (error) {
-        store.publications.revertCache(
-          oldPublications,
-          oldActivePublicationId,
-          oldActivePublicationCategory
-        )
-        store.error.showError({
-          title: 'Error saving publication:',
-          msg: error,
-        })
+        try {
+          const resp = await app.db.put(publication)
+          // resp.rev is new rev
+          publication._rev = resp.rev
+          // definitely update in cache
+          store.publications.updatePublicationInCache(publication)
+        } catch (error) {
+          store.publications.revertCache(
+            oldPublications,
+            oldActivePublicationId,
+            oldActivePublicationCategory
+          )
+          store.error.showError({
+            title: 'Error saving publication:',
+            msg: error,
+          })
+        }
       }
-    }),
+    ),
 
     removePublicationFromCache: action(
       'removePublicationFromCache',
