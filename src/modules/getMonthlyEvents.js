@@ -9,14 +9,14 @@ const options = {
   endkey: 'monthlyEvents_\uffff',
 }
 
-export default (store: Object): Promise<Array<Object>> =>
-  app.db
-    .allDocs(options)
-    .then(result => {
-      let monthlyEvents = map(result.rows, 'doc')
-      monthlyEvents = sortMonthlyEvents(monthlyEvents)
-      return monthlyEvents
-    })
-    .catch(error =>
-      store.error.showError('Error fetching monthly events:', error),
-    )
+export default async (store: Object): Promise<Array<Object>> => {
+  try {
+    const result = await app.db.allDocs(options)
+    let monthlyEvents = map(result.rows, 'doc')
+    monthlyEvents = sortMonthlyEvents(monthlyEvents)
+    return monthlyEvents
+  } catch (error) {
+    store.error.showError('Error fetching monthly events:', error)
+    return []
+  }
+}
