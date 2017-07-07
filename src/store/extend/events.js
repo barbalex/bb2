@@ -26,21 +26,23 @@ export default (store: Object): void => {
 
     getEventsCallback: null,
 
-    getEvents: action('getEvents', (years: Array<number>) =>
-      getEvents(store, years)
-        .then(events => {
-          store.events.events = events
-          if (store.events.getEventsCallback) {
-            store.events.getEventsCallback()
-            store.events.getEventsCallback = null
-          }
+    getEvents: action('getEvents', async (years: Array<number>): Promise<
+      void
+    > => {
+      try {
+        const events = await getEvents(store, years)
+        store.events.events = events
+        if (store.events.getEventsCallback) {
+          store.events.getEventsCallback()
+          store.events.getEventsCallback = null
+        }
+      } catch (error) {
+        store.error.showError({
+          msg: error,
         })
-        .catch(error =>
-          store.error.showError({
-            msg: error,
-          })
-        )
-    ),
+      }
+    }),
+
     newEvent: action('newEvent', (event: Object): void => {
       const title = event.title
       const year = moment(event.date).year()
@@ -107,26 +109,24 @@ export default (store: Object): void => {
       }
     ),
 
-    saveEvent: action('saveEvent', (event: Object): void => {
+    saveEvent: action('saveEvent', async (event: Object): Promise<void> => {
       // keep old cache in case of error
       const oldEvents = store.events.events
       const oldActiveEventId = store.events.activeEventId
       // optimistically update in cache
       store.events.updateEventsInCache(event)
-      app.db
-        .put(event)
-        .then(resp => {
-          event._rev = resp.rev
-          // definitely update in cache
-          store.events.updateEventsInCache(event)
+      try {
+        const resp = await app.db.put(event)
+        event._rev = resp.rev
+        // definitely update in cache
+        store.events.updateEventsInCache(event)
+      } catch (error) {
+        store.events.revertCache(oldEvents, oldActiveEventId)
+        store.error.showError({
+          title: 'Error saving event:',
+          msg: error,
         })
-        .catch(error => {
-          store.events.revertCache(oldEvents, oldActiveEventId)
-          store.error.showError({
-            title: 'Error saving event:',
-            msg: error,
-          })
-        })
+      }
     }),
     removeEventFromCache: action(
       'removeEventFromCache',

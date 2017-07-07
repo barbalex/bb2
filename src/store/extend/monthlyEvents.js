@@ -24,20 +24,19 @@ export default (store: Object): void => {
 
     getMonthlyEventsCallback: null,
 
-    getMonthlyEvents: action('getMonthlyEvents', (): void => {
-      getMonthlyEvents(store)
-        .then(monthlyEvents => {
-          store.monthlyEvents.monthlyEvents = monthlyEvents
-          if (store.monthlyEvents.getMonthlyEventsCallback) {
-            store.monthlyEvents.getMonthlyEventsCallback()
-            store.monthlyEvents.getMonthlyEventsCallback = null
-          }
+    getMonthlyEvents: action('getMonthlyEvents', async (): Promise<void> => {
+      try {
+        const monthlyEvents = await getMonthlyEvents(store)
+        store.monthlyEvents.monthlyEvents = monthlyEvents
+        if (store.monthlyEvents.getMonthlyEventsCallback) {
+          store.monthlyEvents.getMonthlyEventsCallback()
+          store.monthlyEvents.getMonthlyEventsCallback = null
+        }
+      } catch (error) {
+        store.error.showError({
+          msg: error,
         })
-        .catch(error =>
-          store.error.showError({
-            msg: error,
-          })
-        )
+      }
     }),
     getMonthlyEvent: action(
       'getMonthlyEvent',
@@ -77,29 +76,27 @@ export default (store: Object): void => {
     ),
     saveMonthlyEvent: action(
       'saveMonthlyEvent',
-      (monthlyEvent: Object): void => {
+      async (monthlyEvent: Object): Promise<void> => {
         // keep old cache in case of error
         const oldMonthlyEvents = store.monthlyEvents.monthlyEvents
         const oldActiveMonthlyEventId = store.monthlyEvents.activeMonthlyEventId
         // optimistically update in cache
         store.monthlyEvents.updateMonthlyEventsInCache(monthlyEvent)
-        app.db
-          .put(monthlyEvent)
-          .then(resp => {
-            monthlyEvent._rev = resp.rev
-            // definitely update in cache
-            store.monthlyEvents.updateMonthlyEventsInCache(monthlyEvent)
+        try {
+          const resp = await app.db.put(monthlyEvent)
+          monthlyEvent._rev = resp.rev
+          // definitely update in cache
+          store.monthlyEvents.updateMonthlyEventsInCache(monthlyEvent)
+        } catch (error) {
+          store.monthlyEvents.revertCache(
+            oldMonthlyEvents,
+            oldActiveMonthlyEventId
+          )
+          store.error.showError({
+            title: 'Error saving monthly event:',
+            msg: error,
           })
-          .catch(error => {
-            store.monthlyEvents.revertCache(
-              oldMonthlyEvents,
-              oldActiveMonthlyEventId
-            )
-            store.error.showError({
-              title: 'Error saving monthly event:',
-              msg: error,
-            })
-          })
+        }
       }
     ),
   })
