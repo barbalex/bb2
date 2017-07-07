@@ -26,20 +26,19 @@ export default (store: Object): void => {
 
     getActorsCallback: null,
 
-    getActors: action('getActors', (): void => {
-      getActors(store)
-        .then(actors => {
-          store.actors.actors = actors
-          if (store.actors.getActorsCallback) {
-            store.actors.getActorsCallback()
-            store.actors.getActorsCallback = null
-          }
+    getActors: action('getActors', async (): Promise<void> => {
+      try {
+        const actors = await getActors(store)
+        store.actors.actors = actors
+        if (store.actors.getActorsCallback) {
+          store.actors.getActorsCallback()
+          store.actors.getActorsCallback = null
+        }
+      } catch (error) {
+        store.error.showError({
+          msg: error,
         })
-        .catch(error =>
-          store.error.showError({
-            msg: error,
-          })
-        )
+      }
     }),
 
     newActor: action('newActor', (category: string): void => {
@@ -89,27 +88,25 @@ export default (store: Object): void => {
       }
     ),
 
-    saveActor: action('saveActor', (actor: Object): void => {
+    saveActor: action('saveActor', async (actor: Object): Promise<void> => {
       // keep old cache in case of error
       const oldActors = store.actors.actors
       const oldActiveActorId = store.actors.activeActorId
       // optimistically update in cache
       store.actors.updateActorsInCache(actor)
-      app.db
-        .put(actor)
-        .then(resp => {
-          // resp.rev is new rev
-          actor._rev = resp.rev
-          // definitely update in cache
-          store.actors.updateActorsInCache(actor)
+      try {
+        const resp = await app.db.put(actor)
+        // resp.rev is new rev
+        actor._rev = resp.rev
+        // definitely update in cache
+        store.actors.updateActorsInCache(actor)
+      } catch (error) {
+        store.actors.revertCache(oldActors, oldActiveActorId)
+        store.error.showError({
+          title: 'Error saving actor:',
+          msg: error,
         })
-        .catch(error => {
-          store.actors.revertCache(oldActors, oldActiveActorId)
-          store.error.showError({
-            title: 'Error saving actor:',
-            msg: error,
-          })
-        })
+      }
     }),
 
     removeActorFromCache: action(

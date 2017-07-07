@@ -26,20 +26,19 @@ export default (store: Object): void => {
 
     getCommentariesCallback: null,
 
-    getCommentaries: action('getCommentaries', (): void => {
-      getCommentaries(store)
-        .then(commentaries => {
-          store.commentaries.commentaries = commentaries
-          if (store.commentaries.getCommentariesCallback) {
-            store.commentaries.getCommentariesCallback()
-            store.commentaries.getCommentariesCallback = null
-          }
+    getCommentaries: action('getCommentaries', async (): Promise<void> => {
+      try {
+        const commentaries = await getCommentaries(store)
+        store.commentaries.commentaries = commentaries
+        if (store.commentaries.getCommentariesCallback) {
+          store.commentaries.getCommentariesCallback()
+          store.commentaries.getCommentariesCallback = null
+        }
+      } catch (error) {
+        store.error.showError({
+          msg: error,
         })
-        .catch(error =>
-          store.error.showError({
-            msg: error,
-          })
-        )
+      }
     }),
 
     showNewCommentary: false,
@@ -102,28 +101,29 @@ export default (store: Object): void => {
       }
     ),
 
-    saveCommentary: action('saveCommentary', (commentary: Object): void => {
-      // keep old cache in case of error
-      const oldCommentaries = store.commentaries.commentaries
-      const oldActiveCommentaryId = store.commentaries.activeCommentaryId
-      // optimistically update in cache
-      store.commentaries.updateCommentariesInCache(commentary)
-      app.db
-        .put(commentary)
-        .then(resp => {
+    saveCommentary: action(
+      'saveCommentary',
+      async (commentary: Object): Promise<void> => {
+        // keep old cache in case of error
+        const oldCommentaries = store.commentaries.commentaries
+        const oldActiveCommentaryId = store.commentaries.activeCommentaryId
+        // optimistically update in cache
+        store.commentaries.updateCommentariesInCache(commentary)
+        try {
+          const resp = await app.db.put(commentary)
           // resp.rev is new rev
           commentary._rev = resp.rev
           // definitely update in cache
           store.commentaries.updateCommentariesInCache(commentary)
-        })
-        .catch(error => {
+        } catch (error) {
           store.commentaries.revertCache(oldCommentaries, oldActiveCommentaryId)
           store.error.showError({
             title: 'Error saving commentary:',
             msg: error,
           })
-        })
-    }),
+        }
+      }
+    ),
 
     removeCommentaryFromCache: action(
       'removeCommentaryFromCache',
