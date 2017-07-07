@@ -10,12 +10,14 @@ const options = {
   limit: 1,
 }
 
-export default (store: Object): Promise<number> =>
-  app.db
-    .allDocs(options)
-    .then(result => {
-      const id = result.rows[0].id
-      const year = getYearFromEventId(id)
-      return year
-    })
-    .catch(error => store.error.showError('Error fetching events:', error))
+export default async (store: Object): Promise<number> => {
+  try {
+    const result = await app.db.allDocs(options)
+    const id = result.rows[0].id
+    const year = getYearFromEventId(id)
+    return year
+  } catch (error) {
+    store.error.showError('Error fetching events:', error)
+    return new Date().getFullYear()
+  }
+}
