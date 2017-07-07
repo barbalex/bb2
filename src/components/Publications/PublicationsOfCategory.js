@@ -17,7 +17,7 @@ const ToggleDraftGlyphicon = styled(Glyphicon)`
   right: 40px !important;
   top: 6px !important;
   font-size: 1.5em;
-  color: ${props => props.color};
+  color: ${props => props['data-color']};
 `
 const RemoveGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -152,7 +152,7 @@ class PublicationsOfCategory extends Component {
       >
         <ToggleDraftGlyphicon
           glyph={glyph}
-          color={color}
+          data-color={color}
           onClick={onToggleDraft.bind(this, doc)}
         />
       </OverlayTrigger>

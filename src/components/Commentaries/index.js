@@ -47,7 +47,7 @@ const ToggleDraftGlyphicon = styled(Glyphicon)`
   right: 40px !important;
   top: 6px !important;
   font-size: 1.5em;
-  color: ${props => props.color};
+  color: ${props => props['data-color']};
 `
 const RemoveGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -65,8 +65,8 @@ const PanelHeading = styled.div`
     !props.isActiveCommentary ? '3px' : 0};
 `
 const PanelBody = styled.div`
-  padding: ${props => props.panelBodyPadding};
-  margin-top: ${props => props.panelBodyMarginTop};
+  margin-top: ${props => props['data-panelBodyMarginTop']};
+  padding: ${props => props['data-panelBodyPadding']};
   max-height: ${window.innerHeight - 141}px;
   overflow-y: auto;
 `
@@ -172,7 +172,7 @@ class Commentaries extends Component {
       >
         <ToggleDraftGlyphicon
           glyph={glyph}
-          color={color}
+          data-color={color}
           onClick={onToggleDraft.bind(this, doc)}
         />
       </OverlayTrigger>
@@ -240,8 +240,8 @@ class Commentaries extends Component {
               >
                 <PanelBody
                   className="panel-body"
-                  panelBodyPadding={panelBodyPadding}
-                  panelBodyMarginTop={panelBodyMarginTop}
+                  data-panelBodyPadding={panelBodyPadding}
+                  data-panelBodyMarginTop={panelBodyMarginTop}
                 >
                   <Commentary />
                 </PanelBody>

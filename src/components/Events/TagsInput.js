@@ -14,7 +14,7 @@ const Label = styled.div`
   margin-bottom: 2px;
 `
 const StyledGlyphicon = styled(Glyphicon)`
-  top: ${props => props.top} !important;
+  top: ${props => props['data-top']} !important;
   font-size: 1.5em;
 `
 
@@ -39,7 +39,7 @@ const enhance = compose(
 const tagIcon = option =>
   <StyledGlyphicon
     glyph={option.iconText}
-    top={option.top ? `${option.top}px` : 0}
+    data-top={option.top ? `${option.top}px` : 0}
   />
 
 const EventTags = ({

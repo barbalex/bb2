@@ -38,7 +38,7 @@ const ToggleDraftGlyphicon = styled(Glyphicon)`
   right: 40px !important;
   top: 6px !important;
   font-size: 1.5em;
-  color: ${props => props.color};
+  color: ${props => props['data-color']};
 `
 const RemoveGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -54,8 +54,8 @@ const PanelHeading = styled.div`
   border-bottom-left-radius: ${props => (!props.isActiveActor ? '3px' : 0)};
 `
 const PanelBody = styled.div`
-  padding: ${props => props.panelBodyPadding};
-  margin-top: ${props => props.panelBodyMarginTop};
+  padding: ${props => props['data-panelBodyPadding']};
+  margin-top: ${props => props['data-panelBodyMarginTop']};
   max-height: ${window.innerHeight - 141}px;
   overflow-y: auto;
 `
@@ -147,7 +147,7 @@ class Actors extends Component {
         <ToggleDraftGlyphicon
           glyph={glyph}
           onClick={onToggleDraft.bind(this, doc)}
-          color={color}
+          data-color={color}
         />
       </OverlayTrigger>
     )
@@ -221,8 +221,8 @@ class Actors extends Component {
               >
                 <PanelBody
                   className="panel-body"
-                  panelBodyPadding={panelBodyPadding}
-                  panelBodyMarginTop={panelBodyMarginTop}
+                  data-panelBodyPadding={panelBodyPadding}
+                  data-panelBodyMarginTop={panelBodyMarginTop}
                 >
                   <Actor />
                 </PanelBody>

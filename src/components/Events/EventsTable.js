@@ -13,7 +13,7 @@ const Container = styled.div`
 `
 const Header = styled.div`
   position: absolute;
-  top: ${props => props.top}px;
+  top: ${props => props['data-top']}px;
   width: 100%;
   font-weight: bold;
 `
@@ -67,7 +67,7 @@ const Events = ({
 
   return (
     <Container>
-      <Header top={headerTop} className="eventsTable-header">
+      <Header data-top={headerTop} className="eventsTable-header">
         <HeaderRow>
           <HeaderCellDay />
           <HeaderCellMigration>Maritime Events</HeaderCellMigration>
