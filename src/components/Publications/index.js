@@ -6,6 +6,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
+import { withRouter } from 'react-router'
 
 import PublicationsOfCategory from './PublicationsOfCategory'
 import NewPublication from './NewPublication'
@@ -61,10 +62,12 @@ const orderByCategory = {
 
 const enhance = compose(
   inject(`store`),
+  withRouter,
   withHandlers({
     onClickCategory: props => (activePublicationCategory: string): void =>
       props.store.publications.setPublicationCategory(
-        activePublicationCategory
+        activePublicationCategory,
+        props.history
       ),
   }),
   observer
