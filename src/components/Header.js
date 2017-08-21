@@ -47,7 +47,7 @@ const Header = () =>
       <div className="row">
         <RowContent className="col-xs-12">
           <IntroTitle>blue borders</IntroTitle>
-          <IntroText>central & eastern mediterranean</IntroText>
+          <IntroText>mediterranean migration</IntroText>
         </RowContent>
       </div>
     </div>
