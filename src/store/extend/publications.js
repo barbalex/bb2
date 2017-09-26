@@ -8,6 +8,7 @@ import getPublications from '../../modules/getPublications'
 import getPathFromDocId from '../../modules/getPathFromDocId'
 import sortPublications from '../../modules/sortPublications'
 import uniq from 'lodash/uniq'
+import slugOptions from '../../modules/slugOptions'
 
 export default (store: Object): void => {
   extendObservable(store.publications, {
@@ -47,7 +48,7 @@ export default (store: Object): void => {
       'newPublication',
       (category: string, title: string): void => {
         const titleSlugified = slug(title)
-        const categorySlugified = slug(category)
+        const categorySlugified = slug(category, slugOptions)
         const _id = `publications_${categorySlugified}_${titleSlugified}`
         const type = 'publications'
         const draft = true
