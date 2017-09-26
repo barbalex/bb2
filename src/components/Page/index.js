@@ -13,6 +13,10 @@ import Editor from '../shared/Editor'
 import Meta from './PageMeta'
 
 const Container = styled.div`
+  p,
+  div {
+    font-size: medium;
+  }
   h1 {
     font-size: 36px;
     font-weight: 500;
@@ -77,9 +81,7 @@ const Page = ({
   return (
     <DocumentTitle title={`blue-borders | ${title}`}>
       <Container className="page">
-        <h1>
-          {title}
-        </h1>
+        <h1>{title}</h1>
         <div dangerouslySetInnerHTML={createMarkup()} />
       </Container>
     </DocumentTitle>

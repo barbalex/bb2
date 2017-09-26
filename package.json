@@ -1,7 +1,8 @@
 {
   "name": "bb2",
   "version": "2.0.1",
-  "description": "Most mi­grants and re­fu­gees ar­ri­ving in Eu­ro­pe cross the blue bor­­ders of the Me­diterrane­an. The flow is massive and high­ly com­plex. This web­­si­te provides a rough over­­view by co­ve­­ring chro­­no­­lo­­gi­­cal­­ly both ma­ri­­ti­me and political events",
+  "description":
+    "Most mi­grants and re­fu­gees ar­ri­ving in Eu­ro­pe cross the blue bor­­ders of the Me­diterrane­an. The flow is massive and high­ly com­plex. This web­­si­te provides a rough over­­view by co­ve­­ring chro­­no­­lo­­gi­­cal­­ly both ma­ri­­ti­me and political events",
   "private": true,
   "dependencies": {
     "ampersand-app": "2.0.0",
@@ -21,8 +22,8 @@
     "pouchdb-upsert": "2.2.0",
     "react": "15.6.2",
     "react-bootstrap": "0.31.3",
-    "react-bootstrap-daterangepicker": "~3.2.2",
     "react-copy-to-clipboard": "5.0.0",
+    "react-datepicker": "0.55.0",
     "react-document-title": "2.0.3",
     "react-dom": "15.6.2",
     "react-dropzone": "4.1.3",

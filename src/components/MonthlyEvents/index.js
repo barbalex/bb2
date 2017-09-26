@@ -16,6 +16,10 @@ import MonthlyEventsOfYear from './MonthlyEventsOfYear'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 
 const Container = styled.div`
+  p,
+  div {
+    font-size: medium;
+  }
   margin-bottom: 20px !important;
   .panel-body {
     padding: 0 0 !important;
@@ -51,16 +55,14 @@ const Container = styled.div`
     width: 100% !important;
   }
 `
-const StyledPanel = styled(({ activeYear, children, ...rest }) =>
-  <Panel {...rest}>
-    {children}
-  </Panel>
-)`
-  &> .panel-heading {
+const StyledPanel = styled(({ activeYear, children, ...rest }) => (
+  <Panel {...rest}>{children}</Panel>
+))`
+  & > .panel-heading {
     background-image: url(${oceanDarkImage});
     border-radius: ${props => (props.activeYear ? 'inherit' : '3px')};
   }
-  &> .panel-heading a {
+  & > .panel-heading a {
     color: #edf4f8;
     font-weight: bold;
   }
@@ -119,7 +121,7 @@ class MonthlyEvents extends Component {
     if (monthlyEvents.length > 0 && years.length > 0) {
       // wanted to only build MonthlyEventsOfYear if isActiveYear
       // but opening a year was way to hideous
-      return years.map(year =>
+      return years.map(year => (
         <StyledPanel
           key={year}
           header={year}
@@ -129,7 +131,7 @@ class MonthlyEvents extends Component {
         >
           <MonthlyEventsOfYear year={year} />
         </StyledPanel>
-      )
+      ))
     }
     return null
   }

@@ -20,6 +20,10 @@ import EventsTable from './EventsTable'
 
 const Container = styled.div`
   position: relative !important;
+  p,
+  div {
+    font-size: medium;
+  }
   p.event-weather {
     position: relative !important;
   }
@@ -117,7 +121,7 @@ class Events extends Component {
   yearButtons = () => {
     const { yearsOfEvents, activeEventYears } = this.props.store.yearsOfEvents
 
-    return yearsOfEvents.map((year, index) =>
+    return yearsOfEvents.map((year, index) => (
       <Button
         key={index}
         active={activeEventYears.includes(year)}
@@ -125,7 +129,7 @@ class Events extends Component {
       >
         {year}
       </Button>
-    )
+    ))
   }
 
   render() {
@@ -155,8 +159,9 @@ class Events extends Component {
               </Button>
             </ButtonGroup>
           </YearButtonsContainer>
-          {showEventsTable &&
-            <EventsTable introJumbotronHeight={introJumbotronHeight} />}
+          {showEventsTable && (
+            <EventsTable introJumbotronHeight={introJumbotronHeight} />
+          )}
           {activeEvent && <EditEvent />}
           {showNewEvent && <NewEvent />}
           {store.events.eventToRemove && <ModalRemoveEvent />}

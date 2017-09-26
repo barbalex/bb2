@@ -13,6 +13,10 @@ import NewPublication from './NewPublication'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 
 const Container = styled.div`
+  p,
+  div {
+    font-size: medium;
+  }
   margin-bottom: 20px;
   .category > .panel-collapse > .panel-body {
     padding: 0 0 !important;
