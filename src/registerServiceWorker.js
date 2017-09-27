@@ -25,7 +25,7 @@ export default function register(store) {
                   // It's the perfect time to display a "New content is
                   // available; please refresh." message in your web app.
                   console.log('New content is available; please refresh.')
-                  console.log('store:', store)
+                  store.setUpdateAvailable(true)
                 } else {
                   // At this point, everything has been precached.
                   // It's the perfect time to display a
