@@ -41,7 +41,6 @@ const EventDate = ({
             onChange={() => {
               /* react wants an onChange handler */
             }}
-            // bsSize="small"
             tabIndex={2}
           />
         }
