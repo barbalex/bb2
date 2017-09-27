@@ -18,7 +18,7 @@ const Header = styled.div`
   font-weight: bold;
 `
 const HeaderCell = styled.div`
-  font-size: ${window.innerWidth < 500 ? 20 : 24}px;
+  font-size: ${window.innerWidth < 500 ? 20 : 24}px !important;
   padding: 5px;
   flex: 1;
   white-space: nowrap;
