@@ -26,6 +26,14 @@ const enhance = compose(inject(`store`), observer)
 
 const Main = ({ store, login }: { store: Object, login: boolean }) => {
   const { errors } = store.error
+  const {
+    updateAvailable,
+    page,
+    monthlyEvents,
+    commentaries,
+    actors,
+    publications,
+  } = store
 
   return (
     <Router>
@@ -37,7 +45,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           <Route
             path="/events"
             render={() => {
-              store.page.getPage('pages_events')
+              page.getPage('pages_events')
               return <AsyncEvents />
             }}
           />
@@ -46,8 +54,8 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             exact
             render={({ match }) => {
               const { year, month } = match.params
-              store.page.getPage('pages_monthlyEvents')
-              store.monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
+              page.getPage('pages_monthlyEvents')
+              monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
               return <AsyncMonthlyEvents />
             }}
           />
@@ -55,7 +63,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             path="/monthlyEvents"
             exact
             render={() => {
-              store.page.getPage('pages_monthlyEvents')
+              page.getPage('pages_monthlyEvents')
               return <AsyncMonthlyEvents />
             }}
           />
@@ -64,8 +72,8 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             exact
             render={({ match }) => {
               const { year, month, day, title } = match.params
-              store.page.getPage('pages_commentaries')
-              store.commentaries.activeCommentaryId = `commentaries_${year}_${month}_${day}_${title}`
+              page.getPage('pages_commentaries')
+              commentaries.activeCommentaryId = `commentaries_${year}_${month}_${day}_${title}`
               return <AsyncCommentaries />
             }}
           />
@@ -73,7 +81,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             path="/commentaries"
             exact
             render={() => {
-              store.page.getPage('pages_commentaries')
+              page.getPage('pages_commentaries')
               return <AsyncCommentaries />
             }}
           />
@@ -82,8 +90,8 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             exact
             render={({ match }) => {
               const { category } = match.params
-              store.page.getPage('pages_actors')
-              store.actors.activeActorId = `actors_${category}`
+              page.getPage('pages_actors')
+              actors.activeActorId = `actors_${category}`
               return <AsyncActors />
             }}
           />
@@ -91,7 +99,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             path="/actors"
             exact
             render={() => {
-              store.page.getPage('pages_actors')
+              page.getPage('pages_actors')
               return <AsyncActors />
             }}
           />
@@ -100,8 +108,8 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             exact
             render={({ match }) => {
               const { category, title } = match.params
-              store.page.getPage('pages_publications')
-              store.publications.activePublicationId = `publications_${category}_${title}`
+              page.getPage('pages_publications')
+              publications.activePublicationId = `publications_${category}_${title}`
               return <AsyncPublications />
             }}
           />
@@ -109,7 +117,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             path="/publications/:category"
             exact
             render={() => {
-              store.page.getPage('pages_publications')
+              page.getPage('pages_publications')
               return <AsyncPublications />
             }}
           />
@@ -117,7 +125,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             path="/publications"
             exact
             render={() => {
-              store.page.getPage('pages_publications')
+              page.getPage('pages_publications')
               return <AsyncPublications />
             }}
           />
@@ -125,7 +133,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             path="/links"
             exact
             render={() => {
-              store.page.getPage('pages_links')
+              page.getPage('pages_links')
               return <AsyncPage />
             }}
           />
@@ -133,7 +141,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             path="/aboutUs"
             exact
             render={() => {
-              store.page.getPage('pages_aboutUs')
+              page.getPage('pages_aboutUs')
               return <AsyncPage />
             }}
           />
@@ -141,7 +149,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
           <Route component={NotFound} />
         </Switch>
         {errors && errors.length > 0 && <Errors />}
-        {store.updateAvailable && <UpdateAvailable />}
+        {updateAvailable && <UpdateAvailable />}
       </div>
     </Router>
   )
