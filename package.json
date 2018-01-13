@@ -1,7 +1,8 @@
 {
   "name": "bb2",
   "version": "2.0.1",
-  "description": "Most mi­grants and re­fu­gees ar­ri­ving in Eu­ro­pe cross the blue bor­­ders of the Me­diterrane­an. The flow is massive and high­ly com­plex. This web­­si­te provides a rough over­­view by co­ve­­ring chro­­no­­lo­­gi­­cal­­ly both ma­ri­­ti­me and political events",
+  "description":
+    "Most mi­grants and re­fu­gees ar­ri­ving in Eu­ro­pe cross the blue bor­­ders of the Me­diterrane­an. The flow is massive and high­ly com­plex. This web­­si­te provides a rough over­­view by co­ve­­ring chro­­no­­lo­­gi­­cal­­ly both ma­ri­­ti­me and political events",
   "private": true,
   "dependencies": {
     "ampersand-app": "2.0.0",
@@ -25,7 +26,7 @@
     "react-datepicker": "0.55.0",
     "react-document-title": "2.0.3",
     "react-dom": "16.2.0",
-    "react-dropzone": "4.2.3",
+    "react-dropzone": "4.2.5",
     "react-gemini-scrollbar": "2.3.4",
     "react-list": "0.8.8",
     "react-loadable": "5.3.1",
@@ -38,7 +39,7 @@
   },
   "devDependencies": {
     "css-loader": "0.28.8",
-    "flow-bin": "0.63.0",
+    "flow-bin": "0.63.1",
     "html-loader": "0.5.4",
     "postcss-loader": "2.0.10",
     "react-scripts": "1.0.17"
