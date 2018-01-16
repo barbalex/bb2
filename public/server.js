@@ -18,7 +18,7 @@ const server = new Hapi.Server({
   port: 3000,
 })
 
-async functin start() {
+async function start() {
   try {
     await server.register(Inert)
   } catch (error) {
@@ -29,7 +29,7 @@ async functin start() {
     method: 'GET',
     path: '/manifest.json',
     handler: {
-      file: 'manifest.json'
+      file: 'manifest.json',
     },
   })
 
@@ -37,7 +37,7 @@ async functin start() {
     method: 'GET',
     path: '/asset-manifest.json',
     handler: {
-      file: 'asset-manifest.json'
+      file: 'asset-manifest.json',
     },
   })
 
@@ -45,7 +45,7 @@ async functin start() {
     method: 'GET',
     path: '/service-worker.js',
     handler: {
-      file: 'service-worker.js'
+      file: 'service-worker.js',
     },
   })
 
@@ -53,7 +53,7 @@ async functin start() {
     method: 'GET',
     path: '/tinymce.css',
     handler: {
-      file: 'tinymce.css'
+      file: 'tinymce.css',
     },
   })
 
@@ -61,7 +61,7 @@ async functin start() {
     method: 'GET',
     path: '/favicon.ico',
     handler: {
-      file: 'favicon.ico'
+      file: 'favicon.ico',
     },
   })
 
