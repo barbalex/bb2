@@ -152,7 +152,7 @@ class MonthlyEvents extends Component {
       <DocumentTitle title="blue-borders | Events">
         <Container id="monthlyEvents">
           <h1>Events Archive</h1>
-          <PanelGroup activeKey={activeYear} accordion>
+          <PanelGroup defaultActiveKey={activeYear} accordion>
             {this.eventYearsComponent(activeYear)}
           </PanelGroup>
         </Container>

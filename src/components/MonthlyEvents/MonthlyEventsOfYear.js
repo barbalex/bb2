@@ -14,7 +14,9 @@ import getYearFromEventId from '../../modules/getYearFromEventId'
 import getMonthFromEventId from '../../modules/getMonthFromEventId'
 import SwallowPanelGroupProps from '../shared/SwallowPanelGroupProps'
 
-const PanelHeading = styled.div`position: relative;`
+const PanelHeading = styled.div`
+  position: relative;
+`
 const PanelBody = styled.div`
   max-height: ${window.innerHeight - 127}px;
   overflow-y: auto;
@@ -139,7 +141,7 @@ class MonthlyEventsOfYear extends Component {
               </a>
             </h4>
           </PanelHeading>
-          {isActiveMonthlyEvent &&
+          {isActiveMonthlyEvent && (
             <div
               id={`#collapse${dIndex}`}
               className="panel-collapse collapse in"
@@ -150,7 +152,8 @@ class MonthlyEventsOfYear extends Component {
               <PanelBody className="panel-body">
                 <MonthlyEvent year={year} month={month} />
               </PanelBody>
-            </div>}
+            </div>
+          )}
         </div>
       )
     })
@@ -165,7 +168,7 @@ class MonthlyEventsOfYear extends Component {
 
     return (
       <PanelGroup
-        activeKey={activeEventId}
+        defaultActiveKey={activeEventId}
         id={year}
         ref={c => {
           // $FlowIssue
