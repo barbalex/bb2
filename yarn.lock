@@ -7765,9 +7765,9 @@ react-copy-to-clipboard@5.0.1:
     copy-to-clipboard "^3"
     prop-types "^15.5.8"
 
-react-datepicker@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-1.4.0.tgz#3043afe7c1b65640e75c86d67fe3d5fbe844e413"
+react-datepicker@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-1.5.0.tgz#7eacd9609313189c84a21bb7421486054939a4b2"
   dependencies:
     classnames "^2.2.5"
     prop-types "^15.6.0"
