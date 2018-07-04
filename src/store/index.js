@@ -21,26 +21,7 @@ function Store(): void {
   this.commentaries = observable(commentaries(this))
   this.publications = observable(publications(this))
   this.actors = observable(actors(this))
-  /*
-   * contains email of logged in user
-   * well, it is saved in localStorage as window.localStorage.email
-   * app.js sets default email (null) if not exists on app start
-   */
   this.login = observable(login(this))
-  /*
-   * receives an error object with two keys: title, msg
-   * keeps error objects in the array errors
-   * deletes errors after a defined time - the time while the error will be shown to the user
-   *
-   * if a view wants to inform of an error it
-   * calls action showError and passes the object
-   *
-   * the errorStore triggers, passing the errors array
-   * ...then triggers again after removing the last error some time later
-   *
-   * Test: app.store.error.showError({title: 'testTitle', msg: 'testMessage'})
-   * template: app.store.error.showError({title: 'title', msg: error})
-   */
   this.error = observable(error(this))
 }
 

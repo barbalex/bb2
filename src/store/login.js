@@ -1,4 +1,9 @@
 // @flow
+/*
+  * contains email of logged in user
+  * well, it is saved in localStorage as window.localStorage.email
+  * app.js sets default email (null) if not exists on app start
+  */
 import { action } from 'mobx'
 
 export default (store: Object): Object => ({
