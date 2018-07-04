@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import styled from 'styled-components'
+
 import oceanImage from '../images/ocean.jpg'
 
 const Container = styled.div`
