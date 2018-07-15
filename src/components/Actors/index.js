@@ -246,7 +246,7 @@ class Actors extends Component {
     const activeId = activeActor ? activeActor._id : null
 
     return (
-      <DocumentTitle title="blue-borders | Actors">
+      <DocumentTitle title="Actors">
         <Container>
           <h1>Actors</h1>
           <PanelGroup

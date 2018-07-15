@@ -79,7 +79,7 @@ const Page = ({
   }
   const createMarkup = () => ({ __html: articleDecoded })
   return (
-    <DocumentTitle title={`blue-borders | ${title}`}>
+    <DocumentTitle title={title}>
       <Container className="page">
         <h1>{title}</h1>
         <div dangerouslySetInnerHTML={createMarkup()} />

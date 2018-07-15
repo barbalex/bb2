@@ -52,7 +52,9 @@ const Container = styled.div`
     list-style-type: none;
   }
 `
-const YearButtonsContainer = styled.div`text-align: center;`
+const YearButtonsContainer = styled.div`
+  text-align: center;
+`
 
 const enhance = compose(
   inject(`store`),
@@ -138,7 +140,7 @@ class Events extends Component {
     const { activeEvent, showNewEvent } = store.events
 
     return (
-      <DocumentTitle title="blue-borders | Events">
+      <DocumentTitle title="Events">
         <Container className="events">
           <IntroJumbotron
             ref={j => {

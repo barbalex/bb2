@@ -137,7 +137,7 @@ class Publications extends Component {
     } = this.props.store.publications
 
     return (
-      <DocumentTitle title="blue-borders | Publications">
+      <DocumentTitle title="Publications">
         <Container>
           <h1>Publications</h1>
           <PanelGroup
