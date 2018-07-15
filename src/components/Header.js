@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import oceanImage from '../images/ocean.jpg'
 
 const Container = styled.div`
-  margin-top: 42px;
+  margin-top: 0;
   height: 150px;
   padding: 15px;
   &:before {
@@ -40,19 +40,13 @@ const IntroText = styled.div`
   text-shadow: 2px 2px 3px black, -2px -2px 3px black, 2px -2px 3px black,
     -2px 2px 3px black;
 `
-const RowContent = styled.div`hyphens: manual;`
 
-const Header = () =>
-  <Container className="masthead introHeader">
-    <div className="container">
-      <div className="row">
-        <RowContent className="col-xs-12">
-          <IntroTitle>blue borders</IntroTitle>
-          <IntroText>mediterranean migration</IntroText>
-        </RowContent>
-      </div>
-    </div>
+const Header = () => (
+  <Container>
+    <IntroTitle>blue borders</IntroTitle>
+    <IntroText>mediterranean migration</IntroText>
   </Container>
+)
 
 Header.displayName = 'Header'
 
