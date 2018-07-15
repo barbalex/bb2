@@ -18,23 +18,24 @@ import 'babel-polyfill'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
-registerServiceWorker(store)
-
 // some old browsers can't deal with ArrayBuffer
 // pouchdb needs it
 // give the users an explanation instead of an empty page
-if (!window.ArrayBuffer) {
+// also: MobX needs proxies
+// sadly does not work because of other errors
+if (!window.ArrayBuffer || window.Proxy === undefined) {
   window.alert(
-    `blue-borders.ch nutzt moderne Technologien, welche von Ihrem Browser nicht unterstützt werden.
+    `mediterranean-migration.com nutzt moderne Technologien, welche von Ihrem Browser nicht unterstützt werden.
 
 Bitte versuchen Sie es mit einer aktuellen Version von (zum Beispiel):
 - Chrome
 - Firefox
 - Safari
-- Internet Explorer (ab Version 10)
 - Edge`
   )
 }
+
+registerServiceWorker(store)
 
 /**
  * set up pouchdb plugins

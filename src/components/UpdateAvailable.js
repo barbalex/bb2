@@ -74,8 +74,8 @@ const UpdateAvailable = ({
       />
       <MessageContainer>
         <span>
-          An update for blue-borders.ch is available.{' '}
-          <a href={'//blue-borders.ch'} onClick={onClickReload}>
+          An update for mediterranean-migration.com is available.{' '}
+          <a href={'//mediterranean-migration.com'} onClick={onClickReload}>
             Reload
           </a>{' '}
           to install it.
