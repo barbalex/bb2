@@ -22,10 +22,10 @@ const Container = styled.div`
   }
 `
 const IntroTitle = styled.div`
-  margin-top: 20px;
-  font-size: 35px;
+  margin-top: 15px;
+  font-size: 40px;
   font-weight: 700;
-  line-height: 38px;
+  line-height: 42px;
   text-align: center;
   color: #fff;
   text-shadow: 2px 2px 3px black, -2px -2px 3px black, 2px -2px 3px black,
