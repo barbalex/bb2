@@ -4095,9 +4095,9 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
-flow-bin@0.75.0:
-  version "0.75.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.75.0.tgz#b96d1ee99d3b446a3226be66b4013224ce9df260"
+flow-bin@0.76.0:
+  version "0.76.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.76.0.tgz#eb00036991c3abc106743fcbc7ee321f02aa4faa"
 
 flush-write-stream@^1.0.0:
   version "1.0.3"
@@ -5616,11 +5616,7 @@ jest@22.4.3:
     import-local "^1.0.0"
     jest-cli "^22.4.3"
 
-js-base64@2.4.5:
-  version "2.4.5"
-  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.5.tgz#e293cd3c7c82f070d700fc7a1ca0a2e69f101f92"
-
-js-base64@^2.1.9:
+js-base64@2.4.6, js-base64@^2.1.9:
   version "2.4.6"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.6.tgz#1d49f618bef43630cd191f4e122447acfdb947d8"
 
@@ -9274,9 +9270,9 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
-tinymce@4.7.13:
-  version "4.7.13"
-  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-4.7.13.tgz#3b139fd95c0b78e3959b2064f043ccb7459bebcb"
+tinymce@4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-4.8.0.tgz#3c4c88701d0526374efb45bafbb820c7715e2356"
 
 tmp@^0.0.33:
   version "0.0.33"
