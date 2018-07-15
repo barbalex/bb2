@@ -11,9 +11,6 @@ import Main from './components/Main'
 import registerServiceWorker from './registerServiceWorker'
 import store from './store'
 import couchUrl from './modules/getCouchUrl'
-// need this polyfill to transform promise.all
-// without it IE 11 and lower bark
-import 'babel-polyfill'
 // make webpack import styles
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
