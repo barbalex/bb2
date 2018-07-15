@@ -23,9 +23,9 @@ const Container = styled.div`
 `
 const IntroTitle = styled.div`
   margin-top: 20px;
-  font-size: 42px;
-  font-weight: 800;
-  line-height: 46px;
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 38px;
   text-align: center;
   color: #fff;
   text-shadow: 2px 2px 3px black, -2px -2px 3px black, 2px -2px 3px black,
@@ -33,9 +33,9 @@ const IntroTitle = styled.div`
 `
 const IntroText = styled.div`
   text-align: center;
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 30px;
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 38px;
   color: #fff;
   text-shadow: 2px 2px 3px black, -2px -2px 3px black, 2px -2px 3px black,
     -2px 2px 3px black;
@@ -43,8 +43,8 @@ const IntroText = styled.div`
 
 const Header = () => (
   <Container>
-    <IntroTitle>blue borders</IntroTitle>
-    <IntroText>mediterranean migration</IntroText>
+    <IntroTitle>mediterranean migration</IntroTitle>
+    <IntroText>blue borders</IntroText>
   </Container>
 )
 
