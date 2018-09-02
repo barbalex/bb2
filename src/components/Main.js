@@ -130,14 +130,6 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
             }}
           />
           <Route
-            path="/links"
-            exact
-            render={() => {
-              page.getPage('pages_links')
-              return <AsyncPage />
-            }}
-          />
-          <Route
             path="/aboutUs"
             exact
             render={() => {

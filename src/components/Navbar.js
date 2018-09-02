@@ -72,11 +72,6 @@ const enhance = compose(
       props.history.push('/publications')
       props.onToggleNav()
     },
-    onClickLinks: props => () => {
-      props.store.page.getPage('pages_links')
-      props.history.push('/links')
-      props.onToggleNav()
-    },
     onClickAboutUs: props => () => {
       props.store.page.getPage('pages_aboutUs')
       props.history.push('/aboutUs')
@@ -99,7 +94,7 @@ const enhance = compose(
     onClickNewEvent: props => () => props.store.events.setShowNewEvent(true),
     onClickNewActor: props => () => props.store.actors.setShowNewActor(true),
   }),
-  observer
+  observer,
 )
 
 const MyNavbar = ({
@@ -113,7 +108,6 @@ const MyNavbar = ({
   onClickCommentaries,
   onClickActors,
   onClickPublications,
-  onClickLinks,
   onClickAboutUs,
   onClickEdit,
   onClickLogout,
@@ -132,7 +126,6 @@ const MyNavbar = ({
   onClickCommentaries: () => void,
   onClickActors: () => void,
   onClickPublications: () => void,
-  onClickLinks: () => void,
   onClickAboutUs: () => void,
   onClickEdit: () => void,
   onClickLogout: () => void,
@@ -198,9 +191,6 @@ const MyNavbar = ({
             onClick={onClickPublications}
           >
             Publications
-          </NavItem>
-          <NavItem active={id === 'pages_links'} onClick={onClickLinks}>
-            Links
           </NavItem>
           <NavItem active={id === 'pages_aboutUs'} onClick={onClickAboutUs}>
             About us
