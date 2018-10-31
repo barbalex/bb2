@@ -25,19 +25,19 @@ const HeaderCell = styled.div`
   text-overflow: ellipsis;
   text-align: center;
 `
-const HeaderCellDay = HeaderCell.extend`
+const HeaderCellDay = styled(HeaderCell)`
   width: 60px;
   max-width: 60px;
   padding-right: 20px;
   text-align: right;
 `
-const HeaderCellMigration = HeaderCell.extend`
+const HeaderCellMigration = styled(HeaderCell)`
   width: 50%;
   max-width: 50%;
   word-wrap: break-word;
   padding-right: 10px;
 `
-const HeaderCellPolitics = HeaderCell.extend`
+const HeaderCellPolitics = styled(HeaderCell)`
   width: 50%;
   max-width: 50%;
   word-wrap: break-word;
@@ -52,9 +52,14 @@ const Body = styled.div`
   border-bottom: 1px solid #ececec;
   width: 100%;
 `
-const HeaderRow = styled.div`display: flex;`
+const HeaderRow = styled.div`
+  display: flex;
+`
 
-const enhance = compose(inject(`store`), observer)
+const enhance = compose(
+  inject(`store`),
+  observer,
+)
 
 const Events = ({
   store,

@@ -13,6 +13,7 @@ const LoadingComponent = ({
     return <div>Loading...</div>
   } else if (error) {
     // Handle the error state
+    console.log(error)
     return <div>Sorry, there was a problem loading the page.</div>
   } else {
     return null

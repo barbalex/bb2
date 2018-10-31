@@ -11,24 +11,24 @@ const BodyCell = styled.div`
   padding: 5px;
   flex: 1;
 `
-const BodyCellDay = BodyCell.extend`
+const BodyCellDay = styled(BodyCell)`
   width: 60px;
   max-width: 60px;
   padding-right: 20px;
   text-align: right;
 `
-const BodyCellDayWithEvents = BodyCellDay.extend`
+const BodyCellDayWithEvents = styled(BodyCellDay)`
   p {
     margin-top: 5px !important;
   }
 `
-const BodyCellMigration = BodyCell.extend`
+const BodyCellMigration = styled(BodyCell)`
   width: 50%;
   max-width: 50%;
   word-wrap: break-word;
   padding-right: 10px;
 `
-const BodyCellPolitics = BodyCell.extend`
+const BodyCellPolitics = styled(BodyCell)`
   width: 50%;
   max-width: 50%;
   word-wrap: break-word;
@@ -60,7 +60,10 @@ const BodyRow = styled.div`
   }
 `
 
-const enhance = compose(inject(`store`), observer)
+const enhance = compose(
+  inject(`store`),
+  observer,
+)
 
 const mapEventComponents = events =>
   events.map((event, key) => <Event key={key} event={event} />)
@@ -79,27 +82,21 @@ const DateRow = ({
 
   return (
     <BodyRow>
-      {dayWithEvents &&
+      {dayWithEvents && (
         <BodyCellDayWithEvents>
-          <p>
-            {day}
-          </p>
-        </BodyCellDayWithEvents>}
-      {!dayWithEvents &&
+          <p>{day}</p>
+        </BodyCellDayWithEvents>
+      )}
+      {!dayWithEvents && (
         <BodyCellDay>
-          <p>
-            {day}
-          </p>
-        </BodyCellDay>}
+          <p>{day}</p>
+        </BodyCellDay>
+      )}
       <BodyCellMigration>
-        <ul>
-          {migrationEvents}
-        </ul>
+        <ul>{migrationEvents}</ul>
       </BodyCellMigration>
       <BodyCellPolitics>
-        <ul>
-          {politicsEvents}
-        </ul>
+        <ul>{politicsEvents}</ul>
       </BodyCellPolitics>
     </BodyRow>
   )
