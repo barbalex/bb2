@@ -15,6 +15,8 @@ import couchUrl from './modules/getCouchUrl'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
+import { StoreContextProvider } from './storeContext'
+
 // some old browsers can't deal with ArrayBuffer
 // pouchdb needs it
 // give the users an explanation instead of an empty page
@@ -28,7 +30,7 @@ Bitte versuchen Sie es mit einer aktuellen Version von (zum Beispiel):
 - Chrome
 - Firefox
 - Safari
-- Edge`
+- Edge`,
   )
 }
 
@@ -64,8 +66,10 @@ app.extend({
 app.init()
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Main />
-  </Provider>,
-  document.getElementById('root')
+  <StoreContextProvider value={store}>
+    <Provider store={store}>
+      <Main />
+    </Provider>
+  </StoreContextProvider>,
+  document.getElementById('root'),
 )

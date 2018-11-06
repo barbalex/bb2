@@ -13,7 +13,7 @@
     "local-links": "1.4.1",
     "lodash": "4.17.11",
     "mobx": "5.5.2",
-    "mobx-react": "5.3.6",
+    "mobx-react": "file:.yalc/mobx-react",
     "moment": "2.22.2",
     "pouchdb": "7.0.0",
     "pouchdb-authentication": "1.1.3",
