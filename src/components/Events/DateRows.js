@@ -1,4 +1,9 @@
 // @flow
+/**
+ * cannot use hooks
+ * adding useContext errors:
+ * Hooks can only be called inside the body of a function component
+ */
 import React from 'react'
 import moment from 'moment'
 import ReactList from 'react-list'
@@ -25,34 +30,39 @@ const BodyCell = styled.div`
   padding-left: 10px;
 `
 
-const enhance = compose(inject(`store`), observer)
+const enhance = compose(
+  inject(`store`),
+  observer,
+)
 
 const DateRows = ({ store }: { store: Object }) => {
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(
     store.events.events,
-    store.yearsOfEvents.activeEventYears
+    store.yearsOfEvents.activeEventYears,
   )
   const dateRows = []
   if (dateRowObjects.length > 0) {
     dateRowObjects.forEach((dRO, index) => {
       const day = moment(dRO.date).format('D')
-      const endOfMonth = moment(dRO.date).endOf('month').format('DD')
+      const endOfMonth = moment(dRO.date)
+        .endOf('month')
+        .format('DD')
       const dROForDateRow = {
         date: dRO.date,
         migrationEvents: dRO.migrationEvents.filter(
-          event => !event.tags || !event.tags.includes('monthlyStatistics')
+          event => !event.tags || !event.tags.includes('monthlyStatistics'),
         ),
         politicsEvents: dRO.politicsEvents.filter(
-          event => !event.tags || !event.tags.includes('monthlyStatistics')
+          event => !event.tags || !event.tags.includes('monthlyStatistics'),
         ),
       }
       const dROForMonthlyStatsRow = {
         date: dRO.date,
         migrationEvents: dRO.migrationEvents.filter(
-          event => event.tags && event.tags.includes('monthlyStatistics')
+          event => event.tags && event.tags.includes('monthlyStatistics'),
         ),
         politicsEvents: dRO.politicsEvents.filter(
-          event => event.tags && event.tags.includes('monthlyStatistics')
+          event => event.tags && event.tags.includes('monthlyStatistics'),
         ),
       }
       const dROForMonthlyStatsHasEvents =
@@ -69,7 +79,7 @@ const DateRows = ({ store }: { store: Object }) => {
           <MonthlyStatisticsRow
             key={`${index}monthlyStatisticsRow`}
             dateRowObject={dROForMonthlyStatsRow}
-          />
+          />,
         )
       }
       dateRows.push(<DateRow key={index} dateRowObject={dROForDateRow} />)

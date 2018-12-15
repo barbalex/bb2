@@ -1,8 +1,7 @@
 // @flow
 import React from 'react'
 import moment from 'moment'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
+import { observer } from 'mobx-react'
 import styled from 'styled-components'
 
 import Event from './Event'
@@ -60,21 +59,10 @@ const BodyRow = styled.div`
   }
 `
 
-const enhance = compose(
-  inject(`store`),
-  observer,
-)
-
 const mapEventComponents = events =>
   events.map((event, key) => <Event key={key} event={event} />)
 
-const DateRow = ({
-  store,
-  dateRowObject: dRO,
-}: {
-  store: Object,
-  dateRowObject: Object,
-}) => {
+const DateRow = ({ dateRowObject: dRO }: { dateRowObject: Object }) => {
   const day = moment(dRO.date).format('D')
   const migrationEvents = mapEventComponents(dRO.migrationEvents)
   const politicsEvents = mapEventComponents(dRO.politicsEvents)
@@ -104,4 +92,4 @@ const DateRow = ({
 
 DateRow.displayName = 'DateRow'
 
-export default enhance(DateRow)
+export default observer(DateRow)
