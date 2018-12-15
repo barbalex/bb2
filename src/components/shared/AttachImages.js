@@ -22,7 +22,7 @@ const DropzoneDiv = styled.div`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withHandlers({
     onDrop: props => files => {
       const { store, doc } = props

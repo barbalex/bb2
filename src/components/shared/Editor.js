@@ -34,7 +34,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withHandlers({
     onSavePageArticle: props => articleEncoded => {
       const { activePage } = props.store.page

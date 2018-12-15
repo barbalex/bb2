@@ -13,7 +13,7 @@ const StyledGlyphicon = styled(Glyphicon)`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withHandlers({
     onClick: props => () => {
       props.store.events.getEvent(props.event._id)

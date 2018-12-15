@@ -14,7 +14,7 @@ const Container = styled.div`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withState('urlCopied', 'changeUrlCopied', null),
   withHandlers({
     onCopyUrl: props => urlCopied => {

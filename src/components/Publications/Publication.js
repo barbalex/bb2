@@ -20,7 +20,7 @@ const Container = styled.div`
   }
 `
 
-const enhance = compose(inject(`store`), observer)
+const enhance = compose(inject('store'), observer)
 
 const Publication = ({ store }: { store: Object }) => {
   const articleEncoded = store.publications.activePublication.article

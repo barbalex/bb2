@@ -31,7 +31,7 @@ const BodyCell = styled.div`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   observer,
 )
 

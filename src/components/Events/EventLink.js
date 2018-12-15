@@ -21,7 +21,7 @@ const StyledGlyphicon = styled(Glyphicon)`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withHandlers({
     onChangeUrl: props => (e: Object): void => {
       // not using action because don't know

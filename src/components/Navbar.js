@@ -41,7 +41,7 @@ const isNavMobile = () => {
 }
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withRouter,
   withState('navExpanded', 'changeNavExpanded', false),
   withHandlers({

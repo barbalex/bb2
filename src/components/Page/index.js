@@ -37,7 +37,7 @@ const MetaButton = styled(Button)`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withState('showMeta', 'changeShowMeta', false),
   withHandlers({
     onClickMeta: props => () => props.changeShowMeta(!props.showMeta),

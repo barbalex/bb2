@@ -91,7 +91,7 @@ const StyledAlert = styled(Alert)`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withState('title', 'changeTitle', ''),
   withState('date', 'changeDate', moment()),
   withState('error', 'changeError', null),

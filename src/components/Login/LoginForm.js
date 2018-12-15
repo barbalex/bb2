@@ -29,7 +29,7 @@ const ValidateDivAfterRBC = styled.div`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withRouter,
   withState('invalidEmail', 'changeInvalidEmail', false),
   withState('invalidPassword', 'changeInvalidPassword', false),

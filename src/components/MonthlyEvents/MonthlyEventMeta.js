@@ -10,7 +10,7 @@ import {
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 
-const enhance = compose(inject(`store`), observer)
+const enhance = compose(inject('store'), observer)
 
 class MonthlyEventsMeta extends Component {
   constructor(props) {

@@ -10,7 +10,7 @@ import DocumentTitle from 'react-document-title'
 import LoginForm from './LoginForm'
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withHandlers({
     onClickLogout: props => () => props.store.login.logout(),
   }),

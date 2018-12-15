@@ -16,7 +16,7 @@ const Title = styled.div`
 const Label = styled.p`margin-bottom: 0;`
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withState('showMeta', 'changeShowMeta', false),
   withHandlers({
     onNewLink: props => (): void => {

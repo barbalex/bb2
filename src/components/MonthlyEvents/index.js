@@ -69,7 +69,7 @@ const StyledPanel = styled(({ activeYear, children, ...rest }) => (
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withRouter,
   withState('activeYear', 'changeActiveYear', null),
   withHandlers({

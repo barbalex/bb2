@@ -19,7 +19,7 @@ const StyledGlyphicon = styled(Glyphicon)`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withHandlers({
     onChangeTag: props => (tag, event) => {
       const checked = event.target.checked

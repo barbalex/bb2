@@ -13,7 +13,7 @@ const Label = styled.div`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withHandlers({
     changeEventType: props => eventType => {
       const { activeEvent, saveEvent } = props.store.events

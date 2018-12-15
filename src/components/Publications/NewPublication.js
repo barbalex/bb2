@@ -29,7 +29,7 @@ const categoryOptions = publicationCategories => {
 }
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withState('title', 'changeTitle', ''),
   withState('category', 'changeCategory', ''),
   withState('error', 'changeError', ''),

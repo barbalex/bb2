@@ -26,7 +26,7 @@ const StyledGlyphicon = styled(Glyphicon)`
 `
 const MediaLeft = styled.div`position: relative;`
 
-const enhance = compose(inject(`store`), observer)
+const enhance = compose(inject('store'), observer)
 
 const AttachedImage = ({
   store,

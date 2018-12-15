@@ -15,7 +15,7 @@ const StyledGlyphicon = styled(Glyphicon)`
 `
 const OuterSpan = styled.span`padding-left: 5px;`
 
-const enhance = compose(inject(`store`), observer)
+const enhance = compose(inject('store'), observer)
 
 const Event = ({ store, event }: { store: Object, event: Object }) => {
   const showEditingGlyphons = !!store.login.email

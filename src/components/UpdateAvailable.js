@@ -45,7 +45,7 @@ const StyledGlyphicon = styled(Glyphicon)`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withHandlers({
     onClickGlyph: props => () => props.store.setUpdateAvailable(false),
     onClickReload: props => event => {

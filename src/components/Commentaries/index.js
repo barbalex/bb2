@@ -79,7 +79,7 @@ const Copyright = styled.p`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withRouter,
   withHandlers({
     onClickCommentary: props => (id, e) => {

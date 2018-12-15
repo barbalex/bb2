@@ -14,7 +14,7 @@ const StyledGlyphicon = styled(Glyphicon)`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withHandlers({
     onRemoveEvent: props => () =>
       props.store.events.setEventToRemove(props.event),

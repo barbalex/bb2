@@ -65,7 +65,7 @@ const orderByCategory = {
 }
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withRouter,
   withHandlers({
     onClickCategory: props => (activePublicationCategory: string): void =>

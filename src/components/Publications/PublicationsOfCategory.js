@@ -33,7 +33,7 @@ const PanelBody = styled.div`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withRouter,
   withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({

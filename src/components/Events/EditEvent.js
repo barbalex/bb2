@@ -96,7 +96,7 @@ const StyledAlert = styled(Alert)`
 `
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withState('error', 'changeError', null),
   withHandlers({
     onChangeTitle: props => (e: Object): void => {

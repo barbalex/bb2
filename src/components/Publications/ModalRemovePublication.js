@@ -6,7 +6,7 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withHandlers({
     remove: props => (): void => props.removePublication(true),
     abort: props => (): void => props.removePublication(false),

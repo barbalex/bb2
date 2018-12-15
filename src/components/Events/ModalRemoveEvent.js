@@ -6,7 +6,7 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 
 const enhance = compose(
-  inject(`store`),
+  inject('store'),
   withState('showMeta', 'changeShowMeta', false),
   withHandlers({
     abort: props => () => props.store.events.setEventToRemove(null),
