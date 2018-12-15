@@ -6,8 +6,7 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom'
-import { observer, inject } from 'mobx-react-lite'
-import compose from 'recompose/compose'
+import { observer } from 'mobx-react'
 
 import Header from '../components/Header'
 import Navbar from '../components/Navbar'
@@ -22,10 +21,12 @@ import Errors from './Errors'
 import UpdateAvailable from './UpdateAvailable'
 import NotFound from './NotFound'
 
-const enhance = compose(inject(`store`), observer)
-
-const Main = ({ store, login }: { store: Object, login: boolean }) => {
-  const { errors } = store.error
+/**
+ * Weird thing:
+ * cannot useContext to get store
+ * Error is: hooks can only be used in function components...
+ */
+const Main = ({ store, login }: { login: boolean, store: Object }) => {
   const {
     updateAvailable,
     page,
@@ -34,6 +35,7 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
     actors,
     publications,
   } = store
+  const { errors } = store.error
 
   return (
     <Router>
@@ -149,4 +151,4 @@ const Main = ({ store, login }: { store: Object, login: boolean }) => {
 
 Main.displayName = 'Main'
 
-export default enhance(Main)
+export default observer(Main)
