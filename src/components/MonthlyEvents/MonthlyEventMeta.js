@@ -7,7 +7,7 @@ import {
   ControlLabel,
   FormControl,
 } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
+import { observer, inject } from 'mobx-react-lite'
 import compose from 'recompose/compose'
 
 const enhance = compose(inject(`store`), observer)
