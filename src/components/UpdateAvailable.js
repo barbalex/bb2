@@ -11,7 +11,7 @@
 
 import React from 'react'
 import { Overlay, Glyphicon } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react-lite'
+import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
