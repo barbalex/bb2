@@ -6,7 +6,7 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom'
-import { observer, inject } from 'mobx-react'
+import { observer, inject } from 'mobx-react-lite'
 import compose from 'recompose/compose'
 
 import Header from '../components/Header'
