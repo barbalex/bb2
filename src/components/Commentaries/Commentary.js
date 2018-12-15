@@ -1,15 +1,13 @@
 // @flow
-import React from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import Editor from '../shared/Editor'
 import Meta from '../Page/PageMeta'
+import storeContext from '../../storeContext'
 
 const Container = styled.div`
   p,
@@ -38,28 +36,15 @@ const MetaButton = styled(Button)`
   right: 10px;
 `
 
-const enhance = compose(
-  inject(`store`),
-  withState('showMeta', 'changeShowMeta', false),
-  withHandlers({
-    onClickMeta: props => () => props.changeShowMeta(!props.showMeta),
-    onCloseMeta: props => () => props.changeShowMeta(false),
-  }),
-  observer
-)
-
-const Commentary = ({
-  store,
-  showMeta,
-  onClickMeta,
-  onCloseMeta,
-}: {
-  store: Object,
-  showMeta: boolean,
-  onClickMeta: () => void,
-  onCloseMeta: () => void,
-}) => {
+const Commentary = () => {
+  const store = useContext(storeContext)
   const { activeCommentary } = store.commentaries
+
+  const [showMeta, changeShowMeta] = useState(false)
+
+  const onClickMeta = useCallback(() => changeShowMeta(!showMeta), [showMeta])
+  const onCloseMeta = useCallback(() => changeShowMeta(false))
+
   const articleEncoded = activeCommentary.article
   const articleDecoded = Base64.decode(articleEncoded)
 
@@ -86,4 +71,4 @@ const Commentary = ({
 
 Commentary.displayName = 'Commentary'
 
-export default enhance(Commentary)
+export default observer(Commentary)
