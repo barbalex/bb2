@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
+import { observer, inject } from 'mobx-react-lite'
 import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
