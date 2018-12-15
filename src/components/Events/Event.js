@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
+import { observer, inject } from 'mobx-react-lite'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
 
