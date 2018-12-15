@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
+import { observer, inject } from 'mobx-react-lite'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
