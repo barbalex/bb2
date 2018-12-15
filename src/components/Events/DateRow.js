@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import moment from 'moment'
-import { observer, inject } from 'mobx-react-lite'
+import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import styled from 'styled-components'
 
