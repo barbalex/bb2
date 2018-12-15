@@ -5,6 +5,7 @@ import app from 'ampersand-app'
 import PouchDB from 'pouchdb'
 import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
+import { Provider } from 'mobx-react'
 
 import Main from './components/Main'
 import registerServiceWorker from './registerServiceWorker'
@@ -66,7 +67,9 @@ app.init()
 
 ReactDOM.render(
   <StoreContextProvider value={store}>
-    <Main />
+    <Provider store={store}>
+      <Main store={store} />
+    </Provider>
   </StoreContextProvider>,
   document.getElementById('root'),
 )
