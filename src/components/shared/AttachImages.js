@@ -14,11 +14,18 @@ const Container = styled.div`
     height: 124px !important;
   }
 `
-const DropzoneDiv = styled.div`
-  width: 220px !important;
-  margin-left: 5px;
+const StyledDropzone = styled(Dropzone)`
+  border-color: transparent;
   height: 147px !important;
-  padding: 5px;
+  width: 220px !important;
+`
+const DropzoneInnerDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  border-width: 2px;
+  border-color: #666;
+  border-style: dashed;
+  border-radius: 5px;
 `
 
 const enhance = compose(
@@ -29,23 +36,23 @@ const enhance = compose(
       const attachments = {}
       files.forEach(file => {
         /**
-       * create an attachments object of this form:
-       * {
-       *   "att.txt": {
-       *     "content_type": "image/png",
-       *     "data": new Blob(
-       *       ["And she's hooked to the silver screen"],
-       *       {type: 'text/plain'})
-       *   },
-       *   "att2.txt": {
-       *     "content_type": "text/plain",
-       *     "data": new Blob(
-       *       ["But the film is a saddening bore"],
-       *       {type: 'text/plain'})
-       *   }
-       * }
-       * note: react-dropzone built the blob itself! It is file
-       */
+         * create an attachments object of this form:
+         * {
+         *   "att.txt": {
+         *     "content_type": "image/png",
+         *     "data": new Blob(
+         *       ["And she's hooked to the silver screen"],
+         *       {type: 'text/plain'})
+         *   },
+         *   "att2.txt": {
+         *     "content_type": "text/plain",
+         *     "data": new Blob(
+         *       ["But the film is a saddening bore"],
+         *       {type: 'text/plain'})
+         *   }
+         * }
+         * note: react-dropzone built the blob itself! It is file
+         */
         attachments[file.name] = {
           content_type: file.type,
           data: file,
@@ -55,7 +62,7 @@ const enhance = compose(
       store.page.addPageAttachments(doc, attachments)
     },
   }),
-  observer
+  observer,
 )
 
 const AttachImages = ({
@@ -66,15 +73,38 @@ const AttachImages = ({
   store: Object,
   doc: Object,
   onDrop: () => void,
-}) =>
+}) => (
   <Container>
-    <Dropzone onDrop={onDrop} accept="image/*">
-      <DropzoneDiv>
-        Drop some images here.<br />
-        Or click to select.
-      </DropzoneDiv>
-    </Dropzone>
+    <StyledDropzone onDrop={onDrop} accept="image/*">
+      {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
+        if (isDragActive) {
+          return (
+            <DropzoneInnerDiv {...getRootProps()}>
+              <div>drop now...</div>
+            </DropzoneInnerDiv>
+          )
+        }
+        if (isDragReject) {
+          return (
+            <DropzoneInnerDiv {...getRootProps()}>
+              <div>Oh no. Something went wrong :-(</div>
+            </DropzoneInnerDiv>
+          )
+        }
+        return (
+          <DropzoneInnerDiv {...getRootProps()}>
+            <input {...getInputProps()} style={{ width: 0, height: 0 }} />
+            <div>
+              Drop some images here...
+              <br />
+              ...or click to select.
+            </div>
+          </DropzoneInnerDiv>
+        )
+      }}
+    </StyledDropzone>
   </Container>
+)
 
 AttachImages.displayName = 'AttachImages'
 
