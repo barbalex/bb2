@@ -39,7 +39,9 @@ export default (
         migrationEvents,
         politicsEvents,
       }
-      daterowObjects.push(daterowObject)
+      if (migrationEvents.length > 0 || politicsEvents.length > 0) {
+        daterowObjects.push(daterowObject)
+      }
       date = moment(date).subtract(1, 'days')
     }
     return daterowObjects
