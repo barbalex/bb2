@@ -1,4 +1,8 @@
 // @flow
+/**
+ * using hooks errored
+ * Hooks can only be called inside the body of a function component
+ */
 import React from 'react'
 import {
   Modal,
@@ -89,7 +93,9 @@ const StyledModal = styled(Modal)`
     cursor: pointer;
   }
 `
-const EventOrder = styled(FormControl)`margin-bottom: 20px;`
+const EventOrder = styled(FormControl)`
+  margin-bottom: 20px;
+`
 const StyledAlert = styled(Alert)`
   margin-top: 10px;
   margin-bottom: 10px;
@@ -144,7 +150,7 @@ const enhance = compose(
       props.store.events.getEvent(null)
     },
   }),
-  observer
+  observer,
 )
 
 const EditEvent = ({
