@@ -18,3 +18,4 @@ yarn-error.log*
 
 sftpPass.json
 couchPass.json
+git_stats.txt
