@@ -167,10 +167,10 @@ class Editor extends Component {
     }
   }
 
-  shouldComponentUpdate() {
+  /*shouldComponentUpdate() {
     // make sure react does not update this component
     return false
-  }
+  }*/
 
   componentWillUnmount() {
     // this is needed for correct behaviour, see
