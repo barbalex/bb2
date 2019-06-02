@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 import { Base64 } from 'js-base64'
 import tinymce from 'tinymce'
-import 'tinymce/themes/modern'
 import 'tinymce/plugins/advlist'
 import 'tinymce/plugins/autolink'
 import 'tinymce/plugins/link'
@@ -132,14 +131,15 @@ class Editor extends Component {
     // add codemirror? see: https://github.com/christiaan/tinymce-codemirror
     tinymce.init({
       selector: `#${doc._id}`,
-      theme: 'modern',
+      //theme: 'modern',
       plugins: [
         'advlist autolink link image lists charmap print hr anchor pagebreak',
         'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',
         'save table contextmenu directionality template paste textcolor autosave',
       ],
       menubar: 'edit insert view format table tools',
-      toolbar: 'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print code fullscreen',
+      toolbar:
+        'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print code fullscreen',
       height,
       browser_spellcheck: true,
       automatic_uploads: false,
