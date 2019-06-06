@@ -1,33 +1,7 @@
 // @flow
 import React, { Component } from 'react'
+import { Editor } from '@tinymce/tinymce-react'
 import { Base64 } from 'js-base64'
-import tinymce from 'tinymce'
-import 'tinymce/plugins/advlist'
-import 'tinymce/plugins/autolink'
-import 'tinymce/plugins/link'
-import 'tinymce/plugins/image'
-import 'tinymce/plugins/lists'
-import 'tinymce/plugins/charmap'
-import 'tinymce/plugins/print'
-import 'tinymce/plugins/hr'
-import 'tinymce/plugins/anchor'
-import 'tinymce/plugins/pagebreak'
-import 'tinymce/plugins/searchreplace'
-import 'tinymce/plugins/wordcount'
-import 'tinymce/plugins/visualblocks'
-import 'tinymce/plugins/visualchars'
-import 'tinymce/plugins/code'
-import 'tinymce/plugins/fullscreen'
-import 'tinymce/plugins/media'
-import 'tinymce/plugins/nonbreaking'
-import 'tinymce/plugins/save'
-import 'tinymce/plugins/table'
-import 'tinymce/plugins/contextmenu'
-import 'tinymce/plugins/directionality'
-import 'tinymce/plugins/template'
-import 'tinymce/plugins/paste'
-import 'tinymce/plugins/textcolor'
-import 'tinymce/plugins/autosave'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
@@ -64,7 +38,7 @@ const enhance = compose(
   observer,
 )
 
-class Editor extends Component {
+class MyEditor extends Component {
   displayName: 'Editor'
 
   props: {
@@ -81,6 +55,20 @@ class Editor extends Component {
   }
 
   componentDidMount() {
+    const { doc } = this.props
+
+    // scroll editor to top in pages
+    if (doc.type === 'pages') {
+      window.$('html, body').animate(
+        {
+          scrollTop: 140,
+        },
+        800,
+      )
+    }
+  }
+
+  render() {
     const {
       store,
       doc,
@@ -90,6 +78,7 @@ class Editor extends Component {
       onSavePublicationArticle,
       onSaveCommentaryArticle,
       onSaveActorArticle,
+      articleDecoded,
     } = this.props
     // height = window - menu height - (menubar + iconbar)
     let height = window.innerHeight - 52 - 74
@@ -127,63 +116,37 @@ class Editor extends Component {
         return store.error.showEdit('no or wrong docType passed to editor')
     }
 
-    // see: https://www.ephox.com/blog/how-to-integrate-react-with-tinymce
-    // add codemirror? see: https://github.com/christiaan/tinymce-codemirror
-    tinymce.init({
-      selector: `#${doc._id}`,
-      //theme: 'modern',
-      plugins: [
-        'advlist autolink link image lists charmap print hr anchor pagebreak',
-        'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',
-        'save table contextmenu directionality template paste textcolor autosave',
-      ],
-      menubar: 'edit insert view format table tools',
-      toolbar:
-        'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print code fullscreen',
-      height,
-      browser_spellcheck: true,
-      automatic_uploads: false,
-      statusbar: false,
-      body_class: bodyClass,
-      // $FlowIssue
-      content_css: `${process.env.PUBLIC_URL}/tinymce.css`,
-      // enable auto-saving
-      setup(editor) {
-        editor.on('change undo redo', () => {
-          const articleDecoded = editor.getContent()
+    return (
+      <Editor
+        id={doc._id}
+        apiKey="58ali3ylgj6fv1zfjv6vdjkkt32yjw36v1iypn95psmae799"
+        initialValue={articleDecoded}
+        init={{
+          selector: `#${doc._id}`,
+          plugins: [
+            'advlist autolink link image lists charmap print hr anchor pagebreak',
+            'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',
+            'save table contextmenu directionality template paste textcolor autosave',
+          ],
+          menubar: 'edit insert view format table tools',
+          toolbar:
+            'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print code fullscreen',
+          height,
+          browser_spellcheck: true,
+          automatic_uploads: false,
+          statusbar: false,
+          body_class: bodyClass,
+          // $FlowIssue
+          content_css: `${process.env.PUBLIC_URL}/tinymce.css`,
+        }}
+        onChange={e => {
+          const articleDecoded = e.target.getContent()
           const articleEncoded = Base64.encode(articleDecoded)
           saveFunction(articleEncoded)
-        })
-      },
-    })
-    // scroll editor to top in pages
-    if (doc.type === 'pages') {
-      window.$('html, body').animate(
-        {
-          scrollTop: 140,
-        },
-        800,
-      )
-    }
-  }
-
-  /*shouldComponentUpdate() {
-    // make sure react does not update this component
-    return false
-  }*/
-
-  componentWillUnmount() {
-    // this is needed for correct behaviour, see
-    // http://stackoverflow.com/questions/29169158/react-html-editor-tinymce
-    const { doc } = this.props
-    const instanceSelector = `#${doc._id}`
-    tinymce.remove(instanceSelector)
-  }
-
-  render() {
-    const { doc, articleDecoded } = this.props
-    return <textarea id={doc._id} defaultValue={articleDecoded} />
+        }}
+      />
+    )
   }
 }
 
-export default enhance(Editor)
+export default enhance(MyEditor)
