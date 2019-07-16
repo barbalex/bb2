@@ -22,8 +22,8 @@ const Actor = () => {
   const articleDecoded = Base64.decode(articleEncoded)
   const [showMeta, setShowMeta] = useState(false)
 
-  const onClickMeta = useCallback(() => setShowMeta(!showMeta))
-  const onCloseMeta = useCallback(() => setShowMeta(false))
+  const onClickMeta = useCallback(() => setShowMeta(!showMeta), [showMeta])
+  const onCloseMeta = useCallback(() => setShowMeta(false), [])
 
   if (store.editing) {
     return (

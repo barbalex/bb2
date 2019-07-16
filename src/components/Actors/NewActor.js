@@ -26,21 +26,17 @@ const NewActor = () => {
 
   const onChangeCategory = useCallback(
     (event: Object): void => setCategory(event.target.value),
+    [],
   )
-  const createNewActor = useCallback(
-    () => {
-      if (category) {
-        newActor(category)
-        setShowNewActor(false)
-      } else {
-        setError('Please choose a category')
-      }
-    },
-    [category],
-  )
-  const closeNewActor = useCallback(() => {
-    setShowNewActor(false)
-  })
+  const createNewActor = useCallback(() => {
+    if (category) {
+      newActor(category)
+      setShowNewActor(false)
+    } else {
+      setError('Please choose a category')
+    }
+  }, [category, newActor, setShowNewActor])
+  const closeNewActor = useCallback(() => setShowNewActor(false), [setShowNewActor])
 
   return (
     <Modal show bsSize="large">

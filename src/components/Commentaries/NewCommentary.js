@@ -27,24 +27,25 @@ const NewCommentary = () => {
   const [date, changeDate] = useState(moment())
   const [error, changeError] = useState(null)
 
-  const onChangeTitle = useCallback(event => changeTitle(event.target.value))
-  const onChangeDate = useCallback((date: Date) =>
-    changeDate(moment(date, 'DD.MM.YYYY')),
+  const onChangeTitle = useCallback(
+    event => changeTitle(event.target.value),
+    [],
   )
-  const createNewCommentary = useCallback(
-    () => {
-      if (title && date) {
-        newCommentary(title, date)
-        toggleShowNewCommentary()
-      } else {
-        let error = 'Please choose a date'
-        if (!title) error = 'Please add a title'
-        changeError({ error })
-      }
-    },
-    [title, date],
+  const onChangeDate = useCallback(
+    (date: Date) => changeDate(moment(date, 'DD.MM.YYYY')),
+    [],
   )
-  const onCloseNewCommentary = useCallback(() => toggleShowNewCommentary(), [])
+  const createNewCommentary = useCallback(() => {
+    if (title && date) {
+      newCommentary(title, date)
+      toggleShowNewCommentary()
+    } else {
+      let error = 'Please choose a date'
+      if (!title) error = 'Please add a title'
+      changeError({ error })
+    }
+  }, [title, date, newCommentary, toggleShowNewCommentary])
+  const onCloseNewCommentary = useCallback(() => toggleShowNewCommentary(), [toggleShowNewCommentary])
 
   return (
     <Modal show bsSize="large">
