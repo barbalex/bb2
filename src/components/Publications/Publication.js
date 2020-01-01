@@ -24,7 +24,7 @@ const enhance = compose(inject('store'), observer)
 
 const Publication = ({ store }: { store: Object }) => {
   const articleEncoded = store.publications.activePublication.article
-  const articleDecoded = Base64.decode(articleEncoded)
+  const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
 
   if (store.editing) {
     return (

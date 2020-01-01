@@ -43,7 +43,7 @@ const enhance = compose(
     onClickMeta: props => () => props.changeShowMeta(!props.showMeta),
     onCloseMeta: props => () => props.changeShowMeta(false),
   }),
-  observer
+  observer,
 )
 
 const Page = ({
@@ -61,7 +61,7 @@ const Page = ({
 }) => {
   const { activePage } = store.page
   const articleEncoded = activePage.article
-  const articleDecoded = Base64.decode(articleEncoded)
+  const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
   let title = activePage.title ? activePage.title : activePage.category
 
   if (store.editing && activePage._id !== 'pages_actors') {

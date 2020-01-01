@@ -14,12 +14,12 @@ import MonthlyEventMeta from './MonthlyEventMeta'
 const Container = styled.div`
   table > thead > tr > th {
     border-bottom: 0 solid #dddddd !important;
-    line-height: .3;
+    line-height: 0.3;
   }
   table > thead > tr.totals > td {
     border-top: 0;
     border-bottom: 2px solid #dddddd !important;
-    line-height: .6;
+    line-height: 0.6;
     color: #9c9c9c;
   }
 `
@@ -36,7 +36,7 @@ const enhance = compose(
     onClickMeta: props => () => props.changeShowMeta(!props.showMeta),
     onCloseMeta: props => () => props.changeShowMeta(false),
   }),
-  observer
+  observer,
 )
 
 const MonthlyEvent = ({
@@ -55,17 +55,18 @@ const MonthlyEvent = ({
   onCloseMeta: () => void,
 }) => {
   const articleEncoded = store.monthlyEvents.activeMonthlyEvent.article
-  const articleDecoded = Base64.decode(articleEncoded)
+  const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
 
   if (store.editing) {
     return (
       <Container>
-        {showMeta &&
+        {showMeta && (
           <MonthlyEventMeta
             year={year}
             month={month}
             onCloseMeta={onCloseMeta}
-          />}
+          />
+        )}
         <Editor
           docType="monthlyEvent"
           doc={store.monthlyEvents.activeMonthlyEvent}
