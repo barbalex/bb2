@@ -36,25 +36,25 @@ const MetaButton = styled(Button)`
   right: 10px;
 `
 
-const Commentary = () => {
+const Article = () => {
   const store = useContext(storeContext)
-  const { activeCommentary } = store.commentaries
+  const { activeArticle } = store.articles
 
   const [showMeta, changeShowMeta] = useState(false)
 
   const onClickMeta = useCallback(() => changeShowMeta(!showMeta), [showMeta])
   const onCloseMeta = useCallback(() => changeShowMeta(false), [])
 
-  const articleEncoded = activeCommentary.article
+  const articleEncoded = activeArticle.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
 
   if (store.editing) {
     return (
       <Container>
-        {showMeta && <Meta doc={activeCommentary} onCloseMeta={onCloseMeta} />}
+        {showMeta && <Meta doc={activeArticle} onCloseMeta={onCloseMeta} />}
         <Editor
-          docType="commentary"
-          doc={activeCommentary}
+          docType="article"
+          doc={activeArticle}
           articleDecoded={articleDecoded}
         />
         <MetaButton onClick={onClickMeta}>images</MetaButton>
@@ -69,6 +69,6 @@ const Commentary = () => {
   )
 }
 
-Commentary.displayName = 'Commentary'
+Article.displayName = 'Article'
 
-export default observer(Commentary)
+export default observer(Article)

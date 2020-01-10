@@ -12,7 +12,7 @@ import Header from '../components/Header'
 import Navbar from '../components/Navbar'
 import AsyncPage from './AsyncPage'
 import AsyncEvents from './AsyncEvents'
-import AsyncCommentaries from './AsyncCommentaries'
+import AsyncArticles from './AsyncArticles'
 import AsyncActors from './AsyncActors'
 import AsyncMonthlyEvents from './AsyncMonthlyEvents'
 import AsyncPublications from './AsyncPublications'
@@ -31,7 +31,7 @@ const Main = ({ store, login }: { login: boolean, store: Object }) => {
     updateAvailable,
     page,
     monthlyEvents,
-    commentaries,
+    articles,
     actors,
     publications,
   } = store
@@ -75,16 +75,16 @@ const Main = ({ store, login }: { login: boolean, store: Object }) => {
             render={({ match }) => {
               const { year, month, day, title } = match.params
               page.getPage('pages_commentaries')
-              commentaries.activeCommentaryId = `commentaries_${year}_${month}_${day}_${title}`
-              return <AsyncCommentaries />
+              articles.activeArticleId = `commentaries_${year}_${month}_${day}_${title}`
+              return <AsyncArticles />
             }}
           />
           <Route
-            path="/commentaries"
+            path="/articles"
             exact
             render={() => {
               page.getPage('pages_commentaries')
-              return <AsyncCommentaries />
+              return <AsyncArticles />
             }}
           />
           <Route

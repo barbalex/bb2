@@ -14,10 +14,10 @@ const enhance = compose(
       activePage.article = articleEncoded
       props.store.page.savePage(activePage)
     },
-    onSaveCommentaryArticle: props => articleEncoded => {
-      const { activeCommentary } = props.store.commentaries
-      activeCommentary.article = articleEncoded
-      props.store.commentaries.saveCommentary(activeCommentary)
+    onSaveArticleArticle: props => articleEncoded => {
+      const { activeArticle } = props.store.articles
+      activeArticle.article = articleEncoded
+      props.store.articles.saveArticle(activeArticle)
     },
     onSaveActorArticle: props => articleEncoded => {
       const { activeActor } = props.store.actors
@@ -49,7 +49,7 @@ class MyEditor extends Component {
     onSavePageArticle: () => void,
     onSaveMonthlyEventArticle: () => void,
     onSavePublicationArticle: () => void,
-    onSaveCommentaryArticle: () => void,
+    onSaveArticleArticle: () => void,
     onSaveActorArticle: () => void,
     changeDoc: () => void,
   }
@@ -76,7 +76,7 @@ class MyEditor extends Component {
       onSavePageArticle,
       onSaveMonthlyEventArticle,
       onSavePublicationArticle,
-      onSaveCommentaryArticle,
+      onSaveArticleArticle,
       onSaveActorArticle,
       articleDecoded,
     } = this.props
@@ -85,7 +85,7 @@ class MyEditor extends Component {
     if (['monthlyEvent', 'publication'].includes(docType)) {
       height = window.innerHeight - 52 - 74 - 76
     }
-    if (['commentary', 'actor'].includes(docType)) {
+    if (['article', 'actor'].includes(docType)) {
       height = window.innerHeight - 52 - 74 - 90
     }
     // need to add specific classes to the iframe body because my css will not apply otherwise
@@ -104,9 +104,9 @@ class MyEditor extends Component {
         bodyClass = 'publication'
         saveFunction = onSavePublicationArticle
         break
-      case 'commentary':
-        bodyClass = 'commentary'
-        saveFunction = onSaveCommentaryArticle
+      case 'article':
+        bodyClass = 'article'
+        saveFunction = onSaveArticleArticle
         break
       case 'actor':
         bodyClass = 'actor'

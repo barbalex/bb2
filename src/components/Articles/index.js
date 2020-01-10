@@ -10,9 +10,9 @@ import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { withRouter } from 'react-router'
 
-import Commentary from './Commentary'
-import NewCommentary from './NewCommentary'
-import ModalRemoveCommentary from './ModalRemoveCommentary'
+import Article from './Article'
+import NewArticle from './NewArticle'
+import ModalRemoveArticle from './ModalRemoveArticle'
 import SwallowPanelGroupProps from '../shared/SwallowPanelGroupProps'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 
@@ -63,10 +63,8 @@ const RemoveGlyphicon = styled(Glyphicon)`
 const PanelHeading = styled.div`
   position: relative;
   cursor: pointer;
-  border-bottom-right-radius: ${props =>
-    !props.isActiveCommentary ? '3px' : 0};
-  border-bottom-left-radius: ${props =>
-    !props.isActiveCommentary ? '3px' : 0};
+  border-bottom-right-radius: ${props => (!props.isActiveArticle ? '3px' : 0)};
+  border-bottom-left-radius: ${props => (!props.isActiveArticle ? '3px' : 0)};
 `
 const PanelBody = styled.div`
   margin-top: ${props => props['data-panelbodymargintop']};
@@ -82,51 +80,50 @@ const enhance = compose(
   inject('store'),
   withRouter,
   withHandlers({
-    onClickCommentary: props => (id, e) => {
-      const { activeCommentary, getCommentary } = props.store.commentaries
+    onClickArticle: props => (id, e) => {
+      const { activeArticle, getArticle } = props.store.articles
       // prevent higher level panels from reacting
       e.stopPropagation()
-      const idToGet =
-        !activeCommentary || activeCommentary._id !== id ? id : null
-      getCommentary(idToGet, props.history)
+      const idToGet = !activeArticle || activeArticle._id !== id ? id : null
+      getArticle(idToGet, props.history)
     },
     // prevent higher level panels from reacting
-    onClickCommentaryCollapse: props => event => event.stopPropagation(),
-    onRemoveCommentary: props => (docToRemove, event) => {
+    onClickArticleCollapse: props => event => event.stopPropagation(),
+    onRemoveArticle: props => (docToRemove, event) => {
       event.preventDefault()
       event.stopPropagation()
-      props.store.commentaries.setCommentaryToRemove(docToRemove)
+      props.store.articles.setArticleToRemove(docToRemove)
     },
     onToggleDraft: props => (doc, event) => {
       event.preventDefault()
       event.stopPropagation()
-      props.store.commentaries.toggleDraftOfCommentary(doc)
+      props.store.articles.toggleDraftOfArticle(doc)
     },
   }),
-  observer
+  observer,
 )
 
-class Commentaries extends Component {
-  displayName: 'Commentaries'
+class Articles extends Component {
+  displayName: 'Articles'
 
   props: {
     store: Object,
     match: Object,
     location: Object,
     history: Object,
-    onClickCommentary: () => void,
-    onClickCommentaryCollapse: () => void,
-    onRemoveCommentary: () => void,
+    onClickArticle: () => void,
+    onClickArticleCollapse: () => void,
+    onRemoveArticle: () => void,
     onToggleDraft: () => void,
   }
 
   componentDidMount() {
-    this.props.store.commentaries.getCommentaries()
+    this.props.store.articles.getArticles()
   }
 
   componentDidUpdate() {
-    const { activeCommentary } = this.props.store.commentaries
-    if (activeCommentary) {
+    const { activeArticle } = this.props.store.articles
+    if (activeArticle) {
       window.setTimeout(() => {
         this.scrollToActivePanel()
       }, 200)
@@ -135,7 +132,7 @@ class Commentaries extends Component {
 
   scrollToActivePanel = () => {
     // $FlowIssue
-    const node = ReactDOM.findDOMNode(this._activeCommentaryPanel)
+    const node = ReactDOM.findDOMNode(this._activeArticlePanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper')
         .offsetTop
@@ -145,20 +142,20 @@ class Commentaries extends Component {
           {
             scrollTop: node.offsetTop - reduce,
           },
-          500
+          500,
         )
       }
     }
   }
 
-  removeCommentaryGlyph = doc => (
+  removeArticleGlyph = doc => (
     <OverlayTrigger
       placement="top"
-      overlay={<Tooltip id="removeThisCommentary">remove</Tooltip>}
+      overlay={<Tooltip id="removeThisArticle">remove</Tooltip>}
     >
       <RemoveGlyphicon
         glyph="remove-circle"
-        onClick={this.props.onRemoveCommentary.bind(this, doc)}
+        onClick={this.props.onRemoveArticle.bind(this, doc)}
       />
     </OverlayTrigger>
   )
@@ -186,15 +183,15 @@ class Commentaries extends Component {
     )
   }
 
-  commentariesComponent = () => {
-    const { store, onClickCommentary, onClickCommentaryCollapse } = this.props
-    const { commentaries, activeCommentary } = store.commentaries
+  articlesComponent = () => {
+    const { store, onClickArticle, onClickArticleCollapse } = this.props
+    const { articles, activeArticle } = store.articles
 
-    if (commentaries.length > 0) {
-      return commentaries.map((doc, index) => {
-        const isCommentary = !!activeCommentary
-        const isActiveCommentary = isCommentary
-          ? doc._id === activeCommentary._id
+    if (articles.length > 0) {
+      return articles.map((doc, index) => {
+        const isArticle = !!activeArticle
+        const isActiveArticle = isArticle
+          ? doc._id === activeArticle._id
           : false
         const showEditingGlyphons = !!store.login.email
         const panelbodypadding = store.editing ? '0 !important' : '15px'
@@ -206,12 +203,12 @@ class Commentaries extends Component {
           <div
             key={doc._id}
             ref={c => {
-              if (isActiveCommentary) {
+              if (isActiveArticle) {
                 // $FlowIssue
-                this._activeCommentaryPanel = c
+                this._activeArticlePanel = c
               } else {
                 // $FlowIssue
-                this[`_commentaryPanel${doc._id}`] = c
+                this[`_articlePanel${doc._id}`] = c
               }
             }}
             className="panel panel-default"
@@ -220,13 +217,13 @@ class Commentaries extends Component {
               className="panel-heading"
               role="tab"
               id={`heading${index}`}
-              onClick={onClickCommentary.bind(this, doc._id)}
+              onClick={onClickArticle.bind(this, doc._id)}
             >
               <h4 className="panel-title">
                 <a
                   role="button"
                   data-toggle="collapse"
-                  data-parent="#commentariesAccordion"
+                  data-parent="#articlesAccordion"
                   href={`#collapse${index}`}
                   aria-expanded="false"
                   aria-controls={`#collapse${index}`}
@@ -235,22 +232,22 @@ class Commentaries extends Component {
                 </a>
               </h4>
               {showEditingGlyphons && this.toggleDraftGlyph(doc)}
-              {showEditingGlyphons && this.removeCommentaryGlyph(doc)}
+              {showEditingGlyphons && this.removeArticleGlyph(doc)}
             </PanelHeading>
-            {isActiveCommentary && (
+            {isActiveArticle && (
               <div
                 id={`#collapse${index}`}
                 className="panel-collapse collapse in"
                 role="tabpanel"
                 aria-labelledby={`heading${index}`}
-                onClick={onClickCommentaryCollapse}
+                onClick={onClickArticleCollapse}
               >
                 <PanelBody
                   className="panel-body"
                   data-panelbodypadding={panelbodypadding}
                   data-panelbodymargintop={panelbodymargintop}
                 >
-                  <Commentary />
+                  <Article />
                 </PanelBody>
               </div>
             )}
@@ -264,29 +261,27 @@ class Commentaries extends Component {
   render() {
     const { store } = this.props
     const {
-      activeCommentary,
-      showNewCommentary,
-      commentaryToRemove,
-    } = store.commentaries
-    const activeCommentaryId = has(activeCommentary, '_id')
-      ? activeCommentary._id
-      : null
+      activeArticle,
+      showNewArticle,
+      articleToRemove,
+    } = store.articles
+    const activeArticleId = has(activeArticle, '_id') ? activeArticle._id : null
 
     return (
-      <DocumentTitle title="Commentaries">
+      <DocumentTitle title="Articles">
         <Container>
-          <h1>Commentaries</h1>
+          <h1>Articles</h1>
           <PanelGroup
-            defaultActiveKey={activeCommentaryId}
-            id="commentariesAccordion"
+            defaultActiveKey={activeArticleId}
+            id="articlesAccordion"
             accordion
           >
             <SwallowPanelGroupProps>
-              {this.commentariesComponent()}
+              {this.articlesComponent()}
             </SwallowPanelGroupProps>
           </PanelGroup>
-          {showNewCommentary && <NewCommentary />}
-          {commentaryToRemove && <ModalRemoveCommentary />}
+          {showNewArticle && <NewArticle />}
+          {articleToRemove && <ModalRemoveArticle />}
           <Copyright>© Jürg Martin Gabriel. All Rights Reserved.</Copyright>
         </Container>
       </DocumentTitle>
@@ -294,4 +289,4 @@ class Commentaries extends Component {
   }
 }
 
-export default enhance(Commentaries)
+export default enhance(Articles)

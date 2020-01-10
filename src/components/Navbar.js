@@ -57,9 +57,9 @@ const enhance = compose(
       props.history.push('/events')
       // if home was clicked, do not toggle nav
     },
-    onClickCommentaries: props => () => {
+    onClickArticles: props => () => {
       props.store.page.getPage('pages_commentaries')
-      props.history.push('/commentaries')
+      props.history.push('/articles')
       props.onToggleNav()
     },
     onClickActors: props => () => {
@@ -86,8 +86,8 @@ const enhance = compose(
       props.onToggleNav()
       // need to force update
     },
-    onClickNewCommentary: props => () =>
-      props.store.commentaries.toggleShowNewCommentary(),
+    onClickNewArticle: props => () =>
+      props.store.articles.toggleShowNewArticle(),
     onClickNewPublication: props => () => {
       props.store.publications.setShowNewPublication(true)
     },
@@ -105,13 +105,13 @@ const MyNavbar = ({
   navExpanded,
   onToggleNav,
   onClickEvents,
-  onClickCommentaries,
+  onClickArticles,
   onClickActors,
   onClickPublications,
   onClickAboutUs,
   onClickEdit,
   onClickLogout,
-  onClickNewCommentary,
+  onClickNewArticle,
   onClickNewPublication,
   onClickNewEvent,
   onClickNewActor,
@@ -123,13 +123,13 @@ const MyNavbar = ({
   navExpanded: boolean,
   onToggleNav: () => void,
   onClickEvents: () => void,
-  onClickCommentaries: () => void,
+  onClickArticles: () => void,
   onClickActors: () => void,
   onClickPublications: () => void,
   onClickAboutUs: () => void,
   onClickEdit: () => void,
   onClickLogout: () => void,
-  onClickNewCommentary: () => void,
+  onClickNewArticle: () => void,
   onClickNewPublication: () => void,
   onClickNewEvent: () => void,
   onClickNewActor: () => void,
@@ -138,7 +138,7 @@ const MyNavbar = ({
   const { activeActor } = store.actors
   const { activeMonthlyEvent } = store.monthlyEvents
   const { activePublication } = store.publications
-  const { activeCommentary } = store.commentaries
+  const { activeArticle } = store.articles
   const email = store.login.email
   const glyph = store.editing ? 'eye-open' : 'pencil'
   const id = activePage && activePage._id ? activePage._id : null
@@ -153,15 +153,15 @@ const MyNavbar = ({
     email &&
     (!nonEditableIds.includes(id) ||
       has(activeMonthlyEvent, '_id') ||
-      has(activeCommentary, '_id') ||
+      has(activeArticle, '_id') ||
       has(activeActor, '_id') ||
       has(activePublication, '_id'))
-  const showAddCommentary = email && activePage._id === 'pages_commentaries'
+  const showAddArticle = email && activePage._id === 'pages_commentaries'
   const showAddEvent = email && activePage._id === 'pages_events'
   const showAddActor = email && activePage._id === 'pages_actors'
   const showAddPublication = email && activePage._id === 'pages_publications'
   const showNavbarRight =
-    email || showEdit || showAddCommentary || showAddEvent || showAddActor
+    email || showEdit || showAddArticle || showAddEvent || showAddActor
 
   return (
     <StyledNavbar
@@ -179,9 +179,9 @@ const MyNavbar = ({
         <Nav>
           <NavItem
             active={id === 'pages_commentaries'}
-            onClick={onClickCommentaries}
+            onClick={onClickArticles}
           >
-            Commentaries
+            My Articles
           </NavItem>
           <NavItem active={id === 'pages_actors'} onClick={onClickActors}>
             Actors
@@ -212,12 +212,12 @@ const MyNavbar = ({
                 </NavItem>
               </OverlayTrigger>
             )}
-            {showAddCommentary && (
+            {showAddArticle && (
               <OverlayTrigger
                 placement="bottom"
-                overlay={<Tooltip id="newCommentary">new commentary</Tooltip>}
+                overlay={<Tooltip id="newArticle">new article</Tooltip>}
               >
-                <NavItem onClick={onClickNewCommentary}>
+                <NavItem onClick={onClickNewArticle}>
                   <Glyphicon glyph="plus" />
                 </NavItem>
               </OverlayTrigger>

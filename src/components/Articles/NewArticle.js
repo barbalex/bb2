@@ -19,9 +19,9 @@ const ErrorAlert = styled(Alert)`
   magrin-bottom: 10px;
 `
 
-const NewCommentary = () => {
+const NewArticle = () => {
   const store = useContext(storeContext)
-  const { newCommentary, toggleShowNewCommentary } = store.commentaries
+  const { newArticle, toggleShowNewArticle } = store.articles
 
   const [title, changeTitle] = useState('')
   const [date, changeDate] = useState(moment())
@@ -35,26 +35,28 @@ const NewCommentary = () => {
     (date: Date) => changeDate(moment(date, 'DD.MM.YYYY')),
     [],
   )
-  const createNewCommentary = useCallback(() => {
+  const createNewArticle = useCallback(() => {
     if (title && date) {
-      newCommentary(title, date)
-      toggleShowNewCommentary()
+      newArticle(title, date)
+      toggleShowNewArticle()
     } else {
       let error = 'Please choose a date'
       if (!title) error = 'Please add a title'
       changeError({ error })
     }
-  }, [title, date, newCommentary, toggleShowNewCommentary])
-  const onCloseNewCommentary = useCallback(() => toggleShowNewCommentary(), [toggleShowNewCommentary])
+  }, [title, date, newArticle, toggleShowNewArticle])
+  const onCloseNewArticle = useCallback(() => toggleShowNewArticle(), [
+    toggleShowNewArticle,
+  ])
 
   return (
     <Modal show bsSize="large">
       <Modal.Header>
-        <Modal.Title>New commentary</Modal.Title>
+        <Modal.Title>New article</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <FormGroup controlId="commentaryTitle">
+        <FormGroup controlId="articleTitle">
           <ControlLabel>Title</ControlLabel>
           <FormControl
             type="text"
@@ -69,15 +71,15 @@ const NewCommentary = () => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button onClick={onCloseNewCommentary}>discard input and close</Button>
-        <Button bsStyle="primary" onClick={createNewCommentary}>
-          create new commentary
+        <Button onClick={onCloseNewArticle}>discard input and close</Button>
+        <Button bsStyle="primary" onClick={createNewArticle}>
+          create new article
         </Button>
       </Modal.Footer>
     </Modal>
   )
 }
 
-NewCommentary.displayName = 'NewCommentary'
+NewArticle.displayName = 'NewArticle'
 
-export default observer(NewCommentary)
+export default observer(NewArticle)
