@@ -1,0 +1,44 @@
+version: '3.7'
+services:
+  db:
+    # specify container name to make it easier to run commands.
+    # for example, you could run docker exec -i postgres psql -U postgres postgres < schema.sql to run an SQL file against the Postgres database
+    container_name: bb_db
+    restart: always
+    image: couchdb:latest
+    env_file:
+      - ./.env
+    networks:
+      - network
+    expose:
+      - '5984'
+      - '4369'
+      - '9100'
+    ports:
+      - '5984:5984'
+    volumes:
+      - db_data:/opt/couchdb/data
+  caddy:
+    #image: abiosoft/caddy:0.11.0-no-stats
+    build:
+      context: ./caddy
+    container_name: bb_caddy
+    networks:
+      - network
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+    # use staging url for dev
+    env_file:
+      - ./.env
+    volumes:
+      - ./caddy/Caddyfile:/etc/Caddyfile
+      - caddy_certs:/root/.caddy
+volumes:
+  db_data:
+  caddy_certs:
+networks:
+  network:

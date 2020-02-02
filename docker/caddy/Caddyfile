@@ -1,0 +1,11 @@
+erfassen.ch
+
+gzip
+log stdout
+errors stdout
+cors
+root /srv
+
+tls alex.barbalex@gmail.com {
+  # ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
