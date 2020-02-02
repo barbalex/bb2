@@ -69,5 +69,15 @@
     "not dead",
     "not ie > 0",
     "not op_mini all"
-  ]
+  ],
+  "peerDependencies": {
+    "prop-types": "15.7.2",
+    "react-is": "16.12.0",
+    "typescript": "^3.2.1"
+  },
+  "dependenciesComments": {
+    "prop-types": "needed for react-gemini-scrollbar",
+    "react-is": "needed for styled-components",
+    "typescript": "needed for react-scripts"
+  }
 }
