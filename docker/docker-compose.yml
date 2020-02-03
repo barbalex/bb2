@@ -28,15 +28,16 @@ services:
     depends_on:
       - db
     restart: always
+    # image downgrades user but that seems not to work, see: https://caddy.community/t/basic-docker-compose-setup-failing/6892/7?u=alexander_gabriel
+    user: root
     ports:
       - '80:80'
       - '443:443'
-    # use staging url for dev
     env_file:
       - ./.env
     volumes:
-      - ./caddy/Caddyfile:/etc/Caddyfile
-      - caddy_certs:/root/.caddy
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_certs:/root/.local/share/caddy
 volumes:
   db_data:
   caddy_certs:

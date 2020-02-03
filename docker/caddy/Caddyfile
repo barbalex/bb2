@@ -1,11 +1,9 @@
-erfassen.ch
+{
+  email alex.barbalex@gmail.com
+  acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
 
-gzip
-log stdout
-errors stdout
-cors
-root /srv
-
-tls alex.barbalex@gmail.com {
-  # ca https://acme-staging-v02.api.letsencrypt.org/directory
+erfassen.ch {
+  root /html
+  file_server
 }
