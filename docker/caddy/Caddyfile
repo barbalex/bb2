@@ -1,9 +1,19 @@
-{
-  email alex.barbalex@gmail.com
-  acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
-}
+#{
+#  email alex.barbalex@gmail.com
+#  acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+#}
 
-erfassen.ch {
-  root /html
-  file_server
+api.artenliste.ch {
+  proxy /api localhost:5984 {
+    transparent
+    without /api
+  }
+  tls alex.barbalex@gmail.com {
+    #ca https://acme-staging-v02.api.letsencrypt.org/directory
+  }
+}
+api.erfassen.ch {
+  tls alex.barbalex@gmail.com {
+    #ca https://acme-staging-v02.api.letsencrypt.org/directory
+  }
 }
