@@ -1,19 +1,15 @@
-#{
-#  email alex.barbalex@gmail.com
-#  acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
-#}
+{
+  email alex.barbalex@gmail.com
+  acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
 
-api.artenliste.ch {
-  proxy /api localhost:5984 {
-    transparent
-    without /api
-  }
-  tls alex.barbalex@gmail.com {
-    #ca https://acme-staging-v02.api.letsencrypt.org/directory
-  }
+artenliste.ch {
+  # try proxying these - they should not be cross-domain
+  reverse_proxy /api* localhost:5984
+  root * /html
+  file_server
 }
-api.erfassen.ch {
-  tls alex.barbalex@gmail.com {
-    #ca https://acme-staging-v02.api.letsencrypt.org/directory
-  }
-}
+
+#api.artenliste.ch {
+#  reverse_proxy * localhost:5984
+#}
