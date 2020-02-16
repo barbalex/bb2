@@ -3,13 +3,15 @@
   acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
 }
 
-artenliste.ch, www.artenliste.ch {
-  # try proxying these - they should not be cross-domain
-  reverse_proxy /api* localhost:5984
+evab.ch {
+  #reverse_proxy /api* bb_db:5984
   root * /html
   file_server
 }
 
-#api.artenliste.ch {
-#  reverse_proxy * localhost:5984
-#}
+api.evab.ch {
+  reverse_proxy * {
+    to bb_db:5984
+    header_down Access-Control-Allow-Origin *
+  }
+}
