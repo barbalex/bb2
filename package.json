@@ -37,11 +37,13 @@
     "styled-components": "5.0.0"
   },
   "devDependencies": {
-    "react-scripts": "3.3.1"
+    "copyfiles": "2.2.0",
+    "react-scripts": "3.3.1",
+    "rimraf": "3.0.2"
   },
   "scripts": {
     "dev": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && rimraf docker/caddy/html && copyfiles -u 1 \"public/**/*\" docker/caddy/html",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "analyze": "npx source-map-explorer build/static/js/main.*"
