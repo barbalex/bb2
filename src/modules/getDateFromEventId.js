@@ -1,7 +1,6 @@
-// @flow
 import moment from 'moment'
 
-export default (id: string): Date => {
+export default id => {
   const idArray = id.split('_')
   const year = idArray[1]
   const month = idArray[2]

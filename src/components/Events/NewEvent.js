@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import {
   Modal,
@@ -96,9 +95,8 @@ const enhance = compose(
   withState('date', 'changeDate', moment()),
   withState('error', 'changeError', null),
   withHandlers({
-    onChangeTitle: props => (event: Object) =>
-      props.changeTitle(event.target.value),
-    onChangeDatePicker: props => (date: Date) =>
+    onChangeTitle: props => event => props.changeTitle(event.target.value),
+    onChangeDatePicker: props => date =>
       props.changeDate(moment(date, 'DD.MM.YYYY')),
     close: props => () => props.store.events.setShowNewEvent(false),
     createNewEvent: props => () => {
@@ -124,15 +122,6 @@ const NewEvent = ({
   onChangeDatePicker,
   close,
   createNewEvent,
-}: {
-  store: Object,
-  title: string,
-  date: Date,
-  error: string,
-  onChangeTitle: () => void,
-  onChangeDatePicker: () => void,
-  close: () => void,
-  createNewEvent: () => void,
 }) => (
   <StyledModal show onHide={close} bsSize="large">
     <Modal.Header>
@@ -162,7 +151,5 @@ const NewEvent = ({
     </Modal.Footer>
   </StyledModal>
 )
-
-NewEvent.displayName = 'NewEvent'
 
 export default enhance(NewEvent)

@@ -1,4 +1,3 @@
-// @flow
 import app from 'ampersand-app'
 import map from 'lodash/map'
 import sortPublications from './sortPublications'
@@ -9,7 +8,7 @@ const options = {
   endkey: 'publications_\uffff',
 }
 
-export default async (store: Object): Promise<Array<Object>> => {
+export default async store => {
   try {
     const result = await app.db.allDocs(options)
     let publications = map(result.rows, 'doc')

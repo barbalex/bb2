@@ -1,4 +1,3 @@
-// @flow
 import { action } from 'mobx'
 import app from 'ampersand-app'
 import slug from 'speakingurl'
@@ -8,7 +7,7 @@ import getActors from '../modules/getActors'
 import sortActors from '../modules/sortActors'
 import slugOptions from '../modules/slugOptions'
 
-export default (store: Object): Object => ({
+export default store => ({
   actors: [],
 
   // cache the id, not the entire doc
@@ -24,7 +23,7 @@ export default (store: Object): Object => ({
 
   getActorsCallback: null,
 
-  getActors: action('getActors', async (): Promise<void> => {
+  getActors: action('getActors', async () => {
     try {
       const actors = await getActors(store)
       store.actors.actors = actors
@@ -39,7 +38,7 @@ export default (store: Object): Object => ({
     }
   }),
 
-  newActor: action('newActor', (category: string) => {
+  newActor: action('newActor', category => {
     const categorySlugified = slug(category, slugOptions)
     const _id = `actors_${categorySlugified}`
     const draft = true
@@ -55,7 +54,7 @@ export default (store: Object): Object => ({
     store.actors.showNewActor = show
   }),
 
-  getActor: action('getActor', (id: ?string, history: Object) => {
+  getActor: action('getActor', (id, history) => {
     if (!id) {
       history.push('/actors')
       store.actors.activeActorId = null
@@ -66,22 +65,19 @@ export default (store: Object): Object => ({
     }
   }),
 
-  updateActorsInCache: action('updateActorsInCache', (actor: Object) => {
+  updateActorsInCache: action('updateActorsInCache', actor => {
     // first update the actor in store.actors.actors
     store.actors.actors = store.actors.actors.filter(a => a._id !== actor._id)
     store.actors.actors.push(actor)
     store.actors.actors = sortActors(store.actors.actors)
   }),
 
-  revertCache: action(
-    'revertCache',
-    (oldActors: Array<Object>, oldActiveActorId: string) => {
-      store.actors.actors = oldActors
-      store.actors.activeActorId = oldActiveActorId
-    },
-  ),
+  revertCache: action('revertCache', (oldActors, oldActiveActorId) => {
+    store.actors.actors = oldActors
+    store.actors.activeActorId = oldActiveActorId
+  }),
 
-  saveActor: action('saveActor', async (actor: Object): Promise<void> => {
+  saveActor: action('saveActor', async actor => {
     // keep old cache in case of error
     const oldActors = store.actors.actors
     const oldActiveActorId = store.actors.activeActorId
@@ -102,7 +98,7 @@ export default (store: Object): Object => ({
     }
   }),
 
-  removeActorFromCache: action('removeActorFromCache', (actor: Object) => {
+  removeActorFromCache: action('removeActorFromCache', actor => {
     // first update the actor in store.actors.actors
     store.actors.actors = store.actors.actors.filter(
       thisActor => thisActor._id !== actor._id,
@@ -113,7 +109,7 @@ export default (store: Object): Object => ({
     if (isActiveActor) store.actors.activeActorId = null
   }),
 
-  removeActor: action('removeActor', (actor: Object) => {
+  removeActor: action('removeActor', actor => {
     // keep old cache in case of error
     const oldActors = store.actors.actors
     const oldActiveActorId = store.actors.activeActorId
@@ -131,11 +127,11 @@ export default (store: Object): Object => ({
 
   actorToRemove: null,
 
-  setActorToRemove: action('setActorToRemove', (actor: Object) => {
+  setActorToRemove: action('setActorToRemove', actor => {
     store.actors.actorToRemove = actor
   }),
 
-  toggleDraftOfActor: action('toggleDraftOfActor', (actor: Object) => {
+  toggleDraftOfActor: action('toggleDraftOfActor', actor => {
     if (actor.draft === true) {
       delete actor.draft
     } else {

@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useState, useCallback } from 'react'
 import {
   Modal,
@@ -16,7 +15,7 @@ import DateInput from '../Events/DateInput'
 import storeContext from '../../storeContext'
 
 const ErrorAlert = styled(Alert)`
-  magrin-bottom: 10px;
+  margin-bottom: 10px;
 `
 
 const NewArticle = () => {
@@ -32,7 +31,7 @@ const NewArticle = () => {
     [],
   )
   const onChangeDate = useCallback(
-    (date: Date) => changeDate(moment(date, 'DD.MM.YYYY')),
+    date => changeDate(moment(date, 'DD.MM.YYYY')),
     [],
   )
   const createNewArticle = useCallback(() => {
@@ -79,7 +78,5 @@ const NewArticle = () => {
     </Modal>
   )
 }
-
-NewArticle.displayName = 'NewArticle'
 
 export default observer(NewArticle)

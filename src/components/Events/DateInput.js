@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
@@ -45,13 +44,7 @@ const dateFormat = [
   'dd',
 ]
 
-const EventDate = ({
-  date,
-  onChangeDatePicker,
-}: {
-  date: Date,
-  onChangeDatePicker: () => void,
-}) => {
+const EventDate = ({ date, onChangeDatePicker }) => {
   const selected = moment(date, 'DD.MM.YYYY').isValid()
     ? new Date(moment(date, 'DD.MM.YYYY').toDate())
     : null
@@ -70,7 +63,5 @@ const EventDate = ({
     </FormGroup>
   )
 }
-
-EventDate.displayName = 'EventDate'
 
 export default observer(EventDate)

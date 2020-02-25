@@ -1,5 +1,3 @@
-// @flow
-
 import app from 'ampersand-app'
 import React from 'react'
 import {
@@ -37,13 +35,13 @@ const enhance = compose(
   withState('password', 'changePassword', ''),
   withState('loginError', 'changeLoginError', ''),
   withHandlers({
-    validEmail: props => (newEmail: string): boolean => {
+    validEmail: props => newEmail => {
       const validEmail = newEmail && validateEmail(newEmail)
       const invalidEmail = !validEmail
       props.changeInvalidEmail(invalidEmail)
       return !!validEmail
     },
-    validPassword: props => (password: boolean): boolean => {
+    validPassword: props => password => {
       const validPassword = !!password
       const invalidPassword = !validPassword
       props.changeInvalidPassword(invalidPassword)
@@ -51,14 +49,14 @@ const enhance = compose(
     },
   }),
   withHandlers({
-    validSignin: props => (newEmail: string, password: string): boolean => {
+    validSignin: props => (newEmail, password) => {
       const validEmail = props.validEmail(newEmail)
       const validPassword = props.validPassword(password)
       return validEmail && validPassword
     },
   }),
   withHandlers({
-    checkSignin: props => async (newEmail, password): Promise<void> => {
+    checkSignin: props => async (newEmail, password) => {
       if (props.validSignin(newEmail, password)) {
         try {
           await app.db.login(newEmail, password)
@@ -99,7 +97,7 @@ const enhance = compose(
     onClickLogin: props => () =>
       props.checkSignin(props.newEmail, props.password),
   }),
-  observer
+  observer,
 )
 
 const LoginForm = ({
@@ -115,19 +113,6 @@ const LoginForm = ({
   onBlurPassword,
   onAlertDismiss,
   onClickLogin,
-}: {
-  store: Object,
-  invalidEmail: boolean,
-  invalidPassword: boolean,
-  newEmail: string,
-  password: string,
-  loginError: string | Object,
-  onKeyDownEmail: () => void,
-  onKeyDownPassword: () => void,
-  onBlurEmail: () => void,
-  onBlurPassword: () => void,
-  onAlertDismiss: () => void,
-  onClickLogin: () => void,
 }) => {
   const emailInputBsStyle = invalidEmail ? 'error' : null
   const passwordInputBsStyle = invalidPassword ? 'error' : null
@@ -155,8 +140,9 @@ const LoginForm = ({
             autoFocus
           />
         </FormGroup>
-        {invalidEmail &&
-          <ValidateDivAfterRBC>Please check email</ValidateDivAfterRBC>}
+        {invalidEmail && (
+          <ValidateDivAfterRBC>Please check email</ValidateDivAfterRBC>
+        )}
       </div>
       <div className="formGroup">
         <FormGroup controlId="password">
@@ -172,20 +158,20 @@ const LoginForm = ({
             required
           />
         </FormGroup>
-        {invalidPassword &&
-          <ValidateDivAfterRBC>Please check password</ValidateDivAfterRBC>}
+        {invalidPassword && (
+          <ValidateDivAfterRBC>Please check password</ValidateDivAfterRBC>
+        )}
       </div>
-      {isError &&
+      {isError && (
         <StyledAlert bsStyle="danger" onDismiss={onAlertDismiss}>
           Error: {error}
-        </StyledAlert>}
+        </StyledAlert>
+      )}
       <Button className="btn-primary" onClick={onClickLogin}>
         log in
       </Button>
     </form>
   )
 }
-
-LoginForm.displayName = 'LoginForm'
 
 export default enhance(LoginForm)
