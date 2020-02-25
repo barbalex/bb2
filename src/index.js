@@ -21,7 +21,10 @@ import { StoreContextProvider } from './storeContext'
 // give the users an explanation instead of an empty page
 // also: MobX needs proxies
 // sadly does not work because of other errors
-if (!window.ArrayBuffer || window.Proxy === undefined) {
+if (
+  typeof window !== `undefined` &&
+  (!window.ArrayBuffer || window.Proxy === undefined)
+) {
   window.alert(
     `mediterranean-migration.com nutzt moderne Technologien, welche von Ihrem Browser nicht unterstützt werden.
 
@@ -41,16 +44,13 @@ registerServiceWorker(store)
 PouchDB.plugin(pouchdbUpsert)
 PouchDB.plugin(pouchdbAuthentication)
 
-/**
- * expose 'app' to the browser console
- * this is handy to call actions and stores in the browser console
- */
-window.app = app
+// expose 'app' to the browser console
+if (typeof window !== `undefined`) window.app = app
 /**
  * enable pouch inspector in chrome
  * (https://chrome.google.com/webstore/detail/pouchdb-inspector/hbhhpaojmpfimakffndmpmpndcmonkfa)
  */
-window.PouchDB = PouchDB
+if (typeof window !== `undefined`) window.PouchDB = PouchDB
 
 /**
  * ampersand-app is extended with app methods (=singleton)

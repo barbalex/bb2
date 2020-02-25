@@ -49,7 +49,7 @@ const enhance = compose(
     onClickGlyph: props => () => props.store.setUpdateAvailable(false),
     onClickReload: props => event => {
       event.preventDefault()
-      window.location.reload(false)
+      if (typeof window !== `undefined`) window.location.reload(false)
     },
   }),
   observer,

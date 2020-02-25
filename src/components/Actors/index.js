@@ -60,7 +60,7 @@ const PanelHeading = styled.div`
 const PanelBody = styled.div`
   padding: ${props => props['data-panelbodypadding']};
   margin-top: ${props => props['data-panelbodymargintop']};
-  max-height: ${window.innerHeight - 141}px;
+  max-height: ${typeof window !== `undefined` ? window.innerHeight - 141 : 0}px;
   overflow-y: auto;
 `
 
@@ -99,7 +99,7 @@ class Actors extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.store.actors.activeActor) {
+    if (this.props.store.actors.activeActor && typeof window !== `undefined`) {
       window.setTimeout(() => {
         this.scrollToActivePanel()
       }, 200)
@@ -112,7 +112,7 @@ class Actors extends Component {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper')
         .offsetTop
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
-      if (node.offsetTop) {
+      if (node.offsetTop && typeof window !== `undefined`) {
         window.$('html, body').animate(
           {
             scrollTop: node.offsetTop - reduce,

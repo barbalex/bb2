@@ -1,4 +1,4 @@
-//      
+//
 import React from 'react'
 import GeminiScrollbar from 'react-gemini-scrollbar'
 import { observer } from 'mobx-react-lite'
@@ -18,7 +18,11 @@ const Header = styled.div`
   font-weight: bold;
 `
 const HeaderCell = styled.div`
-  font-size: ${window.innerWidth < 500 ? 20 : 24}px !important;
+  font-size: ${typeof window !== `undefined`
+    ? window.innerWidth < 500
+      ? 20
+      : 24
+    : 1}px !important;
   padding: 5px;
   flex: 1;
   white-space: nowrap;
@@ -58,7 +62,7 @@ const HeaderRow = styled.div`
 
 const enhance = compose(observer)
 
-const Events = ({ introJumbotronHeight }                                  ) => {
+const Events = ({ introJumbotronHeight }) => {
   const headerTop = introJumbotronHeight ? introJumbotronHeight + 88 : 173
 
   return (

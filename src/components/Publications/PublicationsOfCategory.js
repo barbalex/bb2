@@ -32,7 +32,7 @@ const PanelHeading = styled.div`
   position: relative;
 `
 const PanelBody = styled.div`
-  max-height: ${window.innerHeight - 127}px;
+  max-height: ${typeof window !== `undefined` ? window.innerHeight - 127 : 1}px;
   overflow-y: auto;
 `
 
@@ -80,7 +80,10 @@ class PublicationsOfCategory extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.store.publications.activePublication) {
+    if (
+      this.props.store.publications.activePublication &&
+      typeof window !== `undefined`
+    ) {
       window.setTimeout(() => {
         this.scrollToActivePanel()
       }, 200)
@@ -95,7 +98,7 @@ class PublicationsOfCategory extends Component {
       let reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 30 : 52
       // somehow on first load the panel does not scroll up far enough
       if (more) reduce -= 5
-      if (node.offsetTop) {
+      if (node.offsetTop && typeof window !== `undefined`) {
         window.$('html, body').animate(
           {
             scrollTop: node.offsetTop - reduce,

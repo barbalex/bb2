@@ -69,17 +69,21 @@ class Events extends Component {
     store.events.getEvents([parseInt(moment().format('YYYY'), 0)])
     store.yearsOfEvents.getYearsOfEvents()
     this.setIntroComponentsHeight()
-    window.addEventListener(
-      'resize',
-      debounce(this.setIntroComponentsHeight, 50),
-    )
+    if (typeof window !== `undefined`) {
+      window.addEventListener(
+        'resize',
+        debounce(this.setIntroComponentsHeight, 50),
+      )
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener(
-      'resize',
-      debounce(this.setIntroComponentsHeight, 50),
-    )
+    if (typeof window !== `undefined`) {
+      window.removeEventListener(
+        'resize',
+        debounce(this.setIntroComponentsHeight, 50),
+      )
+    }
   }
 
   setIntroComponentsHeight = () => {

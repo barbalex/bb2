@@ -1,4 +1,4 @@
-//      
+//
 /*
  * contains email of logged in user
  * well, it is saved in localStorage as window.localStorage.email
@@ -6,29 +6,32 @@
  */
 import { action } from 'mobx'
 
-export default (store        )         => ({
-  getLogin: action('getLogin', ()          => window.localStorage.email),
+export default store => {
+  if (typeof window === `undefined`) return {}
+  return {
+    getLogin: action('getLogin', () => window.localStorage.email),
 
-  email: window.localStorage.email,
+    email: window.localStorage.email,
 
-  login: action('login', (email        , history        ) => {
-    // change email only if it was passed
-    const changeEmail = email !== undefined
-    let lsEmail = window.localStorage.email
-    if ((changeEmail && lsEmail !== email) || !email) {
-      if (changeEmail) {
-        lsEmail = email
-      } else {
-        email = lsEmail
+    login: action('login', (email, history) => {
+      // change email only if it was passed
+      const changeEmail = email !== undefined
+      let lsEmail = window.localStorage.email
+      if ((changeEmail && lsEmail !== email) || !email) {
+        if (changeEmail) {
+          lsEmail = email
+        } else {
+          email = lsEmail
+        }
+        window.localStorage.email = email
+        store.login.email = email
+        history.push('/events')
       }
-      window.localStorage.email = email
-      store.login.email = email
-      history.push('/events')
-    }
-  }),
+    }),
 
-  logout: action('logout', () => {
-    delete window.localStorage.email
-    store.login.email = ''
-  }),
-})
+    logout: action('logout', () => {
+      delete window.localStorage.email
+      store.login.email = ''
+    }),
+  }
+}

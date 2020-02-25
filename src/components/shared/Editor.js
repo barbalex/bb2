@@ -43,7 +43,7 @@ class MyEditor extends Component {
     const { doc } = this.props
 
     // scroll editor to top in pages
-    if (doc.type === 'pages') {
+    if (doc.type === 'pages' && typeof window !== `undefined`) {
       window.$('html, body').animate(
         {
           scrollTop: 140,
@@ -66,11 +66,18 @@ class MyEditor extends Component {
       articleDecoded,
     } = this.props
     // height = window - menu height - (menubar + iconbar)
-    let height = window.innerHeight - 52 - 74
-    if (['monthlyEvent', 'publication'].includes(docType)) {
+    let height =
+      typeof window !== `undefined` ? window.innerHeight - 52 - 74 : 1
+    if (
+      ['monthlyEvent', 'publication'].includes(docType) &&
+      typeof window !== `undefined`
+    ) {
       height = window.innerHeight - 52 - 74 - 76
     }
-    if (['article', 'actor'].includes(docType)) {
+    if (
+      ['article', 'actor'].includes(docType) &&
+      typeof window !== `undefined`
+    ) {
       height = window.innerHeight - 52 - 74 - 90
     }
     // need to add specific classes to the iframe body because my css will not apply otherwise

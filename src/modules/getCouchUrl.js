@@ -8,8 +8,11 @@ import isDev from 'isdev'
 
 export default () => url*/
 
-const hostname = isDev
-  ? `${window.location.hostname}:5984/bb`
-  : `${window.location.hostname}/api/bb`
+export default () => {
+  if (typeof window === `undefined`) return 'localhost:5984/bb'
+  const hostname = isDev
+    ? `${window.location.hostname}:5984/bb`
+    : `${window.location.hostname}/api/bb`
 
-export default (): string => `${window.location.protocol}//${hostname}`
+  return `${window.location.protocol}//${hostname}`
+}
