@@ -96,9 +96,9 @@ const enhance = compose(
   withState('date', 'changeDate', moment()),
   withState('error', 'changeError', null),
   withHandlers({
-    onChangeTitle: props => (event: Object): void =>
+    onChangeTitle: props => (event: Object) =>
       props.changeTitle(event.target.value),
-    onChangeDatePicker: props => (date: Date): void =>
+    onChangeDatePicker: props => (date: Date) =>
       props.changeDate(moment(date, 'DD.MM.YYYY')),
     close: props => () => props.store.events.setShowNewEvent(false),
     createNewEvent: props => () => {
@@ -112,7 +112,7 @@ const enhance = compose(
       }
     },
   }),
-  observer
+  observer,
 )
 
 const NewEvent = ({

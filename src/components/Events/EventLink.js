@@ -23,43 +23,43 @@ const StyledGlyphicon = styled(Glyphicon)`
 const enhance = compose(
   inject('store'),
   withHandlers({
-    onChangeUrl: props => (e: Object): void => {
+    onChangeUrl: props => (e: Object) => {
       // not using action because don't know
       // how to find this link in activeEvent.links...
       props.link.url = e.target.value
     },
-    onBlurUrl: props => (): void => {
+    onBlurUrl: props => () => {
       const { store, link: oldLink, link: newLink } = props
       const { activeEvent } = store.events
       const index = activeEvent.links.findIndex(
-        link => link.label === oldLink.label && link.url === oldLink.url
+        link => link.label === oldLink.label && link.url === oldLink.url,
       )
       activeEvent.links[index] = newLink
       store.events.saveEvent(activeEvent)
     },
-    onChangeLabel: props => (e: Object): void => {
+    onChangeLabel: props => (e: Object) => {
       props.link.label = e.target.value
     },
-    onBlurLabel: props => (): void => {
+    onBlurLabel: props => () => {
       const { store, link: oldLink, link: newLink } = props
       const { activeEvent } = store.events
       const index = activeEvent.links.findIndex(
-        link => link.url === oldLink.url && link.label === oldLink.label
+        link => link.url === oldLink.url && link.label === oldLink.label,
       )
       activeEvent.links[index] = newLink
       store.events.saveEvent(activeEvent)
     },
-    onRemoveLink: props => (): void => {
+    onRemoveLink: props => () => {
       const { store, link: linkToRemove } = props
       const { activeEvent } = store.events
       activeEvent.links = activeEvent.links.filter(
         link =>
-          link.label !== linkToRemove.label && link.url !== linkToRemove.url
+          link.label !== linkToRemove.label && link.url !== linkToRemove.url,
       )
       store.events.saveEvent(activeEvent)
     },
   }),
-  observer
+  observer,
 )
 
 const EventLink = ({
@@ -82,7 +82,7 @@ const EventLink = ({
   onChangeLabel: () => void,
   onBlurLabel: () => void,
   onRemoveLink: () => void,
-}) =>
+}) => (
   <Row key={index}>
     <Col sm={3} lg={2}>
       <FormGroup controlId="eventLink">
@@ -116,6 +116,7 @@ const EventLink = ({
       </OverlayTrigger>
     </Col>
   </Row>
+)
 
 EventLink.displayName = 'EventLink'
 

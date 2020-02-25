@@ -68,13 +68,13 @@ const enhance = compose(
   inject('store'),
   withRouter,
   withHandlers({
-    onClickCategory: props => (activePublicationCategory: string): void =>
+    onClickCategory: props => (activePublicationCategory: string) =>
       props.store.publications.setPublicationCategory(
         activePublicationCategory,
-        props.history
+        props.history,
       ),
   }),
-  observer
+  observer,
 )
 
 class Publications extends Component {

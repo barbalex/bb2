@@ -18,7 +18,7 @@ export default (store: Object): Object => ({
 
   get activeActor() {
     return store.actors.actors.find(
-      actor => actor._id === store.actors.activeActorId
+      actor => actor._id === store.actors.activeActorId,
     )
   },
 
@@ -39,7 +39,7 @@ export default (store: Object): Object => ({
     }
   }),
 
-  newActor: action('newActor', (category: string): void => {
+  newActor: action('newActor', (category: string) => {
     const categorySlugified = slug(category, slugOptions)
     const _id = `actors_${categorySlugified}`
     const draft = true
@@ -55,7 +55,7 @@ export default (store: Object): Object => ({
     store.actors.showNewActor = show
   }),
 
-  getActor: action('getActor', (id: ?string, history: Object): void => {
+  getActor: action('getActor', (id: ?string, history: Object) => {
     if (!id) {
       history.push('/actors')
       store.actors.activeActorId = null
@@ -66,24 +66,19 @@ export default (store: Object): Object => ({
     }
   }),
 
-  updateActorsInCache: action(
-    'updateActorsInCache',
-    (actor: Object): void => {
-      // first update the actor in store.actors.actors
-      store.actors.actors = store.actors.actors.filter(
-        a => a._id !== actor._id
-      )
-      store.actors.actors.push(actor)
-      store.actors.actors = sortActors(store.actors.actors)
-    }
-  ),
+  updateActorsInCache: action('updateActorsInCache', (actor: Object) => {
+    // first update the actor in store.actors.actors
+    store.actors.actors = store.actors.actors.filter(a => a._id !== actor._id)
+    store.actors.actors.push(actor)
+    store.actors.actors = sortActors(store.actors.actors)
+  }),
 
   revertCache: action(
     'revertCache',
-    (oldActors: Array<Object>, oldActiveActorId: string): void => {
+    (oldActors: Array<Object>, oldActiveActorId: string) => {
       store.actors.actors = oldActors
       store.actors.activeActorId = oldActiveActorId
-    }
+    },
   ),
 
   saveActor: action('saveActor', async (actor: Object): Promise<void> => {
@@ -107,21 +102,18 @@ export default (store: Object): Object => ({
     }
   }),
 
-  removeActorFromCache: action(
-    'removeActorFromCache',
-    (actor: Object): void => {
-      // first update the actor in store.actors.actors
-      store.actors.actors = store.actors.actors.filter(
-        thisActor => thisActor._id !== actor._id
-      )
-      store.actors.actors = sortActors(store.actors.actors)
-      // now update store.actors.activeActorId if it is the active actor's _id
-      const isActiveActor = store.actors.activeActorId === actor._id
-      if (isActiveActor) store.actors.activeActorId = null
-    }
-  ),
+  removeActorFromCache: action('removeActorFromCache', (actor: Object) => {
+    // first update the actor in store.actors.actors
+    store.actors.actors = store.actors.actors.filter(
+      thisActor => thisActor._id !== actor._id,
+    )
+    store.actors.actors = sortActors(store.actors.actors)
+    // now update store.actors.activeActorId if it is the active actor's _id
+    const isActiveActor = store.actors.activeActorId === actor._id
+    if (isActiveActor) store.actors.activeActorId = null
+  }),
 
-  removeActor: action('removeActor', (actor: Object): void => {
+  removeActor: action('removeActor', (actor: Object) => {
     // keep old cache in case of error
     const oldActors = store.actors.actors
     const oldActiveActorId = store.actors.activeActorId
@@ -139,11 +131,11 @@ export default (store: Object): Object => ({
 
   actorToRemove: null,
 
-  setActorToRemove: action('setActorToRemove', (actor: Object): void => {
+  setActorToRemove: action('setActorToRemove', (actor: Object) => {
     store.actors.actorToRemove = actor
   }),
 
-  toggleDraftOfActor: action('toggleDraftOfActor', (actor: Object): void => {
+  toggleDraftOfActor: action('toggleDraftOfActor', (actor: Object) => {
     if (actor.draft === true) {
       delete actor.draft
     } else {

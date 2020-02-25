@@ -12,7 +12,7 @@ import login from './login'
 import error from './error'
 import store from './store'
 
-function Store(): void {
+function Store() {
   extendObservable(this, store(this))
   this.page = observable(page(this))
   this.monthlyEvents = observable(monthlyEvents(this))

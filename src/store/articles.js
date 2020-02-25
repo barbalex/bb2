@@ -44,11 +44,10 @@ export default (store: Object): Object => ({
 
   toggleShowNewArticle: action(
     'toggleShowNewArticle',
-    (): void =>
-      (store.articles.showNewArticle = !store.articles.showNewArticle),
+    () => (store.articles.showNewArticle = !store.articles.showNewArticle),
   ),
 
-  newArticle: action('newArticle', (title: string, date: Date): void => {
+  newArticle: action('newArticle', (title: string, date: Date) => {
     const year = moment(date).year()
     const month = moment(date).format('MM')
     const day = moment(date).format('DD')
@@ -61,7 +60,7 @@ export default (store: Object): Object => ({
     store.articles.saveArticle(articleO)
   }),
 
-  getArticle: action('getArticle', (id: ?string, history: Object): void => {
+  getArticle: action('getArticle', (id: ?string, history: Object) => {
     if (!id) {
       history.push('/articles')
       store.articles.activeArticleId = null
@@ -72,21 +71,18 @@ export default (store: Object): Object => ({
     }
   }),
 
-  updateArticlesInCache: action(
-    'updateArticlesInCache',
-    (article: Object): void => {
-      // first update the article in store.articles.articles
-      store.articles.articles = store.articles.articles.filter(
-        c => c._id !== article._id,
-      )
-      store.articles.articles.push(article)
-      store.articles.articles = sortArticles(store.articles.articles)
-    },
-  ),
+  updateArticlesInCache: action('updateArticlesInCache', (article: Object) => {
+    // first update the article in store.articles.articles
+    store.articles.articles = store.articles.articles.filter(
+      c => c._id !== article._id,
+    )
+    store.articles.articles.push(article)
+    store.articles.articles = sortArticles(store.articles.articles)
+  }),
 
   revertCache: action(
     'revertCache',
-    (oldArticles: Object, oldActiveArticleId: string): void => {
+    (oldArticles: Object, oldActiveArticleId: string) => {
       store.articles.articles = oldArticles
       store.articles.activeArticleId = oldActiveArticleId
     },
@@ -115,7 +111,7 @@ export default (store: Object): Object => ({
 
   removeArticleFromCache: action(
     'removeArticleFromCache',
-    (article: Object): void => {
+    (article: Object) => {
       // first update the article in store.articles.articles
       store.articles.articles = store.articles.articles.filter(
         thisArticle => thisArticle._id !== article._id,
@@ -127,7 +123,7 @@ export default (store: Object): Object => ({
     },
   ),
 
-  removeArticle: action('removeArticle', (article: Object): void => {
+  removeArticle: action('removeArticle', (article: Object) => {
     // keep old cache in case of error
     const oldArticles = store.articles.articles
     const oldActiveArticleId = store.articles.activeArticleId
@@ -145,19 +141,16 @@ export default (store: Object): Object => ({
 
   articleToRemove: null,
 
-  setArticleToRemove: action('setArticleToRemove', (article: Object): void => {
+  setArticleToRemove: action('setArticleToRemove', (article: Object) => {
     store.articles.articleToRemove = article
   }),
 
-  toggleDraftOfArticle: action(
-    'toggleDraftOfArticle',
-    (article: Object): void => {
-      if (article.draft === true) {
-        delete article.draft
-      } else {
-        article.draft = true
-      }
-      store.articles.saveArticle(article)
-    },
-  ),
+  toggleDraftOfArticle: action('toggleDraftOfArticle', (article: Object) => {
+    if (article.draft === true) {
+      delete article.draft
+    } else {
+      article.draft = true
+    }
+    store.articles.saveArticle(article)
+  }),
 })

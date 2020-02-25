@@ -17,7 +17,7 @@ export default (store: Object): Object => ({
   get activeMonthlyEvent() {
     return store.monthlyEvents.monthlyEvents.find(
       monthlyEvent =>
-        monthlyEvent._id === store.monthlyEvents.activeMonthlyEventId
+        monthlyEvent._id === store.monthlyEvents.activeMonthlyEventId,
     )
   },
 
@@ -37,41 +37,35 @@ export default (store: Object): Object => ({
       })
     }
   }),
-  getMonthlyEvent: action(
-    'getMonthlyEvent',
-    (id: ?string, history: Object): void => {
-      if (!id) {
-        history.push('/monthlyEvents')
-        store.monthlyEvents.activeMonthlyEventId = null
-      } else {
-        store.monthlyEvents.activeMonthlyEventId = id
-        const path = getPathFromDocId(id)
-        history.push(`/${path}`)
-      }
+  getMonthlyEvent: action('getMonthlyEvent', (id: ?string, history: Object) => {
+    if (!id) {
+      history.push('/monthlyEvents')
+      store.monthlyEvents.activeMonthlyEventId = null
+    } else {
+      store.monthlyEvents.activeMonthlyEventId = id
+      const path = getPathFromDocId(id)
+      history.push(`/${path}`)
     }
-  ),
+  }),
   updateMonthlyEventsInCache: action(
     'updateMonthlyEventsInCache',
-    (monthlyEvent: Object): void => {
+    (monthlyEvent: Object) => {
       // first update the monthlyEvent in this.monthlyEvents
       store.monthlyEvents.monthlyEvents = store.monthlyEvents.monthlyEvents.filter(
-        me => me._id !== monthlyEvent._id
+        me => me._id !== monthlyEvent._id,
       )
       store.monthlyEvents.monthlyEvents.push(monthlyEvent)
       store.monthlyEvents.monthlyEvents = sortMonthlyEvents(
-        store.monthlyEvents.monthlyEvents
+        store.monthlyEvents.monthlyEvents,
       )
-    }
+    },
   ),
   revertCache: action(
     'revertCache',
-    (
-      oldMonthlyEvents: Array<Object>,
-      oldActiveMonthlyEventId: string
-    ): void => {
+    (oldMonthlyEvents: Array<Object>, oldActiveMonthlyEventId: string) => {
       store.monthlyEvents.monthlyEvents = oldMonthlyEvents
       store.monthlyEvents.activeMonthlyEventId = oldActiveMonthlyEventId
-    }
+    },
   ),
   saveMonthlyEvent: action(
     'saveMonthlyEvent',
@@ -89,13 +83,13 @@ export default (store: Object): Object => ({
       } catch (error) {
         store.monthlyEvents.revertCache(
           oldMonthlyEvents,
-          oldActiveMonthlyEventId
+          oldActiveMonthlyEventId,
         )
         store.error.showError({
           title: 'Error saving monthly event:',
           msg: error,
         })
       }
-    }
+    },
   ),
 })

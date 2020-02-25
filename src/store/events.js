@@ -19,30 +19,31 @@ export default (store: Object): Object => ({
 
   get activeEvent() {
     return store.events.events.find(
-      event => event._id === store.events.activeEventId
+      event => event._id === store.events.activeEventId,
     )
   },
 
   getEventsCallback: null,
 
-  getEvents: action('getEvents', async (years: Array<number>): Promise<
-    void
-  > => {
-    try {
-      const events = await getEvents(store, years)
-      store.events.events = events
-      if (store.events.getEventsCallback) {
-        store.events.getEventsCallback()
-        store.events.getEventsCallback = null
+  getEvents: action(
+    'getEvents',
+    async (years: Array<number>): Promise<void> => {
+      try {
+        const events = await getEvents(store, years)
+        store.events.events = events
+        if (store.events.getEventsCallback) {
+          store.events.getEventsCallback()
+          store.events.getEventsCallback = null
+        }
+      } catch (error) {
+        store.error.showError({
+          msg: error,
+        })
       }
-    } catch (error) {
-      store.error.showError({
-        msg: error,
-      })
-    }
-  }),
+    },
+  ),
 
-  newEvent: action('newEvent', (event: Object): void => {
+  newEvent: action('newEvent', (event: Object) => {
     const title = event.title
     const year = moment(event.date).year()
     const month = moment(event.date).format('MM')
@@ -72,7 +73,7 @@ export default (store: Object): Object => ({
     store.events.showNewEvent = show
   }),
 
-  getEvent: action('getEvent', (id: ?string): void => {
+  getEvent: action('getEvent', (id: ?string) => {
     if (!id) {
       store.events.activeEventId = null
     } else {
@@ -88,24 +89,21 @@ export default (store: Object): Object => ({
     }
   }),
 
-  updateEventsInCache: action(
-    'updateEventsInCache',
-    (event: Object): void => {
-      // first update the event
-      store.events.events = store.events.events.filter(
-        thisEvent => thisEvent._id !== event._id
-      )
-      store.events.events.push(event)
-      store.events.events = sortEvents(store.events.events)
-    }
-  ),
+  updateEventsInCache: action('updateEventsInCache', (event: Object) => {
+    // first update the event
+    store.events.events = store.events.events.filter(
+      thisEvent => thisEvent._id !== event._id,
+    )
+    store.events.events.push(event)
+    store.events.events = sortEvents(store.events.events)
+  }),
 
   revertCache: action(
     'revertCache',
-    (oldEvents: Array<Object>, oldActiveEventId: string): void => {
+    (oldEvents: Array<Object>, oldActiveEventId: string) => {
       store.events.events = oldEvents
       store.events.activeEventId = oldActiveEventId
-    }
+    },
   ),
 
   saveEvent: action('saveEvent', async (event: Object): Promise<void> => {
@@ -127,21 +125,18 @@ export default (store: Object): Object => ({
       })
     }
   }),
-  removeEventFromCache: action(
-    'removeEventFromCache',
-    (event: Object): void => {
-      // first update the event in store.events.events
-      store.events.events = store.events.events.filter(
-        thisEvent => thisEvent._id !== event._id
-      )
-      store.events.events = sortEvents(store.events.events)
-      // now update it in store.events.activeEvent if it is the active event
-      const isActiveEvent = store.events.activeEventId === event._id
-      if (isActiveEvent) store.events.activeEventId = null
-    }
-  ),
+  removeEventFromCache: action('removeEventFromCache', (event: Object) => {
+    // first update the event in store.events.events
+    store.events.events = store.events.events.filter(
+      thisEvent => thisEvent._id !== event._id,
+    )
+    store.events.events = sortEvents(store.events.events)
+    // now update it in store.events.activeEvent if it is the active event
+    const isActiveEvent = store.events.activeEventId === event._id
+    if (isActiveEvent) store.events.activeEventId = null
+  }),
 
-  removeEvent: action('removeEvent', (event: Object): void => {
+  removeEvent: action('removeEvent', (event: Object) => {
     // clone event in case event is immediately changed
     const myEvent = cloneDeep(event)
     // keep old cache in case of error
@@ -161,7 +156,7 @@ export default (store: Object): Object => ({
 
   eventToRemove: null,
 
-  setEventToRemove: action('setEventToRemove', (event: Object): void => {
+  setEventToRemove: action('setEventToRemove', (event: Object) => {
     store.events.eventToRemove = event
   }),
 })

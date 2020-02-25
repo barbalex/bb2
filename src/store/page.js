@@ -41,17 +41,17 @@ export default (store: Object): Object => ({
   // see: http://pouchdb.com/api.html#save_attachment > Save many attachments at once
   addPageAttachments: action(
     'addPageAttachments',
-    (doc: Object, attachments: Object): void => {
+    (doc: Object, attachments: Object) => {
       if (!doc._attachments) doc._attachments = {}
       doc._attachments = { ...doc._attachments, ...attachments }
       store.page.savePage(doc)
-    }
+    },
   ),
   removePageAttachment: action(
     'removePageAttachment',
-    (doc: Object, attachmentId: string): void => {
+    (doc: Object, attachmentId: string) => {
       delete doc._attachments[attachmentId]
       store.page.savePage(doc)
-    }
+    },
   ),
 })

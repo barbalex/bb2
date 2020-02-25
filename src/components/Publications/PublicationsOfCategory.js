@@ -25,8 +25,12 @@ const RemoveGlyphicon = styled(Glyphicon)`
   top: 6px !important;
   font-size: 1.5em;
 `
-const PanelGroup = styled.div`margin-bottom: 0 !important;`
-const PanelHeading = styled.div`position: relative;`
+const PanelGroup = styled.div`
+  margin-bottom: 0 !important;
+`
+const PanelHeading = styled.div`
+  position: relative;
+`
 const PanelBody = styled.div`
   max-height: ${window.innerHeight - 127}px;
   overflow-y: auto;
@@ -37,7 +41,7 @@ const enhance = compose(
   withRouter,
   withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
-    onClickPublication: props => (id: string, e: Object): void => {
+    onClickPublication: props => (id: string, e: Object) => {
       // prevent higher level panels from reacting
       e.stopPropagation()
       const { activePublication, getPublication } = props.store.publications
@@ -45,30 +49,27 @@ const enhance = compose(
         !activePublication || activePublication._id !== id ? id : null
       getPublication(idToGet, props.history)
     },
-    onClickEventCollapse: props => (event: Object): void => {
+    onClickEventCollapse: props => (event: Object) => {
       // prevent higher level panels from reacting
       event.stopPropagation()
     },
-    onRemovePublication: props => (
-      docToRemove: Object,
-      event: Object
-    ): void => {
+    onRemovePublication: props => (docToRemove: Object, event: Object) => {
       event.preventDefault()
       event.stopPropagation()
       props.changeDocToRemove(docToRemove)
     },
-    onToggleDraft: props => (doc: Object, event: Object): void => {
+    onToggleDraft: props => (doc: Object, event: Object) => {
       event.preventDefault()
       event.stopPropagation()
       props.store.publications.toggleDraftOfPublication(doc)
     },
-    removePublication: props => (remove: boolean): void => {
+    removePublication: props => (remove: boolean) => {
       const { docToRemove, changeDocToRemove, store } = props
       if (remove) store.publications.removePublication(docToRemove)
       changeDocToRemove(null)
     },
   }),
-  observer
+  observer,
 )
 
 class PublicationsOfCategory extends Component {
@@ -114,7 +115,7 @@ class PublicationsOfCategory extends Component {
           {
             scrollTop: node.offsetTop - reduce,
           },
-          500
+          500,
         )
       }
     }
@@ -164,7 +165,7 @@ class PublicationsOfCategory extends Component {
     let { publications, activePublication } = store.publications
     // filter only publication of current category
     publications = publications.filter(
-      publication => publication.category === category
+      publication => publication.category === category,
     )
     publications = publications.sort((a, b) => {
       if (a.order && b.order) {
@@ -215,7 +216,7 @@ class PublicationsOfCategory extends Component {
             {showEditingGlyphons && this.toggleDraftGlyph(doc)}
             {showEditingGlyphons && this.removePublicationGlyph(doc)}
           </PanelHeading>
-          {isActivePublication &&
+          {isActivePublication && (
             <div
               id={`#collapse${dIndex}`}
               className="panel-collapse collapse in"
@@ -226,7 +227,8 @@ class PublicationsOfCategory extends Component {
               <PanelBody className="panel-body">
                 <Publication />
               </PanelBody>
-            </div>}
+            </div>
+          )}
         </div>
       )
     })
@@ -245,11 +247,12 @@ class PublicationsOfCategory extends Component {
         }}
       >
         {this.publicationsComponent(category)}
-        {docToRemove &&
+        {docToRemove && (
           <ModalRemovePublication
             doc={docToRemove}
             removePublication={removePublication}
-          />}
+          />
+        )}
       </PanelGroup>
     )
   }

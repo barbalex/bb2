@@ -19,11 +19,11 @@ const ErrorAlert = styled(Alert)`
 `
 
 const categoryOptions = publicationCategories => {
-  const options = publicationCategories.map((category, index) =>
+  const options = publicationCategories.map((category, index) => (
     <option key={index + 1} value={category}>
       {category}
     </option>
-  )
+  ))
   options.unshift(<option key={0} value={null} />)
   return options
 }
@@ -34,9 +34,9 @@ const enhance = compose(
   withState('category', 'changeCategory', ''),
   withState('error', 'changeError', ''),
   withHandlers({
-    onChangeTitle: props => (event: Object): void =>
+    onChangeTitle: props => (event: Object) =>
       props.changeTitle(event.target.value),
-    onChangeCategory: props => (event: Object): void =>
+    onChangeCategory: props => (event: Object) =>
       props.changeCategory(event.target.value),
     createNewPublication: props => () => {
       const { title, category, changeError, store } = props
@@ -52,7 +52,7 @@ const enhance = compose(
       props.store.publications.setShowNewPublication(false)
     },
   }),
-  observer
+  observer,
 )
 
 const NewPublication = ({
@@ -110,10 +110,7 @@ const NewPublication = ({
             {categoryOptions(publicationCategories)}
           </FormControl>
         </FormGroup>
-        {error &&
-          <ErrorAlert bsStyle="danger">
-            {error}
-          </ErrorAlert>}
+        {error && <ErrorAlert bsStyle="danger">{error}</ErrorAlert>}
       </Modal.Body>
 
       <Modal.Footer>

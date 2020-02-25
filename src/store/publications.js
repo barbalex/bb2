@@ -18,10 +18,12 @@ export default (store: Object): Object => ({
   activePublicationId: null,
 
   get activePublication() {
-    return store.publications.publications.find(
-      publication =>
-        publication._id === store.publications.activePublicationId
-    ) || null
+    return (
+      store.publications.publications.find(
+        publication =>
+          publication._id === store.publications.activePublicationId,
+      ) || null
+    )
   },
 
   getPublicationsCallback: null,
@@ -43,7 +45,7 @@ export default (store: Object): Object => ({
 
   newPublication: action(
     'newPublication',
-    (category: string, title: string): void => {
+    (category: string, title: string) => {
       const titleSlugified = slug(title)
       const categorySlugified = slug(category, slugOptions)
       const _id = `publications_${categorySlugified}_${titleSlugified}`
@@ -54,12 +56,12 @@ export default (store: Object): Object => ({
         <ul style='padding-left: 20px;'>
           <li>Name (year). Title, where.</li>
         </ul>
-      </div>`
+      </div>`,
       )
       const publication = { _id, type, draft, category, title, article }
       store.publications.activePublicationCategory = category
       store.publications.savePublication(publication)
-    }
+    },
   ),
   showNewPublication: null,
 
@@ -67,32 +69,29 @@ export default (store: Object): Object => ({
     store.publications.showNewPublication = show
   }),
 
-  getPublication: action(
-    'getPublication',
-    (id: ?string, history: Object): void => {
-      if (!id) {
-        history.push('/publications')
-        store.publications.activePublicationId = null
-      } else {
-        store.publications.activePublicationId = id
-        const path = getPathFromDocId(id)
-        history.push(`/${path}`)
-      }
+  getPublication: action('getPublication', (id: ?string, history: Object) => {
+    if (!id) {
+      history.push('/publications')
+      store.publications.activePublicationId = null
+    } else {
+      store.publications.activePublicationId = id
+      const path = getPathFromDocId(id)
+      history.push(`/${path}`)
     }
-  ),
+  }),
 
   updatePublicationInCache: action(
     'updatePublicationInCache',
-    (publication: Object): void => {
+    (publication: Object) => {
       // first update the publication in store.publications.publications
       store.publications.publications = store.publications.publications.filter(
-        p => p._id !== publication._id
+        p => p._id !== publication._id,
       )
       store.publications.publications.push(publication)
       store.publications.publications = sortPublications(
-        store.publications.publications
+        store.publications.publications,
       )
-    }
+    },
   ),
 
   revertCache: action(
@@ -100,12 +99,12 @@ export default (store: Object): Object => ({
     (
       oldPublications: Array<Object>,
       oldActivePublicationId: string,
-      oldActivePublicationCategory: string
-    ): void => {
+      oldActivePublicationCategory: string,
+    ) => {
       store.publications.publications = oldPublications
       store.publications.activePublicationId = oldActivePublicationId
       store.publications.activePublicationCategory = oldActivePublicationCategory
-    }
+    },
   ),
 
   savePublication: action(
@@ -128,73 +127,70 @@ export default (store: Object): Object => ({
         store.publications.revertCache(
           oldPublications,
           oldActivePublicationId,
-          oldActivePublicationCategory
+          oldActivePublicationCategory,
         )
         store.error.showError({
           title: 'Error saving publication:',
           msg: error,
         })
       }
-    }
+    },
   ),
 
   removePublicationFromCache: action(
     'removePublicationFromCache',
-    (publication: Object): void => {
+    (publication: Object) => {
       // first update the publication in store.publications.publications
       store.publications.publications = store.publications.publications.filter(
-        p => p._id !== publication._id
+        p => p._id !== publication._id,
       )
       store.publications.publications = sortPublications(
-        store.publications.publications
+        store.publications.publications,
       )
       // now update store.publications.activePublicationId if it is the active publication's _id
       const isActivePublication =
         store.publications.activePublicationId === publication._id
       if (isActivePublication) store.publications.activePublicationId = null
-    }
+    },
   ),
 
-  removePublication: action(
-    'removePublication',
-    (publication: Object): void => {
-      // keep old cache in case of error
-      const oldPublications = store.publications.publications
-      const oldActivePublicationId = store.publications.activePublicationId
-      const oldActivePublicationCategory =
-        store.publications.activePublicationCategory
-      // optimistically remove publication from cache
-      store.publications.removePublicationFromCache(publication)
-      app.db.remove(publication).catch(error => {
-        // oops. Revert optimistic removal
-        store.publications.revertCache(
-          oldPublications,
-          oldActivePublicationId,
-          oldActivePublicationCategory
-        )
-        store.error.showError({
-          title: 'Error removing publication:',
-          msg: error,
-        })
+  removePublication: action('removePublication', (publication: Object) => {
+    // keep old cache in case of error
+    const oldPublications = store.publications.publications
+    const oldActivePublicationId = store.publications.activePublicationId
+    const oldActivePublicationCategory =
+      store.publications.activePublicationCategory
+    // optimistically remove publication from cache
+    store.publications.removePublicationFromCache(publication)
+    app.db.remove(publication).catch(error => {
+      // oops. Revert optimistic removal
+      store.publications.revertCache(
+        oldPublications,
+        oldActivePublicationId,
+        oldActivePublicationCategory,
+      )
+      store.error.showError({
+        title: 'Error removing publication:',
+        msg: error,
       })
-    }
-  ),
+    })
+  }),
 
   toggleDraftOfPublication: action(
     'toggleDraftOfPublication',
-    (publication: Object): void => {
+    (publication: Object) => {
       if (publication.draft === true) {
         delete publication.draft
       } else {
         publication.draft = true
       }
       store.publications.savePublication(publication)
-    }
+    },
   ),
 
-  getPublicationCategories: action('getPublicationCategories', (): void => {
+  getPublicationCategories: action('getPublicationCategories', () => {
     const allCategories = store.publications.publications.map(
-      publication => publication.category
+      publication => publication.category,
     )
     const publicationCategories = uniq(allCategories)
     return publicationCategories.sort()
@@ -202,13 +198,13 @@ export default (store: Object): Object => ({
 
   setPublicationCategory: action(
     'setPublicationCategory',
-    (category: Object, history: Object): void => {
+    (category: Object, history: Object) => {
       if (store.publications.activePublicationCategory !== category) {
         store.publications.activePublicationId = null
       }
       store.publications.activePublicationCategory = category
       const categorySlugified = slug(category)
       history.push(`/publications/${categorySlugified}`)
-    }
+    },
   ),
 })

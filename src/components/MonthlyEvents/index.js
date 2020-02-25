@@ -73,7 +73,7 @@ const enhance = compose(
   withRouter,
   withState('activeYear', 'changeActiveYear', null),
   withHandlers({
-    onClickYear: props => (activeYear: number): void => {
+    onClickYear: props => (activeYear: number) => {
       const { changeActiveYear, store } = props
       changeActiveYear(activeYear)
       // make sure no monthlyEvent is loaded
@@ -81,7 +81,7 @@ const enhance = compose(
       store.monthlyEvents.getMonthlyEvent(null, props.history)
     },
   }),
-  observer
+  observer,
 )
 
 class MonthlyEvents extends Component {

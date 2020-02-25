@@ -26,7 +26,7 @@ const enhance = compose(
   inject('store'),
   withRouter,
   withHandlers({
-    onClickMonthlyEvent: props => (id: string, event: Object): void => {
+    onClickMonthlyEvent: props => (id: string, event: Object) => {
       const { activeMonthlyEvent, getMonthlyEvent } = props.store.monthlyEvents
       // prevent higher level panels from reacting
       event.stopPropagation()
@@ -37,12 +37,12 @@ const enhance = compose(
           : null
       getMonthlyEvent(idToGet, props.history)
     },
-    onClickEventCollapse: props => (event: Object): void => {
+    onClickEventCollapse: props => (event: Object) => {
       // prevent higher level panels from reacting
       event.stopPropagation()
     },
   }),
-  observer
+  observer,
 )
 
 class MonthlyEventsOfYear extends Component {
@@ -89,7 +89,7 @@ class MonthlyEventsOfYear extends Component {
           {
             scrollTop: node.offsetTop - reduce,
           },
-          500
+          500,
         )
       }
     }
@@ -100,7 +100,7 @@ class MonthlyEventsOfYear extends Component {
     let { monthlyEvents, activeMonthlyEvent } = store.monthlyEvents
     // filter only events of current year
     monthlyEvents = monthlyEvents.filter(
-      monthlyEvent => getYearFromEventId(monthlyEvent._id) === year
+      monthlyEvent => getYearFromEventId(monthlyEvent._id) === year,
     )
     return monthlyEvents.map((doc, dIndex) => {
       const isActiveMonthlyEvent = has(activeMonthlyEvent, '_id')
