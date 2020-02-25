@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
@@ -29,12 +29,12 @@ const AttachedImagesList = ({
   urlCopied,
   onCopyUrl,
   changeUrlCopied,
-}: {
-  doc: Object,
-  urlCopied: string,
-  onCopyUrl: () => void,
-  changeUrlCopied: () => void,
-}) => {
+}   
+              
+                    
+                        
+                              
+ ) => {
   console.log('rendering AttachedImagesList')
   return (
     <Container className="media">

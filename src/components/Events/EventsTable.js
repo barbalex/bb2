@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import GeminiScrollbar from 'react-gemini-scrollbar'
 import { observer } from 'mobx-react-lite'
@@ -58,7 +58,7 @@ const HeaderRow = styled.div`
 
 const enhance = compose(observer)
 
-const Events = ({ introJumbotronHeight }: { introJumbotronHeight: number }) => {
+const Events = ({ introJumbotronHeight }                                  ) => {
   const headerTop = introJumbotronHeight ? introJumbotronHeight + 88 : 173
 
   return (

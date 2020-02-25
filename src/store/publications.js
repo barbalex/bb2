@@ -1,4 +1,4 @@
-// @flow
+//      
 import { action } from 'mobx'
 import app from 'ampersand-app'
 import { Base64 } from 'js-base64'
@@ -10,7 +10,7 @@ import getPathFromDocId from '../modules/getPathFromDocId'
 import sortPublications from '../modules/sortPublications'
 import slugOptions from '../modules/slugOptions'
 
-export default (store: Object): Object => ({
+export default (store        )         => ({
   publications: [],
 
   activePublicationCategory: null,
@@ -28,7 +28,7 @@ export default (store: Object): Object => ({
 
   getPublicationsCallback: null,
 
-  getPublications: action('getPublications', async (): Promise<void> => {
+  getPublications: action('getPublications', async ()                => {
     try {
       const publications = await getPublications(store)
       store.publications.publications = publications
@@ -45,7 +45,7 @@ export default (store: Object): Object => ({
 
   newPublication: action(
     'newPublication',
-    (category: string, title: string) => {
+    (category        , title        ) => {
       const titleSlugified = slug(title)
       const categorySlugified = slug(category, slugOptions)
       const _id = `publications_${categorySlugified}_${titleSlugified}`
@@ -69,7 +69,7 @@ export default (store: Object): Object => ({
     store.publications.showNewPublication = show
   }),
 
-  getPublication: action('getPublication', (id: ?string, history: Object) => {
+  getPublication: action('getPublication', (id         , history        ) => {
     if (!id) {
       history.push('/publications')
       store.publications.activePublicationId = null
@@ -82,7 +82,7 @@ export default (store: Object): Object => ({
 
   updatePublicationInCache: action(
     'updatePublicationInCache',
-    (publication: Object) => {
+    (publication        ) => {
       // first update the publication in store.publications.publications
       store.publications.publications = store.publications.publications.filter(
         p => p._id !== publication._id,
@@ -97,9 +97,9 @@ export default (store: Object): Object => ({
   revertCache: action(
     'revertCache',
     (
-      oldPublications: Array<Object>,
-      oldActivePublicationId: string,
-      oldActivePublicationCategory: string,
+      oldPublications               ,
+      oldActivePublicationId        ,
+      oldActivePublicationCategory        ,
     ) => {
       store.publications.publications = oldPublications
       store.publications.activePublicationId = oldActivePublicationId
@@ -109,7 +109,7 @@ export default (store: Object): Object => ({
 
   savePublication: action(
     'savePublication',
-    async (publication: Object): Promise<void> => {
+    async (publication        )                => {
       // keep old cache in case of error
       const oldPublications = store.publications.publications
       const oldActivePublicationId = store.publications.activePublicationId
@@ -139,7 +139,7 @@ export default (store: Object): Object => ({
 
   removePublicationFromCache: action(
     'removePublicationFromCache',
-    (publication: Object) => {
+    (publication        ) => {
       // first update the publication in store.publications.publications
       store.publications.publications = store.publications.publications.filter(
         p => p._id !== publication._id,
@@ -154,7 +154,7 @@ export default (store: Object): Object => ({
     },
   ),
 
-  removePublication: action('removePublication', (publication: Object) => {
+  removePublication: action('removePublication', (publication        ) => {
     // keep old cache in case of error
     const oldPublications = store.publications.publications
     const oldActivePublicationId = store.publications.activePublicationId
@@ -178,7 +178,7 @@ export default (store: Object): Object => ({
 
   toggleDraftOfPublication: action(
     'toggleDraftOfPublication',
-    (publication: Object) => {
+    (publication        ) => {
       if (publication.draft === true) {
         delete publication.draft
       } else {
@@ -198,7 +198,7 @@ export default (store: Object): Object => ({
 
   setPublicationCategory: action(
     'setPublicationCategory',
-    (category: Object, history: Object) => {
+    (category        , history        ) => {
       if (store.publications.activePublicationCategory !== category) {
         store.publications.activePublicationId = null
       }

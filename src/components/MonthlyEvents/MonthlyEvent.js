@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
@@ -46,14 +46,14 @@ const MonthlyEvent = ({
   showMeta,
   onClickMeta,
   onCloseMeta,
-}: {
-  store: Object,
-  year: string,
-  month: string,
-  showMeta: boolean,
-  onClickMeta: () => void,
-  onCloseMeta: () => void,
-}) => {
+}   
+                
+               
+                
+                    
+                          
+                          
+ ) => {
   const articleEncoded = store.monthlyEvents.activeMonthlyEvent.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
 

@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { Component } from 'react'
 import sortBy from 'lodash/sortBy'
 import { observer, inject } from 'mobx-react'
@@ -68,7 +68,7 @@ const enhance = compose(
   inject('store'),
   withRouter,
   withHandlers({
-    onClickCategory: props => (activePublicationCategory: string) =>
+    onClickCategory: props => (activePublicationCategory        ) =>
       props.store.publications.setPublicationCategory(
         activePublicationCategory,
         props.history,
@@ -78,12 +78,12 @@ const enhance = compose(
 )
 
 class Publications extends Component {
-  displayName: 'Publications'
+                             
 
-  props: {
-    store: Object,
-    onClickCategory: () => void,
-  }
+          
+                  
+                                
+   
 
   componentDidMount() {
     this.props.store.publications.getPublications()

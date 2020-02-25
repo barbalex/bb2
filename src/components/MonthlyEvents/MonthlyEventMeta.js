@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { Component } from 'react'
 import {
   Modal,
@@ -23,16 +23,16 @@ class MonthlyEventsMeta extends Component {
     }
   }
 
-  displayName: 'MonthlyEventsMeta'
+                                  
 
-  props: {
-    store: Object,
-    year: string,
-    month: string,
-    arrivals: number,
-    victims: number,
-    onCloseMeta: () => void,
-  }
+          
+                  
+                 
+                  
+                     
+                    
+                            
+   
 
   onChangeValue = (property, event) => {
     const { store } = this.props

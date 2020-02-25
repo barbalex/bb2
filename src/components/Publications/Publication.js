@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import { Base64 } from 'js-base64'
 import { observer, inject } from 'mobx-react'
@@ -22,7 +22,7 @@ const Container = styled.div`
 
 const enhance = compose(inject('store'), observer)
 
-const Publication = ({ store }: { store: Object }) => {
+const Publication = ({ store }                   ) => {
   const articleEncoded = store.publications.activePublication.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
 

@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
@@ -94,7 +94,7 @@ const enhance = compose(
 )
 
 class Actors extends Component {
-  displayName: 'Actors'
+                       
 
   componentDidMount() {
     this.props.store.actors.getActors()

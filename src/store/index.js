@@ -1,4 +1,4 @@
-// @flow
+//      
 import { observable, extendObservable } from 'mobx'
 
 import page from './page'

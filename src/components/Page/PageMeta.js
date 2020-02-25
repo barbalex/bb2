@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
@@ -12,10 +12,10 @@ const enhance = compose(observer)
 const PageMeta = ({
   doc,
   onCloseMeta,
-}: {
-  doc: Object,
-  onCloseMeta: () => void,
-}) => {
+}   
+              
+                          
+ ) => {
   console.log('rendering PageMeta')
   return (
     <Modal show bsSize="large">

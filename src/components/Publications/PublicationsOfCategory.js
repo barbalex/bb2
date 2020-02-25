@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
@@ -41,7 +41,7 @@ const enhance = compose(
   withRouter,
   withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
-    onClickPublication: props => (id: string, e: Object) => {
+    onClickPublication: props => (id        , e        ) => {
       // prevent higher level panels from reacting
       e.stopPropagation()
       const { activePublication, getPublication } = props.store.publications
@@ -49,21 +49,21 @@ const enhance = compose(
         !activePublication || activePublication._id !== id ? id : null
       getPublication(idToGet, props.history)
     },
-    onClickEventCollapse: props => (event: Object) => {
+    onClickEventCollapse: props => (event        ) => {
       // prevent higher level panels from reacting
       event.stopPropagation()
     },
-    onRemovePublication: props => (docToRemove: Object, event: Object) => {
+    onRemovePublication: props => (docToRemove        , event        ) => {
       event.preventDefault()
       event.stopPropagation()
       props.changeDocToRemove(docToRemove)
     },
-    onToggleDraft: props => (doc: Object, event: Object) => {
+    onToggleDraft: props => (doc        , event        ) => {
       event.preventDefault()
       event.stopPropagation()
       props.store.publications.toggleDraftOfPublication(doc)
     },
-    removePublication: props => (remove: boolean) => {
+    removePublication: props => (remove         ) => {
       const { docToRemove, changeDocToRemove, store } = props
       if (remove) store.publications.removePublication(docToRemove)
       changeDocToRemove(null)
@@ -73,19 +73,19 @@ const enhance = compose(
 )
 
 class PublicationsOfCategory extends Component {
-  displayName: 'PublicationOfCategory'
+                                      
 
-  propTypes: {
-    store: Object,
-    category: string,
-    docToRemove: Object,
-    changeDocToRemove: () => void,
-    onClickPublication: () => void,
-    onClickEventCollapse: () => void,
-    onRemovePublication: () => void,
-    onToggleDraft: () => void,
-    removePublication: () => void,
-  }
+              
+                  
+                     
+                        
+                                  
+                                   
+                                     
+                                    
+                              
+                                  
+   
 
   componentDidMount() {
     // somehow on first load the panel does not scroll up far enough

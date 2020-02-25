@@ -7,8 +7,8 @@ import {
 } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
-import Header from '../components/Header'
-import Navbar from '../components/Navbar'
+import Header from './Header'
+import Navbar from './Navbar'
 import AsyncPage from './AsyncPage'
 import AsyncEvents from './AsyncEvents'
 import AsyncArticles from './AsyncArticles'

@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { useContext, useCallback } from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'

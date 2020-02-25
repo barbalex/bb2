@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { Component } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { Base64 } from 'js-base64'
@@ -39,20 +39,20 @@ const enhance = compose(
 )
 
 class MyEditor extends Component {
-  displayName: 'Editor'
+                       
 
-  props: {
-    store: Object,
-    doc: Object,
-    docType: string,
-    articleDecoded: string,
-    onSavePageArticle: () => void,
-    onSaveMonthlyEventArticle: () => void,
-    onSavePublicationArticle: () => void,
-    onSaveArticleArticle: () => void,
-    onSaveActorArticle: () => void,
-    changeDoc: () => void,
-  }
+          
+                  
+                
+                    
+                           
+                                  
+                                          
+                                         
+                                     
+                                   
+                          
+   
 
   componentDidMount() {
     const { doc } = this.props

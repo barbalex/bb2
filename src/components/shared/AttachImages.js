@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import Dropzone from 'react-dropzone'
 import { observer, inject } from 'mobx-react'
@@ -69,11 +69,11 @@ const AttachImages = ({
   store,
   doc,
   onDrop,
-}: {
-  store: Object,
-  doc: Object,
-  onDrop: () => void,
-}) => (
+}   
+                
+              
+                     
+ ) => (
   <Container>
     <StyledDropzone onDrop={onDrop} accept="image/*">
       {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {

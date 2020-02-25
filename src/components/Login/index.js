@@ -1,4 +1,4 @@
-// @flow
+//      
 
 import React from 'react'
 import { Button } from 'react-bootstrap'
@@ -20,10 +20,10 @@ const enhance = compose(
 const Login = ({
   store,
   onClickLogout,
-}: {
-  store: Object,
-  onClickLogout: () => void,
-}) =>
+}   
+                
+                            
+ ) =>
   <DocumentTitle title="blue-borders | Login">
     <div>
       <h1>Login</h1>

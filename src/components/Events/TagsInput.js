@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
@@ -45,10 +45,10 @@ const tagIcon = option =>
 const EventTags = ({
   store,
   onChangeTag,
-}: {
-  store: Object,
-  onChangeTag: () => void,
-}) =>
+}   
+                
+                          
+ ) =>
   <Container>
     <Label>Tags</Label>
     <div className="event-tags">

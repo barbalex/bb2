@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { PanelGroup } from 'react-bootstrap'
@@ -26,7 +26,7 @@ const enhance = compose(
   inject('store'),
   withRouter,
   withHandlers({
-    onClickMonthlyEvent: props => (id: string, event: Object) => {
+    onClickMonthlyEvent: props => (id        , event        ) => {
       const { activeMonthlyEvent, getMonthlyEvent } = props.store.monthlyEvents
       // prevent higher level panels from reacting
       event.stopPropagation()
@@ -37,7 +37,7 @@ const enhance = compose(
           : null
       getMonthlyEvent(idToGet, props.history)
     },
-    onClickEventCollapse: props => (event: Object) => {
+    onClickEventCollapse: props => (event        ) => {
       // prevent higher level panels from reacting
       event.stopPropagation()
     },
@@ -46,14 +46,14 @@ const enhance = compose(
 )
 
 class MonthlyEventsOfYear extends Component {
-  displayName: 'MonthlyEventsOfYear'
+                                    
 
-  props: {
-    store: Object,
-    year: string,
-    onClickMonthlyEvent: () => void,
-    onClickEventCollapse: () => void,
-  }
+          
+                  
+                 
+                                    
+                                     
+   
 
   componentDidMount() {
     // somehow on first load the panel does not scroll up far enough

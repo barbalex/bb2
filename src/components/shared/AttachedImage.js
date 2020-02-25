@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import {
   Button,
@@ -34,13 +34,13 @@ const AttachedImage = ({
   attName,
   urlCopied,
   onCopyUrl,
-}: {
-  store: Object,
-  doc: Object,
-  attName: string,
-  urlCopied: string,
-  onCopyUrl: () => void,
-}) => {
+}   
+                
+              
+                  
+                    
+                        
+ ) => {
   const id = doc._id
   const url = `${getCouchUrl()}/${id}/${attName}`
   const urlCopiedButtonBsStyle = urlCopied === url ? 'success' : 'default'

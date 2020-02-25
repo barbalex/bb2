@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
@@ -26,11 +26,11 @@ const RemoveEventGlyph = ({
   store,
   event,
   onRemoveEvent,
-}: {
-  store: Object,
-  event: Object,
-  onRemoveEvent: () => void,
-}) =>
+}   
+                
+                
+                            
+ ) =>
   <OverlayTrigger
     placement="top"
     overlay={<Tooltip id="removeThisEvent">remove</Tooltip>}

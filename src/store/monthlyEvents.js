@@ -1,4 +1,4 @@
-// @flow
+//      
 import { action } from 'mobx'
 import app from 'ampersand-app'
 
@@ -6,7 +6,7 @@ import getMonthlyEvents from '../modules/getMonthlyEvents'
 import getPathFromDocId from '../modules/getPathFromDocId'
 import sortMonthlyEvents from '../modules/sortMonthlyEvents'
 
-export default (store: Object): Object => ({
+export default (store        )         => ({
   monthlyEvents: [],
 
   // cache the id, not the entire doc
@@ -23,7 +23,7 @@ export default (store: Object): Object => ({
 
   getMonthlyEventsCallback: null,
 
-  getMonthlyEvents: action('getMonthlyEvents', async (): Promise<void> => {
+  getMonthlyEvents: action('getMonthlyEvents', async ()                => {
     try {
       const monthlyEvents = await getMonthlyEvents(store)
       store.monthlyEvents.monthlyEvents = monthlyEvents
@@ -37,7 +37,7 @@ export default (store: Object): Object => ({
       })
     }
   }),
-  getMonthlyEvent: action('getMonthlyEvent', (id: ?string, history: Object) => {
+  getMonthlyEvent: action('getMonthlyEvent', (id         , history        ) => {
     if (!id) {
       history.push('/monthlyEvents')
       store.monthlyEvents.activeMonthlyEventId = null
@@ -49,7 +49,7 @@ export default (store: Object): Object => ({
   }),
   updateMonthlyEventsInCache: action(
     'updateMonthlyEventsInCache',
-    (monthlyEvent: Object) => {
+    (monthlyEvent        ) => {
       // first update the monthlyEvent in this.monthlyEvents
       store.monthlyEvents.monthlyEvents = store.monthlyEvents.monthlyEvents.filter(
         me => me._id !== monthlyEvent._id,
@@ -62,14 +62,14 @@ export default (store: Object): Object => ({
   ),
   revertCache: action(
     'revertCache',
-    (oldMonthlyEvents: Array<Object>, oldActiveMonthlyEventId: string) => {
+    (oldMonthlyEvents               , oldActiveMonthlyEventId        ) => {
       store.monthlyEvents.monthlyEvents = oldMonthlyEvents
       store.monthlyEvents.activeMonthlyEventId = oldActiveMonthlyEventId
     },
   ),
   saveMonthlyEvent: action(
     'saveMonthlyEvent',
-    async (monthlyEvent: Object): Promise<void> => {
+    async (monthlyEvent        )                => {
       // keep old cache in case of error
       const oldMonthlyEvents = store.monthlyEvents.monthlyEvents
       const oldActiveMonthlyEventId = store.monthlyEvents.activeMonthlyEventId

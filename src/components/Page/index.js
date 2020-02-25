@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
@@ -52,13 +52,13 @@ const Page = ({
   onClickMeta,
   onCloseMeta,
   changeShowMeta,
-}: {
-  store: Object,
-  showMeta: boolean,
-  onClickMeta: () => void,
-  onCloseMeta: () => void,
-  changeShowMeta: () => void,
-}) => {
+}   
+                
+                    
+                          
+                          
+                             
+ ) => {
   const { activePage } = store.page
   const articleEncoded = activePage.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null

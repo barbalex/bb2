@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
@@ -19,12 +19,12 @@ const ModalRemovePublication = ({
   doc,
   remove,
   abort,
-}: {
-  store: Object,
-  doc: Object,
-  remove: () => void,
-  abort: () => void,
-}) => (
+}   
+                
+              
+                     
+                    
+ ) => (
   <div className="static-modal">
     <Modal.Dialog>
       <Modal.Header>

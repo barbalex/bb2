@@ -1,4 +1,4 @@
-// @flow
+//      
 import React from 'react'
 import {
   Modal,
@@ -34,9 +34,9 @@ const enhance = compose(
   withState('category', 'changeCategory', ''),
   withState('error', 'changeError', ''),
   withHandlers({
-    onChangeTitle: props => (event: Object) =>
+    onChangeTitle: props => (event        ) =>
       props.changeTitle(event.target.value),
-    onChangeCategory: props => (event: Object) =>
+    onChangeCategory: props => (event        ) =>
       props.changeCategory(event.target.value),
     createNewPublication: props => () => {
       const { title, category, changeError, store } = props
@@ -67,19 +67,19 @@ const NewPublication = ({
   onChangeCategory,
   createNewPublication,
   close,
-}: {
-  store: Object,
-  title: string,
-  category: string,
-  error: string,
-  changeTitle: () => void,
-  changeCategory: () => void,
-  changeError: () => void,
-  onChangeTitle: () => void,
-  onChangeCategory: () => void,
-  createNewPublication: () => void,
-  close: () => void,
-}) => {
+}   
+                
+                
+                   
+                
+                          
+                             
+                          
+                            
+                               
+                                   
+                    
+ ) => {
   const publicationCategories = store.publications.getPublicationCategories()
 
   return (

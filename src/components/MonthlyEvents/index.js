@@ -1,4 +1,4 @@
-// @flow
+//      
 import React, { Component } from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
 import uniq from 'lodash/uniq'
@@ -73,7 +73,7 @@ const enhance = compose(
   withRouter,
   withState('activeYear', 'changeActiveYear', null),
   withHandlers({
-    onClickYear: props => (activeYear: number) => {
+    onClickYear: props => (activeYear        ) => {
       const { changeActiveYear, store } = props
       changeActiveYear(activeYear)
       // make sure no monthlyEvent is loaded
@@ -85,14 +85,14 @@ const enhance = compose(
 )
 
 class MonthlyEvents extends Component {
-  displayName: 'MonthlyEvents'
+                              
 
-  props: {
-    store: Object,
-    activeYear: number,
-    changeActiveYear: () => void,
-    onClickYear: () => void,
-  }
+          
+                  
+                       
+                                 
+                            
+   
 
   componentDidMount() {
     this.props.store.monthlyEvents.getMonthlyEvents()
