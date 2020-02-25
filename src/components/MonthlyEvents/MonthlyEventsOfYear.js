@@ -1,4 +1,4 @@
-//      
+//
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { PanelGroup } from 'react-bootstrap'
@@ -26,7 +26,7 @@ const enhance = compose(
   inject('store'),
   withRouter,
   withHandlers({
-    onClickMonthlyEvent: props => (id        , event        ) => {
+    onClickMonthlyEvent: props => (id, event) => {
       const { activeMonthlyEvent, getMonthlyEvent } = props.store.monthlyEvents
       // prevent higher level panels from reacting
       event.stopPropagation()
@@ -37,7 +37,7 @@ const enhance = compose(
           : null
       getMonthlyEvent(idToGet, props.history)
     },
-    onClickEventCollapse: props => (event        ) => {
+    onClickEventCollapse: props => event => {
       // prevent higher level panels from reacting
       event.stopPropagation()
     },
@@ -46,15 +46,6 @@ const enhance = compose(
 )
 
 class MonthlyEventsOfYear extends Component {
-                                    
-
-          
-                  
-                 
-                                    
-                                     
-   
-
   componentDidMount() {
     // somehow on first load the panel does not scroll up far enough
     // call for more
@@ -76,7 +67,6 @@ class MonthlyEventsOfYear extends Component {
   }
 
   scrollToActivePanel = more => {
-    // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activeMonthlyEventPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper')
@@ -117,7 +107,6 @@ class MonthlyEventsOfYear extends Component {
         <div
           key={dIndex}
           ref={c => {
-            // $FlowIssue
             this[ref] = c
           }}
           className="panel panel-default month"
@@ -171,7 +160,6 @@ class MonthlyEventsOfYear extends Component {
         defaultActiveKey={activeEventId}
         id={year}
         ref={c => {
-          // $FlowIssue
           this[year] = c
         }}
         accordion

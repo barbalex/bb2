@@ -1,4 +1,4 @@
-//      
+//
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
@@ -94,8 +94,6 @@ const enhance = compose(
 )
 
 class Actors extends Component {
-                       
-
   componentDidMount() {
     this.props.store.actors.getActors()
   }
@@ -109,7 +107,6 @@ class Actors extends Component {
   }
 
   scrollToActivePanel = () => {
-    // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activeActorPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper')
@@ -171,7 +168,6 @@ class Actors extends Component {
           <div
             key={doc._id}
             ref={c => {
-              // $FlowIssue
               this[ref] = c
             }}
             className="panel panel-default"

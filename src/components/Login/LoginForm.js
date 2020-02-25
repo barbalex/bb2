@@ -118,7 +118,6 @@ const LoginForm = ({
   const passwordInputBsStyle = invalidPassword ? 'error' : null
   let error = loginError
   if (isObject(loginError)) {
-    // $FlowIssue
     error = loginError.message
   }
   const isError = error && error.length > 0

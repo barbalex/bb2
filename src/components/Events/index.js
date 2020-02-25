@@ -88,8 +88,7 @@ class Events extends Component {
       changeIntroJumbotronHeight,
     } = this.props
     const introJumbotronDomNode = this.introJumbotron
-      ? // $FlowIssue
-        ReactDOM.findDOMNode(this.introJumbotron)
+      ? ReactDOM.findDOMNode(this.introJumbotron)
       : null
     const introJumbotronHeight = introJumbotronDomNode
       ? introJumbotronDomNode.clientHeight
@@ -132,7 +131,6 @@ class Events extends Component {
         <Container className="events">
           <IntroJumbotron
             ref={j => {
-              // $FlowIssue
               this.introJumbotron = j
             }}
           />

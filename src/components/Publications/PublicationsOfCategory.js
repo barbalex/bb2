@@ -1,4 +1,4 @@
-//      
+//
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
@@ -41,7 +41,7 @@ const enhance = compose(
   withRouter,
   withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
-    onClickPublication: props => (id        , e        ) => {
+    onClickPublication: props => (id, e) => {
       // prevent higher level panels from reacting
       e.stopPropagation()
       const { activePublication, getPublication } = props.store.publications
@@ -49,21 +49,21 @@ const enhance = compose(
         !activePublication || activePublication._id !== id ? id : null
       getPublication(idToGet, props.history)
     },
-    onClickEventCollapse: props => (event        ) => {
+    onClickEventCollapse: props => event => {
       // prevent higher level panels from reacting
       event.stopPropagation()
     },
-    onRemovePublication: props => (docToRemove        , event        ) => {
+    onRemovePublication: props => (docToRemove, event) => {
       event.preventDefault()
       event.stopPropagation()
       props.changeDocToRemove(docToRemove)
     },
-    onToggleDraft: props => (doc        , event        ) => {
+    onToggleDraft: props => (doc, event) => {
       event.preventDefault()
       event.stopPropagation()
       props.store.publications.toggleDraftOfPublication(doc)
     },
-    removePublication: props => (remove         ) => {
+    removePublication: props => remove => {
       const { docToRemove, changeDocToRemove, store } = props
       if (remove) store.publications.removePublication(docToRemove)
       changeDocToRemove(null)
@@ -73,20 +73,6 @@ const enhance = compose(
 )
 
 class PublicationsOfCategory extends Component {
-                                      
-
-              
-                  
-                     
-                        
-                                  
-                                   
-                                     
-                                    
-                              
-                                  
-   
-
   componentDidMount() {
     // somehow on first load the panel does not scroll up far enough
     // call for more
@@ -102,7 +88,6 @@ class PublicationsOfCategory extends Component {
   }
 
   scrollToActivePanel = more => {
-    // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activePublicationPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper')
@@ -190,7 +175,6 @@ class PublicationsOfCategory extends Component {
         <div
           key={dIndex}
           ref={c => {
-            // $FlowIssue
             this[ref] = c
           }}
           className="panel panel-default month"
@@ -242,7 +226,6 @@ class PublicationsOfCategory extends Component {
         className="panel-group"
         id={category}
         ref={c => {
-          // $FlowIssue
           this[category] = c
         }}
       >

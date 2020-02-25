@@ -1,4 +1,4 @@
-//      
+//
 import React, { Component } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { Base64 } from 'js-base64'
@@ -39,21 +39,6 @@ const enhance = compose(
 )
 
 class MyEditor extends Component {
-                       
-
-          
-                  
-                
-                    
-                           
-                                  
-                                          
-                                         
-                                     
-                                   
-                          
-   
-
   componentDidMount() {
     const { doc } = this.props
 
@@ -136,7 +121,6 @@ class MyEditor extends Component {
           automatic_uploads: false,
           statusbar: false,
           body_class: bodyClass,
-          // $FlowIssue
           content_css: `${process.env.PUBLIC_URL}/tinymce.css`,
         }}
         onChange={e => {

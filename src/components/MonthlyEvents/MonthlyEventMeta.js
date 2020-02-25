@@ -1,4 +1,4 @@
-//      
+//
 import React, { Component } from 'react'
 import {
   Modal,
@@ -16,23 +16,11 @@ class MonthlyEventsMeta extends Component {
   constructor(props) {
     super(props)
     const { activeMonthlyEvent } = props.store.monthlyEvents
-    // $FlowIssue
     this.state = {
       arrivals: activeMonthlyEvent.arrivals,
       victims: activeMonthlyEvent.victims,
     }
   }
-
-                                  
-
-          
-                  
-                 
-                  
-                     
-                    
-                            
-   
 
   onChangeValue = (property, event) => {
     const { store } = this.props
@@ -50,7 +38,6 @@ class MonthlyEventsMeta extends Component {
 
   render() {
     const { year, month } = this.props
-    // $FlowIssue
     const { arrivals, victims } = this.state
 
     return (
@@ -87,7 +74,6 @@ class MonthlyEventsMeta extends Component {
             close
           </Button>
         </Modal.Footer>
-
       </Modal>
     )
   }
