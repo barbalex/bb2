@@ -4,7 +4,7 @@
   "description": "Most migrants and refugees arriving in Europe cross the Mediterranean. The purpose of this website is to provide a rough overview by focusing mainly on the Central Med and by covering both maritime and political events.",
   "private": true,
   "dependencies": {
-    "@tinymce/tinymce-react": "3.4.0",
+    "@tinymce/tinymce-react": "3.5.0",
     "ampersand-app": "2.0.0",
     "bootstrap": "3.x",
     "classnames": "2.2.6",
