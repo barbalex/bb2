@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
@@ -34,13 +33,7 @@ const enhance = compose(
   observer,
 )
 
-const EventLinks = ({
-  store,
-  onNewLink,
-}: {
-  store: Object,
-  onNewLink: () => void,
-}) => {
+const EventLinks = ({ store, onNewLink }) => {
   const { activeEvent } = store.events
 
   return (
@@ -67,7 +60,5 @@ const EventLinks = ({
     </div>
   )
 }
-
-EventLinks.displayName = 'EventLinks'
 
 export default enhance(EventLinks)

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import {
   Row,
@@ -23,7 +22,7 @@ const StyledGlyphicon = styled(Glyphicon)`
 const enhance = compose(
   inject('store'),
   withHandlers({
-    onChangeUrl: props => (e: Object) => {
+    onChangeUrl: props => e => {
       // not using action because don't know
       // how to find this link in activeEvent.links...
       props.link.url = e.target.value
@@ -37,7 +36,7 @@ const enhance = compose(
       activeEvent.links[index] = newLink
       store.events.saveEvent(activeEvent)
     },
-    onChangeLabel: props => (e: Object) => {
+    onChangeLabel: props => e => {
       props.link.label = e.target.value
     },
     onBlurLabel: props => () => {
@@ -72,16 +71,6 @@ const EventLink = ({
   onChangeLabel,
   onBlurLabel,
   onRemoveLink,
-}: {
-  store: Object,
-  link: Object,
-  focus: boolean,
-  index: number,
-  onChangeUrl: () => void,
-  onBlurUrl: () => void,
-  onChangeLabel: () => void,
-  onBlurLabel: () => void,
-  onRemoveLink: () => void,
 }) => (
   <Row key={index}>
     <Col sm={3} lg={2}>
@@ -117,7 +106,5 @@ const EventLink = ({
     </Col>
   </Row>
 )
-
-EventLink.displayName = 'EventLink'
 
 export default enhance(EventLink)

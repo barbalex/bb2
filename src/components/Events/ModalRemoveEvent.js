@@ -18,15 +18,7 @@ const enhance = compose(
   observer,
 )
 
-const ModalRemoveEvent = ({
-  store,
-  remove,
-  abort,
-}: {
-  store: Object,
-  remove: () => void,
-  abort: () => void,
-}) => (
+const ModalRemoveEvent = ({ store, remove, abort }) => (
   <Modal show onHide={abort}>
     <Modal.Header>
       <Modal.Title>
@@ -44,13 +36,9 @@ const ModalRemoveEvent = ({
       <Button bsStyle="danger" onClick={remove}>
         yes, remove!
       </Button>
-      <Button onClick={abort}>
-        no!
-      </Button>
+      <Button onClick={abort}>no!</Button>
     </Modal.Footer>
   </Modal>
 )
-
-ModalRemoveEvent.displayName = 'ModalRemoveEvent'
 
 export default enhance(ModalRemoveEvent)

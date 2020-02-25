@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { ButtonGroup, Button } from 'react-bootstrap'
@@ -61,21 +60,10 @@ const enhance = compose(
   withRouter,
   withState('docToRemove', 'changeDocToRemove', null),
   withState('introJumbotronHeight', 'changeIntroJumbotronHeight', null),
-  observer
+  observer,
 )
 
 class Events extends Component {
-  displayName: 'Events'
-
-  props: {
-    store: Object,
-    history: Object,
-    docToRemove: Object,
-    introJumbotronHeight: number,
-    changeDocToRemove: () => void,
-    changeIntroJumbotronHeight: () => void,
-  }
-
   componentDidMount() {
     const { store } = this.props
     store.events.getEvents([parseInt(moment().format('YYYY'), 0)])
@@ -83,14 +71,14 @@ class Events extends Component {
     this.setIntroComponentsHeight()
     window.addEventListener(
       'resize',
-      debounce(this.setIntroComponentsHeight, 50)
+      debounce(this.setIntroComponentsHeight, 50),
     )
   }
 
   componentWillUnmount() {
     window.removeEventListener(
       'resize',
-      debounce(this.setIntroComponentsHeight, 50)
+      debounce(this.setIntroComponentsHeight, 50),
     )
   }
 

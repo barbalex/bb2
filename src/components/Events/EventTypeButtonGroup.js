@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
@@ -6,7 +5,9 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 
-const Container = styled.div`margin-bottom: 20px;`
+const Container = styled.div`
+  margin-bottom: 20px;
+`
 const Label = styled.div`
   font-weight: bold;
   margin-bottom: 5px;
@@ -21,17 +22,10 @@ const enhance = compose(
       saveEvent(activeEvent)
     },
   }),
-  observer
+  observer,
 )
 
 class EventTypeButtonGroup extends Component {
-  displayName: 'EventType'
-
-  props: {
-    store: Object,
-    changeEventType: () => void,
-  }
-
   componentDidMount() {
     const { store, changeEventType } = this.props
     // if no eventType, set migration
