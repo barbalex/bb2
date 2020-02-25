@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import styled from 'styled-components'
 
@@ -47,7 +46,5 @@ const Header = () => (
     <IntroText>blue borders</IntroText>
   </Container>
 )
-
-Header.displayName = 'Header'
 
 export default Header

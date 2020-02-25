@@ -1,4 +1,3 @@
-// @flow
 /*
  * receives an object with two keys: title, msg
  * displays it while the object is present
@@ -53,18 +52,10 @@ const enhance = compose(
       window.location.reload(false)
     },
   }),
-  observer
+  observer,
 )
 
-const UpdateAvailable = ({
-  store,
-  onClickGlyph,
-  onClickReload,
-}: {
-  store: Object,
-  onClickGlyph: () => void,
-  onClickReload: () => void,
-}) => (
+const UpdateAvailable = ({ store, onClickGlyph, onClickReload }) => (
   <Overlay show={store.updateAvailable}>
     <Container>
       <StyledGlyphicon
@@ -84,7 +75,5 @@ const UpdateAvailable = ({
     </Container>
   </Overlay>
 )
-
-UpdateAvailable.displayName = 'UpdateAvailable'
 
 export default enhance(UpdateAvailable)

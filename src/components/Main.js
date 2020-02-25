@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import {
   BrowserRouter as Router,
@@ -26,7 +25,7 @@ import NotFound from './NotFound'
  * cannot useContext to get store
  * Error is: hooks can only be used in function components...
  */
-const Main = ({ store, login }: { login: boolean, store: Object }) => {
+const Main = ({ store, login }) => {
   const {
     updateAvailable,
     page,

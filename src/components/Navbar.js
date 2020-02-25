@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import {
   Navbar,
@@ -115,24 +114,6 @@ const MyNavbar = ({
   onClickNewPublication,
   onClickNewEvent,
   onClickNewActor,
-}: {
-  store: Object,
-  match: Object,
-  location: Object,
-  history: Object,
-  navExpanded: boolean,
-  onToggleNav: () => void,
-  onClickEvents: () => void,
-  onClickArticles: () => void,
-  onClickActors: () => void,
-  onClickPublications: () => void,
-  onClickAboutUs: () => void,
-  onClickEdit: () => void,
-  onClickLogout: () => void,
-  onClickNewArticle: () => void,
-  onClickNewPublication: () => void,
-  onClickNewEvent: () => void,
-  onClickNewActor: () => void,
 }) => {
   const { activePage } = store.page
   const { activeActor } = store.actors
@@ -266,7 +247,5 @@ const MyNavbar = ({
     </StyledNavbar>
   )
 }
-
-MyNavbar.displayName = 'Navbar'
 
 export default enhance(MyNavbar)
