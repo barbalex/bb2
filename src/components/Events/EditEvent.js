@@ -1,4 +1,3 @@
-// @flow
 /**
  * using hooks errored
  * Hooks can only be called inside the body of a function component
@@ -105,7 +104,7 @@ const enhance = compose(
   inject('store'),
   withState('error', 'changeError', null),
   withHandlers({
-    onChangeTitle: props => (e: Object): void => {
+    onChangeTitle: props => e => {
       const { store, changeError } = props
       const title = e.target.value
       if (title) {
@@ -115,7 +114,7 @@ const enhance = compose(
         changeError('Please add a title')
       }
     },
-    onBlurTitle: props => (e: Object): void => {
+    onBlurTitle: props => e => {
       const { activeEvent, newEvent, removeEvent } = props.store.events
       activeEvent.title = e.target.value
       if (activeEvent.title) {
@@ -124,7 +123,7 @@ const enhance = compose(
         newEvent(activeEvent)
       }
     },
-    onChangeDatePicker: props => (date: Date): void => {
+    onChangeDatePicker: props => date => {
       const { changeError, store } = props
       const { activeEvent, newEvent, removeEvent } = store.events
       const datePassed = moment(date, 'DD.MM.YYYY')
@@ -136,17 +135,17 @@ const enhance = compose(
         changeError('Please choose a date')
       }
     },
-    onChangeOrder: props => (e: Object): void => {
+    onChangeOrder: props => e => {
       const { store, changeError } = props
       store.events.activeEvent.order = e.target.value
       changeError(null)
     },
-    onBlurOrder: props => (e: Object): void => {
+    onBlurOrder: props => e => {
       const { activeEvent, saveEvent } = props.store.events
       activeEvent.order = e.target.value
       saveEvent(activeEvent)
     },
-    close: props => (): void => {
+    close: props => () => {
       props.store.events.getEvent(null)
     },
   }),
@@ -163,16 +162,6 @@ const EditEvent = ({
   onChangeOrder,
   onBlurOrder,
   close,
-}: {
-  store: Object,
-  error: string,
-  changeError: () => void,
-  onChangeTitle: () => void,
-  onBlurTitle: () => void,
-  onChangeDatePicker: () => void,
-  onChangeOrder: () => void,
-  onBlurOrder: () => void,
-  close: () => void,
 }) => (
   <StyledModal show onHide={close} bsSize="large">
     <Modal.Header closeButton>
@@ -215,7 +204,5 @@ const EditEvent = ({
     </Modal.Footer>
   </StyledModal>
 )
-
-EditEvent.displayName = 'EditEvent'
 
 export default enhance(EditEvent)

@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
@@ -106,17 +105,6 @@ const enhance = compose(
 class Articles extends Component {
   displayName: 'Articles'
 
-  props: {
-    store: Object,
-    match: Object,
-    location: Object,
-    history: Object,
-    onClickArticle: () => void,
-    onClickArticleCollapse: () => void,
-    onRemoveArticle: () => void,
-    onToggleDraft: () => void,
-  }
-
   componentDidMount() {
     this.props.store.articles.getArticles()
   }
@@ -131,7 +119,6 @@ class Articles extends Component {
   }
 
   scrollToActivePanel = () => {
-    // $FlowIssue
     const node = ReactDOM.findDOMNode(this._activeArticlePanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper')
@@ -204,10 +191,8 @@ class Articles extends Component {
             key={doc._id}
             ref={c => {
               if (isActiveArticle) {
-                // $FlowIssue
                 this._activeArticlePanel = c
               } else {
-                // $FlowIssue
                 this[`_articlePanel${doc._id}`] = c
               }
             }}
@@ -260,11 +245,7 @@ class Articles extends Component {
 
   render() {
     const { store } = this.props
-    const {
-      activeArticle,
-      showNewArticle,
-      articleToRemove,
-    } = store.articles
+    const { activeArticle, showNewArticle, articleToRemove } = store.articles
     const activeArticleId = has(activeArticle, '_id') ? activeArticle._id : null
 
     return (

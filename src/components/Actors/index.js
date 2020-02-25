@@ -90,19 +90,11 @@ const enhance = compose(
       props.store.actors.toggleDraftOfActor(doc)
     },
   }),
-  observer
+  observer,
 )
 
 class Actors extends Component {
   displayName: 'Actors'
-
-  props: {
-    store: Object,
-    onClickActor: () => void,
-    onClickActorCollapse: () => void,
-    onRemoveActor: () => void,
-    onToggleDraft: () => void,
-  }
 
   componentDidMount() {
     this.props.store.actors.getActors()
@@ -128,7 +120,7 @@ class Actors extends Component {
           {
             scrollTop: node.offsetTop - reduce,
           },
-          500
+          500,
         )
       }
     }

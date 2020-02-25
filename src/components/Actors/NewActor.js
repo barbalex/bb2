@@ -1,4 +1,3 @@
-// @flow
 import React, { useContext, useState, useCallback } from 'react'
 import {
   Modal,
@@ -25,7 +24,7 @@ const NewActor = () => {
   const [error, setError] = useState(null)
 
   const onChangeCategory = useCallback(
-    (event: Object): void => setCategory(event.target.value),
+    event => setCategory(event.target.value),
     [],
   )
   const createNewActor = useCallback(() => {
@@ -36,7 +35,9 @@ const NewActor = () => {
       setError('Please choose a category')
     }
   }, [category, newActor, setShowNewActor])
-  const closeNewActor = useCallback(() => setShowNewActor(false), [setShowNewActor])
+  const closeNewActor = useCallback(() => setShowNewActor(false), [
+    setShowNewActor,
+  ])
 
   return (
     <Modal show bsSize="large">
@@ -66,7 +67,5 @@ const NewActor = () => {
     </Modal>
   )
 }
-
-NewActor.displayName = 'NewActor'
 
 export default observer(NewActor)

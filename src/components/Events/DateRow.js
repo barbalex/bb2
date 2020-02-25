@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import moment from 'moment'
 import { observer } from 'mobx-react'
@@ -62,7 +61,7 @@ const BodyRow = styled.div`
 const mapEventComponents = events =>
   events.map((event, key) => <Event key={key} event={event} />)
 
-const DateRow = ({ dateRowObject: dRO }: { dateRowObject: Object }) => {
+const DateRow = ({ dateRowObject: dRO }) => {
   const day = moment(dRO.date).format('D')
   const migrationEvents = mapEventComponents(dRO.migrationEvents)
   const politicsEvents = mapEventComponents(dRO.politicsEvents)
@@ -89,7 +88,5 @@ const DateRow = ({ dateRowObject: dRO }: { dateRowObject: Object }) => {
     </BodyRow>
   )
 }
-
-DateRow.displayName = 'DateRow'
 
 export default observer(DateRow)

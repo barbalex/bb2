@@ -1,4 +1,3 @@
-// @flow
 /**
  * cannot use hooks
  * adding useContext errors:
@@ -30,12 +29,9 @@ const BodyCell = styled.div`
   padding-left: 10px;
 `
 
-const enhance = compose(
-  inject('store'),
-  observer,
-)
+const enhance = compose(inject('store'), observer)
 
-const DateRows = ({ store }: { store: Object }) => {
+const DateRows = ({ store }) => {
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(
     store.events.events,
     store.yearsOfEvents.activeEventYears,
@@ -104,7 +100,5 @@ const DateRows = ({ store }: { store: Object }) => {
     </BodyRow>
   )
 }
-
-DateRows.displayName = 'DateRows'
 
 export default enhance(DateRows)
