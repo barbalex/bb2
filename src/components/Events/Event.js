@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
@@ -13,18 +12,20 @@ const StyledGlyphicon = styled(Glyphicon)`
   padding-right: 3px;
   vertical-align: 10%;
 `
-const OuterSpan = styled.span`padding-left: 5px;`
+const OuterSpan = styled.span`
+  padding-left: 5px;
+`
 
 const enhance = compose(inject('store'), observer)
 
-const Event = ({ store, event }: { store: Object, event: Object }) => {
+const Event = ({ store, event }) => {
   const showEditingGlyphons = !!store.login.email
   const classNames =
     event.tags && event.tags.length > 0
       ? event.tags.map(tag => `event-${tag}`).join(' ')
       : []
 
-  const links = event.links.map((link, key) =>
+  const links = event.links.map((link, key) => (
     <OuterSpan key={key}>
       {key > 0 && ' '}
       <a href={link.url} target="_blank" rel="noopener noreferrer">
@@ -32,7 +33,7 @@ const Event = ({ store, event }: { store: Object, event: Object }) => {
         {link.label}
       </a>
     </OuterSpan>
-  )
+  ))
 
   return (
     <li className={classNames}>
@@ -44,7 +45,5 @@ const Event = ({ store, event }: { store: Object, event: Object }) => {
     </li>
   )
 }
-
-Event.displayName = 'Event'
 
 export default enhance(Event)

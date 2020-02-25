@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
@@ -19,25 +18,16 @@ const enhance = compose(
       props.store.events.getEvent(props.event._id)
     },
   }),
-  observer
+  observer,
 )
 
-const EditEventGlyph = ({
-  store,
-  event,
-  onClick,
-}: {
-  store: Object,
-  event: Object,
-  onClick: () => void,
-}) =>
+const EditEventGlyph = ({ store, event, onClick }) => (
   <OverlayTrigger
     placement="top"
     overlay={<Tooltip id="editThisEvent">edit</Tooltip>}
   >
     <StyledGlyphicon glyph="pencil" onClick={onClick} />
   </OverlayTrigger>
-
-EditEventGlyph.displayName = 'EditEventGlyph'
+)
 
 export default enhance(EditEventGlyph)
