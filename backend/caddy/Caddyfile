@@ -5,7 +5,7 @@
 
 # TODO: add www.evab.ch
 evab.ch {
-  reverse_proxy /api/* bb_db:5984
+  #reverse_proxy /api/* bb_db:5984
   root * /html
   file_server
 }

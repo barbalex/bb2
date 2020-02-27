@@ -123,7 +123,7 @@ class MyEditor extends Component {
           automatic_uploads: false,
           statusbar: false,
           body_class: bodyClass,
-          content_css: `${process.env.PUBLIC_URL}/tinymce.css`,
+          content_css: `./tinymce.css`,
         }}
         onChange={e => {
           const articleDecoded = e.target.getContent()

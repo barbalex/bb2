@@ -3,11 +3,11 @@
 # dependencies
 /node_modules
 
-# testing
-/coverage
 
 # gatsby files
-.cache/
+.cache
+/.cache
+/.cache/*
 public
 
 # production

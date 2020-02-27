@@ -56,7 +56,11 @@ const Page = ({
   const { activePage } = store.page
   const articleEncoded = activePage.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
-  let title = activePage.title ? activePage.title : activePage.category
+  let title = activePage.title
+    ? activePage.title
+    : activePage.category
+    ? activePage.category
+    : 'mediterranean migration'
 
   useEffect(() => {
     store.page.getPage('pages_aboutUs')
