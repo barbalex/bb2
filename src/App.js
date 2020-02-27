@@ -5,7 +5,6 @@ import pouchdbAuthentication from 'pouchdb-authentication'
 import { Provider as MobxProvider } from 'mobx-react'
 import { Router } from '@reach/router'
 
-import registerServiceWorker from './registerServiceWorker'
 import store from './store'
 import couchUrl from './modules/getCouchUrl'
 // make webpack import styles
@@ -75,8 +74,6 @@ Bitte versuchen Sie es mit einer aktuellen Version von (zum Beispiel):
 - Edge`,
   )
 }
-
-registerServiceWorker(store)
 
 const { errors } = store.error
 
