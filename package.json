@@ -47,18 +47,12 @@
     "gatsby-plugin-styled-components": "3.1.19",
     "gatsby-source-filesystem": "2.1.48",
     "gatsby-transformer-sharp": "2.3.16",
-    "react-scripts": "3.4.0",
     "rimraf": "3.0.2"
   },
   "scripts": {
     "dev": "gatsby develop",
-    "dev_old": "react-scripts start",
     "build": "gatsby clean && gatsby build",
-    "build_old": "react-scripts build",
-    "postbuild": "rimraf docker/caddy/html && copyfiles -u 1 \"build/**/*\" docker/caddy/html",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "analyze": "npx source-map-explorer build/static/js/main.*",
+    "postbuild": "rimraf backend/caddy/html && copyfiles -u 1 \"public/**/*\" backend/caddy/html",
     "serve": "gatsby serve"
   },
   "eslintConfig": {
