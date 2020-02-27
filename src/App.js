@@ -3,7 +3,7 @@ import app from 'ampersand-app'
 import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
 import { Provider as MobxProvider } from 'mobx-react'
-import { Router, Redirect } from '@reach/router'
+import { Router } from '@reach/router'
 
 import registerServiceWorker from './registerServiceWorker'
 import store from './store'
