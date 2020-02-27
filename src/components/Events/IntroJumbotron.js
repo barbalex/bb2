@@ -25,8 +25,6 @@ const P = styled.p`
 `
 
 class IntroJumbotron extends Component {
-  displayName: 'IntroJumbotron'
-
   render() {
     return (
       <StyledJumbotron className="eventsIntro">

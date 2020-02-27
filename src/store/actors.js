@@ -1,6 +1,7 @@
 import { action } from 'mobx'
 import app from 'ampersand-app'
 import slug from 'speakingurl'
+import { navigate } from '@reach/router'
 
 import getPathFromDocId from '../modules/getPathFromDocId'
 import getActors from '../modules/getActors'
@@ -54,14 +55,14 @@ export default store => ({
     store.actors.showNewActor = show
   }),
 
-  getActor: action('getActor', (id, history) => {
+  getActor: action('getActor', id => {
     if (!id) {
-      history.push('/actors')
+      navigate('/actors')
       store.actors.activeActorId = null
     } else {
       store.actors.activeActorId = id
       const path = getPathFromDocId(id)
-      history.push(`/${path}`)
+      navigate(`/${path}`)
     }
   }),
 

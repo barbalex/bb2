@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import {
   Navbar,
   NavItem,
@@ -8,14 +8,12 @@ import {
   OverlayTrigger,
 } from 'react-bootstrap'
 import has from 'lodash/has'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
-import withState from 'recompose/withState'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { withRouter } from 'react-router'
+import { navigate } from '@reach/router'
 
 import oceanDarkImage from '../images/oceanDark.jpg'
+import storeContext from '../storeContext'
 
 const StyledNavbar = styled(Navbar)`
   p,
@@ -35,86 +33,70 @@ const StyledNavbar = styled(Navbar)`
 `
 
 const isNavMobile = () => {
-  const documentWidth = document.getElementById('root').clientWidth
+  if (typeof window === `undefined`) return 750
+  const documentWidth = document.getElementById('___gatsby').clientWidth
   return documentWidth <= 750
 }
 
-const enhance = compose(
-  inject('store'),
-  withRouter,
-  withState('navExpanded', 'changeNavExpanded', false),
-  withHandlers({
-    onToggleNav: props => () => {
-      const navIsMobile = isNavMobile()
-      // toggle only if nav is in mobile mode
-      if (navIsMobile) props.changeNavExpanded(!props.navExpanded)
-    },
-  }),
-  withHandlers({
-    onClickEvents: props => () => {
-      props.store.page.getPage('pages_events')
-      props.history.push('/events')
-      // if home was clicked, do not toggle nav
-    },
-    onClickArticles: props => () => {
-      props.store.page.getPage('pages_commentaries')
-      props.history.push('/articles')
-      props.onToggleNav()
-    },
-    onClickActors: props => () => {
-      props.store.page.getPage('pages_actors')
-      props.history.push('/actors')
-      props.onToggleNav()
-    },
-    onClickPublications: props => () => {
-      props.store.page.getPage('pages_publications')
-      props.history.push('/publications')
-      props.onToggleNav()
-    },
-    onClickAboutUs: props => () => {
-      props.store.page.getPage('pages_aboutUs')
-      props.history.push('/aboutUs')
-      props.onToggleNav()
-    },
-    onClickEdit: props => () => {
-      props.store.toggleEditing()
-      props.onToggleNav()
-    },
-    onClickLogout: props => () => {
-      props.store.login.logout()
-      props.onToggleNav()
-      // need to force update
-    },
-    onClickNewArticle: props => () =>
-      props.store.articles.toggleShowNewArticle(),
-    onClickNewPublication: props => () => {
-      props.store.publications.setShowNewPublication(true)
-    },
-    onClickNewEvent: props => () => props.store.events.setShowNewEvent(true),
-    onClickNewActor: props => () => props.store.actors.setShowNewActor(true),
-  }),
-  observer,
-)
+const MyNavbar = ({ match, location }) => {
+  const store = useContext(storeContext)
+  const [navExpanded, changeNavExpanded] = useState(false)
 
-const MyNavbar = ({
-  store,
-  match,
-  location,
-  history,
-  navExpanded,
-  onToggleNav,
-  onClickEvents,
-  onClickArticles,
-  onClickActors,
-  onClickPublications,
-  onClickAboutUs,
-  onClickEdit,
-  onClickLogout,
-  onClickNewArticle,
-  onClickNewPublication,
-  onClickNewEvent,
-  onClickNewActor,
-}) => {
+  const onToggleNav = useCallback(() => {
+    const navIsMobile = isNavMobile()
+    // toggle only if nav is in mobile mode
+    if (navIsMobile) changeNavExpanded(!navExpanded)
+  }, [navExpanded])
+  const onClickEvents = useCallback(() => {
+    store.page.getPage('pages_events')
+    navigate('/events')
+    // if home was clicked, do not toggle nav
+  }, [store.page])
+  const onClickArticles = useCallback(() => {
+    store.page.getPage('pages_commentaries')
+    navigate('/articles')
+    onToggleNav()
+  }, [onToggleNav, store.page])
+  const onClickActors = useCallback(() => {
+    store.page.getPage('pages_actors')
+    navigate('/actors')
+    onToggleNav()
+  }, [onToggleNav, store.page])
+  const onClickPublications = useCallback(() => {
+    store.page.getPage('pages_publications')
+    navigate('/publications')
+    onToggleNav()
+  }, [onToggleNav, store.page])
+  const onClickAboutUs = useCallback(() => {
+    store.page.getPage('pages_aboutUs')
+    navigate('/about-us')
+    onToggleNav()
+  }, [onToggleNav, store.page])
+  const onClickEdit = useCallback(() => {
+    store.toggleEditing()
+    onToggleNav()
+  }, [onToggleNav, store])
+  const onClickLogout = useCallback(() => {
+    store.login.logout()
+    onToggleNav()
+    // need to force update
+  }, [onToggleNav, store.login])
+  const onClickNewArticle = useCallback(
+    () => store.articles.toggleShowNewArticle(),
+    [store.articles],
+  )
+  const onClickNewPublication = useCallback(() => {
+    store.publications.setShowNewPublication(true)
+  }, [store.publications])
+  const onClickNewEvent = useCallback(
+    () => store.events.setShowNewEvent(true),
+    [store.events],
+  )
+  const onClickNewActor = useCallback(
+    () => store.actors.setShowNewActor(true),
+    [store.actors],
+  )
+
   const { activePage } = store.page
   const { activeActor } = store.actors
   const { activeMonthlyEvent } = store.monthlyEvents
@@ -248,4 +230,4 @@ const MyNavbar = ({
   )
 }
 
-export default enhance(MyNavbar)
+export default observer(MyNavbar)

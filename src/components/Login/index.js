@@ -1,4 +1,4 @@
-//      
+//
 
 import React from 'react'
 import { Button } from 'react-bootstrap'
@@ -14,26 +14,22 @@ const enhance = compose(
   withHandlers({
     onClickLogout: props => () => props.store.login.logout(),
   }),
-  observer
+  observer,
 )
 
-const Login = ({
-  store,
-  onClickLogout,
-}   
-                
-                            
- ) =>
+const Login = ({ store, onClickLogout }) => (
   <DocumentTitle title="blue-borders | Login">
     <div>
       <h1>Login</h1>
       {!store.login.email && <LoginForm />}
-      {store.login.email &&
+      {store.login.email && (
         <Button className="btn-primary" onClick={onClickLogout}>
           log out
-        </Button>}
+        </Button>
+      )}
     </div>
   </DocumentTitle>
+)
 
 Login.displayName = 'Login'
 

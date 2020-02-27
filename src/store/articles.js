@@ -2,6 +2,7 @@ import { action } from 'mobx'
 import app from 'ampersand-app'
 import moment from 'moment'
 import slug from 'speakingurl'
+import { navigate } from '@reach/router'
 
 import getArticles from '../modules/getArticles'
 import getPathFromDocId from '../modules/getPathFromDocId'
@@ -59,14 +60,14 @@ export default store => ({
     store.articles.saveArticle(articleO)
   }),
 
-  getArticle: action('getArticle', (id, history) => {
+  getArticle: action('getArticle', id => {
     if (!id) {
-      history.push('/articles')
+      navigate('/articles')
       store.articles.activeArticleId = null
     } else {
       store.articles.activeArticleId = id
       const path = getPathFromDocId(id)
-      history.push(`/${path}`)
+      navigate(`/${path}`)
     }
   }),
 

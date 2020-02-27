@@ -7,7 +7,6 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
-import { withRouter } from 'react-router'
 
 import Article from './Article'
 import NewArticle from './NewArticle'
@@ -77,14 +76,13 @@ const Copyright = styled.p`
 
 const enhance = compose(
   inject('store'),
-  withRouter,
   withHandlers({
     onClickArticle: props => (id, e) => {
       const { activeArticle, getArticle } = props.store.articles
       // prevent higher level panels from reacting
       e.stopPropagation()
       const idToGet = !activeArticle || activeArticle._id !== id ? id : null
-      getArticle(idToGet, props.history)
+      getArticle(idToGet)
     },
     // prevent higher level panels from reacting
     onClickArticleCollapse: props => event => event.stopPropagation(),
@@ -103,13 +101,20 @@ const enhance = compose(
 )
 
 class Articles extends Component {
-  displayName: 'Articles'
-
   componentDidMount() {
+    const { year, month, day, title, store } = this.props
+    store.page.getPage('pages_commentaries')
+    if (!!year && !!month && !!day && !!title) {
+      store.articles.activeArticleId = `commentaries_${year}_${month}_${day}_${title}`
+    }
     this.props.store.articles.getArticles()
   }
 
   componentDidUpdate() {
+    const { year, month, day, title, store } = this.props
+    if (!!year && !!month && !!day && !!title) {
+      store.articles.activeArticleId = `commentaries_${year}_${month}_${day}_${title}`
+    }
     const { activeArticle } = this.props.store.articles
     if (activeArticle && typeof window !== `undefined`) {
       window.setTimeout(() => {
@@ -125,12 +130,7 @@ class Articles extends Component {
         .offsetTop
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
       if (node.offsetTop && typeof window !== `undefined`) {
-        window.$('html, body').animate(
-          {
-            scrollTop: node.offsetTop - reduce,
-          },
-          500,
-        )
+        window.scroll({ top: node.offsetTop - reduce, behavior: 'smooth' })
       }
     }
   }

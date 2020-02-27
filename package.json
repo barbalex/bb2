@@ -8,7 +8,7 @@
     "ampersand-app": "2.0.0",
     "bootstrap": "3.x",
     "classnames": "2.2.6",
-    "gatsby": "^2.19.22",
+    "gatsby": "2.19.22",
     "gemini-scrollbar": "1.5.3",
     "isdev": "1.0.1",
     "js-base64": "2.5.2",
@@ -29,9 +29,9 @@
     "react-dom": "16.12.0",
     "react-dropzone": "10.2.1",
     "react-gemini-scrollbar": "2.3.4",
+    "react-helmet": "5.2.1",
     "react-list": "0.8.13",
     "react-loadable": "5.5.0",
-    "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
     "recompose": "0.30.0",
     "speakingurl": "14.0.1",
@@ -39,16 +39,27 @@
   },
   "devDependencies": {
     "copyfiles": "2.2.0",
+    "gatsby-plugin-eslint": "2.0.8",
+    "gatsby-plugin-manifest": "2.2.42",
+    "gatsby-plugin-offline": "3.0.35",
+    "gatsby-plugin-react-helmet": "3.1.22",
+    "gatsby-plugin-sharp": "2.4.5",
+    "gatsby-plugin-styled-components": "3.1.19",
+    "gatsby-source-filesystem": "2.1.48",
+    "gatsby-transformer-sharp": "2.3.16",
     "react-scripts": "3.4.0",
     "rimraf": "3.0.2"
   },
   "scripts": {
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
+    "dev": "gatsby develop",
+    "dev_old": "react-scripts start",
+    "build": "gatsby clean && gatsby build",
+    "build_old": "react-scripts build",
     "postbuild": "rimraf docker/caddy/html && copyfiles -u 1 \"build/**/*\" docker/caddy/html",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "analyze": "npx source-map-explorer build/static/js/main.*"
+    "analyze": "npx source-map-explorer build/static/js/main.*",
+    "serve": "gatsby serve"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -77,7 +88,7 @@
   "peerDependencies": {
     "prop-types": "15.7.2",
     "react-is": "16.12.0",
-    "typescript": "^3.2.1"
+    "typescript": "3.2.1"
   },
   "dependenciesComments": {
     "prop-types": "needed for react-gemini-scrollbar",
