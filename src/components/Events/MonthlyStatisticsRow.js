@@ -56,7 +56,7 @@ const BodyRow = styled.div`
 
 const enhance = compose(inject('store'), observer)
 
-const mapEventComponents = (events: Array<Object>) =>
+const mapEventComponents = events =>
   events.map((event, key) => <Event key={key} event={event} />)
 
 const MonthlyStatisticsRow = ({ store, dateRowObject: dRO }) => {

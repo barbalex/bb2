@@ -1,4 +1,4 @@
-//      
+//
 import React, { Component } from 'react'
 import sortBy from 'lodash/sortBy'
 import { observer, inject } from 'mobx-react'
@@ -6,7 +6,6 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
-import { withRouter } from 'react-router'
 
 import PublicationsOfCategory from './PublicationsOfCategory'
 import NewPublication from './NewPublication'
@@ -66,27 +65,30 @@ const orderByCategory = {
 
 const enhance = compose(
   inject('store'),
-  withRouter,
   withHandlers({
-    onClickCategory: props => (activePublicationCategory        ) =>
+    onClickCategory: props => activePublicationCategory =>
       props.store.publications.setPublicationCategory(
         activePublicationCategory,
-        props.history,
       ),
   }),
   observer,
 )
 
 class Publications extends Component {
-                             
-
-          
-                  
-                                
-   
-
   componentDidMount() {
+    const { category, title, store } = this.props
+    store.page.getPage('pages_publications')
+    if (!!category && !!title) {
+      store.publications.activePublicationId = `publications_${category}_${title}`
+    }
     this.props.store.publications.getPublications()
+  }
+
+  componentDidUpdate() {
+    const { category, title, store } = this.props
+    if (!!category && !!title) {
+      store.publications.activePublicationId = `publications_${category}_${title}`
+    }
   }
 
   publicationCategoriesComponent = activePublicationCategory => {

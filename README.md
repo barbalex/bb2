@@ -22,5 +22,5 @@ It was deeply refactored to use new technologies and maximize maintainability.
 - [React](//facebook.github.io/react):
   - declarative user interface is a function of state
   - built from components
-- [react router 4](https://reacttraining.com/react-router) with [react-loadable](https://github.com/thejameskyle/react-loadable)
-  - splitting code to accelerate first load
+- [gatsby](https://www.gatsbyjs.org/)
+  - make it load fast

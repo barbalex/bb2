@@ -1,12 +1,13 @@
-//      
+//
 import { action } from 'mobx'
 import app from 'ampersand-app'
+import { navigate } from '@reach/router'
 
 import getMonthlyEvents from '../modules/getMonthlyEvents'
 import getPathFromDocId from '../modules/getPathFromDocId'
 import sortMonthlyEvents from '../modules/sortMonthlyEvents'
 
-export default (store        )         => ({
+export default store => ({
   monthlyEvents: [],
 
   // cache the id, not the entire doc
@@ -23,7 +24,7 @@ export default (store        )         => ({
 
   getMonthlyEventsCallback: null,
 
-  getMonthlyEvents: action('getMonthlyEvents', async ()                => {
+  getMonthlyEvents: action('getMonthlyEvents', async () => {
     try {
       const monthlyEvents = await getMonthlyEvents(store)
       store.monthlyEvents.monthlyEvents = monthlyEvents
@@ -37,19 +38,19 @@ export default (store        )         => ({
       })
     }
   }),
-  getMonthlyEvent: action('getMonthlyEvent', (id         , history        ) => {
+  getMonthlyEvent: action('getMonthlyEvent', id => {
     if (!id) {
-      history.push('/monthlyEvents')
+      navigate('/monthlyEvents')
       store.monthlyEvents.activeMonthlyEventId = null
     } else {
       store.monthlyEvents.activeMonthlyEventId = id
       const path = getPathFromDocId(id)
-      history.push(`/${path}`)
+      navigate(`/${path}`)
     }
   }),
   updateMonthlyEventsInCache: action(
     'updateMonthlyEventsInCache',
-    (monthlyEvent        ) => {
+    monthlyEvent => {
       // first update the monthlyEvent in this.monthlyEvents
       store.monthlyEvents.monthlyEvents = store.monthlyEvents.monthlyEvents.filter(
         me => me._id !== monthlyEvent._id,
@@ -62,34 +63,28 @@ export default (store        )         => ({
   ),
   revertCache: action(
     'revertCache',
-    (oldMonthlyEvents               , oldActiveMonthlyEventId        ) => {
+    (oldMonthlyEvents, oldActiveMonthlyEventId) => {
       store.monthlyEvents.monthlyEvents = oldMonthlyEvents
       store.monthlyEvents.activeMonthlyEventId = oldActiveMonthlyEventId
     },
   ),
-  saveMonthlyEvent: action(
-    'saveMonthlyEvent',
-    async (monthlyEvent        )                => {
-      // keep old cache in case of error
-      const oldMonthlyEvents = store.monthlyEvents.monthlyEvents
-      const oldActiveMonthlyEventId = store.monthlyEvents.activeMonthlyEventId
-      // optimistically update in cache
+  saveMonthlyEvent: action('saveMonthlyEvent', async monthlyEvent => {
+    // keep old cache in case of error
+    const oldMonthlyEvents = store.monthlyEvents.monthlyEvents
+    const oldActiveMonthlyEventId = store.monthlyEvents.activeMonthlyEventId
+    // optimistically update in cache
+    store.monthlyEvents.updateMonthlyEventsInCache(monthlyEvent)
+    try {
+      const resp = await app.db.put(monthlyEvent)
+      monthlyEvent._rev = resp.rev
+      // definitely update in cache
       store.monthlyEvents.updateMonthlyEventsInCache(monthlyEvent)
-      try {
-        const resp = await app.db.put(monthlyEvent)
-        monthlyEvent._rev = resp.rev
-        // definitely update in cache
-        store.monthlyEvents.updateMonthlyEventsInCache(monthlyEvent)
-      } catch (error) {
-        store.monthlyEvents.revertCache(
-          oldMonthlyEvents,
-          oldActiveMonthlyEventId,
-        )
-        store.error.showError({
-          title: 'Error saving monthly event:',
-          msg: error,
-        })
-      }
-    },
-  ),
+    } catch (error) {
+      store.monthlyEvents.revertCache(oldMonthlyEvents, oldActiveMonthlyEventId)
+      store.error.showError({
+        title: 'Error saving monthly event:',
+        msg: error,
+      })
+    }
+  }),
 })

@@ -7,7 +7,6 @@ import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
-import { withRouter } from 'react-router'
 
 import MonthlyEvent from './MonthlyEvent'
 import getYearFromEventId from '../../modules/getYearFromEventId'
@@ -24,7 +23,6 @@ const PanelBody = styled.div`
 
 const enhance = compose(
   inject('store'),
-  withRouter,
   withHandlers({
     onClickMonthlyEvent: props => (id, event) => {
       const { activeMonthlyEvent, getMonthlyEvent } = props.store.monthlyEvents
@@ -35,7 +33,7 @@ const enhance = compose(
         (activeMonthlyEvent._id && activeMonthlyEvent._id !== id)
           ? id
           : null
-      getMonthlyEvent(idToGet, props.history)
+      getMonthlyEvent(idToGet)
     },
     onClickEventCollapse: props => event => {
       // prevent higher level panels from reacting
@@ -75,12 +73,7 @@ class MonthlyEventsOfYear extends Component {
       // somehow on first load the panel does not scroll up far enough
       if (more) reduce -= 5
       if (node.offsetTop && typeof window !== `undefined`) {
-        window.$('html, body').animate(
-          {
-            scrollTop: node.offsetTop - reduce,
-          },
-          500,
-        )
+        window.scroll({ top: node.offsetTop - reduce, behavior: 'smooth' })
       }
     }
   }

@@ -13,7 +13,6 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import withState from 'recompose/withState'
 import styled from 'styled-components'
-import { withRouter } from 'react-router'
 
 import validateEmail from './validateEmail'
 
@@ -28,7 +27,6 @@ const ValidateDivAfterRBC = styled.div`
 
 const enhance = compose(
   inject('store'),
-  withRouter,
   withState('invalidEmail', 'changeInvalidEmail', false),
   withState('invalidPassword', 'changeInvalidPassword', false),
   withState('newEmail', 'changeNewEmail', ''),
@@ -60,7 +58,7 @@ const enhance = compose(
       if (props.validSignin(newEmail, password)) {
         try {
           await app.db.login(newEmail, password)
-          props.store.login.login(newEmail, props.history)
+          props.store.login.login(newEmail)
         } catch (error) {
           props.changeNewEmail(null)
           props.changeLoginError(error)

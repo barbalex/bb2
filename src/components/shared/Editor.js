@@ -44,12 +44,7 @@ class MyEditor extends Component {
 
     // scroll editor to top in pages
     if (doc.type === 'pages' && typeof window !== `undefined`) {
-      window.$('html, body').animate(
-        {
-          scrollTop: 140,
-        },
-        800,
-      )
+      window.scroll({ top: 140, behavior: 'smooth' })
     }
   }
 

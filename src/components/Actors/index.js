@@ -8,7 +8,6 @@ import compose from 'recompose/compose'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
-import { withRouter } from 'react-router'
 
 import Actor from './Actor'
 import NewActor from './NewActor'
@@ -66,14 +65,13 @@ const PanelBody = styled.div`
 
 const enhance = compose(
   inject('store'),
-  withRouter,
   withHandlers({
     onClickActor: props => (id, e) => {
       const { activeActor } = props.store.actors
       // prevent higher level panels from reacting
       e.stopPropagation()
       const idToGet = !activeActor || activeActor._id !== id ? id : null
-      props.store.actors.getActor(idToGet, props.history)
+      props.store.actors.getActor(idToGet)
     },
     onClickActorCollapse: props => event => {
       // prevent higher level panels from reacting
@@ -95,10 +93,15 @@ const enhance = compose(
 
 class Actors extends Component {
   componentDidMount() {
+    const { category, store } = this.props
+    store.page.getPage('pages_actors')
+    if (!!category) store.actors.activeActorId = `actors_${category}`
     this.props.store.actors.getActors()
   }
 
   componentDidUpdate() {
+    const { category, store } = this.props
+    if (!!category) store.actors.activeActorId = `actors_${category}`
     if (this.props.store.actors.activeActor && typeof window !== `undefined`) {
       window.setTimeout(() => {
         this.scrollToActivePanel()
@@ -113,12 +116,7 @@ class Actors extends Component {
         .offsetTop
       const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
       if (node.offsetTop && typeof window !== `undefined`) {
-        window.$('html, body').animate(
-          {
-            scrollTop: node.offsetTop - reduce,
-          },
-          500,
-        )
+        window.scroll({ top: node.offsetTop - reduce, behavior: 'smooth' })
       }
     }
   }
