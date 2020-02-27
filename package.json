@@ -1,6 +1,6 @@
 {
   "name": "bb2",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Most migrants and refugees arriving in Europe cross the Mediterranean. The purpose of this website is to provide a rough overview by focusing mainly on the Central Med and by covering both maritime and political events.",
   "private": true,
   "dependencies": {
@@ -21,12 +21,12 @@
     "pouchdb": "7.2.1",
     "pouchdb-authentication": "1.1.3",
     "pouchdb-upsert": "2.2.0",
-    "react": "16.12.0",
+    "react": "16.13.0",
     "react-bootstrap": "0.32.x",
     "react-copy-to-clipboard": "5.0.2",
     "react-datepicker": "2.13.0",
     "react-document-title": "2.0.3",
-    "react-dom": "16.12.0",
+    "react-dom": "16.13.0",
     "react-dropzone": "10.2.1",
     "react-gemini-scrollbar": "2.3.4",
     "react-helmet": "5.2.1",
@@ -81,12 +81,10 @@
   ],
   "peerDependencies": {
     "prop-types": "15.7.2",
-    "react-is": "16.12.0",
-    "typescript": "3.2.1"
+    "react-is": "16.13.0"
   },
   "dependenciesComments": {
     "prop-types": "needed for react-gemini-scrollbar",
-    "react-is": "needed for styled-components",
-    "typescript": "needed for react-scripts"
+    "react-is": "needed for styled-components"
   }
 }
