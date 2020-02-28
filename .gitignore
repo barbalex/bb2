@@ -26,3 +26,4 @@ git_stats.txt
 git_stats.csv
 
 /backend/caddy/html/*
+.cache/
