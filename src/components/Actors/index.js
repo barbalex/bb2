@@ -1,7 +1,7 @@
 //
-import React, { Component } from 'react'
+import React, { useContext, useCallback, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
+import { PanelGroup } from 'react-bootstrap'
 import sortBy from 'lodash/sortBy'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
@@ -9,11 +9,12 @@ import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 
-import Actor from './Actor'
+import ActorPanel from './ActorPanel'
 import NewActor from './NewActor'
 import ModalRemoveActor from './ModalRemoveActor'
 import SwallowPanelGroupProps from '../shared/SwallowPanelGroupProps'
 import oceanDarkImage from '../../images/oceanDark.jpg'
+import storeContext from '../../storeContext'
 
 const Container = styled.div`
   p,
@@ -36,80 +37,26 @@ const Container = styled.div`
     font-weight: bold;
   }
 `
-const ToggleDraftGlyphicon = styled(Glyphicon)`
-  position: absolute !important;
-  right: 40px !important;
-  top: 6px !important;
-  font-size: 1.5em;
-  color: ${props => props['data-color']};
-`
-const RemoveGlyphicon = styled(Glyphicon)`
-  position: absolute !important;
-  right: 10px !important;
-  top: 6px !important;
-  font-size: 1.5em;
-  color: #edf4f8;
-`
-const PanelHeading = styled.div`
-  position: relative;
-  cursor: pointer;
-  border-bottom-right-radius: ${props => (!props.isActiveActor ? '3px' : 0)};
-  border-bottom-left-radius: ${props => (!props.isActiveActor ? '3px' : 0)};
-`
-const PanelBody = styled.div`
-  padding: ${props => props['data-panelbodypadding']};
-  margin-top: ${props => props['data-panelbodymargintop']};
-  max-height: ${typeof window !== `undefined` ? window.innerHeight - 141 : 0}px;
-  overflow-y: auto;
-`
 
 const enhance = compose(
   inject('store'),
   withHandlers({
-    onClickActor: props => (id, e) => {
-      const { activeActor } = props.store.actors
-      // prevent higher level panels from reacting
-      e.stopPropagation()
-      const idToGet = !activeActor || activeActor._id !== id ? id : null
-      props.store.actors.getActor(idToGet)
-    },
-    onClickActorCollapse: props => event => {
-      // prevent higher level panels from reacting
-      event.stopPropagation()
-    },
     onRemoveActor: props => (docToRemove, event) => {
       event.preventDefault()
       event.stopPropagation()
       props.store.actors.setActorToRemove(docToRemove)
     },
-    onToggleDraft: props => (doc, event) => {
-      event.preventDefault()
-      event.stopPropagation()
-      props.store.actors.toggleDraftOfActor(doc)
-    },
+    onToggleDraft: props => (doc, event) => {},
   }),
   observer,
 )
 
-class Actors extends Component {
-  componentDidMount() {
-    const { category, store } = this.props
-    store.page.getPage('pages_actors')
-    if (!!category) store.actors.activeActorId = `actors_${category}`
-    this.props.store.actors.getActors()
-  }
+const Actors = ({ category }) => {
+  const store = useContext(storeContext)
+  const { activeActor, showNewActor, actors } = store.actors
+  const activeId = activeActor ? activeActor._id : null
 
-  componentDidUpdate() {
-    const { category, store } = this.props
-    if (!!category) store.actors.activeActorId = `actors_${category}`
-    if (this.props.store.actors.activeActor && typeof window !== `undefined`) {
-      window.setTimeout(() => {
-        this.scrollToActivePanel()
-      }, 200)
-    }
-  }
-
-  scrollToActivePanel = () => {
+  const scrollToActivePanel = useCallback(() => {
     const node = ReactDOM.findDOMNode(this._activeActorPanel)
     if (node) {
       const navWrapperOffsetTop = document.getElementById('nav-wrapper')
@@ -119,137 +66,48 @@ class Actors extends Component {
         window.scroll({ top: node.offsetTop - reduce, behavior: 'smooth' })
       }
     }
-  }
+  }, [])
 
-  toggleDraftGlyph = doc => {
-    const { onToggleDraft } = this.props
-    const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
-    const color = doc.draft ? 'red' : '#00D000'
-
-    return (
-      <OverlayTrigger
-        placement="top"
-        overlay={
-          <Tooltip id="toggleDraft">
-            {doc.draft ? 'publish' : 'unpublish'}
-          </Tooltip>
-        }
-      >
-        <ToggleDraftGlyphicon
-          glyph={glyph}
-          onClick={onToggleDraft.bind(this, doc)}
-          data-color={color}
-        />
-      </OverlayTrigger>
-    )
-  }
-
-  actorsComponent = () => {
-    const { store, onClickActor, onClickActorCollapse } = this.props
-    let { actors, activeActor } = store.actors
-    if (actors.length > 0) {
-      actors = sortBy(actors, actor => {
-        if (actor.order) return actor.order
-        return 100
-      })
-      return actors.map((doc, index) => {
-        const isActiveActor = activeActor ? doc._id === activeActor._id : false
-        const showEditingGlyphons = !!store.login.email
-        const panelbodypadding = store.editing ? '0 !important' : '15px'
-        const panelbodymargintop = store.editing ? '-1px' : 0
-        const ref = isActiveActor
-          ? '_activeActorPanel'
-          : `_actorPanel${doc._id}`
-        // use pure bootstrap.
-        // advantage: can add edit icon to panel-heading
-        return (
-          <div
-            key={doc._id}
-            ref={c => {
-              this[ref] = c
-            }}
-            className="panel panel-default"
-          >
-            <PanelHeading
-              className="panel-heading"
-              role="tab"
-              id={`heading${index}`}
-              onClick={onClickActor.bind(this, doc._id)}
-              isActiveActor={isActiveActor}
-            >
-              <h4 className="panel-title">
-                <a
-                  role="button"
-                  data-toggle="collapse"
-                  data-parent="#actorsAccordion"
-                  href={`#collapse${index}`}
-                  aria-expanded="false"
-                  aria-controls={`#collapse${index}`}
-                >
-                  {doc.category}
-                </a>
-              </h4>
-              {showEditingGlyphons && this.toggleDraftGlyph(doc)}
-              {showEditingGlyphons && (
-                <OverlayTrigger
-                  placement="top"
-                  overlay={<Tooltip id="removeThisActor">remove</Tooltip>}
-                >
-                  <RemoveGlyphicon
-                    glyph="remove-circle"
-                    onClick={event => this.props.onRemoveActor(doc, event)}
-                  />
-                </OverlayTrigger>
-              )}
-            </PanelHeading>
-            {isActiveActor && (
-              <div
-                id={`#collapse${index}`}
-                className="panel-collapse collapse in"
-                role="tabpanel"
-                aria-labelledby={`heading${index}`}
-                onClick={onClickActorCollapse}
-              >
-                <PanelBody
-                  className="panel-body"
-                  data-panelbodypadding={panelbodypadding}
-                  data-panelbodymargintop={panelbodymargintop}
-                >
-                  <Actor />
-                </PanelBody>
-              </div>
-            )}
-          </div>
-        )
-      })
+  useEffect(() => {
+    store.page.getPage('pages_actors')
+    store.actors.getActors()
+  }, [store.actors, store.page])
+  useEffect(() => {
+    if (!!category) store.actors.activeActorId = `actors_${category}`
+    if (activeActor) {
+      window.setTimeout(() => {
+        scrollToActivePanel()
+      }, 200)
     }
-    return null
-  }
+  }, [
+    activeId,
+    category,
+    scrollToActivePanel,
+    activeActor,
+    store.actors.activeActorId,
+  ])
 
-  render() {
-    const { store } = this.props
-    const { activeActor, showNewActor } = store.actors
-    const activeId = activeActor ? activeActor._id : null
+  const actorsSorted = sortBy(actors, actor => {
+    if (actor.order) return actor.order
+    return 100
+  })
 
-    return (
-      <DocumentTitle title="Actors">
-        <Container>
-          <h1>Actors</h1>
-          <PanelGroup
-            defaultActiveKey={activeId}
-            id="actorsAccordion"
-            accordion
-          >
-            <SwallowPanelGroupProps>
-              {this.actorsComponent()}
-            </SwallowPanelGroupProps>
-          </PanelGroup>
-          {showNewActor && <NewActor />}
-          {store.actors.actorToRemove && <ModalRemoveActor />}
-        </Container>
-      </DocumentTitle>
-    )
-  }
+  return (
+    <DocumentTitle title="Actors">
+      <Container>
+        <h1>Actors</h1>
+        <PanelGroup defaultActiveKey={activeId} id="actorsAccordion" accordion>
+          <SwallowPanelGroupProps>
+            {actorsSorted.map((doc, index) => (
+              <ActorPanel doc={doc} index={index} />
+            ))}
+          </SwallowPanelGroupProps>
+        </PanelGroup>
+        {showNewActor && <NewActor />}
+        {store.actors.actorToRemove && <ModalRemoveActor />}
+      </Container>
+    </DocumentTitle>
+  )
 }
 
 export default enhance(Actors)
