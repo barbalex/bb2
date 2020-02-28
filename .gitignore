@@ -3,15 +3,19 @@
 # dependencies
 /node_modules
 
-# testing
-/coverage
+
+# gatsby files
+.cache
+/.cache
+/.cache/*
+public
 
 # production
 /build
 
 # misc
 .DS_Store
-.env
+.env*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -21,4 +25,4 @@ couchPass.json
 git_stats.txt
 git_stats.csv
 
-/docker/caddy/html/*
+/backend/caddy/html/*

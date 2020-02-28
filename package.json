@@ -1,6 +1,6 @@
 {
   "name": "bb2",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Most migrants and refugees arriving in Europe cross the Mediterranean. The purpose of this website is to provide a rough overview by focusing mainly on the Central Med and by covering both maritime and political events.",
   "private": true,
   "dependencies": {
@@ -8,6 +8,7 @@
     "ampersand-app": "2.0.0",
     "bootstrap": "3.x",
     "classnames": "2.2.6",
+    "gatsby": "2.19.23",
     "gemini-scrollbar": "1.5.3",
     "isdev": "1.0.1",
     "js-base64": "2.5.2",
@@ -20,17 +21,17 @@
     "pouchdb": "7.2.1",
     "pouchdb-authentication": "1.1.3",
     "pouchdb-upsert": "2.2.0",
-    "react": "16.12.0",
+    "react": "16.13.0",
     "react-bootstrap": "0.32.x",
     "react-copy-to-clipboard": "5.0.2",
     "react-datepicker": "2.13.0",
     "react-document-title": "2.0.3",
-    "react-dom": "16.12.0",
+    "react-dom": "16.13.0",
     "react-dropzone": "10.2.1",
     "react-gemini-scrollbar": "2.3.4",
+    "react-helmet": "5.2.1",
     "react-list": "0.8.13",
     "react-loadable": "5.5.0",
-    "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
     "recompose": "0.30.0",
     "speakingurl": "14.0.1",
@@ -38,16 +39,21 @@
   },
   "devDependencies": {
     "copyfiles": "2.2.0",
-    "react-scripts": "3.4.0",
+    "gatsby-plugin-eslint": "2.0.8",
+    "gatsby-plugin-manifest": "2.2.42",
+    "gatsby-plugin-offline": "3.0.35",
+    "gatsby-plugin-react-helmet": "3.1.22",
+    "gatsby-plugin-sharp": "2.4.5",
+    "gatsby-plugin-styled-components": "3.1.19",
+    "gatsby-source-filesystem": "2.1.48",
+    "gatsby-transformer-sharp": "2.3.16",
     "rimraf": "3.0.2"
   },
   "scripts": {
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "postbuild": "rimraf docker/caddy/html && copyfiles -u 1 \"build/**/*\" docker/caddy/html",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "analyze": "npx source-map-explorer build/static/js/main.*"
+    "dev": "gatsby develop",
+    "build": "gatsby clean && gatsby build",
+    "postbuild": "rimraf backend/caddy/html && copyfiles -u 1 \"public/**/*\" backend/caddy/html",
+    "serve": "gatsby serve"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -75,12 +81,10 @@
   ],
   "peerDependencies": {
     "prop-types": "15.7.2",
-    "react-is": "16.12.0",
-    "typescript": "^3.2.1"
+    "react-is": "16.13.0"
   },
   "dependenciesComments": {
     "prop-types": "needed for react-gemini-scrollbar",
-    "react-is": "needed for styled-components",
-    "typescript": "needed for react-scripts"
+    "react-is": "needed for styled-components"
   }
 }

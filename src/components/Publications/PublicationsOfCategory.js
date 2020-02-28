@@ -7,7 +7,6 @@ import compose from 'recompose/compose'
 import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
-import { withRouter } from 'react-router'
 
 import Publication from './Publication'
 import ModalRemovePublication from './ModalRemovePublication'
@@ -38,7 +37,6 @@ const PanelBody = styled.div`
 
 const enhance = compose(
   inject('store'),
-  withRouter,
   withState('docToRemove', 'changeDocToRemove', null),
   withHandlers({
     onClickPublication: props => (id, e) => {
@@ -47,7 +45,7 @@ const enhance = compose(
       const { activePublication, getPublication } = props.store.publications
       const idToGet =
         !activePublication || activePublication._id !== id ? id : null
-      getPublication(idToGet, props.history)
+      getPublication(idToGet)
     },
     onClickEventCollapse: props => event => {
       // prevent higher level panels from reacting
@@ -99,12 +97,7 @@ class PublicationsOfCategory extends Component {
       // somehow on first load the panel does not scroll up far enough
       if (more) reduce -= 5
       if (node.offsetTop && typeof window !== `undefined`) {
-        window.$('html, body').animate(
-          {
-            scrollTop: node.offsetTop - reduce,
-          },
-          500,
-        )
+        window.scroll({ top: node.offsetTop - reduce, behavior: 'smooth' })
       }
     }
   }

@@ -1,3 +1,9 @@
+/**
+ * using Redirect caused weird errors
+ * so redirecting using navigate
+ * Also: need to have all the pages code here,
+ * else there would be scroll problems if redirected from empty page
+ */
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { ButtonGroup, Button } from 'react-bootstrap'
@@ -11,11 +17,11 @@ import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { navigate } from '@reach/router'
 
-import IntroJumbotron from './IntroJumbotron'
-import NewEvent from './NewEvent'
-import EditEvent from './EditEvent'
-import ModalRemoveEvent from './ModalRemoveEvent'
-import EventsTable from './EventsTable'
+import IntroJumbotron from './Events/IntroJumbotron'
+import NewEvent from './Events/NewEvent'
+import EditEvent from './Events/EditEvent'
+import ModalRemoveEvent from './Events/ModalRemoveEvent'
+import EventsTable from './Events/EventsTable'
 
 const Container = styled.div`
   position: relative !important;
@@ -64,6 +70,7 @@ const enhance = compose(
 
 class Events extends Component {
   componentDidMount() {
+    window.scroll({ top: 0 })
     const { store } = this.props
     store.page.getPage('pages_events')
     store.events.getEvents([parseInt(moment().format('YYYY'), 0)])
@@ -75,6 +82,7 @@ class Events extends Component {
         debounce(this.setIntroComponentsHeight, 50),
       )
     }
+    navigate('/events')
   }
 
   componentWillUnmount() {

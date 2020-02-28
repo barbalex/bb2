@@ -1,4 +1,4 @@
-//      
+//
 import React, { Component } from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
 import uniq from 'lodash/uniq'
@@ -9,7 +9,6 @@ import withState from 'recompose/withState'
 import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
-import { withRouter } from 'react-router'
 
 import getYearFromEventId from '../../modules/getYearFromEventId'
 import MonthlyEventsOfYear from './MonthlyEventsOfYear'
@@ -70,32 +69,34 @@ const StyledPanel = styled(({ activeYear, children, ...rest }) => (
 
 const enhance = compose(
   inject('store'),
-  withRouter,
   withState('activeYear', 'changeActiveYear', null),
   withHandlers({
-    onClickYear: props => (activeYear        ) => {
+    onClickYear: props => activeYear => {
       const { changeActiveYear, store } = props
       changeActiveYear(activeYear)
       // make sure no monthlyEvent is loaded
       // i.e. if an monthlyEvent was loaded it is unloaded
-      store.monthlyEvents.getMonthlyEvent(null, props.history)
+      store.monthlyEvents.getMonthlyEvent(null)
     },
   }),
   observer,
 )
 
 class MonthlyEvents extends Component {
-                              
-
-          
-                  
-                       
-                                 
-                            
-   
-
   componentDidMount() {
+    const { year, month, store } = this.props
+    store.page.getPage('pages_monthlyEvents')
+    if (!!year && !!month) {
+      store.monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
+    }
     this.props.store.monthlyEvents.getMonthlyEvents()
+  }
+
+  componentDidUpdate() {
+    const { year, month, store } = this.props
+    if (!!year && !!month) {
+      store.monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
+    }
   }
 
   yearsOfEvents = () => {

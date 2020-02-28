@@ -3,10 +3,9 @@
   #acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
 }
 
-# TODO: add www.evab.ch
-evab.ch {
-  reverse_proxy /api/* bb_db:5984
+evab.ch, www.evab.ch {
   root * /html
+  encode gzip
   file_server
 }
 

@@ -44,12 +44,7 @@ class MyEditor extends Component {
 
     // scroll editor to top in pages
     if (doc.type === 'pages' && typeof window !== `undefined`) {
-      window.$('html, body').animate(
-        {
-          scrollTop: 140,
-        },
-        800,
-      )
+      window.scroll({ top: 140, behavior: 'smooth' })
     }
   }
 
@@ -128,7 +123,7 @@ class MyEditor extends Component {
           automatic_uploads: false,
           statusbar: false,
           body_class: bodyClass,
-          content_css: `${process.env.PUBLIC_URL}/tinymce.css`,
+          content_css: `./tinymce.css`,
         }}
         onChange={e => {
           const articleDecoded = e.target.getContent()

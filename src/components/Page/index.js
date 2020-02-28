@@ -1,5 +1,5 @@
-//      
-import React from 'react'
+//
+import React, { useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
 import { observer, inject } from 'mobx-react'
@@ -52,17 +52,19 @@ const Page = ({
   onClickMeta,
   onCloseMeta,
   changeShowMeta,
-}   
-                
-                    
-                          
-                          
-                             
- ) => {
+}) => {
   const { activePage } = store.page
   const articleEncoded = activePage.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
-  let title = activePage.title ? activePage.title : activePage.category
+  let title = activePage.title
+    ? activePage.title
+    : activePage.category
+    ? activePage.category
+    : 'mediterranean migration'
+
+  useEffect(() => {
+    store.page.getPage('pages_aboutUs')
+  }, [store.page])
 
   if (store.editing && activePage._id !== 'pages_actors') {
     return (
