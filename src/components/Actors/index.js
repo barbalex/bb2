@@ -1,11 +1,8 @@
 //
-import React, { useContext, useCallback, useEffect } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useContext, useEffect } from 'react'
 import { PanelGroup } from 'react-bootstrap'
 import sortBy from 'lodash/sortBy'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 
@@ -38,54 +35,15 @@ const Container = styled.div`
   }
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onRemoveActor: props => (docToRemove, event) => {
-      event.preventDefault()
-      event.stopPropagation()
-      props.store.actors.setActorToRemove(docToRemove)
-    },
-    onToggleDraft: props => (doc, event) => {},
-  }),
-  observer,
-)
-
 const Actors = ({ category }) => {
   const store = useContext(storeContext)
   const { activeActor, showNewActor, actors } = store.actors
   const activeId = activeActor ? activeActor._id : null
 
-  const scrollToActivePanel = useCallback(() => {
-    const node = ReactDOM.findDOMNode(this._activeActorPanel)
-    if (node) {
-      const navWrapperOffsetTop = document.getElementById('nav-wrapper')
-        .offsetTop
-      const reduce = navWrapperOffsetTop > 0 ? navWrapperOffsetTop - 33 : 55
-      if (node.offsetTop && typeof window !== `undefined`) {
-        window.scroll({ top: node.offsetTop - reduce, behavior: 'smooth' })
-      }
-    }
-  }, [])
-
   useEffect(() => {
     store.page.getPage('pages_actors')
     store.actors.getActors()
   }, [store.actors, store.page])
-  useEffect(() => {
-    if (!!category) store.actors.activeActorId = `actors_${category}`
-    if (activeActor) {
-      window.setTimeout(() => {
-        scrollToActivePanel()
-      }, 200)
-    }
-  }, [
-    activeId,
-    category,
-    scrollToActivePanel,
-    activeActor,
-    store.actors.activeActorId,
-  ])
 
   const actorsSorted = sortBy(actors, actor => {
     if (actor.order) return actor.order
@@ -99,7 +57,12 @@ const Actors = ({ category }) => {
         <PanelGroup defaultActiveKey={activeId} id="actorsAccordion" accordion>
           <SwallowPanelGroupProps>
             {actorsSorted.map((doc, index) => (
-              <ActorPanel doc={doc} index={index} />
+              <ActorPanel
+                key={doc._id}
+                doc={doc}
+                index={index}
+                category={category}
+              />
             ))}
           </SwallowPanelGroupProps>
         </PanelGroup>
@@ -110,4 +73,4 @@ const Actors = ({ category }) => {
   )
 }
 
-export default enhance(Actors)
+export default observer(Actors)
