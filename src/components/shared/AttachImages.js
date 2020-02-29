@@ -1,10 +1,10 @@
-//      
-import React from 'react'
+//
+import React, { useContext, useCallback } from 'react'
 import Dropzone from 'react-dropzone'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+
+import storeContext from '../../storeContext'
 
 const Container = styled.div`
   padding-top: 10px;
@@ -28,11 +28,12 @@ const DropzoneInnerDiv = styled.div`
   border-radius: 5px;
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onDrop: props => files => {
-      const { store, doc } = props
+const AttachImages = ({ doc }) => {
+  const store = useContext(storeContext)
+  const { addPageAttachments } = store.page
+
+  const onDrop = useCallback(
+    files => {
       const attachments = {}
       files.forEach(file => {
         /**
@@ -59,53 +60,43 @@ const enhance = compose(
         }
       })
 
-      store.page.addPageAttachments(doc, attachments)
+      addPageAttachments(doc, attachments)
     },
-  }),
-  observer,
-)
+    [addPageAttachments, doc],
+  )
 
-const AttachImages = ({
-  store,
-  doc,
-  onDrop,
-}   
-                
-              
-                     
- ) => (
-  <Container>
-    <StyledDropzone onDrop={onDrop} accept="image/*">
-      {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
-        if (isDragActive) {
+  return (
+    <Container>
+      <StyledDropzone onDrop={onDrop} accept="image/*">
+        {({ getRootProps, getInputProps, isDragActive, isDragReject }) => {
+          if (isDragActive) {
+            return (
+              <DropzoneInnerDiv {...getRootProps()}>
+                <div>drop now...</div>
+              </DropzoneInnerDiv>
+            )
+          }
+          if (isDragReject) {
+            return (
+              <DropzoneInnerDiv {...getRootProps()}>
+                <div>Oh no. Something went wrong :-(</div>
+              </DropzoneInnerDiv>
+            )
+          }
           return (
             <DropzoneInnerDiv {...getRootProps()}>
-              <div>drop now...</div>
+              <input {...getInputProps()} style={{ width: 0, height: 0 }} />
+              <div>
+                Drop some images here...
+                <br />
+                ...or click to select.
+              </div>
             </DropzoneInnerDiv>
           )
-        }
-        if (isDragReject) {
-          return (
-            <DropzoneInnerDiv {...getRootProps()}>
-              <div>Oh no. Something went wrong :-(</div>
-            </DropzoneInnerDiv>
-          )
-        }
-        return (
-          <DropzoneInnerDiv {...getRootProps()}>
-            <input {...getInputProps()} style={{ width: 0, height: 0 }} />
-            <div>
-              Drop some images here...
-              <br />
-              ...or click to select.
-            </div>
-          </DropzoneInnerDiv>
-        )
-      }}
-    </StyledDropzone>
-  </Container>
-)
+        }}
+      </StyledDropzone>
+    </Container>
+  )
+}
 
-AttachImages.displayName = 'AttachImages'
-
-export default enhance(AttachImages)
+export default observer(AttachImages)

@@ -1,48 +1,37 @@
-//      
-import React from 'react'
+//
+import React, { useContext, useCallback } from 'react'
 import { Modal, Button } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    remove: props => () => props.removePublication(true),
-    abort: props => () => props.removePublication(false),
-  }),
-  observer,
-)
+import storeContext from '../../storeContext'
 
-const ModalRemovePublication = ({
-  store,
-  doc,
-  remove,
-  abort,
-}   
-                
-              
-                     
-                    
- ) => (
-  <div className="static-modal">
-    <Modal.Dialog>
-      <Modal.Header>
-        <Modal.Title>Remove publication "{doc.title}"</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>Are you sure you want to remove publication "{doc.title}"?</p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button bsStyle="danger" onClick={remove}>
-          yes, remove!
-        </Button>
-        <Button onClick={abort}>no!</Button>
-      </Modal.Footer>
-    </Modal.Dialog>
-  </div>
-)
+const ModalRemovePublication = ({ doc }) => {
+  const store = useContext(storeContext)
+  const { removePublication } = store.publications
+
+  const remove = useCallback(() => removePublication(true), [removePublication])
+  const abort = useCallback(() => removePublication(false), [removePublication])
+
+  return (
+    <div className="static-modal">
+      <Modal.Dialog>
+        <Modal.Header>
+          <Modal.Title>Remove publication "{doc.title}"</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Are you sure you want to remove publication "{doc.title}"?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button bsStyle="danger" onClick={remove}>
+            yes, remove!
+          </Button>
+          <Button onClick={abort}>no!</Button>
+        </Modal.Footer>
+      </Modal.Dialog>
+    </div>
+  )
+}
 
 ModalRemovePublication.displayName = 'ModalRemovePublication'
 
-export default enhance(ModalRemovePublication)
+export default observer(ModalRemovePublication)
