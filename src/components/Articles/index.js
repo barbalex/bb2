@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, useContext, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import { Glyphicon, Tooltip, OverlayTrigger, PanelGroup } from 'react-bootstrap'
+import { PanelGroup } from 'react-bootstrap'
 import has from 'lodash/has'
 import { observer, inject } from 'mobx-react'
 import compose from 'recompose/compose'
@@ -8,7 +8,7 @@ import withHandlers from 'recompose/withHandlers'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 
-import Article from './Article'
+import ArticlePanel from './ArticlePanel'
 import NewArticle from './NewArticle'
 import ModalRemoveArticle from './ModalRemoveArticle'
 import SwallowPanelGroupProps from '../shared/SwallowPanelGroupProps'
@@ -44,61 +44,11 @@ const Container = styled.div`
     font-weight: bold;
   }
 `
-const ToggleDraftGlyphicon = styled(Glyphicon)`
-  position: absolute !important;
-  right: 40px !important;
-  top: 6px !important;
-  font-size: 1.5em;
-  color: ${props => props['data-color']};
-`
-const RemoveGlyphicon = styled(Glyphicon)`
-  position: absolute !important;
-  right: 10px !important;
-  top: 6px !important;
-  font-size: 1.5em;
-  color: #edf4f8;
-`
-const PanelHeading = styled.div`
-  position: relative;
-  cursor: pointer;
-  border-bottom-right-radius: ${props => (!props.isActiveArticle ? '3px' : 0)};
-  border-bottom-left-radius: ${props => (!props.isActiveArticle ? '3px' : 0)};
-`
-const PanelBody = styled.div`
-  margin-top: ${props => props['data-panelbodymargintop']};
-  padding: ${props => props['data-panelbodypadding']};
-  max-height: ${typeof window !== `undefined` ? window.innerHeight - 141 : 0}px;
-  overflow-y: auto;
-`
 const Copyright = styled.p`
   margin-top: 70px;
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onClickArticle: props => (id, e) => {
-      const { activeArticle, getArticle } = props.store.articles
-      // prevent higher level panels from reacting
-      e.stopPropagation()
-      const idToGet = !activeArticle || activeArticle._id !== id ? id : null
-      getArticle(idToGet)
-    },
-    // prevent higher level panels from reacting
-    onClickArticleCollapse: props => event => event.stopPropagation(),
-    onRemoveArticle: props => (docToRemove, event) => {
-      event.preventDefault()
-      event.stopPropagation()
-      props.store.articles.setArticleToRemove(docToRemove)
-    },
-    onToggleDraft: props => (doc, event) => {
-      event.preventDefault()
-      event.stopPropagation()
-      props.store.articles.toggleDraftOfArticle(doc)
-    },
-  }),
-  observer,
-)
+const enhance = compose(inject('store'), withHandlers({}), observer)
 
 class Articles extends Component {
   componentDidMount() {
@@ -135,117 +85,14 @@ class Articles extends Component {
     }
   }
 
-  removeArticleGlyph = doc => (
-    <OverlayTrigger
-      placement="top"
-      overlay={<Tooltip id="removeThisArticle">remove</Tooltip>}
-    >
-      <RemoveGlyphicon
-        glyph="remove-circle"
-        onClick={this.props.onRemoveArticle.bind(this, doc)}
-      />
-    </OverlayTrigger>
-  )
-
-  toggleDraftGlyph = doc => {
-    const { onToggleDraft } = this.props
-    const glyph = doc.draft ? 'ban-circle' : 'ok-circle'
-    const color = doc.draft ? 'red' : '#00D000'
-
-    return (
-      <OverlayTrigger
-        placement="top"
-        overlay={
-          <Tooltip id="toggleDraft">
-            {doc.draft ? 'publish' : 'unpublish'}
-          </Tooltip>
-        }
-      >
-        <ToggleDraftGlyphicon
-          glyph={glyph}
-          data-color={color}
-          onClick={onToggleDraft.bind(this, doc)}
-        />
-      </OverlayTrigger>
-    )
-  }
-
-  articlesComponent = () => {
-    const { store, onClickArticle, onClickArticleCollapse } = this.props
-    const { articles, activeArticle } = store.articles
-
-    if (articles.length > 0) {
-      return articles.map((doc, index) => {
-        const isArticle = !!activeArticle
-        const isActiveArticle = isArticle
-          ? doc._id === activeArticle._id
-          : false
-        const showEditingGlyphons = !!store.login.email
-        const panelbodypadding = store.editing ? '0 !important' : '15px'
-        const panelbodymargintop = store.editing ? '-1px' : 0
-
-        // use pure bootstrap.
-        // advantage: can add edit icon to panel-heading
-        return (
-          <div
-            key={doc._id}
-            ref={c => {
-              if (isActiveArticle) {
-                this._activeArticlePanel = c
-              } else {
-                this[`_articlePanel${doc._id}`] = c
-              }
-            }}
-            className="panel panel-default"
-          >
-            <PanelHeading
-              className="panel-heading"
-              role="tab"
-              id={`heading${index}`}
-              onClick={onClickArticle.bind(this, doc._id)}
-            >
-              <h4 className="panel-title">
-                <a
-                  role="button"
-                  data-toggle="collapse"
-                  data-parent="#articlesAccordion"
-                  href={`#collapse${index}`}
-                  aria-expanded="false"
-                  aria-controls={`#collapse${index}`}
-                >
-                  {doc.title}
-                </a>
-              </h4>
-              {showEditingGlyphons && this.toggleDraftGlyph(doc)}
-              {showEditingGlyphons && this.removeArticleGlyph(doc)}
-            </PanelHeading>
-            {isActiveArticle && (
-              <div
-                id={`#collapse${index}`}
-                className="panel-collapse collapse in"
-                role="tabpanel"
-                aria-labelledby={`heading${index}`}
-                onClick={onClickArticleCollapse}
-              >
-                <PanelBody
-                  className="panel-body"
-                  data-panelbodypadding={panelbodypadding}
-                  data-panelbodymargintop={panelbodymargintop}
-                >
-                  <Article />
-                </PanelBody>
-              </div>
-            )}
-          </div>
-        )
-      })
-    }
-    return null
-  }
-
   render() {
     const { store } = this.props
-    const { activeArticle, showNewArticle, articleToRemove } = store.articles
+    const {
+      articles,
+      activeArticle,
+      showNewArticle,
+      articleToRemove,
+    } = store.articles
     const activeArticleId = has(activeArticle, '_id') ? activeArticle._id : null
 
     return (
@@ -258,7 +105,17 @@ class Articles extends Component {
             accordion
           >
             <SwallowPanelGroupProps>
-              {this.articlesComponent()}
+              {articles.map((article, index) => (
+                <ArticlePanel
+                  key={article._id}
+                  doc={article}
+                  index={index}
+                  year={this.props.year}
+                  month={this.props.month}
+                  day={this.props.day}
+                  title={this.props.title}
+                />
+              ))}
             </SwallowPanelGroupProps>
           </PanelGroup>
           {showNewArticle && <NewArticle />}
