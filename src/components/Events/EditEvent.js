@@ -2,7 +2,7 @@
  * using hooks errored
  * Hooks can only be called inside the body of a function component
  */
-import React from 'react'
+import React, { useState, useCallback, useContext } from 'react'
 import {
   Modal,
   Button,
@@ -12,10 +12,7 @@ import {
   FormControl,
 } from 'react-bootstrap'
 import moment from 'moment'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import EventTypeButtonGroup from './EventTypeButtonGroup'
@@ -23,6 +20,7 @@ import DateInput from './DateInput'
 import TagsInput from './TagsInput'
 import EventLinks from './EventLinks'
 import getDateFromEventId from '../../modules/getDateFromEventId'
+import storeContext from '../../storeContext'
 
 const StyledModal = styled(Modal)`
   .col-xs-1,
@@ -100,22 +98,32 @@ const StyledAlert = styled(Alert)`
   margin-bottom: 10px;
 `
 
-const enhance = compose(
-  inject('store'),
-  withState('error', 'changeError', null),
-  withHandlers({
-    onChangeTitle: props => e => {
-      const { store, changeError } = props
+const EditEvent = () => {
+  const store = useContext(storeContext)
+  const {
+    activeEvent,
+    newEvent,
+    removeEvent,
+    saveEvent,
+    getEvent,
+  } = store.events
+
+  const [error, setError] = useState(null)
+
+  const onChangeTitle = useCallback(
+    e => {
       const title = e.target.value
       if (title) {
         store.events.activeEvent.title = title
-        changeError(null)
+        setError(null)
       } else {
-        changeError('Please add a title')
+        setError('Please add a title')
       }
     },
-    onBlurTitle: props => e => {
-      const { activeEvent, newEvent, removeEvent } = props.store.events
+    [setError, store.events.activeEvent.title],
+  )
+  const onBlurTitle = useCallback(
+    e => {
       activeEvent.title = e.target.value
       if (activeEvent.title) {
         removeEvent(activeEvent)
@@ -123,8 +131,10 @@ const enhance = compose(
         newEvent(activeEvent)
       }
     },
-    onChangeDatePicker: props => date => {
-      const { changeError, store } = props
+    [activeEvent, newEvent, removeEvent],
+  )
+  const onChangeDatePicker = useCallback(
+    date => {
       const { activeEvent, newEvent, removeEvent } = store.events
       const datePassed = moment(date, 'DD.MM.YYYY')
       if (datePassed) {
@@ -132,77 +142,71 @@ const enhance = compose(
         activeEvent.date = datePassed
         newEvent(activeEvent)
       } else {
-        changeError('Please choose a date')
+        setError('Please choose a date')
       }
     },
-    onChangeOrder: props => e => {
-      const { store, changeError } = props
+    [setError, store.events],
+  )
+  const onChangeOrder = useCallback(
+    e => {
       store.events.activeEvent.order = e.target.value
-      changeError(null)
+      setError(null)
     },
-    onBlurOrder: props => e => {
-      const { activeEvent, saveEvent } = props.store.events
+    [setError, store.events.activeEvent.order],
+  )
+  const onBlurOrder = useCallback(
+    e => {
       activeEvent.order = e.target.value
       saveEvent(activeEvent)
     },
-    close: props => () => {
-      props.store.events.getEvent(null)
-    },
-  }),
-  observer,
-)
+    [activeEvent, saveEvent],
+  )
+  const close = useCallback(() => {
+    getEvent(null)
+  }, [getEvent])
 
-const EditEvent = ({
-  store,
-  error,
-  changeError,
-  onChangeTitle,
-  onBlurTitle,
-  onChangeDatePicker,
-  onChangeOrder,
-  onBlurOrder,
-  close,
-}) => (
-  <StyledModal show onHide={close} bsSize="large">
-    <Modal.Header closeButton>
-      <Modal.Title>Edit event</Modal.Title>
-    </Modal.Header>
+  return (
+    <StyledModal show onHide={close} bsSize="large">
+      <Modal.Header closeButton>
+        <Modal.Title>Edit event</Modal.Title>
+      </Modal.Header>
 
-    <Modal.Body>
-      <FormGroup controlId="eventTitle">
-        <ControlLabel>Title</ControlLabel>
-        <FormControl
-          type="text"
-          value={store.events.activeEvent.title}
-          onChange={onChangeTitle}
-          onBlur={onBlurTitle}
-          tabIndex={1}
+      <Modal.Body>
+        <FormGroup controlId="eventTitle">
+          <ControlLabel>Title</ControlLabel>
+          <FormControl
+            type="text"
+            value={store.events.activeEvent.title}
+            onChange={onChangeTitle}
+            onBlur={onBlurTitle}
+            tabIndex={1}
+          />
+        </FormGroup>
+        <DateInput
+          date={getDateFromEventId(store.events.activeEvent._id)}
+          onChangeDatePicker={onChangeDatePicker}
         />
-      </FormGroup>
-      <DateInput
-        date={getDateFromEventId(store.events.activeEvent._id)}
-        onChangeDatePicker={onChangeDatePicker}
-      />
-      <EventTypeButtonGroup />
-      <FormGroup controlId="eventOrder">
-        <ControlLabel>Order</ControlLabel>
-        <EventOrder
-          type="number"
-          value={store.events.activeEvent.order}
-          onChange={onChangeOrder}
-          onBlur={onBlurOrder}
-          tabIndex={4}
-        />
-      </FormGroup>
-      <TagsInput />
-      <EventLinks />
-      {error && <StyledAlert bsStyle="danger">{error}</StyledAlert>}
-    </Modal.Body>
+        <EventTypeButtonGroup />
+        <FormGroup controlId="eventOrder">
+          <ControlLabel>Order</ControlLabel>
+          <EventOrder
+            type="number"
+            value={store.events.activeEvent.order}
+            onChange={onChangeOrder}
+            onBlur={onBlurOrder}
+            tabIndex={4}
+          />
+        </FormGroup>
+        <TagsInput />
+        <EventLinks />
+        {error && <StyledAlert bsStyle="danger">{error}</StyledAlert>}
+      </Modal.Body>
 
-    <Modal.Footer>
-      <Button onClick={close}>close</Button>
-    </Modal.Footer>
-  </StyledModal>
-)
+      <Modal.Footer>
+        <Button onClick={close}>close</Button>
+      </Modal.Footer>
+    </StyledModal>
+  )
+}
 
-export default enhance(EditEvent)
+export default observer(EditEvent)

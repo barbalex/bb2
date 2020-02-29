@@ -3,17 +3,17 @@
  * adding useContext errors:
  * Hooks can only be called inside the body of a function component
  */
-import React from 'react'
+import React, { useContext } from 'react'
 import moment from 'moment'
 import ReactList from 'react-list'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import DateRow from './DateRow'
 import MonthRow from './MonthRow'
 import MonthlyStatisticsRow from './MonthlyStatisticsRow'
 import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent'
+import storeContext from '../../storeContext'
 
 const BodyRow = styled.div`
   display: flex;
@@ -29,9 +29,8 @@ const BodyCell = styled.div`
   padding-left: 10px;
 `
 
-const enhance = compose(inject('store'), observer)
-
-const DateRows = ({ store }) => {
+const DateRows = () => {
+  const store = useContext(storeContext)
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(
     store.events.events,
     store.yearsOfEvents.activeEventYears,
@@ -101,4 +100,4 @@ const DateRows = ({ store }) => {
   )
 }
 
-export default enhance(DateRows)
+export default observer(DateRows)
