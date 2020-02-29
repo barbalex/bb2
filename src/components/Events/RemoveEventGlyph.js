@@ -1,10 +1,10 @@
-//      
-import React from 'react'
+//
+import React, { useContext, useCallback } from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+
+import storeContext from '../../storeContext'
 
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 0.9em;
@@ -13,31 +13,23 @@ const StyledGlyphicon = styled(Glyphicon)`
   cursor: pointer;
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onRemoveEvent: props => () =>
-      props.store.events.setEventToRemove(props.event),
-  }),
-  observer
-)
+const RemoveEventGlyph = ({ event }) => {
+  const store = useContext(storeContext)
+  const { setEventToRemove } = store.events
 
-const RemoveEventGlyph = ({
-  store,
-  event,
-  onRemoveEvent,
-}   
-                
-                
-                            
- ) =>
-  <OverlayTrigger
-    placement="top"
-    overlay={<Tooltip id="removeThisEvent">remove</Tooltip>}
-  >
-    <StyledGlyphicon glyph="remove-circle" onClick={onRemoveEvent} />
-  </OverlayTrigger>
+  const onRemoveEvent = useCallback(() => setEventToRemove(event), [
+    event,
+    setEventToRemove,
+  ])
 
-RemoveEventGlyph.displayName = 'RemoveEventGlyph'
+  return (
+    <OverlayTrigger
+      placement="top"
+      overlay={<Tooltip id="removeThisEvent">remove</Tooltip>}
+    >
+      <StyledGlyphicon glyph="remove-circle" onClick={onRemoveEvent} />
+    </OverlayTrigger>
+  )
+}
 
-export default enhance(RemoveEventGlyph)
+export default observer(RemoveEventGlyph)

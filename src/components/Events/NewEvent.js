@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import {
   Modal,
   Button,
@@ -8,13 +8,11 @@ import {
   FormControl,
 } from 'react-bootstrap'
 import moment from 'moment'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import DateInput from './DateInput'
+import storeContext from '../../storeContext'
 
 const StyledModal = styled(Modal)`
   .col-xs-1,
@@ -89,67 +87,58 @@ const StyledAlert = styled(Alert)`
   margin-bottom: 10px;
 `
 
-const enhance = compose(
-  inject('store'),
-  withState('title', 'changeTitle', ''),
-  withState('date', 'changeDate', moment()),
-  withState('error', 'changeError', null),
-  withHandlers({
-    onChangeTitle: props => event => props.changeTitle(event.target.value),
-    onChangeDatePicker: props => date =>
-      props.changeDate(moment(date, 'DD.MM.YYYY')),
-    close: props => () => props.store.events.setShowNewEvent(false),
-    createNewEvent: props => () => {
-      const { title, date, store } = props
-      if (title && date) {
-        store.events.newEvent({ date, title })
-        props.store.events.setShowNewEvent(false)
-      } else {
-        const error = !!title ? 'Please choose a date' : 'Please add a title'
-        props.changeError(error)
-      }
-    },
-  }),
-  observer,
-)
+const NewEvent = () => {
+  const store = useContext(storeContext)
+  const { newEvent, setShowNewEvent } = store.events
 
-const NewEvent = ({
-  store,
-  title,
-  date,
-  error,
-  onChangeTitle,
-  onChangeDatePicker,
-  close,
-  createNewEvent,
-}) => (
-  <StyledModal show onHide={close} bsSize="large">
-    <Modal.Header>
-      <Modal.Title>New event</Modal.Title>
-    </Modal.Header>
+  const [title, setTitle] = useState('')
+  const [date, setDate] = useState(moment())
+  const [error, setError] = useState(null)
 
-    <Modal.Body>
-      <FormGroup controlId="newEventTitle">
-        <ControlLabel>Title</ControlLabel>
-        <FormControl
-          type="text"
-          value={title}
-          onChange={onChangeTitle}
-          autoFocus
-          tabIndex={1}
-        />
-      </FormGroup>
-      <DateInput date={date} onChangeDatePicker={onChangeDatePicker} />
-      {error && <StyledAlert bsStyle="danger">{error}</StyledAlert>}
-    </Modal.Body>
+  const onChangeTitle = useCallback(event => setTitle(event.target.value), [])
+  const onChangeDatePicker = useCallback(
+    date => setDate(moment(date, 'DD.MM.YYYY')),
+    [],
+  )
+  const close = useCallback(() => setShowNewEvent(false), [setShowNewEvent])
+  const createNewEvent = useCallback(() => {
+    if (title && date) {
+      newEvent({ date, title })
+      setShowNewEvent(false)
+    } else {
+      setError(!!title ? 'Please choose a date' : 'Please add a title')
+    }
+  }, [date, newEvent, setShowNewEvent, title])
 
-    <Modal.Footer>
-      <Button onClick={close}>discard input and close</Button>
-      <Button bsStyle="primary" onClick={createNewEvent}>
-        create new event
-      </Button>
-    </Modal.Footer>
-  </StyledModal>
-)
+  return (
+    <StyledModal show onHide={close} bsSize="large">
+      <Modal.Header>
+        <Modal.Title>New event</Modal.Title>
+      </Modal.Header>
 
-export default enhance(NewEvent)
+      <Modal.Body>
+        <FormGroup controlId="newEventTitle">
+          <ControlLabel>Title</ControlLabel>
+          <FormControl
+            type="text"
+            value={title}
+            onChange={onChangeTitle}
+            autoFocus
+            tabIndex={1}
+          />
+        </FormGroup>
+        <DateInput date={date} onChangeDatePicker={onChangeDatePicker} />
+        {error && <StyledAlert bsStyle="danger">{error}</StyledAlert>}
+      </Modal.Body>
+
+      <Modal.Footer>
+        <Button onClick={close}>discard input and close</Button>
+        <Button bsStyle="primary" onClick={createNewEvent}>
+          create new event
+        </Button>
+      </Modal.Footer>
+    </StyledModal>
+  )
+}
+
+export default observer(NewEvent)
