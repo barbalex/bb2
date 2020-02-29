@@ -1,6 +1,5 @@
 import React from 'react'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import Event from './Event'
@@ -54,27 +53,29 @@ const BodyRow = styled.div`
   }
 `
 
-const enhance = compose(inject('store'), observer)
+const MonthlyStatisticsRow = ({ dateRowObject: dRO }) => {
+  const dayHasEvents =
+    dRO.migrationEvents.length > 0 || dRO.politicsEvents.length > 0
 
-const mapEventComponents = events =>
-  events.map((event, key) => <Event key={key} event={event} />)
-
-const MonthlyStatisticsRow = ({ store, dateRowObject: dRO }) => {
-  const migrationEvents = mapEventComponents(dRO.migrationEvents)
-  const politicsEvents = mapEventComponents(dRO.politicsEvents)
-  const dayWithEvents = migrationEvents.length > 0 || politicsEvents.length > 0
-
-  if (dayWithEvents) {
+  if (dayHasEvents) {
     return (
       <BodyRow>
         <BodyCellDay>
           <p />
         </BodyCellDay>
         <BodyCellMigration>
-          <ul>{migrationEvents}</ul>
+          <ul>
+            {dRO.migrationEvents.map((event, key) => (
+              <Event key={key} event={event} />
+            ))}
+          </ul>
         </BodyCellMigration>
         <BodyCellPolitics>
-          <ul>{politicsEvents}</ul>
+          <ul>
+            {dRO.politicsEvents.map((event, key) => (
+              <Event key={key} event={event} />
+            ))}
+          </ul>
         </BodyCellPolitics>
       </BodyRow>
     )
@@ -82,4 +83,4 @@ const MonthlyStatisticsRow = ({ store, dateRowObject: dRO }) => {
   return null
 }
 
-export default enhance(MonthlyStatisticsRow)
+export default observer(MonthlyStatisticsRow)
