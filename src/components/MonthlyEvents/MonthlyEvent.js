@@ -1,15 +1,13 @@
-//      
-import React from 'react'
+//
+import React, { useContext, useState, useCallback } from 'react'
 import { Button } from 'react-bootstrap'
 import { Base64 } from 'js-base64'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import Editor from '../shared/Editor'
 import MonthlyEventMeta from './MonthlyEventMeta'
+import storeContext from '../../storeContext'
 
 const Container = styled.div`
   table > thead > tr > th {
@@ -29,33 +27,15 @@ const MetaButton = styled(Button)`
   right: 10px;
 `
 
-const enhance = compose(
-  inject('store'),
-  withState('showMeta', 'changeShowMeta', false),
-  withHandlers({
-    onClickMeta: props => () => props.changeShowMeta(!props.showMeta),
-    onCloseMeta: props => () => props.changeShowMeta(false),
-  }),
-  observer,
-)
-
-const MonthlyEvent = ({
-  store,
-  year,
-  month,
-  showMeta,
-  onClickMeta,
-  onCloseMeta,
-}   
-                
-               
-                
-                    
-                          
-                          
- ) => {
+const MonthlyEvent = ({ year, month }) => {
+  const store = useContext(storeContext)
   const articleEncoded = store.monthlyEvents.activeMonthlyEvent.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
+
+  const [showMeta, setShowMeta] = useState(false)
+
+  const onClickMeta = useCallback(() => setShowMeta(!showMeta), [showMeta])
+  const onCloseMeta = useCallback(() => setShowMeta(false), [])
 
   if (store.editing) {
     return (
@@ -84,6 +64,4 @@ const MonthlyEvent = ({
   )
 }
 
-MonthlyEvent.displayName = 'MonthlyEvent'
-
-export default enhance(MonthlyEvent)
+export default observer(MonthlyEvent)
