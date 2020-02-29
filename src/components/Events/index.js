@@ -1,21 +1,19 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import moment from 'moment'
-import debounce from 'lodash/debounce'
 import min from 'lodash/min'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { navigate } from '@reach/router'
+import ReactResizeDetector from 'react-resize-detector'
 
 import IntroJumbotron from './IntroJumbotron'
 import NewEvent from './NewEvent'
 import EditEvent from './EditEvent'
 import ModalRemoveEvent from './ModalRemoveEvent'
 import EventsTable from './EventsTable'
+import storeContext from '../../storeContext'
 
 const Container = styled.div`
   position: relative !important;
@@ -55,111 +53,67 @@ const YearButtonsContainer = styled.div`
   text-align: center;
 `
 
-const enhance = compose(
-  inject('store'),
-  withState('docToRemove', 'changeDocToRemove', null),
-  withState('introJumbotronHeight', 'changeIntroJumbotronHeight', null),
-  observer,
-)
+const Events = () => {
+  const store = useContext(storeContext)
+  const { getPage } = store.page
+  const {
+    yearsOfEvents,
+    activeEventYears,
+    getYearsOfEvents,
+    setActiveEventYears,
+  } = store.yearsOfEvents
+  const showEventsTable = min(activeEventYears) > 2014
+  const { activeEvent, eventToRemove, getEvents, showNewEvent } = store.events
 
-class Events extends Component {
-  componentDidMount() {
-    const { store } = this.props
-    store.page.getPage('pages_events')
-    store.events.getEvents([parseInt(moment().format('YYYY'), 0)])
-    store.yearsOfEvents.getYearsOfEvents()
-    this.setIntroComponentsHeight()
-    if (typeof window !== `undefined`) {
-      window.addEventListener(
-        'resize',
-        debounce(this.setIntroComponentsHeight, 50),
-      )
-    }
-  }
+  const [introJumbotronHeight, setIntroJumbotronHeight] = useState(1462)
+  const onResize = useCallback(
+    (width, height) => setIntroJumbotronHeight(height),
+    [],
+  )
 
-  componentWillUnmount() {
-    if (typeof window !== `undefined`) {
-      window.removeEventListener(
-        'resize',
-        debounce(this.setIntroComponentsHeight, 50),
-      )
-    }
-  }
+  useEffect(() => {
+    getPage('pages_events')
+    getEvents([parseInt(moment().format('YYYY'), 0)])
+    getYearsOfEvents()
+  }, [getEvents, getPage, getYearsOfEvents])
 
-  setIntroComponentsHeight = () => {
-    const {
-      introJumbotronHeight: introJumbotronHeightOld,
-      changeIntroJumbotronHeight,
-    } = this.props
-    const introJumbotronDomNode = this.introJumbotron
-      ? ReactDOM.findDOMNode(this.introJumbotron)
-      : null
-    const introJumbotronHeight = introJumbotronDomNode
-      ? introJumbotronDomNode.clientHeight
-      : null
-    if (
-      introJumbotronHeight &&
-      introJumbotronHeight !== introJumbotronHeightOld
-    ) {
-      changeIntroJumbotronHeight(introJumbotronHeight)
-    }
-  }
-
-  setActiveYear = year => {
-    const { store } = this.props
-    store.events.getEvents([year])
-    store.yearsOfEvents.setActiveEventYears([year])
-  }
-
-  yearButtons = () => {
-    const { yearsOfEvents, activeEventYears } = this.props.store.yearsOfEvents
-
-    return yearsOfEvents.map((year, index) => (
-      <Button
-        key={index}
-        active={activeEventYears.includes(year)}
-        onClick={() => this.setActiveYear(year)}
-      >
-        {year}
-      </Button>
-    ))
-  }
-
-  render() {
-    const { store, introJumbotronHeight } = this.props
-    const showEventsTable = min(store.yearsOfEvents.activeEventYears) > 2014
-    const { activeEvent, showNewEvent } = store.events
-
-    return (
-      <DocumentTitle title="Events">
-        <Container className="events">
-          <IntroJumbotron
-            ref={j => {
-              this.introJumbotron = j
-            }}
-          />
-          <YearButtonsContainer>
-            <ButtonGroup>
-              {this.yearButtons()}
+  return (
+    <DocumentTitle title="Events">
+      <Container className="events">
+        <ReactResizeDetector handleHeight onResize={onResize} />
+        <IntroJumbotron />
+        <YearButtonsContainer>
+          <ButtonGroup>
+            {yearsOfEvents.map((year, index) => (
               <Button
+                key={index}
+                active={activeEventYears.includes(year)}
                 onClick={() => {
-                  navigate('/monthlyEvents')
-                  store.page.getPage('pages_monthlyEvents')
+                  getEvents([year])
+                  setActiveEventYears([year])
                 }}
               >
-                2014 - 2011
+                {year}
               </Button>
-            </ButtonGroup>
-          </YearButtonsContainer>
-          {showEventsTable && (
-            <EventsTable introJumbotronHeight={introJumbotronHeight} />
-          )}
-          {activeEvent && <EditEvent />}
-          {showNewEvent && <NewEvent />}
-          {store.events.eventToRemove && <ModalRemoveEvent />}
-        </Container>
-      </DocumentTitle>
-    )
-  }
+            ))}
+            <Button
+              onClick={() => {
+                navigate('/monthlyEvents')
+                getPage('pages_monthlyEvents')
+              }}
+            >
+              2014 - 2011
+            </Button>
+          </ButtonGroup>
+        </YearButtonsContainer>
+        {showEventsTable && (
+          <EventsTable introJumbotronHeight={introJumbotronHeight} />
+        )}
+        {activeEvent && <EditEvent />}
+        {showNewEvent && <NewEvent />}
+        {eventToRemove && <ModalRemoveEvent />}
+      </Container>
+    </DocumentTitle>
+  )
 }
-export default enhance(Events)
+export default observer(Events)
