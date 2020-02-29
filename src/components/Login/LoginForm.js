@@ -1,5 +1,5 @@
 import app from 'ampersand-app'
-import React from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import {
   Alert,
   Button,
@@ -8,13 +8,11 @@ import {
   FormControl,
 } from 'react-bootstrap'
 import isObject from 'lodash/isObject'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
-import withState from 'recompose/withState'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import validateEmail from './validateEmail'
+import storeContext from '../../storeContext'
 
 const StyledAlert = styled(Alert)`
   margin-bottom: 8px;
@@ -25,93 +23,90 @@ const ValidateDivAfterRBC = styled.div`
   margin-bottom: 5px;
 `
 
-const enhance = compose(
-  inject('store'),
-  withState('invalidEmail', 'changeInvalidEmail', false),
-  withState('invalidPassword', 'changeInvalidPassword', false),
-  withState('newEmail', 'changeNewEmail', ''),
-  withState('password', 'changePassword', ''),
-  withState('loginError', 'changeLoginError', ''),
-  withHandlers({
-    validEmail: props => newEmail => {
-      const validEmail = newEmail && validateEmail(newEmail)
-      const invalidEmail = !validEmail
-      props.changeInvalidEmail(invalidEmail)
-      return !!validEmail
+const LoginForm = () => {
+  const store = useContext(storeContext)
+
+  const [invalidEmail, changeInvalidEmail] = useState(false)
+  const [invalidPassword, changeInvalidPassword] = useState(false)
+  const [newEmail, changeNewEmail] = useState('')
+  const [password, changePassword] = useState('')
+  const [loginError, changeLoginError] = useState('')
+
+  const validEmail = useCallback(newEmail => {
+    const validEmail = newEmail && validateEmail(newEmail)
+    const invalidEmail = !validEmail
+    changeInvalidEmail(invalidEmail)
+    return !!validEmail
+  }, [])
+  const validPassword = useCallback(password => {
+    const validPassword = !!password
+    const invalidPassword = !validPassword
+    changeInvalidPassword(invalidPassword)
+    return validPassword
+  }, [])
+  const validSignin = useCallback(
+    (newEmail, password) => {
+      return validEmail(newEmail) && validPassword(password)
     },
-    validPassword: props => password => {
-      const validPassword = !!password
-      const invalidPassword = !validPassword
-      props.changeInvalidPassword(invalidPassword)
-      return validPassword
-    },
-  }),
-  withHandlers({
-    validSignin: props => (newEmail, password) => {
-      const validEmail = props.validEmail(newEmail)
-      const validPassword = props.validPassword(password)
-      return validEmail && validPassword
-    },
-  }),
-  withHandlers({
-    checkSignin: props => async (newEmail, password) => {
-      if (props.validSignin(newEmail, password)) {
+    [validEmail, validPassword],
+  )
+  const checkSignin = useCallback(
+    async (newEmail, password) => {
+      if (validSignin(newEmail, password)) {
         try {
           await app.db.login(newEmail, password)
-          props.store.login.login(newEmail)
+          store.login.login(newEmail)
         } catch (error) {
-          props.changeNewEmail(null)
-          props.changeLoginError(error)
+          changeNewEmail(null)
+          changeLoginError(error)
         }
       }
     },
-  }),
-  withHandlers({
-    onKeyDownEmail: props => event => {
+    [store.login, validSignin],
+  )
+  const onKeyDownEmail = useCallback(
+    event => {
       const enter = 13
       if (event.keyCode === enter) {
         // if enter was pressed, update the value first
         const newEmail = event.target.value
-        props.changeNewEmail(newEmail)
-        props.checkSignin(newEmail, props.password)
+        changeNewEmail(newEmail)
+        checkSignin(newEmail, password)
       }
     },
-    onKeyDownPassword: props => event => {
+    [checkSignin, password],
+  )
+  const onKeyDownPassword = useCallback(
+    event => {
       const enter = 13
       if (event.keyCode === enter) {
         // if enter was pressed, update the value first
         const password = event.target.value
-        props.changePassword(password)
-        props.checkSignin(props.newEmail, password)
+        changePassword(password)
+        checkSignin(newEmail, password)
       }
     },
-    onBlurEmail: props => event => {
+    [checkSignin, newEmail],
+  )
+  const onBlurEmail = useCallback(
+    event => {
       const newEmail = event.target.value
-      props.changeNewEmail(newEmail)
-      props.validEmail(newEmail)
+      changeNewEmail(newEmail)
+      validEmail(newEmail)
     },
-    onBlurPassword: props => event => props.changePassword(event.target.value),
-    onAlertDismiss: props => () => props.changeLoginError(null),
-    onClickLogin: props => () =>
-      props.checkSignin(props.newEmail, props.password),
-  }),
-  observer,
-)
+    [validEmail],
+  )
+  const onBlurPassword = useCallback(
+    event => changePassword(event.target.value),
+    [],
+  )
+  const onAlertDismiss = useCallback(() => changeLoginError(null), [])
+  const onClickLogin = useCallback(() => checkSignin(newEmail, password), [
+    checkSignin,
+    newEmail,
+    password,
+  ])
 
-const LoginForm = ({
-  store,
-  invalidEmail,
-  invalidPassword,
-  newEmail,
-  password,
-  loginError,
-  onKeyDownEmail,
-  onKeyDownPassword,
-  onBlurEmail,
-  onBlurPassword,
-  onAlertDismiss,
-  onClickLogin,
-}) => {
   const emailInputBsStyle = invalidEmail ? 'error' : null
   const passwordInputBsStyle = invalidPassword ? 'error' : null
   let error = loginError
@@ -171,4 +166,4 @@ const LoginForm = ({
   )
 }
 
-export default enhance(LoginForm)
+export default observer(LoginForm)

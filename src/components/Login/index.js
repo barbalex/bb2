@@ -1,36 +1,32 @@
 //
 
-import React from 'react'
+import React, { useContext, useCallback } from 'react'
 import { Button } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import DocumentTitle from 'react-document-title'
 
 import LoginForm from './LoginForm'
+import storeContext from '../../storeContext'
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onClickLogout: props => () => props.store.login.logout(),
-  }),
-  observer,
-)
+const Login = () => {
+  const store = useContext(storeContext)
+  const { email, logout } = store.login
 
-const Login = ({ store, onClickLogout }) => (
-  <DocumentTitle title="blue-borders | Login">
-    <div>
-      <h1>Login</h1>
-      {!store.login.email && <LoginForm />}
-      {store.login.email && (
-        <Button className="btn-primary" onClick={onClickLogout}>
-          log out
-        </Button>
-      )}
-    </div>
-  </DocumentTitle>
-)
+  const onClickLogout = useCallback(() => logout(), [logout])
 
-Login.displayName = 'Login'
+  return (
+    <DocumentTitle title="blue-borders | Login">
+      <div>
+        <h1>Login</h1>
+        {!email && <LoginForm />}
+        {email && (
+          <Button className="btn-primary" onClick={onClickLogout}>
+            log out
+          </Button>
+        )}
+      </div>
+    </DocumentTitle>
+  )
+}
 
-export default enhance(Login)
+export default observer(Login)
