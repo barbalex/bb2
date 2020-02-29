@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useCallback, useContext } from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+
+import storeContext from '../../storeContext'
 
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 0.9em;
@@ -11,23 +11,20 @@ const StyledGlyphicon = styled(Glyphicon)`
   cursor: pointer;
 `
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onClick: props => () => {
-      props.store.events.getEvent(props.event._id)
-    },
-  }),
-  observer,
-)
+const EditEventGlyph = ({ event }) => {
+  const store = useContext(storeContext)
+  const { getEvent } = store.events
 
-const EditEventGlyph = ({ store, event, onClick }) => (
-  <OverlayTrigger
-    placement="top"
-    overlay={<Tooltip id="editThisEvent">edit</Tooltip>}
-  >
-    <StyledGlyphicon glyph="pencil" onClick={onClick} />
-  </OverlayTrigger>
-)
+  const onClick = useCallback(() => getEvent(event._id), [])
 
-export default enhance(EditEventGlyph)
+  return (
+    <OverlayTrigger
+      placement="top"
+      overlay={<Tooltip id="editThisEvent">edit</Tooltip>}
+    >
+      <StyledGlyphicon glyph="pencil" onClick={onClick} />
+    </OverlayTrigger>
+  )
+}
+
+export default observer(EditEventGlyph)
