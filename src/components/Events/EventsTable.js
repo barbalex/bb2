@@ -2,7 +2,6 @@
 import React from 'react'
 import GeminiScrollbar from 'react-gemini-scrollbar'
 import { observer } from 'mobx-react-lite'
-import compose from 'recompose/compose'
 import styled from 'styled-components'
 
 import DateRows from './DateRows'
@@ -60,29 +59,24 @@ const HeaderRow = styled.div`
   display: flex;
 `
 
-const enhance = compose(observer)
+const Events = ({ introJumbotronHeight }) => (
+  <Container>
+    <Header
+      data-top={introJumbotronHeight ? introJumbotronHeight + 88 : 173}
+      className="eventsTable-header"
+    >
+      <HeaderRow>
+        <HeaderCellDay />
+        <HeaderCellMigration>Maritime Events</HeaderCellMigration>
+        <HeaderCellPolitics>Political Events</HeaderCellPolitics>
+      </HeaderRow>
+    </Header>
+    <Body>
+      <GeminiScrollbar id="eventsTableBody" autoshow>
+        <DateRows />
+      </GeminiScrollbar>
+    </Body>
+  </Container>
+)
 
-const Events = ({ introJumbotronHeight }) => {
-  const headerTop = introJumbotronHeight ? introJumbotronHeight + 88 : 173
-
-  return (
-    <Container>
-      <Header data-top={headerTop} className="eventsTable-header">
-        <HeaderRow>
-          <HeaderCellDay />
-          <HeaderCellMigration>Maritime Events</HeaderCellMigration>
-          <HeaderCellPolitics>Political Events</HeaderCellPolitics>
-        </HeaderRow>
-      </Header>
-      <Body>
-        <GeminiScrollbar id="eventsTableBody" autoshow>
-          <DateRows />
-        </GeminiScrollbar>
-      </Body>
-    </Container>
-  )
-}
-
-Events.displayName = 'Events'
-
-export default enhance(Events)
+export default observer(Events)
