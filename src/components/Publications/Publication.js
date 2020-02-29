@@ -1,11 +1,11 @@
-//      
-import React from 'react'
+//
+import React, { useContext } from 'react'
 import { Base64 } from 'js-base64'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import Editor from '../shared/Editor'
+import storeContext from '../../storeContext'
 
 const Container = styled.div`
   h2 {
@@ -20,10 +20,10 @@ const Container = styled.div`
   }
 `
 
-const enhance = compose(inject('store'), observer)
-
-const Publication = ({ store }                   ) => {
-  const articleEncoded = store.publications.activePublication.article
+const Publication = () => {
+  const store = useContext(storeContext)
+  const { activePublication } = store.publications
+  const articleEncoded = activePublication.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
 
   if (store.editing) {
@@ -31,7 +31,7 @@ const Publication = ({ store }                   ) => {
       <Container>
         <Editor
           docType="publication"
-          doc={store.publications.activePublication}
+          doc={activePublication}
           articleDecoded={articleDecoded}
         />
       </Container>
@@ -47,4 +47,4 @@ const Publication = ({ store }                   ) => {
 
 Publication.displayName = 'Publication'
 
-export default enhance(Publication)
+export default observer(Publication)

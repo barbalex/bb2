@@ -13,7 +13,7 @@ import styled from 'styled-components'
 import storeContext from '../../storeContext'
 
 const ErrorAlert = styled(Alert)`
-  magrin-bottom: 10px;
+  margin-bottom: 10px;
 `
 
 const NewActor = () => {

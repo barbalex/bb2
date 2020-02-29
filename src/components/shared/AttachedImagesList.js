@@ -1,9 +1,6 @@
-//      
-import React from 'react'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
-import withHandlers from 'recompose/withHandlers'
+//
+import React, { useState, useCallback } from 'react'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import AttachedImage from './AttachedImage'
@@ -13,32 +10,15 @@ const Container = styled.div`
   max-height: 500px !important;
 `
 
-const enhance = compose(
-  inject('store'),
-  withState('urlCopied', 'changeUrlCopied', null),
-  withHandlers({
-    onCopyUrl: props => urlCopied => {
-      props.changeUrlCopied(urlCopied)
-    },
-  }),
-  observer
-)
+const AttachedImagesList = ({ doc }) => {
+  const [urlCopied, setUrlCopied] = useState(null)
+  const onCopyUrl = useCallback(urlCopied => {
+    setUrlCopied(urlCopied)
+  }, [])
 
-const AttachedImagesList = ({
-  doc,
-  urlCopied,
-  onCopyUrl,
-  changeUrlCopied,
-}   
-              
-                    
-                        
-                              
- ) => {
-  console.log('rendering AttachedImagesList')
   return (
     <Container className="media">
-      {Object.keys(doc._attachments || []).map(key =>
+      {Object.keys(doc._attachments || []).map(key => (
         <AttachedImage
           key={key}
           doc={doc}
@@ -47,11 +27,9 @@ const AttachedImagesList = ({
           onCopyUrl={onCopyUrl}
           attachments={doc._attachments}
         />
-      )}
+      ))}
     </Container>
   )
 }
 
-AttachedImagesList.displayName = 'AttachedImagesList'
-
-export default enhance(AttachedImagesList)
+export default observer(AttachedImagesList)

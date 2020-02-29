@@ -1,5 +1,5 @@
-//      
-import React from 'react'
+//
+import React, { useContext } from 'react'
 import {
   Button,
   Glyphicon,
@@ -8,14 +8,18 @@ import {
   InputGroup,
 } from 'react-bootstrap'
 import CopyToClipboard from 'react-copy-to-clipboard'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import getCouchUrl from '../../modules/getCouchUrl'
+import storeContext from '.././../storeContext'
 
-const Container = styled.div`padding: 5px;`
-const Image = styled.img`width: 220px;`
+const Container = styled.div`
+  padding: 5px;
+`
+const Image = styled.img`
+  width: 220px;
+`
 const StyledGlyphicon = styled(Glyphicon)`
   position: absolute !important;
   top: 10px !important;
@@ -24,23 +28,12 @@ const StyledGlyphicon = styled(Glyphicon)`
   color: red;
   cursor: pointer;
 `
-const MediaLeft = styled.div`position: relative;`
+const MediaLeft = styled.div`
+  position: relative;
+`
 
-const enhance = compose(inject('store'), observer)
-
-const AttachedImage = ({
-  store,
-  doc,
-  attName,
-  urlCopied,
-  onCopyUrl,
-}   
-                
-              
-                  
-                    
-                        
- ) => {
+const AttachedImage = ({ doc, attName, urlCopied, onCopyUrl }) => {
+  const store = useContext(storeContext)
   const id = doc._id
   const url = `${getCouchUrl()}/${id}/${attName}`
   const urlCopiedButtonBsStyle = urlCopied === url ? 'success' : 'default'
@@ -72,6 +65,4 @@ const AttachedImage = ({
   )
 }
 
-AttachedImage.displayName = 'AttachedImage'
-
-export default enhance(AttachedImage)
+export default observer(AttachedImage)

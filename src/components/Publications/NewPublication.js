@@ -1,5 +1,5 @@
-//      
-import React from 'react'
+//
+import React, { useContext, useState, useCallback } from 'react'
 import {
   Modal,
   Button,
@@ -8,14 +8,13 @@ import {
   ControlLabel,
   FormControl,
 } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
+import storeContext from '../../storeContext'
+
 const ErrorAlert = styled(Alert)`
-  magrin-bottom: 10px;
+  margin-bottom: 10px;
 `
 
 const categoryOptions = publicationCategories => {
@@ -28,59 +27,39 @@ const categoryOptions = publicationCategories => {
   return options
 }
 
-const enhance = compose(
-  inject('store'),
-  withState('title', 'changeTitle', ''),
-  withState('category', 'changeCategory', ''),
-  withState('error', 'changeError', ''),
-  withHandlers({
-    onChangeTitle: props => (event        ) =>
-      props.changeTitle(event.target.value),
-    onChangeCategory: props => (event        ) =>
-      props.changeCategory(event.target.value),
-    createNewPublication: props => () => {
-      const { title, category, changeError, store } = props
-      if (title && category) {
-        store.publications.newPublication(category, title)
-        store.publications.setShowNewPublication(false)
-      } else {
-        const error = title ? 'Please choose a category' : 'Please set a title'
-        changeError(error)
-      }
-    },
-    close: props => () => {
-      props.store.publications.setShowNewPublication(false)
-    },
-  }),
-  observer,
-)
+const NewPublication = () => {
+  const store = useContext(storeContext)
+  const {
+    setShowNewPublication,
+    getPublicationCategories,
+    newPublication,
+  } = store.publications
+  const publicationCategories = getPublicationCategories()
 
-const NewPublication = ({
-  store,
-  title,
-  category,
-  error,
-  changeTitle,
-  changeCategory,
-  changeError,
-  onChangeTitle,
-  onChangeCategory,
-  createNewPublication,
-  close,
-}   
-                
-                
-                   
-                
-                          
-                             
-                          
-                            
-                               
-                                   
-                    
- ) => {
-  const publicationCategories = store.publications.getPublicationCategories()
+  const [title, changeTitle] = useState('')
+  const [category, changeCategory] = useState('')
+  const [error, changeError] = useState('')
+
+  const onChangeTitle = useCallback(
+    event => changeTitle(event.target.value),
+    [],
+  )
+  const onChangeCategory = useCallback(
+    event => changeCategory(event.target.value),
+    [],
+  )
+  const createNewPublication = useCallback(() => {
+    if (title && category) {
+      newPublication(category, title)
+      setShowNewPublication(false)
+    } else {
+      const error = title ? 'Please choose a category' : 'Please set a title'
+      changeError(error)
+    }
+  }, [category, newPublication, setShowNewPublication, title])
+  const close = useCallback(() => {
+    setShowNewPublication(false)
+  }, [setShowNewPublication])
 
   return (
     <Modal show onHide={close} bsSize="large">
@@ -123,6 +102,4 @@ const NewPublication = ({
   )
 }
 
-NewPublication.displayName = 'NewPublication'
-
-export default enhance(NewPublication)
+export default observer(NewPublication)
