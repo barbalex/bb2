@@ -1,12 +1,10 @@
-import React from 'react'
+import React, { useContext, useCallback } from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import EventLink from './EventLink'
+import storeContext from '../../storeContext'
 
 const Title = styled.div`
   font-weight: bold;
@@ -16,25 +14,18 @@ const Label = styled.p`
   margin-bottom: 0;
 `
 
-const enhance = compose(
-  inject('store'),
-  withState('showMeta', 'changeShowMeta', false),
-  withHandlers({
-    onNewLink: props => () => {
-      const newLink = {
-        url: '',
-        label: '',
-      }
-      props.store.events.activeEvent.links.push(newLink)
-      props.store.events.saveEvent(props.store.events.activeEvent)
-    },
-    onCloseMeta: props => () => props.changeShowMeta(false),
-  }),
-  observer,
-)
+const EventLinks = () => {
+  const store = useContext(storeContext)
+  const { activeEvent, saveEvent } = store.events
 
-const EventLinks = ({ store, onNewLink }) => {
-  const { activeEvent } = store.events
+  const onNewLink = useCallback(() => {
+    const newLink = {
+      url: '',
+      label: '',
+    }
+    activeEvent.links.push(newLink)
+    saveEvent(activeEvent)
+  }, [activeEvent, saveEvent])
 
   return (
     <div>
@@ -61,4 +52,4 @@ const EventLinks = ({ store, onNewLink }) => {
   )
 }
 
-export default enhance(EventLinks)
+export default observer(EventLinks)
