@@ -108,7 +108,6 @@ const MonthlyEvents = ({ year, month }) => {
         <PanelGroup
           id={`monthlyEvents`}
           defaultActiveKey={activeYear}
-          //activeKey={activeYear}
           accordion
         >
           {yearsOfEvents.map(year => (
@@ -122,7 +121,6 @@ const MonthlyEvents = ({ year, month }) => {
                 // i.e. if an monthlyEvent was loaded it is unloaded
                 getMonthlyEvent(null)
               }}
-              activeYear={activeYear}
             >
               <StyledPanelHeading>{year}</StyledPanelHeading>
               <MonthlyEventsOfYear year={year} />

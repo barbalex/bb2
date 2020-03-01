@@ -4,7 +4,6 @@ import has from 'lodash/has'
 import styled from 'styled-components'
 
 import storeContext from '../../storeContext'
-import getYearFromEventId from '../../modules/getYearFromEventId'
 import MonthlyEvent from './MonthlyEvent'
 import getMonthFromEventId from '../../modules/getMonthFromEventId'
 
@@ -26,17 +25,17 @@ const MonthlyEventPanel = ({ doc, dIndex, year }) => {
   const month = getMonthFromEventId(doc._id)
 
   const onClickMonthlyEvent = useCallback(
-    (id, event) => {
+    event => {
       // prevent higher level panels from reacting
       event.stopPropagation()
       const idToGet =
         !activeMonthlyEvent ||
-        (activeMonthlyEvent._id && activeMonthlyEvent._id !== id)
-          ? id
+        (activeMonthlyEvent._id && activeMonthlyEvent._id !== doc._id)
+          ? doc._id
           : null
       getMonthlyEvent(idToGet)
     },
-    [activeMonthlyEvent, getMonthlyEvent],
+    [activeMonthlyEvent, doc._id, getMonthlyEvent],
   )
   const onClickEventCollapse = useCallback(event => {
     // prevent higher level panels from reacting
@@ -55,8 +54,8 @@ const MonthlyEventPanel = ({ doc, dIndex, year }) => {
   }, [])
 
   useEffect(() => {
-    if (!!activeMonthlyEvent) scrollToActivePanel()
-  }, [activeMonthlyEvent, scrollToActivePanel])
+    if (isActiveMonthlyEvent) scrollToActivePanel()
+  }, [activeMonthlyEvent, isActiveMonthlyEvent, scrollToActivePanel])
 
   // use pure bootstrap.
   // advantage: can add edit icon to panel-heading
@@ -66,7 +65,7 @@ const MonthlyEventPanel = ({ doc, dIndex, year }) => {
         className="panel-heading"
         role="tab"
         id={`heading${dIndex}`}
-        onClick={onClickMonthlyEvent.bind(this, doc._id)}
+        onClick={onClickMonthlyEvent}
         ref={ref}
       >
         <h4 className="panel-title">
