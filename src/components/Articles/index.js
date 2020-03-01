@@ -8,7 +8,6 @@ import DocumentTitle from 'react-document-title'
 import ArticlePanel from './ArticlePanel'
 import NewArticle from './NewArticle'
 import ModalRemoveArticle from './ModalRemoveArticle'
-import SwallowPanelGroupProps from '../shared/SwallowPanelGroupProps'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 import storeContext from '../../storeContext'
 
@@ -72,19 +71,17 @@ const Articles = ({ year, month, day, title }) => {
           id="articlesAccordion"
           accordion
         >
-          <SwallowPanelGroupProps>
-            {articles.map((article, index) => (
-              <ArticlePanel
-                key={article._id}
-                doc={article}
-                index={index}
-                year={year}
-                month={month}
-                day={day}
-                title={title}
-              />
-            ))}
-          </SwallowPanelGroupProps>
+          {articles.map((article, index) => (
+            <ArticlePanel
+              key={article._id}
+              doc={article}
+              index={index}
+              year={year}
+              month={month}
+              day={day}
+              title={title}
+            />
+          ))}
         </PanelGroup>
         {showNewArticle && <NewArticle />}
         {articleToRemove && <ModalRemoveArticle />}

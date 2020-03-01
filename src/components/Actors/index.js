@@ -9,7 +9,6 @@ import DocumentTitle from 'react-document-title'
 import ActorPanel from './ActorPanel'
 import NewActor from './NewActor'
 import ModalRemoveActor from './ModalRemoveActor'
-import SwallowPanelGroupProps from '../shared/SwallowPanelGroupProps'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 import storeContext from '../../storeContext'
 
@@ -55,16 +54,14 @@ const Actors = ({ category }) => {
       <Container>
         <h1>Actors</h1>
         <PanelGroup defaultActiveKey={activeId} id="actorsAccordion" accordion>
-          <SwallowPanelGroupProps>
-            {actorsSorted.map((doc, index) => (
-              <ActorPanel
-                key={doc._id}
-                doc={doc}
-                index={index}
-                category={category}
-              />
-            ))}
-          </SwallowPanelGroupProps>
+          {actorsSorted.map((doc, index) => (
+            <ActorPanel
+              key={doc._id}
+              doc={doc}
+              index={index}
+              category={category}
+            />
+          ))}
         </PanelGroup>
         {showNewActor && <NewActor />}
         {store.actors.actorToRemove && <ModalRemoveActor />}
