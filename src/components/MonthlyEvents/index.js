@@ -1,18 +1,16 @@
 //
-import React, { Component } from 'react'
+import React, { useContext, useState, useEffect, useMemo } from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
 import uniq from 'lodash/uniq'
 import has from 'lodash/has'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withState from 'recompose/withState'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 
 import getYearFromEventId from '../../modules/getYearFromEventId'
 import MonthlyEventsOfYear from './MonthlyEventsOfYear'
 import oceanDarkImage from '../../images/oceanDark.jpg'
+import storeContext from '../../storeContext'
 
 const Container = styled.div`
   p,
@@ -54,112 +52,86 @@ const Container = styled.div`
     width: 100% !important;
   }
 `
-const StyledPanel = styled(({ activeYear, children, ...rest }) => (
-  <Panel {...rest}>{children}</Panel>
-))`
-  & > .panel-heading {
-    background-image: url(${oceanDarkImage});
-    border-radius: ${props => (props.activeYear ? 'inherit' : '3px')};
-  }
-  & > .panel-heading a {
-    color: #edf4f8;
-    font-weight: bold;
-  }
+const StyledPanelHeading = styled(Panel.Heading)`
+  background-image: url(${oceanDarkImage});
+  border-radius-top-left: 3px;
+  border-radius-top-right: 3px;
+  color: #edf4f8 !important;
+  font-weight: bold !important;
 `
 
-const enhance = compose(
-  inject('store'),
-  withState('activeYear', 'changeActiveYear', null),
-  withHandlers({
-    onClickYear: props => activeYear => {
-      const { changeActiveYear, store } = props
-      changeActiveYear(activeYear)
-      // make sure no monthlyEvent is loaded
-      // i.e. if an monthlyEvent was loaded it is unloaded
-      store.monthlyEvents.getMonthlyEvent(null)
-    },
-  }),
-  observer,
-)
+const MonthlyEvents = ({ year, month }) => {
+  const store = useContext(storeContext)
+  const {
+    getMonthlyEvents,
+    getMonthlyEvent,
+    monthlyEvents,
+    activeMonthlyEvent,
+  } = store.monthlyEvents
 
-class MonthlyEvents extends Component {
-  componentDidMount() {
-    const { year, month, store } = this.props
-    store.page.getPage('pages_monthlyEvents')
-    if (!!year && !!month) {
-      store.monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
-    }
-    this.props.store.monthlyEvents.getMonthlyEvents()
-  }
-
-  componentDidUpdate() {
-    const { year, month, store } = this.props
-    if (!!year && !!month) {
-      store.monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
-    }
-  }
-
-  yearsOfEvents = () => {
-    const { monthlyEvents } = this.props.store.monthlyEvents
+  const yearsOfEvents = useMemo(() => {
     const allYears = monthlyEvents.map(doc => getYearFromEventId(doc._id))
     if (allYears.length > 0) {
       const years = uniq(allYears)
       return years.sort().reverse()
     }
     return []
-  }
+  }, [monthlyEvents])
 
-  mostRecentYear = () => {
-    const years = this.yearsOfEvents()
-    return years[0]
-  }
+  const [activeYearChoosen, setActiveYearChoosen] = useState(null)
 
-  eventYearsComponent = activeYear => {
-    const { store, onClickYear } = this.props
-    let { monthlyEvents } = store.monthlyEvents
-    const years = this.yearsOfEvents()
-
-    if (monthlyEvents.length > 0 && years.length > 0) {
-      // wanted to only build MonthlyEventsOfYear if isActiveYear
-      // but opening a year was way to hideous
-      return years.map(year => (
-        <StyledPanel
-          key={year}
-          header={year}
-          eventKey={year}
-          onClick={onClickYear.bind(this, year)}
-          activeYear={activeYear}
-        >
-          <MonthlyEventsOfYear year={year} />
-        </StyledPanel>
-      ))
-    }
-    return null
-  }
-
-  render() {
-    const { store } = this.props
-    const { activeMonthlyEvent } = store.monthlyEvents
-    let activeYear
+  const activeYear = useMemo(() => {
     if (has(activeMonthlyEvent, '_id')) {
-      activeYear = getYearFromEventId(activeMonthlyEvent._id)
+      return getYearFromEventId(activeMonthlyEvent._id)
+    } else if (!!activeYearChoosen) {
+      return activeYearChoosen
     } else {
-      activeYear = this.props.activeYear
-        ? this.props.activeYear
-        : this.mostRecentYear()
+      return yearsOfEvents[0]
     }
+  }, [activeMonthlyEvent, activeYearChoosen, yearsOfEvents])
 
-    return (
-      <DocumentTitle title="Events">
-        <Container id="monthlyEvents">
-          <h1>Events Archive</h1>
-          <PanelGroup defaultActiveKey={activeYear} accordion>
-            {this.eventYearsComponent(activeYear)}
-          </PanelGroup>
-        </Container>
-      </DocumentTitle>
-    )
-  }
+  useEffect(() => {
+    store.page.getPage('pages_monthlyEvents')
+    getMonthlyEvents()
+  }, [getMonthlyEvents, store.page])
+
+  useEffect(() => {
+    if (!!year && !!month) {
+      store.monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
+    }
+  }, [year, month, store.monthlyEvents.activeMonthlyEventId])
+
+  return (
+    <DocumentTitle title="Events">
+      <Container id="monthlyEvents">
+        <h1>Events Archive</h1>
+        <PanelGroup
+          id={`monthlyEvents`}
+          defaultActiveKey={activeYear}
+          //activeKey={activeYear}
+          accordion
+        >
+          {yearsOfEvents.map(year => (
+            <Panel
+              key={year}
+              header={year}
+              eventKey={year}
+              onClick={() => {
+                setActiveYearChoosen(activeYear)
+                // make sure no monthlyEvent is loaded
+                // i.e. if an monthlyEvent was loaded it is unloaded
+                getMonthlyEvent(null)
+              }}
+              activeYear={activeYear}
+            >
+              <StyledPanelHeading>{year}</StyledPanelHeading>
+              <MonthlyEventsOfYear year={year} />
+            </Panel>
+          ))}
+        </PanelGroup>
+      </Container>
+    </DocumentTitle>
+  )
 }
 
-export default enhance(MonthlyEvents)
+export default observer(MonthlyEvents)
