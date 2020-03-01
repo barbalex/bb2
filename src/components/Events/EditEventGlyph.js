@@ -15,7 +15,7 @@ const EditEventGlyph = ({ event }) => {
   const store = useContext(storeContext)
   const { getEvent } = store.events
 
-  const onClick = useCallback(() => getEvent(event._id), [])
+  const onClick = useCallback(() => getEvent(event._id), [event._id, getEvent])
 
   return (
     <OverlayTrigger
