@@ -1,5 +1,11 @@
 //
-import React, { useContext, useState, useEffect, useMemo } from 'react'
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
 import uniq from 'lodash/uniq'
 import has from 'lodash/has'
@@ -101,6 +107,13 @@ const MonthlyEvents = ({ year, month }) => {
     }
   }, [year, month, store.monthlyEvents.activeMonthlyEventId])
 
+  const onClick = useCallback(() => {
+    setActiveYearChoosen(activeYear)
+    // make sure no monthlyEvent is loaded
+    // i.e. if an monthlyEvent was loaded it is unloaded
+    getMonthlyEvent(null)
+  }, [activeYear, getMonthlyEvent])
+
   return (
     <DocumentTitle title="Events">
       <Container id="monthlyEvents">
@@ -111,17 +124,7 @@ const MonthlyEvents = ({ year, month }) => {
           accordion
         >
           {yearsOfEvents.map(year => (
-            <Panel
-              key={year}
-              header={year}
-              eventKey={year}
-              onClick={() => {
-                setActiveYearChoosen(activeYear)
-                // make sure no monthlyEvent is loaded
-                // i.e. if an monthlyEvent was loaded it is unloaded
-                getMonthlyEvent(null)
-              }}
-            >
+            <Panel key={year} header={year} eventKey={year} onClick={onClick}>
               <StyledPanelHeading>{year}</StyledPanelHeading>
               <MonthlyEventsOfYear year={year} />
             </Panel>
