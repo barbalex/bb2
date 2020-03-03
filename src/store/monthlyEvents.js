@@ -40,7 +40,7 @@ export default store => ({
   }),
   getMonthlyEvent: action('getMonthlyEvent', id => {
     if (!id) {
-      navigate('/monthlyEvents')
+      navigate('/monthly-events')
       store.monthlyEvents.activeMonthlyEventId = null
     } else {
       store.monthlyEvents.activeMonthlyEventId = id

@@ -12,8 +12,8 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { navigate } from '@reach/router'
 
-import oceanDarkImage from '../images/oceanDark.jpg'
-import storeContext from '../storeContext'
+import oceanDarkImage from '../../images/oceanDark.jpg'
+import storeContext from '../../storeContext'
 
 const StyledNavbar = styled(Navbar)`
   p,

@@ -98,7 +98,7 @@ const Events = () => {
             ))}
             <Button
               onClick={() => {
-                navigate('/monthlyEvents')
+                navigate('/monthly-events')
                 getPage('pages_monthlyEvents')
               }}
             >

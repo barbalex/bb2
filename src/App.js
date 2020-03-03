@@ -2,7 +2,7 @@ import React from 'react'
 import app from 'ampersand-app'
 import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
-import { Router } from '@reach/router'
+import { Router, Redirect } from '@reach/router'
 
 import store from './store'
 import couchUrl from './modules/getCouchUrl'
@@ -11,17 +11,9 @@ import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import Errors from './components/Errors'
 import Header from './components/Header'
-import Navbar from './components/Navbar'
+import Layout from './components/Layout'
 
 import { StoreContextProvider } from './storeContext'
-import Page from './components/Page'
-import Events from './components/Events'
-import EventsRedirect from './components/EventsRedirect'
-import Articles from './components/Articles'
-import Actors from './components/Actors'
-import MonthlyEvents from './components/MonthlyEvents'
-import Publications from './components/Publications'
-import Login from './components/Login'
 
 let PouchDB = null
 if (typeof window !== `undefined`) {
@@ -79,25 +71,14 @@ const { errors } = store.error
 const App = ({ element }) => (
   <StoreContextProvider value={store}>
     <div className="container">
-      <Header />
-      <Navbar />
-      <Router>
-        <EventsRedirect path="/" />
-        <Events path="/events" />
-        <MonthlyEvents path="/monthlyEvents/:year/:month" />
-        <MonthlyEvents path="/monthlyEvents" />
-        <Articles path="/commentaries/:year/:month/:day/:title" />
-        <Articles path="/articles" />
-        <Actors path="/actors/:category" />
-        <Actors path="/actors" />
-        <Publications path="/publications/:category/:title" />
-        <Publications path="/publications/:category" />
-        <Publications path="/publications" />
-        <Page path="/about-us" />
-        <Login path="/login" />
-        {/*<Redirect from="/" to="events" noThrow />*/}
-      </Router>
-      {errors && errors.length > 0 && <Errors />}
+      <Layout>
+        <Header />
+        <Router>
+          <Redirect path="/" from="/" to="events" noThrow />
+        </Router>
+        {element}
+        {errors && errors.length > 0 && <Errors />}
+      </Layout>
     </div>
   </StoreContextProvider>
 )

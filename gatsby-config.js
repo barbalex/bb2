@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'blue borders',
+    title: 'mediterranean migration',
   },
   plugins: [
     {
@@ -12,6 +12,17 @@ module.exports = {
           emitWarning: true,
           failOnError: false,
         },
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-create-client-paths',
+      options: {
+        prefixes: [
+          '/actors/*',
+          '/publications/*',
+          '/articles/*',
+          '/monthly-events/*',
+        ],
       },
     },
     {
