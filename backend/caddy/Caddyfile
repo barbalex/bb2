@@ -10,8 +10,16 @@ evab.ch, www.evab.ch {
 }
 
 api.evab.ch {
-  reverse_proxy * {
-    to bb_db:5984
-    header_down Access-Control-Allow-Origin *
+  reverse_proxy bb_db:5984 {
+    # unfortunately the transparent shorthand does not seem to exist (yet)
+    # https://caddy.community/t/v2-reverse-proxy-transparent/6480/8
+    #transparent
+    header_down Access-Control-Allow-Origin https://evab.ch, https://blue-borders.ch, https://mediterranean-migration.com
+    header_down Access-Control-Allow-Credentials=true
+    header_up Host {http.request.host}
+    header_up X-Real-IP {http.request.remote}
+    header_up X-Forwarded-For {http.request.remote}
+    header_up X-Forwarded-Port {http.request.port}
+    header_up X-Forwarded-Proto {http.request.scheme}
   }
 }
