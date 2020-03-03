@@ -1,15 +1,14 @@
 //
-import React, { Component } from 'react'
+import React, { useContext, useEffect } from 'react'
 import sortBy from 'lodash/sortBy'
-import { observer, inject } from 'mobx-react'
-import compose from 'recompose/compose'
-import withHandlers from 'recompose/withHandlers'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 
-import PublicationsOfCategory from './PublicationsOfCategory'
+import PublicationsGroup from './PublicationsGroup'
 import NewPublication from './NewPublication'
 import oceanDarkImage from '../../images/oceanDark.jpg'
+import storeContext from '../../storeContext'
 
 const Container = styled.div`
   p,
@@ -63,97 +62,51 @@ const orderByCategory = {
   'IOs & NGOs': 2,
 }
 
-const enhance = compose(
-  inject('store'),
-  withHandlers({
-    onClickCategory: props => activePublicationCategory =>
-      props.store.publications.setPublicationCategory(
-        activePublicationCategory,
-      ),
-  }),
-  observer,
-)
+const Publications = ({ category, title }) => {
+  const store = useContext(storeContext)
+  const {
+    publications,
+    getPublications,
+    getPublicationCategories,
+    showNewPublication,
+  } = store.publications
+  const { getPage } = store.page
+  const publicationCategories = publications ? getPublicationCategories() : []
 
-class Publications extends Component {
-  componentDidMount() {
-    const { category, title, store } = this.props
-    store.page.getPage('pages_publications')
+  useEffect(() => {
+    getPage('pages_publications')
+    getPublications()
+  }, [getPage, getPublications])
+
+  useEffect(() => {
     if (!!category && !!title) {
       store.publications.activePublicationId = `publications_${category}_${title}`
+    } else {
+      store.publications.activePublicationId = null
     }
-    this.props.store.publications.getPublications()
-  }
+  }, [category, store.publications.activePublicationId, title])
 
-  componentDidUpdate() {
-    const { category, title, store } = this.props
-    if (!!category && !!title) {
-      store.publications.activePublicationId = `publications_${category}_${title}`
-    }
-  }
-
-  publicationCategoriesComponent = activePublicationCategory => {
-    const { store, onClickCategory } = this.props
-    let publicationCategories = store.publications.getPublicationCategories()
-    const { publications } = store.publications
-
-    if (publications.length > 0 && publicationCategories.length > 0) {
-      publicationCategories = sortBy(publicationCategories, cat => {
-        let order = orderByCategory[cat]
-        if (!order) order = 4
-        return order
-      })
-      return publicationCategories.map(category => {
-        return (
-          <div
-            key={category}
-            className="panel panel-default category active"
-            onClick={onClickCategory.bind(this, category)}
-          >
-            <div className="panel-heading" role="tab" id={`heading${category}`}>
-              <h4 className="panel-title">
-                <a
-                  className="collapsed"
-                  role="button"
-                  data-toggle="collapse"
-                  data-parent="#publicationsAccordion"
-                  href={`#${category}`}
-                  aria-expanded="false"
-                  aria-controls="collapseThree"
-                >
-                  {category}
-                </a>
-              </h4>
-            </div>
-            <PublicationsOfCategory category={category} />
-          </div>
-        )
-      })
-    }
-    return null
-  }
-
-  render() {
-    const {
-      activePublicationCategory,
-      showNewPublication,
-    } = this.props.store.publications
-
-    return (
-      <DocumentTitle title="Publications">
-        <Container>
-          <h1>Publications</h1>
-          <PanelGroup
-            className="panel-group"
-            id="publicationsAccordion"
-            role="tablist"
-          >
-            {this.publicationCategoriesComponent(activePublicationCategory)}
-          </PanelGroup>
-          {showNewPublication && <NewPublication />}
-        </Container>
-      </DocumentTitle>
-    )
-  }
+  return (
+    <DocumentTitle title="Publications">
+      <Container>
+        <h1>Publications</h1>
+        <PanelGroup
+          className="panel-group"
+          id="publicationsAccordion"
+          role="tablist"
+        >
+          {sortBy(publicationCategories, cat => {
+            let order = orderByCategory[cat]
+            if (!order) order = 4
+            return order
+          }).map(category => (
+            <PublicationsGroup key={category} category={category} />
+          ))}
+        </PanelGroup>
+        {showNewPublication && <NewPublication />}
+      </Container>
+    </DocumentTitle>
+  )
 }
 
-export default enhance(Publications)
+export default observer(Publications)
