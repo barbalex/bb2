@@ -13,29 +13,27 @@ const PanelGroup = styled.div`
 const PublicationsOfCategory = ({ category }) => {
   const store = useContext(storeContext)
   let { publications } = store.publications
-  // filter only publication of current category
-  publications = publications.filter(
-    publication => publication.category === category,
-  )
-  publications = publications.sort((a, b) => {
-    if (a.order && b.order) {
-      if (a.order < b.order) return -1
-      return 1
-    }
-    if (a.title < b.title) return -1
-    return 1
-  })
 
   return (
     <PanelGroup className="panel-group" id={category}>
-      {publications.map((doc, dIndex) => (
-        <PublicationPanel
-          key={doc._id}
-          category={category}
-          doc={doc}
-          dIndex={dIndex}
-        />
-      ))}
+      {publications
+        .filter(publication => publication.category === category)
+        .sort((a, b) => {
+          if (a.order && b.order) {
+            if (a.order < b.order) return -1
+            return 1
+          }
+          if (a.title < b.title) return -1
+          return 1
+        })
+        .map((doc, dIndex) => (
+          <PublicationPanel
+            key={doc._id}
+            category={category}
+            doc={doc}
+            dIndex={dIndex}
+          />
+        ))}
     </PanelGroup>
   )
 }
