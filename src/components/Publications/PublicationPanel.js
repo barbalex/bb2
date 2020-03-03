@@ -47,7 +47,7 @@ const PublicationPanel = ({ category, doc, dIndex }) => {
     : false
   const showEditingGlyphons = !!store.login.email
 
-  const [docToRemove, changeDocToRemove] = useState(null)
+  const [docToRemove, setDocToRemove] = useState(null)
 
   const ref = useRef(null)
   const scrollToActivePanel = useCallback(() => {
@@ -92,14 +92,14 @@ const PublicationPanel = ({ category, doc, dIndex }) => {
   const removePublication = useCallback(
     remove => {
       if (remove) store.publications.removePublication(docToRemove)
-      changeDocToRemove(null)
+      setDocToRemove(null)
     },
     [docToRemove, store.publications],
   )
   const onRemovePublication = useCallback((docToRemove, event) => {
     event.preventDefault()
     event.stopPropagation()
-    changeDocToRemove(docToRemove)
+    setDocToRemove(docToRemove)
   }, [])
 
   // use pure bootstrap.

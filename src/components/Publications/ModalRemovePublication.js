@@ -1,14 +1,9 @@
 //
-import React, { useContext, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 
-import storeContext from '../../storeContext'
-
-const ModalRemovePublication = ({ doc }) => {
-  const store = useContext(storeContext)
-  const { removePublication } = store.publications
-
+const ModalRemovePublication = ({ doc, removePublication }) => {
   const remove = useCallback(() => removePublication(true), [removePublication])
   const abort = useCallback(() => removePublication(false), [removePublication])
 
