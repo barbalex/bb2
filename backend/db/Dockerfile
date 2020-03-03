@@ -1,5 +1,6 @@
 FROM couchdb:2.3.1
 COPY default.ini /opt/couchdb/etc/local.d/
+#COPY bb.json bb.json
 #RUN curl -s -S -X PUT db:5984/bb 
 #RUN curl -s -S -X PUT localhost:5984/_users 
 #RUN curl -s -S -X PUT localhost:5984/_replicator 

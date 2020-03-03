@@ -21,6 +21,7 @@ services:
       - '5984:5984'
     volumes:
       - db_data:/opt/couchdb/data
+      - db_config_data:/opt/couchdb/etc/local.d
   caddy:
     build:
       context: ./caddy
@@ -44,6 +45,7 @@ services:
       - caddy_config:/root/.config/caddy
 volumes:
   db_data:
+  db_config_data:
   caddy_certs:
   caddy_config:
 networks:
