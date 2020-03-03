@@ -2,7 +2,6 @@ import React from 'react'
 import app from 'ampersand-app'
 import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
-import { Provider as MobxProvider } from 'mobx-react'
 import { Router } from '@reach/router'
 
 import store from './store'
@@ -79,29 +78,27 @@ const { errors } = store.error
 
 const App = ({ element }) => (
   <StoreContextProvider value={store}>
-    <MobxProvider store={store}>
-      <div className="container">
-        <Header />
-        <Navbar />
-        <Router>
-          <EventsRedirect path="/" />
-          <Events path="/events" />
-          <MonthlyEvents path="/monthlyEvents/:year/:month" />
-          <MonthlyEvents path="/monthlyEvents" />
-          <Articles path="/commentaries/:year/:month/:day/:title" />
-          <Articles path="/articles" />
-          <Actors path="/actors/:category" />
-          <Actors path="/actors" />
-          <Publications path="/publications/:category/:title" />
-          <Publications path="/publications/:category" />
-          <Publications path="/publications" />
-          <Page path="/about-us" />
-          <Login path="/login" />
-          {/*<Redirect from="/" to="events" noThrow />*/}
-        </Router>
-        {errors && errors.length > 0 && <Errors />}
-      </div>
-    </MobxProvider>
+    <div className="container">
+      <Header />
+      <Navbar />
+      <Router>
+        <EventsRedirect path="/" />
+        <Events path="/events" />
+        <MonthlyEvents path="/monthlyEvents/:year/:month" />
+        <MonthlyEvents path="/monthlyEvents" />
+        <Articles path="/commentaries/:year/:month/:day/:title" />
+        <Articles path="/articles" />
+        <Actors path="/actors/:category" />
+        <Actors path="/actors" />
+        <Publications path="/publications/:category/:title" />
+        <Publications path="/publications/:category" />
+        <Publications path="/publications" />
+        <Page path="/about-us" />
+        <Login path="/login" />
+        {/*<Redirect from="/" to="events" noThrow />*/}
+      </Router>
+      {errors && errors.length > 0 && <Errors />}
+    </div>
   </StoreContextProvider>
 )
 

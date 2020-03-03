@@ -17,8 +17,6 @@ It was deeply refactored to use new technologies and maximize maintainability.
 - [MobX](//github.com/mobxjs/mobx):
   - simple yet powerful state management
   - computed data like in Excel
-- [recompose](//github.com/acdlite/recompose):
-  - clear separation of logic and user interface
 - [React](//facebook.github.io/react):
   - declarative user interface is a function of state
   - built from components
