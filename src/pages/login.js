@@ -2,6 +2,6 @@ import React from 'react'
 
 import Login from '../components/Login'
 
-const LoginPage = () => <Login path="/login" />
+const LoginPage = () => <Login />
 
 export default LoginPage
