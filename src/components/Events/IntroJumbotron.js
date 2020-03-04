@@ -2,7 +2,7 @@
  * can't convert to es6 function because this is referenced
  */
 
-import React, { Component } from 'react'
+import React from 'react'
 import { Jumbotron } from 'react-bootstrap'
 import styled from 'styled-components'
 import ReactResizeDetector from 'react-resize-detector'
@@ -25,19 +25,14 @@ const P = styled.p`
   font-size: 18px !important;
 `
 
-class IntroJumbotron extends Component {
-  render() {
-    return (
-      <StyledJumbotron className="eventsIntro">
-        <ReactResizeDetector handleHeight onResize={this.props.onResize} />
-        <P>
-          Most migrants and refugees arriving in Europe cross the Mediterranean.
-          The purpose of this website is to provide a rough overview by focusing
-          mainly on the Central Med and by covering both maritime and political
-          events.
-        </P>
-      </StyledJumbotron>
-    )
-  }
-}
+const IntroJumbotron = ({ onResize }) => (
+  <StyledJumbotron className="eventsIntro">
+    <ReactResizeDetector handleHeight onResize={onResize} />
+    <P>
+      Most migrants and refugees arriving in Europe cross the Mediterranean. The
+      purpose of this website is to provide a rough overview by focusing mainly
+      on the Central Med and by covering both maritime and political events.
+    </P>
+  </StyledJumbotron>
+)
 export default IntroJumbotron
