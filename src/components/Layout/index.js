@@ -10,7 +10,6 @@ import styled from 'styled-components'
 
 import Navbar from './Navbar'
 import Header from './Header'
-//import Fallback from '../shared/Fallback'
 
 const Container = styled.div`
   @media print {
