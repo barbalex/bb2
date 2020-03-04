@@ -1,4 +1,4 @@
-// no more used
+// no more used since 3.2020
 import React, { useState, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'

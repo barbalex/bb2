@@ -1,4 +1,4 @@
-// no more used
+// no more used since 3.2020
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
