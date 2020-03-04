@@ -37,6 +37,7 @@ const ActorPanel = ({ doc, index, category }) => {
   const store = useContext(storeContext)
   const {
     activeActor,
+    activeActorId,
     getActor,
     toggleDraftOfActor,
     setActorToRemove,
@@ -89,13 +90,14 @@ const ActorPanel = ({ doc, index, category }) => {
   const ref = useRef(null)
   useEffect(() => {
     if (!!category) store.actors.activeActorId = `actors_${category}`
-    if (activeActor && store.actors.activeActorId === doc._id) {
+    if (activeActor && activeActorId === doc._id) {
       window.setTimeout(() => {
         scrollToActivePanel()
       }, 50)
     }
   }, [
     activeActor,
+    activeActorId,
     category,
     doc._id,
     scrollToActivePanel,
