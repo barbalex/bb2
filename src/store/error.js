@@ -1,4 +1,4 @@
-//      
+//
 /*
  * receives an error object with two keys: title, msg
  * keeps error objects in the array errors
@@ -15,9 +15,9 @@
  */
 import { action } from 'mobx'
 
-export default (store        )         => ({
+export default store => ({
   errors: [],
-  showError: action('showError', (error        ) => {
+  showError: action('showError', error => {
     // const duration = 10000
     const duration = 100000000
     if (!error) {

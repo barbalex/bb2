@@ -1,4 +1,4 @@
-//      
+//
 import { action } from 'mobx'
 import app from 'ampersand-app'
 import moment from 'moment'
@@ -9,7 +9,7 @@ import getEvents from '../modules/getEvents'
 import sortEvents from '../modules/sortEvents'
 import slugOptions from '../modules/slugOptions'
 
-export default (store        )         => ({
+export default store => ({
   events: [],
 
   // cache the id, not the entire doc
@@ -25,25 +25,22 @@ export default (store        )         => ({
 
   getEventsCallback: null,
 
-  getEvents: action(
-    'getEvents',
-    async (years               )                => {
-      try {
-        const events = await getEvents(store, years)
-        store.events.events = events
-        if (store.events.getEventsCallback) {
-          store.events.getEventsCallback()
-          store.events.getEventsCallback = null
-        }
-      } catch (error) {
-        store.error.showError({
-          msg: error,
-        })
+  getEvents: action('getEvents', async years => {
+    try {
+      const events = await getEvents(store, years)
+      store.events.events = events
+      if (store.events.getEventsCallback) {
+        store.events.getEventsCallback()
+        store.events.getEventsCallback = null
       }
-    },
-  ),
+    } catch (error) {
+      store.error.showError({
+        msg: error,
+      })
+    }
+  }),
 
-  newEvent: action('newEvent', (event        ) => {
+  newEvent: action('newEvent', event => {
     const title = event.title
     const year = moment(event.date).year()
     const month = moment(event.date).format('MM')
@@ -73,7 +70,7 @@ export default (store        )         => ({
     store.events.showNewEvent = show
   }),
 
-  getEvent: action('getEvent', (id         ) => {
+  getEvent: action('getEvent', id => {
     if (!id) {
       store.events.activeEventId = null
     } else {
@@ -89,7 +86,7 @@ export default (store        )         => ({
     }
   }),
 
-  updateEventsInCache: action('updateEventsInCache', (event        ) => {
+  updateEventsInCache: action('updateEventsInCache', event => {
     // first update the event
     store.events.events = store.events.events.filter(
       thisEvent => thisEvent._id !== event._id,
@@ -98,15 +95,12 @@ export default (store        )         => ({
     store.events.events = sortEvents(store.events.events)
   }),
 
-  revertCache: action(
-    'revertCache',
-    (oldEvents               , oldActiveEventId        ) => {
-      store.events.events = oldEvents
-      store.events.activeEventId = oldActiveEventId
-    },
-  ),
+  revertCache: action('revertCache', (oldEvents, oldActiveEventId) => {
+    store.events.events = oldEvents
+    store.events.activeEventId = oldActiveEventId
+  }),
 
-  saveEvent: action('saveEvent', async (event        )                => {
+  saveEvent: action('saveEvent', async event => {
     // keep old cache in case of error
     const oldEvents = store.events.events
     const oldActiveEventId = store.events.activeEventId
@@ -125,7 +119,7 @@ export default (store        )         => ({
       })
     }
   }),
-  removeEventFromCache: action('removeEventFromCache', (event        ) => {
+  removeEventFromCache: action('removeEventFromCache', event => {
     // first update the event in store.events.events
     store.events.events = store.events.events.filter(
       thisEvent => thisEvent._id !== event._id,
@@ -136,7 +130,7 @@ export default (store        )         => ({
     if (isActiveEvent) store.events.activeEventId = null
   }),
 
-  removeEvent: action('removeEvent', (event        ) => {
+  removeEvent: action('removeEvent', event => {
     // clone event in case event is immediately changed
     const myEvent = cloneDeep(event)
     // keep old cache in case of error
@@ -156,7 +150,7 @@ export default (store        )         => ({
 
   eventToRemove: null,
 
-  setEventToRemove: action('setEventToRemove', (event        ) => {
+  setEventToRemove: action('setEventToRemove', event => {
     store.events.eventToRemove = event
   }),
 })
