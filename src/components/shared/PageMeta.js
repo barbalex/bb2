@@ -1,10 +1,10 @@
-//
+// no more used
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 
-import AttachedImagesList from '../shared/AttachedImagesList'
-import AttachImages from '../shared/AttachImages'
+import AttachedImagesList from './AttachedImagesList'
+import AttachImages from './AttachImages'
 
 const PageMeta = ({ doc, onCloseMeta }) => (
   <Modal show bsSize="large">
