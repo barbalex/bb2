@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { navigate } from '@reach/router'
-import ReactResizeDetector from 'react-resize-detector'
 
 import IntroJumbotron from './IntroJumbotron'
 import NewEvent from './NewEvent'
@@ -80,8 +79,7 @@ const Events = () => {
   return (
     <DocumentTitle title="Events">
       <Container className="events">
-        <ReactResizeDetector handleHeight onResize={onResize} />
-        <IntroJumbotron />
+        <IntroJumbotron onResize={onResize} />
         <YearButtonsContainer>
           <ButtonGroup>
             {yearsOfEvents.map((year, index) => (

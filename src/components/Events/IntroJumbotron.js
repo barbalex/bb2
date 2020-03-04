@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import { Jumbotron } from 'react-bootstrap'
 import styled from 'styled-components'
+import ReactResizeDetector from 'react-resize-detector'
 
 const StyledJumbotron = styled(Jumbotron)`
   hyphens: manual !important;
@@ -28,6 +29,7 @@ class IntroJumbotron extends Component {
   render() {
     return (
       <StyledJumbotron className="eventsIntro">
+        <ReactResizeDetector handleHeight onResize={this.props.onResize} />
         <P>
           Most migrants and refugees arriving in Europe cross the Mediterranean.
           The purpose of this website is to provide a rough overview by focusing
