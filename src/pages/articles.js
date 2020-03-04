@@ -5,7 +5,7 @@ import Articles from '../components/Articles'
 
 const ArticlesPage = vars => (
   <Router>
-    <Articles path="/commentaries/:year/:month/:day/:title" />
+    <Articles path="/articles/:year/:month/:day/:title" />
     <Articles path="/articles" />
   </Router>
 )
