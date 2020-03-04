@@ -2,7 +2,7 @@ import React from 'react'
 import app from 'ampersand-app'
 import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
-import { Router, Redirect } from '@reach/router'
+import { Redirect } from '@reach/router'
 
 import store from './store'
 import couchUrl from './modules/getCouchUrl'
