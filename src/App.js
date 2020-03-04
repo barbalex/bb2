@@ -12,7 +12,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import Errors from './components/Errors'
 import Layout from './components/Layout'
 
-import { StoreProvider } from './storeContext'
+import { StoreContextProvider } from './storeContext'
 
 let PouchDB = null
 if (typeof window !== `undefined`) {
@@ -68,7 +68,7 @@ Bitte versuchen Sie es mit einer aktuellen Version von (zum Beispiel):
 const { errors } = store.error
 
 const App = ({ element }) => (
-  <StoreProvider value={store}>
+  <StoreContextProvider value={store}>
     <div className="container">
       <Layout>
         <Redirect from="/" to="events" noThrow />
@@ -76,7 +76,7 @@ const App = ({ element }) => (
         {!!errors && errors.length > 0 && <Errors />}
       </Layout>
     </div>
-  </StoreProvider>
+  </StoreContextProvider>
 )
 
 export default App
