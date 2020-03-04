@@ -14,13 +14,6 @@ const MyEditor = ({ doc, docType, articleDecoded }) => {
   const { activePublication, savePublication } = store.publications
   const { activeMonthlyEvent, saveMonthlyEvent } = store.monthlyEvents
 
-  /*useEffect(() => {
-    // scroll editor to top in pages
-    if (doc.type === 'pages') {
-      window.scroll({ top: 140, behavior: 'smooth' })
-    }
-  }, [doc.type])*/
-
   // height = window - menu height - (menubar + iconbar)
   let height = typeof window !== `undefined` ? window.innerHeight - 52 - 74 : 1
   if (
