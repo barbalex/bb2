@@ -9,10 +9,11 @@ import DateRows from './DateRows'
 const Container = styled.div`
   width: 100%;
   margin-bottom: 0;
+  position: relative;
 `
 const Header = styled.div`
   position: absolute;
-  top: ${props => props['data-top']}px;
+  top: -41px;
   width: 100%;
   font-weight: bold;
 `
@@ -61,10 +62,7 @@ const HeaderRow = styled.div`
 
 const Events = ({ introJumbotronHeight }) => (
   <Container>
-    <Header
-      data-top={introJumbotronHeight ? introJumbotronHeight + 88 : 173}
-      className="eventsTable-header"
-    >
+    <Header className="eventsTable-header">
       <HeaderRow>
         <HeaderCellDay />
         <HeaderCellMigration>Maritime Events</HeaderCellMigration>

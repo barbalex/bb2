@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import moment from 'moment'
 import min from 'lodash/min'
@@ -7,15 +7,14 @@ import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { navigate } from '@reach/router'
 
-import IntroJumbotron from './IntroJumbotron'
 import NewEvent from './NewEvent'
 import EditEvent from './EditEvent'
 import ModalRemoveEvent from './ModalRemoveEvent'
 import EventsTable from './EventsTable'
 import storeContext from '../../storeContext'
+import IntroJumbotron from './IntroJumbotron'
 
 const Container = styled.div`
-  position: relative !important;
   p,
   div {
     font-size: medium;
@@ -64,12 +63,6 @@ const Events = () => {
   const showEventsTable = min(activeEventYears) > 2014
   const { activeEvent, eventToRemove, getEvents, showNewEvent } = store.events
 
-  const [introJumbotronHeight, setIntroJumbotronHeight] = useState(1462)
-  const onResize = useCallback(
-    (width, height) => setIntroJumbotronHeight(height),
-    [],
-  )
-
   useEffect(() => {
     getPage('pages_events')
     getEvents([parseInt(moment().format('YYYY'), 0)])
@@ -79,7 +72,7 @@ const Events = () => {
   return (
     <DocumentTitle title="Events">
       <Container className="events">
-        <IntroJumbotron onResize={onResize} />
+        <IntroJumbotron />
         <YearButtonsContainer>
           <ButtonGroup>
             {yearsOfEvents.map((year, index) => (
@@ -104,9 +97,7 @@ const Events = () => {
             </Button>
           </ButtonGroup>
         </YearButtonsContainer>
-        {showEventsTable && (
-          <EventsTable introJumbotronHeight={introJumbotronHeight} />
-        )}
+        {showEventsTable && <EventsTable introJumbotronHeight={85} />}
         {activeEvent && <EditEvent />}
         {showNewEvent && <NewEvent />}
         {eventToRemove && <ModalRemoveEvent />}

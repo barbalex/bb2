@@ -10,7 +10,6 @@ import couchUrl from './modules/getCouchUrl'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import Errors from './components/Errors'
-import Header from './components/Header'
 import Layout from './components/Layout'
 
 import { StoreContextProvider } from './storeContext'
@@ -72,7 +71,6 @@ const App = ({ element }) => (
   <StoreContextProvider value={store}>
     <div className="container">
       <Layout>
-        <Header />
         <Router>
           <Redirect path="/" from="/" to="events" noThrow />
         </Router>

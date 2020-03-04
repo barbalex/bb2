@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import oceanImage from '../images/ocean.jpg'
+import oceanImage from '../../images/ocean.jpg'
 
 const Container = styled.div`
-  margin-top: 0;
+  margin-top: 51px;
   height: 150px;
   padding: 15px;
   &:before {

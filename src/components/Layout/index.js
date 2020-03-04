@@ -9,6 +9,7 @@ import { useStaticQuery, graphql } from 'gatsby'
 import styled from 'styled-components'
 
 import Navbar from './Navbar'
+import Header from './Header'
 //import Fallback from '../shared/Fallback'
 
 const Container = styled.div`
@@ -52,6 +53,7 @@ const Layout = ({ children }) => {
         <html lang="en" />
       </Helmet>
       <Navbar />
+      <Header />
       {children}
     </Container>
   )
