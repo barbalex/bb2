@@ -1,4 +1,5 @@
 FROM couchdb:2.3.1
+# need default.ini to enable cors
 COPY default.ini /opt/couchdb/etc/local.d/
 #COPY bb.json bb.json
 #RUN curl -s -S -X PUT db:5984/bb 
