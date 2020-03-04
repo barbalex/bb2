@@ -71,9 +71,7 @@ const App = ({ element }) => (
   <StoreContextProvider value={store}>
     <div className="container">
       <Layout>
-        <Router>
-          <Redirect path="/" from="/" to="events" noThrow />
-        </Router>
+        <Redirect from="/" to="events" noThrow />
         {element}
         {!!errors && errors.length > 0 && <Errors />}
       </Layout>
