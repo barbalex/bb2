@@ -3,7 +3,7 @@ import { Router } from '@reach/router'
 
 import MonthlyEvents from '../components/MonthlyEvents'
 
-const MonthlyEventsPage = vars => (
+const MonthlyEventsPage = () => (
   <Router>
     <MonthlyEvents path="/monthly-events/:year/:month" />
     <MonthlyEvents path="/monthly-events" />

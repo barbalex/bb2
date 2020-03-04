@@ -3,7 +3,7 @@ import { Router } from '@reach/router'
 
 import Actors from '../components/Actors'
 
-const ActorsPage = vars => (
+const ActorsPage = () => (
   <Router>
     <Actors path="/actors/:category" />
     <Actors path="/actors" />

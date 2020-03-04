@@ -3,7 +3,7 @@ import { Router } from '@reach/router'
 
 import Articles from '../components/Articles'
 
-const ArticlesPage = vars => (
+const ArticlesPage = () => (
   <Router>
     <Articles path="/articles/:year/:month/:day/:title" />
     <Articles path="/articles" />
