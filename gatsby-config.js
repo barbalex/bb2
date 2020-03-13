@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: 'mediterranean migration',
+    siteUrl: `https://mediterranean-migration.com`,
   },
   plugins: [
     {
@@ -51,5 +52,6 @@ module.exports = {
       },
     },
     'gatsby-plugin-offline',
+    'gatsby-plugin-sitemap',
   ],
 }
