@@ -70,5 +70,6 @@ module.exports = {
         siteSpeedSampleRate: 10,
         cookieDomain: 'mediterranean-migration.com',
       },
+    },
   ],
 }
