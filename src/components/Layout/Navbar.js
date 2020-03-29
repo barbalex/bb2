@@ -72,6 +72,12 @@ const MyNavbar = ({ match, location }) => {
     navigate('/about-us')
     onToggleNav()
   }, [onToggleNav, store.page])
+
+  const onClickLogin = useCallback(() => {
+    navigate('/login')
+    onToggleNav()
+  }, [onToggleNav])
+
   const onClickEdit = useCallback(() => {
     store.toggleEditing()
     onToggleNav()
@@ -113,18 +119,16 @@ const MyNavbar = ({ match, location }) => {
     'pages_events',
   ]
   const showEdit =
-    email &&
+    !!email &&
     (!nonEditableIds.includes(id) ||
       has(activeMonthlyEvent, '_id') ||
       has(activeArticle, '_id') ||
       has(activeActor, '_id') ||
       has(activePublication, '_id'))
-  const showAddArticle = email && activePage._id === 'pages_commentaries'
-  const showAddEvent = email && activePage._id === 'pages_events'
-  const showAddActor = email && activePage._id === 'pages_actors'
-  const showAddPublication = email && activePage._id === 'pages_publications'
-  const showNavbarRight =
-    email || showEdit || showAddArticle || showAddEvent || showAddActor
+  const showAddArticle = !!email && activePage._id === 'pages_commentaries'
+  const showAddEvent = !!email && activePage._id === 'pages_events'
+  const showAddActor = !!email && activePage._id === 'pages_actors'
+  const showAddPublication = !!email && activePage._id === 'pages_publications'
 
   return (
     <StyledNavbar
@@ -159,62 +163,64 @@ const MyNavbar = ({ match, location }) => {
             About us
           </NavItem>
         </Nav>
-        {showNavbarRight && (
-          <Nav navbar pullRight>
-            {showEdit && (
-              <OverlayTrigger
-                placement="bottom"
-                overlay={
-                  <Tooltip id={store.editing ? 'preview' : 'edit'}>
-                    {store.editing ? 'preview' : 'edit'}
-                  </Tooltip>
-                }
-              >
-                <NavItem onClick={onClickEdit}>
-                  <Glyphicon glyph={glyph} />
-                </NavItem>
-              </OverlayTrigger>
-            )}
-            {showAddArticle && (
-              <OverlayTrigger
-                placement="bottom"
-                overlay={<Tooltip id="newArticle">new article</Tooltip>}
-              >
-                <NavItem onClick={onClickNewArticle}>
-                  <Glyphicon glyph="plus" />
-                </NavItem>
-              </OverlayTrigger>
-            )}
-            {showAddEvent && (
-              <OverlayTrigger
-                placement="bottom"
-                overlay={<Tooltip id="newEvent">new event</Tooltip>}
-              >
-                <NavItem onClick={onClickNewEvent}>
-                  <Glyphicon glyph="plus" />
-                </NavItem>
-              </OverlayTrigger>
-            )}
-            {showAddActor && (
-              <OverlayTrigger
-                placement="bottom"
-                overlay={<Tooltip id="newActor">new actor</Tooltip>}
-              >
-                <NavItem onClick={onClickNewActor}>
-                  <Glyphicon glyph="plus" />
-                </NavItem>
-              </OverlayTrigger>
-            )}
-            {showAddPublication && (
-              <OverlayTrigger
-                placement="bottom"
-                overlay={<Tooltip id="newPublication">new publication</Tooltip>}
-              >
-                <NavItem onClick={onClickNewPublication}>
-                  <Glyphicon glyph="plus" />
-                </NavItem>
-              </OverlayTrigger>
-            )}
+        <Nav navbar pullRight>
+          {showEdit && (
+            <OverlayTrigger
+              placement="bottom"
+              overlay={
+                <Tooltip id={store.editing ? 'preview' : 'edit'}>
+                  {store.editing ? 'preview' : 'edit'}
+                </Tooltip>
+              }
+            >
+              <NavItem onClick={onClickEdit}>
+                <Glyphicon glyph={glyph} />
+              </NavItem>
+            </OverlayTrigger>
+          )}
+          {showAddArticle && (
+            <OverlayTrigger
+              placement="bottom"
+              overlay={<Tooltip id="newArticle">new article</Tooltip>}
+            >
+              <NavItem onClick={onClickNewArticle}>
+                <Glyphicon glyph="plus" />
+              </NavItem>
+            </OverlayTrigger>
+          )}
+          {showAddEvent && (
+            <OverlayTrigger
+              placement="bottom"
+              overlay={<Tooltip id="newEvent">new event</Tooltip>}
+            >
+              <NavItem onClick={onClickNewEvent}>
+                <Glyphicon glyph="plus" />
+              </NavItem>
+            </OverlayTrigger>
+          )}
+          {showAddActor && (
+            <OverlayTrigger
+              placement="bottom"
+              overlay={<Tooltip id="newActor">new actor</Tooltip>}
+            >
+              <NavItem onClick={onClickNewActor}>
+                <Glyphicon glyph="plus" />
+              </NavItem>
+            </OverlayTrigger>
+          )}
+          {showAddPublication && (
+            <OverlayTrigger
+              placement="bottom"
+              overlay={<Tooltip id="newPublication">new publication</Tooltip>}
+            >
+              <NavItem onClick={onClickNewPublication}>
+                <Glyphicon glyph="plus" />
+              </NavItem>
+            </OverlayTrigger>
+          )}
+
+          {!email && <NavItem onClick={onClickLogin}>Log in</NavItem>}
+          {!!email && (
             <OverlayTrigger
               placement="bottom"
               overlay={<Tooltip id="logout">log out</Tooltip>}
@@ -223,8 +229,8 @@ const MyNavbar = ({ match, location }) => {
                 <Glyphicon glyph="log-out" />
               </NavItem>
             </OverlayTrigger>
-          </Nav>
-        )}
+          )}
+        </Nav>
       </Navbar.Collapse>
     </StyledNavbar>
   )

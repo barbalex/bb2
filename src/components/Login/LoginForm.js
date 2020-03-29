@@ -10,6 +10,7 @@ import {
 import isObject from 'lodash/isObject'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { navigate } from '@reach/router'
 
 import validateEmail from './validateEmail'
 import storeContext from '../../storeContext'
@@ -56,6 +57,7 @@ const LoginForm = () => {
         try {
           await app.db.login(newEmail, password)
           store.login.login(newEmail)
+          navigate('/events')
         } catch (error) {
           changeNewEmail(null)
           changeLoginError(error)
