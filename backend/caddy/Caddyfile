@@ -20,6 +20,7 @@ blue-borders.ch, www.blue-borders.ch {
     header_up X-Forwarded-Proto {http.request.scheme}
   }
   
+  # need to add this because it us used by couchdb when logging in
   reverse_proxy /_session {
     to bb_db:5984
     # unfortunately the transparent shorthand does not seem to exist (yet)
@@ -66,6 +67,7 @@ mediterranean-migration.com, www.mediterranean-migration.com {
     header_up X-Forwarded-Proto {http.request.scheme}
   }
   
+  # need to add this because it us used by couchdb when logging in
   reverse_proxy /_session {
     to bb_db:5984
     # unfortunately the transparent shorthand does not seem to exist (yet)
