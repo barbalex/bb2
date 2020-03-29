@@ -25,17 +25,18 @@ export default store => ({
   getMonthlyEventsCallback: null,
 
   getMonthlyEvents: action('getMonthlyEvents', async () => {
+    let monthlyEvents
     try {
-      const monthlyEvents = await getMonthlyEvents(store)
-      store.monthlyEvents.monthlyEvents = monthlyEvents
-      if (store.monthlyEvents.getMonthlyEventsCallback) {
-        store.monthlyEvents.getMonthlyEventsCallback()
-        store.monthlyEvents.getMonthlyEventsCallback = null
-      }
+      monthlyEvents = await getMonthlyEvents(store)
     } catch (error) {
       store.error.showError({
         msg: error,
       })
+    }
+    store.monthlyEvents.monthlyEvents = monthlyEvents
+    if (store.monthlyEvents.getMonthlyEventsCallback) {
+      store.monthlyEvents.getMonthlyEventsCallback()
+      store.monthlyEvents.getMonthlyEventsCallback = null
     }
   }),
   getMonthlyEvent: action('getMonthlyEvent', id => {
@@ -74,11 +75,9 @@ export default store => ({
     const oldActiveMonthlyEventId = store.monthlyEvents.activeMonthlyEventId
     // optimistically update in cache
     store.monthlyEvents.updateMonthlyEventsInCache(monthlyEvent)
+    let resp
     try {
-      const resp = await app.db.put(monthlyEvent)
-      monthlyEvent._rev = resp.rev
-      // definitely update in cache
-      store.monthlyEvents.updateMonthlyEventsInCache(monthlyEvent)
+      resp = await app.db.put(monthlyEvent)
     } catch (error) {
       store.monthlyEvents.revertCache(oldMonthlyEvents, oldActiveMonthlyEventId)
       store.error.showError({
@@ -86,5 +85,8 @@ export default store => ({
         msg: error,
       })
     }
+    monthlyEvent._rev = resp.rev
+    // definitely update in cache
+    store.monthlyEvents.updateMonthlyEventsInCache(monthlyEvent)
   }),
 })

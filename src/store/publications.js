@@ -30,17 +30,18 @@ export default store => ({
   getPublicationsCallback: null,
 
   getPublications: action('getPublications', async () => {
+    let publications
     try {
-      const publications = await getPublications(store)
-      store.publications.publications = publications
-      if (store.publications.getPublicationsCallback) {
-        store.publications.getPublicationsCallback()
-        store.publications.getPublicationsCallback = null
-      }
+      publications = await getPublications(store)
     } catch (error) {
       store.error.showError({
         msg: error,
       })
+    }
+    store.publications.publications = publications
+    if (store.publications.getPublicationsCallback) {
+      store.publications.getPublicationsCallback()
+      store.publications.getPublicationsCallback = null
     }
   }),
 
@@ -106,12 +107,9 @@ export default store => ({
       store.publications.activePublicationCategory
     // optimistically update in cache
     store.publications.updatePublicationInCache(publication)
+    let resp
     try {
-      const resp = await app.db.put(publication)
-      // resp.rev is new rev
-      publication._rev = resp.rev
-      // definitely update in cache
-      store.publications.updatePublicationInCache(publication)
+      resp = await app.db.put(publication)
     } catch (error) {
       store.publications.revertCache(
         oldPublications,
@@ -123,6 +121,10 @@ export default store => ({
         msg: error,
       })
     }
+    // resp.rev is new rev
+    publication._rev = resp.rev
+    // definitely update in cache
+    store.publications.updatePublicationInCache(publication)
   }),
 
   removePublicationFromCache: action(

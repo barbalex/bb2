@@ -59,12 +59,12 @@ const LoginForm = () => {
       if (validSignin(newEmail, password)) {
         try {
           await app.db.login(newEmail, password)
-          store.login.login(newEmail)
-          navigate('/events')
         } catch (error) {
           changeNewEmail(null)
           changeLoginError(error)
         }
+        store.login.login(newEmail)
+        navigate('/events')
       }
     },
     [store.login, validSignin],

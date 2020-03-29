@@ -9,13 +9,14 @@ const options = {
 }
 
 export default async store => {
+  let result
   try {
-    const result = await app.db.allDocs(options)
-    let actors = map(result.rows, 'doc')
-    actors = sortActors(actors)
-    return actors
+    result = await app.db.allDocs(options)
   } catch (error) {
     store.error.showError('Error fetching actors:', error)
     return []
   }
+  let actors = map(result.rows, 'doc')
+  actors = sortActors(actors)
+  return actors
 }

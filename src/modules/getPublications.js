@@ -9,13 +9,13 @@ const options = {
 }
 
 export default async store => {
+  let result
   try {
-    const result = await app.db.allDocs(options)
-    let publications = map(result.rows, 'doc')
-    publications = sortPublications(publications)
-    return publications
+    result = await app.db.allDocs(options)
   } catch (error) {
     store.error.showError('Error fetching publications:', error)
     return []
   }
+  const publications = map(result.rows, 'doc')
+  return sortPublications(publications)
 }

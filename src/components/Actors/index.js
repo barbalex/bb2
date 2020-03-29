@@ -39,15 +39,22 @@ const Actors = ({ category }) => {
   const { activeActor, showNewActor, actors } = store.actors
   const activeId = activeActor ? activeActor._id : null
 
+  console.log('Actors Component')
+
   useEffect(() => {
+    console.log('Actors Component, will getPage')
     store.page.getPage('pages_actors')
+    console.log('Actors Component, will getActors')
     store.actors.getActors()
+    console.log('Actors Component, got actors')
   }, [store.actors, store.page])
+  console.log('Actors Component, actors:', actors)
 
   const actorsSorted = sortBy(actors, actor => {
     if (actor.order) return actor.order
     return 100
   })
+  console.log('Actors Component, actorsSorted:', actorsSorted)
 
   return (
     <DocumentTitle title="Actors">

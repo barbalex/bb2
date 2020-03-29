@@ -26,17 +26,18 @@ export default store => ({
   getEventsCallback: null,
 
   getEvents: action('getEvents', async years => {
+    let events
     try {
-      const events = await getEvents(store, years)
-      store.events.events = events
-      if (store.events.getEventsCallback) {
-        store.events.getEventsCallback()
-        store.events.getEventsCallback = null
-      }
+      events = await getEvents(store, years)
     } catch (error) {
       store.error.showError({
         msg: error,
       })
+    }
+    store.events.events = events
+    if (store.events.getEventsCallback) {
+      store.events.getEventsCallback()
+      store.events.getEventsCallback = null
     }
   }),
 
@@ -106,11 +107,9 @@ export default store => ({
     const oldActiveEventId = store.events.activeEventId
     // optimistically update in cache
     store.events.updateEventsInCache(event)
+    let resp
     try {
-      const resp = await app.db.put(event)
-      event._rev = resp.rev
-      // definitely update in cache
-      store.events.updateEventsInCache(event)
+      resp = await app.db.put(event)
     } catch (error) {
       store.events.revertCache(oldEvents, oldActiveEventId)
       store.error.showError({
@@ -118,6 +117,9 @@ export default store => ({
         msg: error,
       })
     }
+    event._rev = resp.rev
+    // definitely update in cache
+    store.events.updateEventsInCache(event)
   }),
   removeEventFromCache: action('removeEventFromCache', event => {
     // first update the event in store.events.events

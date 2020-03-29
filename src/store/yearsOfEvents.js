@@ -8,12 +8,13 @@ export default store => ({
   yearsOfEvents: [parseInt(moment().format('YYYY'), 0)],
 
   getYearsOfEvents: action('getYearsOfEvents', async () => {
+    let years
     try {
-      const years = await getYearsOfEvents(store)
-      store.yearsOfEvents.yearsOfEvents = years
+      years = await getYearsOfEvents(store)
     } catch (error) {
       console.log('yearsOfEventsStore, error getting years of events', error)
     }
+    store.yearsOfEvents.yearsOfEvents = years
   }),
 
   activeEventYears: [parseInt(moment().format('YYYY'), 0)],

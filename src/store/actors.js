@@ -25,17 +25,18 @@ export default store => ({
   getActorsCallback: null,
 
   getActors: action('getActors', async () => {
+    let actors
     try {
-      const actors = await getActors(store)
-      store.actors.actors = actors
-      if (store.actors.getActorsCallback) {
-        store.actors.getActorsCallback()
-        store.actors.getActorsCallback = null
-      }
+      actors = await getActors(store)
     } catch (error) {
       store.error.showError({
         msg: error,
       })
+    }
+    store.actors.actors = actors
+    if (store.actors.getActorsCallback) {
+      store.actors.getActorsCallback()
+      store.actors.getActorsCallback = null
     }
   }),
 
@@ -84,12 +85,9 @@ export default store => ({
     const oldActiveActorId = store.actors.activeActorId
     // optimistically update in cache
     store.actors.updateActorsInCache(actor)
+    let resp
     try {
-      const resp = await app.db.put(actor)
-      // resp.rev is new rev
-      actor._rev = resp.rev
-      // definitely update in cache
-      store.actors.updateActorsInCache(actor)
+      resp = await app.db.put(actor)
     } catch (error) {
       store.actors.revertCache(oldActors, oldActiveActorId)
       store.error.showError({
@@ -97,6 +95,10 @@ export default store => ({
         msg: error,
       })
     }
+    // resp.rev is new rev
+    actor._rev = resp.rev
+    // definitely update in cache
+    store.actors.updateActorsInCache(actor)
   }),
 
   removeActorFromCache: action('removeActorFromCache', actor => {

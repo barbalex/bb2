@@ -26,17 +26,18 @@ export default store => ({
   getArticlesCallback: null,
 
   getArticles: action('getArticles', async () => {
+    let articles
     try {
-      const articles = await getArticles(store)
-      store.articles.articles = articles
-      if (store.articles.getArticlesCallback) {
-        store.articles.getArticlesCallback()
-        store.articles.getArticlesCallback = null
-      }
+      articles = await getArticles(store)
     } catch (error) {
       store.error.showError({
         msg: error,
       })
+    }
+    store.articles.articles = articles
+    if (store.articles.getArticlesCallback) {
+      store.articles.getArticlesCallback()
+      store.articles.getArticlesCallback = null
     }
   }),
 
@@ -91,12 +92,9 @@ export default store => ({
     const oldActiveArticleId = store.articles.activeArticleId
     // optimistically update in cache
     store.articles.updateArticlesInCache(article)
+    let resp
     try {
-      const resp = await app.db.put(article)
-      // resp.rev is new rev
-      article._rev = resp.rev
-      // definitely update in cache
-      store.articles.updateArticlesInCache(article)
+      resp = await app.db.put(article)
     } catch (error) {
       store.articles.revertCache(oldArticles, oldActiveArticleId)
       store.error.showError({
@@ -104,6 +102,10 @@ export default store => ({
         msg: error,
       })
     }
+    // resp.rev is new rev
+    article._rev = resp.rev
+    // definitely update in cache
+    store.articles.updateArticlesInCache(article)
   }),
 
   removeArticleFromCache: action('removeArticleFromCache', article => {
