@@ -27,3 +27,5 @@ git_stats.csv
 
 /backend/caddy/html/*
 .cache/
+
+users.json
