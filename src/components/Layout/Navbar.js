@@ -219,7 +219,7 @@ const MyNavbar = ({ match, location }) => {
             </OverlayTrigger>
           )}
 
-          {!email && <NavItem onClick={onClickLogin}>Log in</NavItem>}
+          {!email && <NavItem onClick={onClickLogin}>log in</NavItem>}
           {!!email && (
             <OverlayTrigger
               placement="bottom"
