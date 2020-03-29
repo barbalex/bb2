@@ -23,6 +23,9 @@ const ValidateDivAfterRBC = styled.div`
   margin-top: -15px;
   margin-bottom: 5px;
 `
+const Note = styled.div`
+  margin-top: 10px;
+`
 
 const LoginForm = () => {
   const store = useContext(storeContext)
@@ -164,6 +167,7 @@ const LoginForm = () => {
       <Button className="btn-primary" onClick={onClickLogin}>
         log in
       </Button>
+      <Note>Logging in is only meant for Site-Maintainers.</Note>
     </form>
   )
 }
