@@ -86,7 +86,7 @@ const Events = () => {
             <Button onClick={onClickMonthlyEvents}>2014 - 2011</Button>
           </ButtonGroup>
         </YearButtonsContainer>
-        {showEventsTable && <EventsTable introJumbotronHeight={85} />}
+        {showEventsTable && <EventsTable />}
         {activeEvent && <EditEvent />}
         {showNewEvent && <NewEvent />}
         {eventToRemove && <ModalRemoveEvent />}

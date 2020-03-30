@@ -60,7 +60,7 @@ const HeaderRow = styled.div`
   display: flex;
 `
 
-const Events = ({ introJumbotronHeight }) => (
+const Events = () => (
   <Container>
     <Header className="eventsTable-header">
       <HeaderRow>
