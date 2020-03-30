@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useCallback } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import moment from 'moment'
 import min from 'lodash/min'
@@ -13,6 +13,7 @@ import ModalRemoveEvent from './ModalRemoveEvent'
 import EventsTable from './EventsTable'
 import storeContext from '../../storeContext'
 import IntroJumbotron from './IntroJumbotron'
+import YearButton from './YearButton'
 
 const Container = styled.div`
   p,
@@ -69,32 +70,21 @@ const Events = () => {
     getYearsOfEvents()
   }, [getEvents, getPage, getYearsOfEvents])
 
+  const onClickMonthlyEvents = useCallback(() => {
+    navigate('/monthly-events')
+    getPage('pages_monthlyEvents')
+  }, [getPage])
+
   return (
     <DocumentTitle title="Events">
       <Container className="events">
         <IntroJumbotron />
         <YearButtonsContainer>
           <ButtonGroup>
-            {yearsOfEvents.map((year, index) => (
-              <Button
-                key={index}
-                active={activeEventYears.includes(year)}
-                onClick={() => {
-                  getEvents([year])
-                  setActiveEventYears([year])
-                }}
-              >
-                {year}
-              </Button>
+            {yearsOfEvents.map(year => (
+              <YearButton key={year} year={year} />
             ))}
-            <Button
-              onClick={() => {
-                navigate('/monthly-events')
-                getPage('pages_monthlyEvents')
-              }}
-            >
-              2014 - 2011
-            </Button>
+            <Button onClick={onClickMonthlyEvents}>2014 - 2011</Button>
           </ButtonGroup>
         </YearButtonsContainer>
         {showEventsTable && <EventsTable introJumbotronHeight={85} />}
