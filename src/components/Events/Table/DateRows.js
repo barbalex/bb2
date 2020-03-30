@@ -12,8 +12,8 @@ import styled from 'styled-components'
 import DateRow from './DateRow'
 import MonthRow from './MonthRow'
 import MonthlyStatisticsRow from './MonthlyStatisticsRow'
-import getDaterowObjectsSinceOldestEvent from '../../modules/getDaterowObjectsSinceOldestEvent'
-import storeContext from '../../storeContext'
+import getDaterowObjectsSinceOldestEvent from '../../../modules/getDaterowObjectsSinceOldestEvent'
+import storeContext from '../../../storeContext'
 
 const BodyRow = styled.div`
   display: flex;

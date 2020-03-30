@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import styled from 'styled-components'
 
-import oceanDarkImage from '../../images/oceanDark.jpg'
+import oceanDarkImage from '../../../images/oceanDark.jpg'
 
 const BodyRow = styled.div`
   display: flex;

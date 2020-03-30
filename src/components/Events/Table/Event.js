@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import RemoveEventGlyph from './RemoveEventGlyph'
 import EditEventGlyph from './EditEventGlyph'
-import storeContext from '../../storeContext'
+import storeContext from '../../../storeContext'
 
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 0.7em;
