@@ -42,10 +42,9 @@ const MonthRow = ({ dateRowObject: dRO }) => {
   const year = parseInt(moment(dRO.date).format('YYYY'), 0)
   const month = moment(dRO.date).format('MMMM')
   const text = `${month} ${year}`
-  const className = month === 'December' ? `yearRow ${year}` : ''
 
   return (
-    <BodyRow className={className}>
+    <BodyRow>
       <BodyCell>{text}</BodyCell>
     </BodyRow>
   )
