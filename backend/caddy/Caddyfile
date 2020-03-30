@@ -2,7 +2,7 @@
 {
   email alex.barbalex@gmail.com
   #acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
-  debug
+  #debug
 }
 
 blue-borders.ch, www.blue-borders.ch {
