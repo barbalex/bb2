@@ -59,7 +59,6 @@ const Events = () => {
     yearsOfEvents,
     activeEventYears,
     getYearsOfEvents,
-    setActiveEventYears,
   } = store.yearsOfEvents
   const showEventsTable = min(activeEventYears) > 2014
   const { activeEvent, eventToRemove, getEvents, showNewEvent } = store.events
