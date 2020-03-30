@@ -6,7 +6,7 @@ export default () => {
   const hostname = isDev
     ? `${window.location.hostname}:5984/bb`
     : `${window.location.hostname}/bb`
-  //  `api.${window.location.hostname}/bb`
+  //`api.${window.location.hostname}/bb`
 
   return `${window.location.protocol}//${hostname}`
 }

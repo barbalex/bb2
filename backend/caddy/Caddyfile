@@ -1,6 +1,7 @@
 {
   email alex.barbalex@gmail.com
   #acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+  debug
 }
 
 blue-borders.ch, www.blue-borders.ch {
@@ -10,43 +11,22 @@ blue-borders.ch, www.blue-borders.ch {
   
   reverse_proxy /bb/* {
     to bb_db:5984
-    # unfortunately the transparent shorthand does not seem to exist (yet)
-    # https://caddy.community/t/v2-reverse-proxy-transparent/6480/8
-    #transparent
-    header_up Host {http.request.host}
-    header_up X-Real-IP {http.request.remote}
-    header_up X-Forwarded-For {http.request.remote}
-    header_up X-Forwarded-Port {http.request.port}
-    header_up X-Forwarded-Proto {http.request.scheme}
   }
   
   # need to add this because it us used by couchdb when logging in
   reverse_proxy /_session {
     to bb_db:5984
-    # unfortunately the transparent shorthand does not seem to exist (yet)
-    # https://caddy.community/t/v2-reverse-proxy-transparent/6480/8
-    #transparent
-    header_up Host {http.request.host}
-    header_up X-Real-IP {http.request.remote}
-    header_up X-Forwarded-For {http.request.remote}
-    header_up X-Forwarded-Port {http.request.port}
-    header_up X-Forwarded-Proto {http.request.scheme}
   }
 }
 
 api.blue-borders.ch {
-  reverse_proxy bb_db:5984 {
-    # unfortunately the transparent shorthand does not seem to exist (yet)
-    # https://caddy.community/t/v2-reverse-proxy-transparent/6480/8
-    #transparent
-    header_down "Access-Control-Allow-Origin *"
-    header_down Access-Control-Allow-Credentials=true
-    header_down "Access-Control-Allow-Methods: POST, GET, OPTIONS"
-    header_up Host {http.request.host}
-    header_up X-Real-IP {http.request.remote}
-    header_up X-Forwarded-For {http.request.remote}
-    header_up X-Forwarded-Port {http.request.port}
-    header_up X-Forwarded-Proto {http.request.scheme}
+  reverse_proxy * bb_db:5984 {
+    header_down Access-Control-Allow-Origin https://blue-borders.ch
+    header_down Access-Control-Allow-Credentials true
+    header_down Access-Control-Allow-Methods: OPTIONS,DELETE,GET,HEAD,POST,PUT
+    header_down max_age 3600
+    header_down headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
+    header_up headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
   }
 }
 
@@ -57,42 +37,22 @@ mediterranean-migration.com, www.mediterranean-migration.com {
   
   reverse_proxy /bb/* {
     to bb_db:5984
-    # unfortunately the transparent shorthand does not seem to exist (yet)
-    # https://caddy.community/t/v2-reverse-proxy-transparent/6480/8
-    #transparent
-    header_up Host {http.request.host}
-    header_up X-Real-IP {http.request.remote}
-    header_up X-Forwarded-For {http.request.remote}
-    header_up X-Forwarded-Port {http.request.port}
-    header_up X-Forwarded-Proto {http.request.scheme}
   }
   
   # need to add this because it us used by couchdb when logging in
   reverse_proxy /_session {
     to bb_db:5984
-    # unfortunately the transparent shorthand does not seem to exist (yet)
-    # https://caddy.community/t/v2-reverse-proxy-transparent/6480/8
-    #transparent
-    header_up Host {http.request.host}
-    header_up X-Real-IP {http.request.remote}
-    header_up X-Forwarded-For {http.request.remote}
-    header_up X-Forwarded-Port {http.request.port}
-    header_up X-Forwarded-Proto {http.request.scheme}
   }
 }
 
 api.mediterranean-migration.com {
-  reverse_proxy bb_db:5984 {
-    # unfortunately the transparent shorthand does not seem to exist (yet)
-    # https://caddy.community/t/v2-reverse-proxy-transparent/6480/8
-    #transparent
-    header_down "Access-Control-Allow-Origin *"
-    header_down Access-Control-Allow-Credentials=true
-    header_down "Access-Control-Allow-Methods: POST, GET, OPTIONS"
-    header_up Host {http.request.host}
-    header_up X-Real-IP {http.request.remote}
-    header_up X-Forwarded-For {http.request.remote}
-    header_up X-Forwarded-Port {http.request.port}
-    header_up X-Forwarded-Proto {http.request.scheme}
+  reverse_proxy * bb_db:5984 {
+    header_down Access-Control-Allow-Origin https://mediterranean-migration.com
+    header_down Access-Control-Allow-Credentials true
+    header_down Access-Control-Allow-Methods: OPTIONS,DELETE,GET,HEAD,POST,PUT
+    header_down max_age 3600
+    header_down headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
+    header_up headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
+    #curl -X PUT $HOST/_config/cors/headers -d '"accept, authorization, content-type, origin, referer, x-csrf-token"'
   }
 }
