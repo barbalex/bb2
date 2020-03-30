@@ -24,7 +24,7 @@ api.blue-borders.ch {
   reverse_proxy * bb_db:5984 {
     header_down Access-Control-Allow-Origin https://blue-borders.ch
     header_down Access-Control-Allow-Credentials true
-    header_down Access-Control-Allow-Methods: OPTIONS,DELETE,GET,HEAD,POST,PUT
+    header_down Access-Control-Allow-Methods "OPTIONS DELETE GET HEAD POST PUT"
     header_down max_age 3600
     header_down headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
     header_up headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
@@ -50,7 +50,7 @@ api.mediterranean-migration.com {
   reverse_proxy * bb_db:5984 {
     header_down Access-Control-Allow-Origin https://mediterranean-migration.com
     header_down Access-Control-Allow-Credentials true
-    header_down Access-Control-Allow-Methods: OPTIONS,DELETE,GET,HEAD,POST,PUT
+    header_down Access-Control-Allow-Methods "OPTIONS DELETE GET HEAD POST PUT"
     header_down max_age 3600
     header_down headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
     header_up headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
