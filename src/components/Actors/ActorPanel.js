@@ -104,8 +104,6 @@ const ActorPanel = ({ doc, index, category }) => {
     store.actors.activeActorId,
   ])
 
-  console.log('ActorPanel')
-
   // use pure bootstrap.
   // advantage: can add edit icon to panel-heading
   return (
