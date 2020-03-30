@@ -82,13 +82,11 @@ const DateRows = () => {
     const renderDateRow = (index, key) => dateRows[index]
 
     return (
-      <div>
-        <ReactList
-          itemRenderer={renderDateRow}
-          length={dateRows.length}
-          type="variable"
-        />
-      </div>
+      <ReactList
+        itemRenderer={renderDateRow}
+        length={dateRows.length}
+        type="variable"
+      />
     )
   }
   return (
