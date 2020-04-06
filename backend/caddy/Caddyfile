@@ -21,6 +21,12 @@ blue-borders.ch, www.blue-borders.ch {
 }
 
 api.blue-borders.ch {
+  # help for cors: https://caddy.community/t/v2-cors-problems-when-reverse-proxying-to-ssh-tunnel/7428/10
+  header {
+    origin https://blue-borders.ch
+    methods OPTIONS, DELETE, GET, HEAD, POST, PUT
+    allow_credentials true
+  }
   reverse_proxy * bb_db:5984 {
     header_down Access-Control-Allow-Origin https://blue-borders.ch
     header_down Access-Control-Allow-Credentials true
@@ -47,6 +53,12 @@ mediterranean-migration.com, www.mediterranean-migration.com {
 }
 
 api.mediterranean-migration.com {
+  # help for cors: https://caddy.community/t/v2-cors-problems-when-reverse-proxying-to-ssh-tunnel/7428/10
+  header {
+    origin https://mediterranean-migration.com
+    methods OPTIONS, DELETE, GET, HEAD, POST, PUT
+    allow_credentials true
+  }
   reverse_proxy * bb_db:5984 {
     header_down Access-Control-Allow-Origin https://mediterranean-migration.com
     header_down Access-Control-Allow-Credentials true
