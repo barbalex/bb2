@@ -2,6 +2,7 @@ import React from 'react'
 import app from 'ampersand-app'
 import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
+import 'mobx-react-lite/batchingForReactDom'
 
 import store from './store'
 import couchUrl from './modules/getCouchUrl'
@@ -16,7 +17,7 @@ import { StoreContextProvider } from './storeContext'
 let PouchDB = null
 if (typeof window !== `undefined`) {
   // need to import pouchdb only client side or gatsby will not build
-  import('pouchdb').then(pouchdb => {
+  import('pouchdb').then((pouchdb) => {
     PouchDB = pouchdb.default
     /**
      * set up pouchdb plugins
