@@ -11,6 +11,8 @@ blue-borders.ch, www.blue-borders.ch {
   file_server
   
   reverse_proxy /bb/* {
+    # use: uri strip_prefix bb ?
+    # see: https://caddy.community/t/v2-reverse-proxy-please-add-cors-example-to-the-docs/7349/22?u=alexander_gabriel
     to bb_db:5984
   }
   
