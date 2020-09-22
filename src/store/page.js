@@ -8,7 +8,7 @@ export default store => ({
   showMeta: false,
   getPage: action('getPage', async id => {
     const get =
-      !store.page.activePage._id ||
+      !store?.page?.activePage?._id ||
       (store.page.activePage._id && store.page.activePage._id !== id)
     if (get) {
       let doc
