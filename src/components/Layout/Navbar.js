@@ -49,32 +49,32 @@ const MyNavbar = ({ match, location }) => {
   }, [navExpanded])
   const onClickEvents = useCallback(() => {
     store.page.getPage('pages_events')
-    navigate('/events')
+    navigate('/events/')
     // if home was clicked, do not toggle nav
   }, [store.page])
   const onClickArticles = useCallback(() => {
     store.page.getPage('pages_commentaries')
-    navigate('/articles')
+    navigate('/articles/')
     onToggleNav()
   }, [onToggleNav, store.page])
   const onClickActors = useCallback(() => {
     store.page.getPage('pages_actors')
-    navigate('/actors')
+    navigate('/actors/')
     onToggleNav()
   }, [onToggleNav, store.page])
   const onClickPublications = useCallback(() => {
     store.page.getPage('pages_publications')
-    navigate('/publications')
+    navigate('/publications/')
     onToggleNav()
   }, [onToggleNav, store.page])
   const onClickAboutUs = useCallback(() => {
     store.page.getPage('pages_aboutUs')
-    navigate('/about-us')
+    navigate('/about-us/')
     onToggleNav()
   }, [onToggleNav, store.page])
 
   const onClickLogin = useCallback(() => {
-    navigate('/login')
+    navigate('/login/')
     onToggleNav()
   }, [onToggleNav])
 
