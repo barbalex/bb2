@@ -14,7 +14,7 @@
     "ampersand-app": "2.0.0",
     "bootstrap": "3.x",
     "classnames": "2.3.1",
-    "gatsby": "2.24.64",
+    "gatsby": "2.25.0",
     "gatsby-plugin-sitemap": "2.10.0",
     "gemini-scrollbar": "1.5.3",
     "isdev": "1.0.1",
