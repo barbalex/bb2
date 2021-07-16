@@ -110,7 +110,7 @@ const MyNavbar = ({ match, location }) => {
   const { activeArticle } = store.articles
   const email = store.login.email
   const glyph = store.editing ? 'eye-open' : 'pencil'
-  const id = activePage && activePage._id ? activePage._id : null
+  const id = activePage && activePage?._id ? activePage?._id : null
   const nonEditableIds = [
     'pages_commentaries',
     'pages_monthlyEvents',
@@ -125,10 +125,10 @@ const MyNavbar = ({ match, location }) => {
       has(activeArticle, '_id') ||
       has(activeActor, '_id') ||
       has(activePublication, '_id'))
-  const showAddArticle = !!email && activePage._id === 'pages_commentaries'
-  const showAddEvent = !!email && activePage._id === 'pages_events'
-  const showAddActor = !!email && activePage._id === 'pages_actors'
-  const showAddPublication = !!email && activePage._id === 'pages_publications'
+  const showAddArticle = !!email && activePage?._id === 'pages_commentaries'
+  const showAddEvent = !!email && activePage?._id === 'pages_events'
+  const showAddActor = !!email && activePage?._id === 'pages_actors'
+  const showAddPublication = !!email && activePage?._id === 'pages_publications'
 
   return (
     <StyledNavbar

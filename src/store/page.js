@@ -2,14 +2,14 @@
 import { action } from 'mobx'
 import app from 'ampersand-app'
 
-export default store => ({
+export default (store) => ({
   activePage: {},
   editing: false,
   showMeta: false,
-  getPage: action('getPage', async id => {
+  getPage: action('getPage', async (id) => {
     const get =
       !store?.page?.activePage?._id ||
-      (store.page.activePage._id && store.page.activePage._id !== id)
+      (store.page.activePage?._id && store.page.activePage?._id !== id)
     if (get) {
       let doc
       try {
@@ -23,7 +23,7 @@ export default store => ({
       store.page.activePage = doc
     }
   }),
-  savePage: action('savePage', async doc => {
+  savePage: action('savePage', async (doc) => {
     let resp
     try {
       resp = await app.db.put(doc)
