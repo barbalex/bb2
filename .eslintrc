@@ -1,0 +1,11 @@
+{
+  "parser": "babel-eslint", // uses babel-eslint transforms
+  "settings": {
+    "react": {
+      "version": "detect" // detect react version
+    }
+  },
+  "extends": [
+    "react-app"
+  ]
+}

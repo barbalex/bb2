@@ -14,8 +14,8 @@
     "ampersand-app": "2.0.0",
     "bootstrap": "3.x",
     "classnames": "2.3.1",
-    "gatsby": "2.25.0",
-    "gatsby-plugin-sitemap": "2.10.0",
+    "gatsby": "3.9.1",
+    "gatsby-plugin-sitemap": "4.5.0",
     "gemini-scrollbar": "1.5.3",
     "isdev": "1.0.1",
     "js-base64": "3.6.1",
@@ -42,22 +42,23 @@
     "styled-components": "5.3.0"
   },
   "devDependencies": {
-    "case-sensitive-paths-webpack-plugin": "^2.4.0",
+    "babel-eslint": "10.1.0",
+    "case-sensitive-paths-webpack-plugin": "2.4.0",
     "copyfiles": "2.4.1",
-    "gatsby-plugin-create-client-paths": "2.8.0",
-    "gatsby-plugin-eslint": "2.0.8",
-    "gatsby-plugin-google-analytics": "2.9.0",
-    "gatsby-plugin-manifest": "2.10.0",
-    "gatsby-plugin-offline": "3.8.0",
-    "gatsby-plugin-react-helmet": "3.8.0",
-    "gatsby-plugin-sharp": "2.12.0",
-    "gatsby-plugin-styled-components": "3.8.0",
-    "gatsby-source-filesystem": "2.9.0",
-    "gatsby-transformer-sharp": "2.10.0",
+    "eslint": "7.30.0",
+    "eslint-plugin-react": "7.24.0",
+    "eslint-webpack-plugin": "2.5.4",
+    "gatsby-plugin-create-client-paths": "3.9.0",
+    "gatsby-plugin-eslint": "3.0.0",
+    "gatsby-plugin-google-analytics": "3.9.0",
+    "gatsby-plugin-manifest": "3.9.0",
+    "gatsby-plugin-offline": "4.9.0",
+    "gatsby-plugin-react-helmet": "4.9.0",
+    "gatsby-plugin-sharp": "3.9.0",
+    "gatsby-plugin-styled-components": "4.9.0",
+    "gatsby-source-filesystem": "3.9.0",
+    "gatsby-transformer-sharp": "3.9.0",
     "rimraf": "3.0.2"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "keywords": [
     "migration",
@@ -82,7 +83,7 @@
   ],
   "peerDependencies": {
     "prop-types": "15.7.2",
-    "react-is": "17.0.1"
+    "react-is": "17.0.2"
   },
   "dependenciesComments": {
     "prop-types": "needed for react-gemini-scrollbar",
