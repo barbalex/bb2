@@ -42,7 +42,7 @@ const Page = () => {
     store.page.getPage('pages_aboutUs')
   }, [store.page])
 
-  if (store.editing && activePage._id !== 'pages_actors') {
+  if (store.editing && activePage?._id !== 'pages_actors') {
     return (
       <div className="page">
         <Editor
