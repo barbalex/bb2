@@ -14,6 +14,7 @@ export default async (store, years) => {
   try {
     result = await app.db.allDocs(options)
   } catch (error) {
+    console.log('getEvents, error:', error)
     store.error.showError('Error fetching events:', error)
     return []
   }

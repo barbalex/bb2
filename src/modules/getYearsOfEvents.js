@@ -1,7 +1,7 @@
 import moment from 'moment'
 import getYearOfFirstEvent from './getYearOfFirstEvent'
 
-export default async store => {
+export default async (store) => {
   let oldestYear
   try {
     oldestYear = await getYearOfFirstEvent(store)

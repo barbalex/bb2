@@ -8,8 +8,9 @@ import cloneDeep from 'lodash/cloneDeep'
 import getEvents from '../modules/getEvents'
 import sortEvents from '../modules/sortEvents'
 import slugOptions from '../modules/slugOptions'
+import getYearsOfEvents from '../modules/getYearsOfEvents'
 
-export default store => ({
+export default (store) => ({
   events: [],
 
   // cache the id, not the entire doc
@@ -19,13 +20,32 @@ export default store => ({
 
   get activeEvent() {
     return store.events.events.find(
-      event => event._id === store.events.activeEventId,
+      (event) => event._id === store.events.activeEventId,
     )
   },
 
   getEventsCallback: null,
 
-  getEvents: action('getEvents', async years => {
+  getInitialEvents: action('getEvents', async () => {
+    let events
+    try {
+      events = await getEvents(store, [parseInt(moment().format('YYYY'), 0)])
+    } catch (error) {
+      store.error.showError({
+        msg: error,
+      })
+    }
+    store.events.events = events
+    let years
+    try {
+      years = await getYearsOfEvents(store)
+    } catch (error) {
+      console.log('yearsOfEventsStore, error getting years of events', error)
+    }
+    store.yearsOfEvents.yearsOfEvents = years
+  }),
+
+  getEvents: action('getEvents', async (years) => {
     let events
     try {
       events = await getEvents(store, years)
@@ -41,7 +61,7 @@ export default store => ({
     }
   }),
 
-  newEvent: action('newEvent', event => {
+  newEvent: action('newEvent', (event) => {
     const title = event.title
     const year = moment(event.date).year()
     const month = moment(event.date).format('MM')
@@ -67,11 +87,11 @@ export default store => ({
 
   showNewEvent: false,
 
-  setShowNewEvent: action('setShowNewEvent', show => {
+  setShowNewEvent: action('setShowNewEvent', (show) => {
     store.events.showNewEvent = show
   }),
 
-  getEvent: action('getEvent', id => {
+  getEvent: action('getEvent', (id) => {
     if (!id) {
       store.events.activeEventId = null
     } else {
@@ -87,10 +107,10 @@ export default store => ({
     }
   }),
 
-  updateEventsInCache: action('updateEventsInCache', event => {
+  updateEventsInCache: action('updateEventsInCache', (event) => {
     // first update the event
     store.events.events = store.events.events.filter(
-      thisEvent => thisEvent._id !== event._id,
+      (thisEvent) => thisEvent._id !== event._id,
     )
     store.events.events.push(event)
     store.events.events = sortEvents(store.events.events)
@@ -101,7 +121,7 @@ export default store => ({
     store.events.activeEventId = oldActiveEventId
   }),
 
-  saveEvent: action('saveEvent', async event => {
+  saveEvent: action('saveEvent', async (event) => {
     // keep old cache in case of error
     const oldEvents = store.events.events
     const oldActiveEventId = store.events.activeEventId
@@ -121,10 +141,10 @@ export default store => ({
     // definitely update in cache
     store.events.updateEventsInCache(event)
   }),
-  removeEventFromCache: action('removeEventFromCache', event => {
+  removeEventFromCache: action('removeEventFromCache', (event) => {
     // first update the event in store.events.events
     store.events.events = store.events.events.filter(
-      thisEvent => thisEvent._id !== event._id,
+      (thisEvent) => thisEvent._id !== event._id,
     )
     store.events.events = sortEvents(store.events.events)
     // now update it in store.events.activeEvent if it is the active event
@@ -132,7 +152,7 @@ export default store => ({
     if (isActiveEvent) store.events.activeEventId = null
   }),
 
-  removeEvent: action('removeEvent', event => {
+  removeEvent: action('removeEvent', (event) => {
     // clone event in case event is immediately changed
     const myEvent = cloneDeep(event)
     // keep old cache in case of error
@@ -140,7 +160,7 @@ export default store => ({
     const oldActiveEventId = store.events.activeEventId
     // optimistically remove event from cache
     store.events.removeEventFromCache(myEvent)
-    app.db.remove(myEvent).catch(error => {
+    app.db.remove(myEvent).catch((error) => {
       // oops. Revert optimistic removal
       store.events.revertCache(oldEvents, oldActiveEventId)
       store.error.showError({
@@ -152,7 +172,7 @@ export default store => ({
 
   eventToRemove: null,
 
-  setEventToRemove: action('setEventToRemove', event => {
+  setEventToRemove: action('setEventToRemove', (event) => {
     store.events.eventToRemove = event
   }),
 })

@@ -14,8 +14,10 @@ import Layout from './components/Layout'
 import { StoreContextProvider } from './storeContext'
 
 let PouchDB = null
-if (typeof window !== `undefined`) {
+if (typeof window !== 'undefined') {
   // need to import pouchdb only client side or gatsby will not build
+  // TODO: this breaks dev!!!!!!!!!
+  // because then happens AFTER first calls to db from events form!!!!!!
   import('pouchdb').then((pouchdb) => {
     PouchDB = pouchdb.default
     /**
