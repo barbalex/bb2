@@ -54,19 +54,11 @@ const YearButtonsContainer = styled.div`
 const Events = () => {
   const store = useContext(storeContext)
   const { getPage } = store.page
-  const {
-    yearsOfEvents,
-    activeEventYears,
-    grouped,
-    setGrouped,
-  } = store.yearsOfEvents
+  const { yearsOfEvents, activeEventYears, grouped, setGrouped } =
+    store.yearsOfEvents
   const showEventsTable = min(activeEventYears) > 2014
-  const {
-    activeEvent,
-    eventToRemove,
-    getInitialEvents,
-    showNewEvent,
-  } = store.events
+  const { activeEvent, eventToRemove, getInitialEvents, showNewEvent } =
+    store.events
 
   useEffect(() => {
     getPage('pages_events')
@@ -105,7 +97,7 @@ const Events = () => {
               <YearButton key={year} year={year} />
             ))}
             {grouped && (
-              <Button onClick={onClickSetGrouped}>2015 - 2018</Button>
+              <Button onClick={onClickSetGrouped}>2018 - 2015</Button>
             )}
             <Button onClick={onClickMonthlyEvents}>2014 - 2011</Button>
           </ButtonGroup>
