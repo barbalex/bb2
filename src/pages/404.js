@@ -1,3 +1,5 @@
 import React from 'react'
 
-export default () => <h1>Sorry, this page does not exist</h1>
+const fourOhFour = () => <h1>Sorry, this page does not exist</h1>
+
+export default fourOhFour
