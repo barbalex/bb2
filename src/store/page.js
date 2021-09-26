@@ -2,7 +2,7 @@
 import { action } from 'mobx'
 import app from 'ampersand-app'
 
-export default (store) => ({
+const page = (store) => ({
   activePage: {},
   editing: false,
   showMeta: false,
@@ -22,6 +22,7 @@ export default (store) => ({
       }
       store.page.activePage = doc
     }
+    return
   }),
   savePage: action('savePage', async (doc) => {
     let resp
@@ -51,3 +52,5 @@ export default (store) => ({
     store.page.savePage(doc)
   }),
 })
+
+export default page

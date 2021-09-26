@@ -44,7 +44,7 @@ const Actors = ({ category }) => {
     store.actors.getActors()
   }, [store.actors, store.page])
 
-  const actorsSorted = sortBy(actors, actor => {
+  const actorsSorted = sortBy(actors, (actor) => {
     if (actor.order) return actor.order
     return 100
   })
