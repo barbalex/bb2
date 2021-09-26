@@ -84,7 +84,12 @@ const Publications = ({ category, title }) => {
     } else {
       store.publications.activePublicationId = null
     }
-  }, [category, store.publications.activePublicationId, title])
+  }, [
+    category,
+    store.publications.activePublicationId,
+    title,
+    store.publications,
+  ])
 
   return (
     <DocumentTitle title="Publications">
@@ -95,11 +100,11 @@ const Publications = ({ category, title }) => {
           id="publicationsAccordion"
           role="tablist"
         >
-          {sortBy(publicationCategories, cat => {
+          {sortBy(publicationCategories, (cat) => {
             let order = orderByCategory[cat]
             if (!order) order = 4
             return order
-          }).map(category => (
+          }).map((category) => (
             <PublicationsGroup key={category} category={category} />
           ))}
         </PanelGroup>
