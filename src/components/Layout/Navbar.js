@@ -47,6 +47,7 @@ const MyNavbar = ({ match, location }) => {
     // toggle only if nav is in mobile mode
     if (navIsMobile) changeNavExpanded(!navExpanded)
   }, [navExpanded])
+
   const onClickEvents = useCallback(() => {
     store.page.getPage('pages_events')
     navigate('/events/')
