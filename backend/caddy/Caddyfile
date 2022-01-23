@@ -5,22 +5,22 @@
   #debug
 }
 
-blue-borders.ch, www.blue-borders.ch {
-  root * /html
-  encode zstd gzip
-  file_server
+# blue-borders.ch, www.blue-borders.ch {
+#   root * /html
+#   encode zstd gzip
+#   file_server
   
-  reverse_proxy /bb/* {
-    # use: uri strip_prefix bb ?
-    # see: https://caddy.community/t/v2-reverse-proxy-please-add-cors-example-to-the-docs/7349/22?u=alexander_gabriel
-    to bb_db:5984
-  }
+#   reverse_proxy /bb/* {
+#     # use: uri strip_prefix bb ?
+#     # see: https://caddy.community/t/v2-reverse-proxy-please-add-cors-example-to-the-docs/7349/22?u=alexander_gabriel
+#     to bb_db:5984
+#   }
   
-  # need to add this because it us used by couchdb when logging in
-  reverse_proxy /_session {
-    to bb_db:5984
-  }
-}
+#   # need to add this because it us used by couchdb when logging in
+#   reverse_proxy /_session {
+#     to bb_db:5984
+#   }
+# }
 
 api.blue-borders.ch {
   # help for cors: https://caddy.community/t/v2-cors-problems-when-reverse-proxying-to-ssh-tunnel/7428/10
@@ -39,20 +39,20 @@ api.blue-borders.ch {
   }
 }
 
-mediterranean-migration.com, www.mediterranean-migration.com {
-  root * /html
-  encode zstd gzip
-  file_server
+# mediterranean-migration.com, www.mediterranean-migration.com {
+#   root * /html
+#   encode zstd gzip
+#   file_server
   
-  reverse_proxy /bb/* {
-    to bb_db:5984
-  }
+#   reverse_proxy /bb/* {
+#     to bb_db:5984
+#   }
   
-  # need to add this because it us used by couchdb when logging in
-  reverse_proxy /_session {
-    to bb_db:5984
-  }
-}
+#   # need to add this because it us used by couchdb when logging in
+#   reverse_proxy /_session {
+#     to bb_db:5984
+#   }
+# }
 
 api.mediterranean-migration.com {
   # help for cors: https://caddy.community/t/v2-cors-problems-when-reverse-proxying-to-ssh-tunnel/7428/10
