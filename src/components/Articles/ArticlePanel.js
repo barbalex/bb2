@@ -11,7 +11,7 @@ const ToggleDraftGlyphicon = styled(Glyphicon)`
   right: 40px !important;
   top: 6px !important;
   font-size: 1.5em;
-  color: ${props => props['data-color']};
+  color: ${(props) => props['data-color']};
 `
 const RemoveGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -23,12 +23,13 @@ const RemoveGlyphicon = styled(Glyphicon)`
 const PanelHeading = styled.div`
   position: relative;
   cursor: pointer;
-  border-bottom-right-radius: ${props => (!props.isActiveArticle ? '3px' : 0)};
-  border-bottom-left-radius: ${props => (!props.isActiveArticle ? '3px' : 0)};
+  border-bottom-right-radius: ${(props) =>
+    !props.isActiveArticle ? '3px' : 0};
+  border-bottom-left-radius: ${(props) => (!props.isActiveArticle ? '3px' : 0)};
 `
 const PanelBody = styled.div`
-  margin-top: ${props => props['data-panelbodymargintop']};
-  padding: ${props => props['data-panelbodypadding']};
+  margin-top: ${(props) => props['data-panelbodymargintop']};
+  padding: ${(props) => props['data-panelbodypadding']};
   max-height: ${typeof window !== `undefined` ? window.innerHeight - 141 : 0}px;
   overflow-y: auto;
 `
@@ -49,7 +50,7 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
   const panelbodymargintop = store.editing ? '-1px' : 0
 
   const onClickArticle = useCallback(
-    e => {
+    (e) => {
       // prevent higher level panels from reacting
       e.stopPropagation()
       const idToGet =
@@ -60,11 +61,11 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
   )
   // prevent higher level panels from reacting
   const onClickArticleCollapse = useCallback(
-    event => event.stopPropagation(),
+    (event) => event.stopPropagation(),
     [],
   )
   const onToggleDraft = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
       event.stopPropagation()
       toggleDraftOfArticle(doc)
@@ -72,7 +73,7 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
     [doc, toggleDraftOfArticle],
   )
   const onRemoveArticle = useCallback(
-    event => {
+    (event) => {
       event.preventDefault()
       event.stopPropagation()
       setArticleToRemove(doc)
@@ -106,7 +107,7 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
     doc._id,
     month,
     scrollToActivePanel,
-    store.actors.activeArticleId,
+    store.articles,
     store.articles.activeArticleId,
     title,
     year,

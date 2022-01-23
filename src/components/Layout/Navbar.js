@@ -38,7 +38,7 @@ const isNavMobile = () => {
   return documentWidth <= 750
 }
 
-const MyNavbar = ({ match, location }) => {
+const MyNavbar = () => {
   const store = useContext(storeContext)
   const [navExpanded, changeNavExpanded] = useState(false)
 
@@ -56,11 +56,6 @@ const MyNavbar = ({ match, location }) => {
   const onClickArticles = useCallback(() => {
     store.page.getPage('pages_commentaries')
     navigate('/articles/')
-    onToggleNav()
-  }, [onToggleNav, store.page])
-  const onClickActors = useCallback(() => {
-    store.page.getPage('pages_actors')
-    navigate('/actors/')
     onToggleNav()
   }, [onToggleNav, store.page])
   const onClickPublications = useCallback(() => {
@@ -99,13 +94,8 @@ const MyNavbar = ({ match, location }) => {
     () => store.events.setShowNewEvent(true),
     [store.events],
   )
-  const onClickNewActor = useCallback(
-    () => store.actors.setShowNewActor(true),
-    [store.actors],
-  )
 
   const { activePage } = store.page
-  const { activeActor } = store.actors
   const { activeMonthlyEvent } = store.monthlyEvents
   const { activePublication } = store.publications
   const { activeArticle } = store.articles
@@ -116,7 +106,6 @@ const MyNavbar = ({ match, location }) => {
     'pages_commentaries',
     'pages_monthlyEvents',
     'pages_publications',
-    'pages_actors',
     'pages_events',
   ]
   const showEdit =
@@ -124,11 +113,9 @@ const MyNavbar = ({ match, location }) => {
     (!nonEditableIds.includes(id) ||
       has(activeMonthlyEvent, '_id') ||
       has(activeArticle, '_id') ||
-      has(activeActor, '_id') ||
       has(activePublication, '_id'))
   const showAddArticle = !!email && activePage?._id === 'pages_commentaries'
   const showAddEvent = !!email && activePage?._id === 'pages_events'
-  const showAddActor = !!email && activePage?._id === 'pages_actors'
   const showAddPublication = !!email && activePage?._id === 'pages_publications'
 
   return (
@@ -150,9 +137,6 @@ const MyNavbar = ({ match, location }) => {
             onClick={onClickArticles}
           >
             My Articles
-          </NavItem>
-          <NavItem active={id === 'pages_actors'} onClick={onClickActors}>
-            Actors
           </NavItem>
           <NavItem
             active={id === 'pages_publications'}
@@ -195,16 +179,6 @@ const MyNavbar = ({ match, location }) => {
               overlay={<Tooltip id="newEvent">new event</Tooltip>}
             >
               <NavItem onClick={onClickNewEvent}>
-                <Glyphicon glyph="plus" />
-              </NavItem>
-            </OverlayTrigger>
-          )}
-          {showAddActor && (
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip id="newActor">new actor</Tooltip>}
-            >
-              <NavItem onClick={onClickNewActor}>
                 <Glyphicon glyph="plus" />
               </NavItem>
             </OverlayTrigger>

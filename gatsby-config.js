@@ -7,12 +7,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-create-client-paths',
       options: {
-        prefixes: [
-          '/actors/*',
-          '/publications/*',
-          '/articles/*',
-          '/monthly-events/*',
-        ],
+        prefixes: ['/publications/*', '/articles/*', '/monthly-events/*'],
       },
     },
     {

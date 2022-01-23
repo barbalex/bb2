@@ -10,7 +10,6 @@ const MyEditor = ({ doc, docType, articleDecoded }) => {
   const store = useContext(storeContext)
   const { activePage, savePage } = store.page
   const { activeArticle, saveArticle } = store.articles
-  const { activeActor, saveActor } = store.actors
   const { activePublication, savePublication } = store.publications
   const { activeMonthlyEvent, saveMonthlyEvent } = store.monthlyEvents
 
@@ -22,42 +21,35 @@ const MyEditor = ({ doc, docType, articleDecoded }) => {
   ) {
     height = window.innerHeight - 52 - 74 - 76
   }
-  if (['article', 'actor'].includes(docType) && typeof window !== `undefined`) {
+  if (['article'].includes(docType) && typeof window !== `undefined`) {
     height = window.innerHeight - 52 - 74 - 90
   }
   // need to add specific classes to the iframe body because my css will not apply otherwise
   let bodyClass = ''
 
   const onSavePageArticle = useCallback(
-    articleEncoded => {
+    (articleEncoded) => {
       activePage.article = articleEncoded
       savePage(activePage)
     },
     [activePage, savePage],
   )
   const onSaveArticleArticle = useCallback(
-    articleEncoded => {
+    (articleEncoded) => {
       activeArticle.article = articleEncoded
       saveArticle(activeArticle)
     },
     [activeArticle, saveArticle],
   )
-  const onSaveActorArticle = useCallback(
-    articleEncoded => {
-      activeActor.article = articleEncoded
-      saveActor(activeActor)
-    },
-    [activeActor, saveActor],
-  )
   const onSavePublicationArticle = useCallback(
-    articleEncoded => {
+    (articleEncoded) => {
       activePublication.article = articleEncoded
       savePublication(activePublication)
     },
     [activePublication, savePublication],
   )
   const onSaveMonthlyEventArticle = useCallback(
-    articleEncoded => {
+    (articleEncoded) => {
       activeMonthlyEvent.article = articleEncoded
       saveMonthlyEvent(activeMonthlyEvent)
     },
@@ -81,10 +73,6 @@ const MyEditor = ({ doc, docType, articleDecoded }) => {
     case 'article':
       bodyClass = 'article'
       saveFunction = onSaveArticleArticle
-      break
-    case 'actor':
-      bodyClass = 'actor'
-      saveFunction = onSaveActorArticle
       break
     default:
       return store.error.showEdit('no or wrong docType passed to editor')
@@ -112,7 +100,7 @@ const MyEditor = ({ doc, docType, articleDecoded }) => {
         body_class: bodyClass,
         content_css: `./tinymce.css`,
       }}
-      onChange={e => {
+      onChange={(e) => {
         const articleDecoded = e.target.getContent()
         const articleEncoded = Base64.encode(articleDecoded)
         saveFunction(articleEncoded)
