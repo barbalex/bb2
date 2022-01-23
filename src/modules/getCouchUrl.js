@@ -6,7 +6,7 @@ export default () => {
   // const hostname = isDev
   //   ? `${window.location.hostname}:5984/bb`
   //   : `${window.location.hostname}/bb`
-  const hostname = `api.${window.location.hostname}`
+  const hostname = `api.${window.location.hostname}`.replaceAll('.www', '')
   //const hostname = `api.blue-borders.ch`
 
   return `${window.location.protocol}//${hostname}`
