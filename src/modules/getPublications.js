@@ -8,14 +8,14 @@ const options = {
   endkey: 'publications_\uffff',
 }
 
-export default async store => {
+export default async (store) => {
   let result
   try {
-    result = await app.db.allDocs(options)
+    result = await app.db?.allDocs(options)
   } catch (error) {
     store.error.showError('Error fetching publications:', error)
     return []
   }
-  const publications = map(result.rows, 'doc')
+  const publications = map(result?.rows ?? [], 'doc')
   return sortPublications(publications)
 }

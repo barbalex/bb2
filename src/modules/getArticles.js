@@ -8,14 +8,14 @@ const options = {
   endkey: 'commentaries_\uffff',
 }
 
-export default async store => {
+export default async (store) => {
   let result
   try {
-    result = await app.db.allDocs(options)
+    result = await app.db?.allDocs(options)
   } catch (error) {
     store.error.showError('Error fetching articles:', error)
     return []
   }
-  const articles = map(result.rows, 'doc')
+  const articles = map(result?.rows ?? [], 'doc')
   return sortArticles(articles)
 }

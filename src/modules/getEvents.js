@@ -12,12 +12,12 @@ export default async (store, years) => {
   }
   let result
   try {
-    result = await app.db.allDocs(options)
+    result = await app.db?.allDocs(options)
   } catch (error) {
     console.log('getEvents, error:', error)
     store.error.showError('Error fetching events:', error)
     return []
   }
-  const events = map(result.rows, 'doc')
+  const events = map(result?.rows ?? [], 'doc')
   return sortEvents(events)
 }

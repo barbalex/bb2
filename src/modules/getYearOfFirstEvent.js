@@ -12,13 +12,13 @@ const options = {
 export default async (store) => {
   let result
   try {
-    result = await app.db.allDocs(options)
+    result = await app.db?.allDocs(options)
   } catch (error) {
     console.log('getYearOfFirstEvent, error:', error)
     store.error.showError('Error fetching events:', error)
     return new Date().getFullYear()
   }
-  const id = result.rows[0].id
-  const year = getYearFromEventId(id)
+  const id = result?.rows?.[0]?.id
+  const year = id ? getYearFromEventId(id) : new Date().getFullYear()
   return year
 }
