@@ -39,7 +39,11 @@ if (typeof window !== 'undefined') {
     app.extend({
       init() {
         this.store = store
-        this.db = new PouchDB(couchUrl())
+        try {
+          this.db = new PouchDB(couchUrl())
+        } catch (error) {
+          console.log('error creating PouchDB:', error.message)
+        }
       },
     })
     app.init()
