@@ -37,6 +37,15 @@ api.blue-borders.ch {
     header_down headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
     header_up headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
   }
+  
+  reverse_proxy /bb/* {
+    to bb_db:5984
+  }
+  
+  # need to add this because it us used by couchdb when logging in
+  reverse_proxy /_session {
+    to bb_db:5984
+  }
 }
 
 # mediterranean-migration.com, www.mediterranean-migration.com {
@@ -69,5 +78,14 @@ api.mediterranean-migration.com {
     header_down headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
     header_up headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
     #curl -X PUT $HOST/_config/cors/headers -d '"accept, authorization, content-type, origin, referer, x-csrf-token"'
+  }
+  
+  reverse_proxy /bb/* {
+    to bb_db:5984
+  }
+  
+  # need to add this because it us used by couchdb when logging in
+  reverse_proxy /_session {
+    to bb_db:5984
   }
 }
