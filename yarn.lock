@@ -3110,6 +3110,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"abstract-leveldown@npm:~6.0.0":
+  version: 6.0.3
+  resolution: "abstract-leveldown@npm:6.0.3"
+  dependencies:
+    level-concat-iterator: ~2.0.0
+    xtend: ~4.0.0
+  checksum: 0bfc891e5e55c96d63bf269ede567f8d5876d9d5e866d09a0dd36631dd487dc489ee5de3a5f04e0cd145db24ede40dcbdf800040cc769423ec1e44224142add7
+  languageName: node
+  linkType: hard
+
 "abstract-leveldown@npm:~6.2.1, abstract-leveldown@npm:~6.2.3":
   version: 6.2.3
   resolution: "abstract-leveldown@npm:6.2.3"
@@ -4030,7 +4040,7 @@ __metadata:
     mobx: 6.3.13
     mobx-react-lite: 3.2.3
     moment: 2.29.1
-    pouchdb: 7.2.2
+    pouchdb: 7.2.1
     pouchdb-authentication: 1.1.3
     pouchdb-upsert: 2.2.0
     prop-types: 15.8.1
@@ -4273,10 +4283,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer-from@npm:1.1.1":
-  version: 1.1.1
-  resolution: "buffer-from@npm:1.1.1"
-  checksum: ccc53b69736008bff764497367c4d24879ba7122bc619ee499ff47eef3a5b885ca496e87272e7ebffa0bec3804c83f84041c616f6e3318f40624e27c1d80f045
+"buffer-from@npm:1.1.0":
+  version: 1.1.0
+  resolution: "buffer-from@npm:1.1.0"
+  checksum: 678aaef255e073e7a691fe1026f6090ace409ee9ca0d79dec4b86c39ecf607caf945277fbb5ac3fb463993d2fee3eb6696e7457733185ab37cb5fda77d1d8d9f
   languageName: node
   linkType: hard
 
@@ -5588,6 +5598,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deferred-leveldown@npm:~5.1.0":
+  version: 5.1.0
+  resolution: "deferred-leveldown@npm:5.1.0"
+  dependencies:
+    abstract-leveldown: ~6.0.0
+    inherits: ^2.0.3
+  checksum: 0740b4c3da4fbce25ae77f487d16dbc42cff622c0f9a5e92755efa45460fc551f73bc73db3a2b5d8987c98bbc50afc702746221a25a9bce614e5c6f5122d2298
+  languageName: node
+  linkType: hard
+
 "deferred-leveldown@npm:~5.3.0":
   version: 5.3.0
   resolution: "deferred-leveldown@npm:5.3.0"
@@ -6187,6 +6207,13 @@ __metadata:
     es6-symbol: ~3.1.3
     next-tick: ~1.0.0
   checksum: 24ec22369260cf98605cb2f51eae9d7df5dc621bc5d3b311f6f5c3d0fcdb7bafae888270f3083ee6e9af27350a5ea49f1fe2dd6406a9017247ca40f091f529b2
+  languageName: node
+  linkType: hard
+
+"es6-denodeify@npm:^0.1.1":
+  version: 0.1.5
+  resolution: "es6-denodeify@npm:0.1.5"
+  checksum: 501c51fa92423272aed50f9bbc0713e57738091688d99cb6a85b228d0b428e4fd08d5f8e254d50de5ee7890c24d6a4dd9d7d1eef78b4ed4061683f463d08608c
   languageName: node
   linkType: hard
 
@@ -6987,12 +7014,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fetch-cookie@npm:0.10.1":
-  version: 0.10.1
-  resolution: "fetch-cookie@npm:0.10.1"
+"fetch-cookie@npm:0.7.3":
+  version: 0.7.3
+  resolution: "fetch-cookie@npm:0.7.3"
   dependencies:
-    tough-cookie: ^2.3.3 || ^3.0.1 || ^4.0.0
-  checksum: cf297501c6eb70bfe0e4f4e85f4d6d3ac6447030a867229b588d94c8eb0e53f6594601c06eb6a7db071bf2f24d5b9111abcae9f885e4c72ab41ce2a0bed2628b
+    es6-denodeify: ^0.1.1
+    tough-cookie: ^2.3.3
+  checksum: df70ebeaacb25908c93f7fdc864ac771bd4f0f08904dbd6f804157aa7f7be445223f974f84fe6599ec9e0525b8fd9f8e89634bc52192e8b266f750a908559e87
   languageName: node
   linkType: hard
 
@@ -8766,7 +8794,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immediate@npm:3.3.0, immediate@npm:^3.2.3":
+"immediate@npm:^3.2.3":
   version: 3.3.0
   resolution: "immediate@npm:3.3.0"
   checksum: 634b4305101e2452eba6c07d485bf3e415995e533c94b9c3ffbc37026fa1be34def6e4f2276b0dc2162a3f91628564a4bfb26280278b89d3ee54624e854d2f5f
@@ -9957,7 +9985,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"level-codec@npm:9.0.2, level-codec@npm:^9.0.0":
+"level-codec@npm:9.0.1":
+  version: 9.0.1
+  resolution: "level-codec@npm:9.0.1"
+  checksum: 278dab582feac71266e8fbbd58b06bb66136855a7df593bb7aec67331050d017296d4f9243518f3576fde2685aee118c1dddd59f0facd8f812b893ed4ce19d29
+  languageName: node
+  linkType: hard
+
+"level-codec@npm:^9.0.0":
   version: 9.0.2
   resolution: "level-codec@npm:9.0.2"
   dependencies:
@@ -10033,18 +10068,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"level@npm:6.0.1":
-  version: 6.0.1
-  resolution: "level@npm:6.0.1"
+"level@npm:6.0.0":
+  version: 6.0.0
+  resolution: "level@npm:6.0.0"
   dependencies:
     level-js: ^5.0.0
     level-packager: ^5.1.0
     leveldown: ^5.4.0
-  checksum: bd4981f94162469a82a6c98d267d814d9d4a7beed4fc3d18fbe3b156f71cf4c6d35b424d14c46d401dbf0cd91425e842950a7cd17ddf7bf57acdab5af4c278da
+    opencollective-postinstall: ^2.0.0
+  checksum: 2710372ee2e53f1e3c33eee6b11df7dda4b1f682d3545c1e7c7b25427c89eee865b6b1e6365ccf35980bf60df903bf6f0ff5b38ffc2841e8bb8965b2f4f2dc6b
   languageName: node
   linkType: hard
 
-"leveldown@npm:5.6.0, leveldown@npm:^5.4.0":
+"leveldown@npm:5.4.1":
+  version: 5.4.1
+  resolution: "leveldown@npm:5.4.1"
+  dependencies:
+    abstract-leveldown: ~6.2.1
+    napi-macros: ~2.0.0
+    node-gyp: latest
+    node-gyp-build: ~4.1.0
+  checksum: 4f77e1f8f6e674d3da7141b43719e7997843add2e65330e3c57fab22d5918cef901f68716e7c28cab21f885ef74e691842729468dde565019517df5d2e74fffd
+  languageName: node
+  linkType: hard
+
+"leveldown@npm:^5.4.0":
   version: 5.6.0
   resolution: "leveldown@npm:5.6.0"
   dependencies:
@@ -10056,7 +10104,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"levelup@npm:4.4.0, levelup@npm:^4.3.2":
+"levelup@npm:4.1.0":
+  version: 4.1.0
+  resolution: "levelup@npm:4.1.0"
+  dependencies:
+    deferred-leveldown: ~5.1.0
+    level-errors: ~2.0.0
+    level-iterator-stream: ~4.0.0
+    xtend: ~4.0.0
+  checksum: 1e13921905d7da6c0244f4b8854dca70aa77e40f2bac40033a49bfc9cf27d804ac06e3c89dbdeeff89b3d34db0f8330246abf2b89a437e25af3f4200c0690293
+  languageName: node
+  linkType: hard
+
+"levelup@npm:^4.3.2":
   version: 4.4.0
   resolution: "levelup@npm:4.4.0"
   dependencies:
@@ -11156,10 +11216,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:2.6.0":
-  version: 2.6.0
-  resolution: "node-fetch@npm:2.6.0"
-  checksum: 2b741e9315c1c07df4a291d0b304892fa7e8d623fe789fedd53f9bcb8d09102b07591b4b93e552a65dfc457eee9d5d879d0440aefdb64f2d78e7cb78cbad28e9
+"node-fetch@npm:2.4.1":
+  version: 2.4.1
+  resolution: "node-fetch@npm:2.4.1"
+  checksum: 3ed39b901603d004b76cb6789d68f150e12c61813bb31da6888c44bbd421150908f1640fca388ce9ac4dd378d77cb7da571a8ac7bc51ae4ca28cc33c3cc4db4c
   languageName: node
   linkType: hard
 
@@ -11591,6 +11651,15 @@ __metadata:
     is-docker: ^2.0.0
     is-wsl: ^2.1.1
   checksum: 3333900ec0e420d64c23b831bc3467e57031461d843c801f569b2204a1acc3cd7b3ec3c7897afc9dde86491dfa289708eb92bba164093d8bd88fb2c231843c91
+  languageName: node
+  linkType: hard
+
+"opencollective-postinstall@npm:^2.0.0":
+  version: 2.0.3
+  resolution: "opencollective-postinstall@npm:2.0.3"
+  bin:
+    opencollective-postinstall: index.js
+  checksum: 0a68c5cef135e46d11e665d5077398285d1ce5311c948e8327b435791c409744d4a6bb9c55bd6507fb5f2ef34b0ad920565adcdaf974cbdae701aead6f32b396
   languageName: node
   linkType: hard
 
@@ -12572,31 +12641,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pouchdb@npm:7.2.2":
-  version: 7.2.2
-  resolution: "pouchdb@npm:7.2.2"
+"pouchdb@npm:7.2.1":
+  version: 7.2.1
+  resolution: "pouchdb@npm:7.2.1"
   dependencies:
     abort-controller: 3.0.0
     argsarray: 0.0.1
-    buffer-from: 1.1.1
+    buffer-from: 1.1.0
     clone-buffer: 1.0.0
     double-ended-queue: 2.1.0-0
-    fetch-cookie: 0.10.1
-    immediate: 3.3.0
+    fetch-cookie: 0.7.3
+    immediate: 3.0.6
     inherits: 2.0.4
-    level: 6.0.1
-    level-codec: 9.0.2
+    level: 6.0.0
+    level-codec: 9.0.1
     level-write-stream: 1.0.0
-    leveldown: 5.6.0
-    levelup: 4.4.0
+    leveldown: 5.4.1
+    levelup: 4.1.0
     ltgt: 2.2.1
-    node-fetch: 2.6.0
-    readable-stream: 1.1.14
-    spark-md5: 3.0.1
-    through2: 3.0.2
-    uuid: 8.1.0
+    node-fetch: 2.4.1
+    readable-stream: 1.0.33
+    spark-md5: 3.0.0
+    through2: 3.0.1
+    uuid: 3.3.3
     vuvuzela: 1.0.3
-  checksum: 340ccb785721d6e5cbb4ed15fe31a7b871870abf82f4e23b6cf69d0487a203ad51bd4c4144520efa67cd11db45af6acb94661962792304655574a0f7e79e18e6
+  checksum: 9040cba0c04db064b18f461bc10d5fc5e85fb744d3ccbd6d3a9dc473e168e0b1cc6c8c1175ed4b42969fa2517f63d4c14380fa5be1024617aea615eac88d72f9
   languageName: node
   linkType: hard
 
@@ -12798,7 +12867,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"psl@npm:^1.1.33":
+"psl@npm:^1.1.28":
   version: 1.8.0
   resolution: "psl@npm:1.8.0"
   checksum: 6150048ed2da3f919478bee8a82f3828303bc0fc730fb015a48f83c9977682c7b28c60ab01425a72d82a2891a1681627aa530a991d50c086b48a3be27744bde7
@@ -13278,7 +13347,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:1.1.14, readable-stream@npm:1.1.x":
+"readable-stream@npm:1.0.33":
+  version: 1.0.33
+  resolution: "readable-stream@npm:1.0.33"
+  dependencies:
+    core-util-is: ~1.0.0
+    inherits: ~2.0.1
+    isarray: 0.0.1
+    string_decoder: ~0.10.x
+  checksum: 3179fdc5c0d030940d1283ec0e369f3363996f0ffec3569a11a01315fca48079259d40f112481830c3c93a36c91e5922c96b7922be01ccc406101ddf1dec000f
+  languageName: node
+  linkType: hard
+
+"readable-stream@npm:1.1.x":
   version: 1.1.14
   resolution: "readable-stream@npm:1.1.14"
   dependencies:
@@ -14354,10 +14435,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"spark-md5@npm:3.0.1":
-  version: 3.0.1
-  resolution: "spark-md5@npm:3.0.1"
-  checksum: 613a7f4e20929b832406ef2ed925d696d4d004455360b07ba1a829975fc12a005d745db370cb261ecc827c3dedf3b431a9337f4bab1f1954df776f41a05aaabe
+"spark-md5@npm:3.0.0":
+  version: 3.0.0
+  resolution: "spark-md5@npm:3.0.0"
+  checksum: ac40a6555a793431be5b9bfd6532f9d1cc87855d334670fb778a51ebf988919fef5d2d06c8b66370e3f2c9e1e959e04a103364c720c06b02319f991f292877e4
   languageName: node
   linkType: hard
 
@@ -15008,13 +15089,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"through2@npm:3.0.2":
-  version: 3.0.2
-  resolution: "through2@npm:3.0.2"
+"through2@npm:3.0.1":
+  version: 3.0.1
+  resolution: "through2@npm:3.0.1"
   dependencies:
-    inherits: ^2.0.4
     readable-stream: 2 || 3
-  checksum: 47c9586c735e7d9cbbc1029f3ff422108212f7cc42e06d5cc9fff7901e659c948143c790e0d0d41b1b5f89f1d1200bdd200c7b72ad34f42f9edbeb32ea49e8b7
+  checksum: ffac3931c1906b5d3a375b71e3d692228432299ba63213e65d686f95ea3abe1bb5726fa335fb7eba9c6f5f010da17c071a6c1c531bd091b2ec7650bc38bcaf13
   languageName: node
   linkType: hard
 
@@ -15286,14 +15366,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tough-cookie@npm:^2.3.3 || ^3.0.1 || ^4.0.0":
-  version: 4.0.0
-  resolution: "tough-cookie@npm:4.0.0"
+"tough-cookie@npm:^2.3.3":
+  version: 2.5.0
+  resolution: "tough-cookie@npm:2.5.0"
   dependencies:
-    psl: ^1.1.33
+    psl: ^1.1.28
     punycode: ^2.1.1
-    universalify: ^0.1.2
-  checksum: 0891b37eb7d17faa3479d47f0dce2e3007f2583094ad272f2670d120fbcc3df3b0b0a631ba96ecad49f9e2297d93ff8995ce0d3292d08dd7eabe162f5b224d69
+  checksum: 16a8cd090224dd176eee23837cbe7573ca0fa297d7e468ab5e1c02d49a4e9a97bb05fef11320605eac516f91d54c57838a25864e8680e27b069a5231d8264977
   languageName: node
   linkType: hard
 
@@ -15633,7 +15712,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"universalify@npm:^0.1.0, universalify@npm:^0.1.2":
+"universalify@npm:^0.1.0":
   version: 0.1.2
   resolution: "universalify@npm:0.1.2"
   checksum: 40cdc60f6e61070fe658ca36016a8f4ec216b29bf04a55dce14e3710cc84c7448538ef4dad3728d0bfe29975ccd7bfb5f414c45e7b78883567fb31b246f02dff
@@ -15826,21 +15905,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uuid@npm:3.3.3":
+  version: 3.3.3
+  resolution: "uuid@npm:3.3.3"
+  bin:
+    uuid: ./bin/uuid
+  checksum: 21133d0e8a85e607f59a66913bf4f1dd79bdc4a80979a872b913f7ec75f530255edfe8bc6b69ce32017b8367f0d60a8b24ccd2af99156dc1ef2b8b9fe0ec8065
+  languageName: node
+  linkType: hard
+
 "uuid@npm:3.4.0, uuid@npm:^3.1.0":
   version: 3.4.0
   resolution: "uuid@npm:3.4.0"
   bin:
     uuid: ./bin/uuid
   checksum: 58de2feed61c59060b40f8203c0e4ed7fd6f99d42534a499f1741218a1dd0c129f4aa1de797bcf822c8ea5da7e4137aa3673431a96dae729047f7aca7b27866f
-  languageName: node
-  linkType: hard
-
-"uuid@npm:8.1.0":
-  version: 8.1.0
-  resolution: "uuid@npm:8.1.0"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 4fc4f12e5c704947cce132df07e6e8a20ca34dcbba4a5aef7a24cf76e0e13830cf7cdd69035a916caf2a00fa011876ceabc098d01f5827adc174ca5defdc8c99
   languageName: node
   linkType: hard
 
