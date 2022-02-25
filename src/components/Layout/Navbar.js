@@ -10,7 +10,7 @@ import {
 import has from 'lodash/has'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { navigate } from '@reach/router'
+import { navigate } from 'gatsby'
 
 import oceanDarkImage from '../../images/oceanDark.jpg'
 import storeContext from '../../storeContext'
@@ -58,6 +58,10 @@ const MyNavbar = () => {
     navigate('/articles/')
     onToggleNav()
   }, [onToggleNav, store.page])
+  const onClickSar = useCallback(() => {
+    navigate('/sar/')
+    onToggleNav()
+  }, [onToggleNav])
   const onClickPublications = useCallback(() => {
     store.page.getPage('pages_publications')
     navigate('/publications/')
@@ -137,6 +141,9 @@ const MyNavbar = () => {
             onClick={onClickArticles}
           >
             My Articles
+          </NavItem>
+          <NavItem active={id === 'pages_sar'} onClick={onClickSar}>
+            SAR NGOs
           </NavItem>
           <NavItem
             active={id === 'pages_publications'}
