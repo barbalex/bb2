@@ -112,6 +112,7 @@ const MyNavbar = () => {
     'pages_publications',
     'pages_events',
   ]
+  // TODO: set for sar
   const showEdit =
     !!email &&
     (!nonEditableIds.includes(id) ||
