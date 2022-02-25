@@ -6,6 +6,7 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
+import { Location } from '@reach/router'
 
 import Navbar from './Navbar'
 import Header from './Header'
@@ -19,6 +20,7 @@ const Container = styled.div`
 
 /**
  * ReactDOMServer does not yet support Suspense
+ * Need Location to force header to update on every location change
  */
 const Layout = ({ children }) => {
   return (
@@ -39,7 +41,7 @@ const Layout = ({ children }) => {
       >
         <html lang="en" />
       </Helmet>
-      <Navbar />
+      <Location>{({ location }) => <Navbar location={location} />}</Location>
       <Header />
       {children}
     </Container>

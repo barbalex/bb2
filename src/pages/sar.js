@@ -201,6 +201,56 @@ const sar = () => (
       </Title>
       <Text>Spanish NGO, 2015 –</Text>
     </NgoContainer>
+    <NgoContainer>
+      <Title>
+        <a
+          href="https://en.wikipedia.org/wiki/Louise_Michel_(ship)"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Louise Michel
+        </a>
+      </Title>
+      <Text>German flag, 2020 –</Text>
+      <Text>no SAR operation in 2021</Text>
+      <Text>one in January 2022</Text>
+      <Title>
+        <a
+          href="https://en.wikipedia.org/wiki/Louise_Michel_(ship)"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Banksy
+        </a>
+      </Title>
+      <Text>British artist-activist, 2019/20 –</Text>
+      <Text>{'coop. with Sea Watch & Mare Jonio'}</Text>
+    </NgoContainer>
+    <NgoContainer>
+      <Title>
+        <a
+          href="https://en.wikipedia.org/wiki/Mare_Jonio_(rescue_ship)"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Mare Jonio
+        </a>
+      </Title>
+      <Text>Italian flag, 2018 –</Text>
+      <Text>no SAR operation in 2021</Text>
+      <Text>one in January 2022</Text>
+      <Title>
+        <a
+          href="https://en.wikipedia.org/wiki/Mediterranea_Saving_Humans"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Mediterranea Saving Humans (MSH)
+        </a>
+      </Title>
+      <Text>Italian NGO, 2018 –</Text>
+      <Text>coop. with Sea Watch and Open Arms</Text>
+    </NgoContainer>
   </Container>
 )
 

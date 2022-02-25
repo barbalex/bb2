@@ -38,7 +38,7 @@ const isNavMobile = () => {
   return documentWidth <= 750
 }
 
-const MyNavbar = () => {
+const MyNavbar = ({ location }) => {
   const store = useContext(storeContext)
   const [navExpanded, changeNavExpanded] = useState(false)
 
@@ -105,6 +105,7 @@ const MyNavbar = () => {
   const { activeArticle } = store.articles
   const email = store.login.email
   const glyph = store.editing ? 'eye-open' : 'pencil'
+  const { pathname } = location
   const id = activePage && activePage?._id ? activePage?._id : null
   const nonEditableIds = [
     'pages_commentaries',
@@ -112,9 +113,9 @@ const MyNavbar = () => {
     'pages_publications',
     'pages_events',
   ]
-  // TODO: set for sar
   const showEdit =
     !!email &&
+    !!id &&
     (!nonEditableIds.includes(id) ||
       has(activeMonthlyEvent, '_id') ||
       has(activeArticle, '_id') ||
@@ -137,22 +138,19 @@ const MyNavbar = () => {
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav>
-          <NavItem
-            active={id === 'pages_commentaries'}
-            onClick={onClickArticles}
-          >
+          <NavItem active={pathname === '/articles/'} onClick={onClickArticles}>
             My Articles
           </NavItem>
-          <NavItem active={id === 'pages_sar'} onClick={onClickSar}>
+          <NavItem active={pathname === '/sar/'} onClick={onClickSar}>
             SAR NGOs
           </NavItem>
           <NavItem
-            active={id === 'pages_publications'}
+            active={pathname === '/publications/'}
             onClick={onClickPublications}
           >
             Publications
           </NavItem>
-          <NavItem active={id === 'pages_aboutUs'} onClick={onClickAboutUs}>
+          <NavItem active={pathname === '/about-us/'} onClick={onClickAboutUs}>
             About us
           </NavItem>
         </Nav>
