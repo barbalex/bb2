@@ -39,7 +39,6 @@ if (typeof window !== 'undefined') {
         } catch (error) {
           console.log('error creating PouchDB:', error.message)
         }
-        console.log('App, db:', this.db)
       },
     })
     app.init()
