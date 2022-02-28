@@ -30,11 +30,11 @@ const Container = styled.div`
 const Page = () => {
   const store = useContext(storeContext)
   const { activePage } = store.page
-  const articleEncoded = activePage.article
+  const articleEncoded = activePage?.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
-  let title = activePage.title
+  let title = activePage?.title
     ? activePage.title
-    : activePage.category
+    : activePage?.category
     ? activePage.category
     : 'mediterranean migration'
 
