@@ -11,6 +11,7 @@ const F = styled.span`
 const NgoContainer = styled.div`
   outline: solid;
   outline-color: #cecece;
+  outline-width: 2px;
   padding: 10px;
   width: 100%;
   display: flex;
