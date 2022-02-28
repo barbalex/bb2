@@ -8,7 +8,7 @@
     "build": "gatsby clean && gatsby build",
     "postbuild": "rimraf backend/caddy/html && copyfiles -u 1 \"public/**/*\" backend/caddy/html",
     "serve": "gatsby serve",
-    "init_firebase": "firebase init"
+    "deploy": "yarn build && yarn firebase deploy"
   },
   "dependencies": {
     "@tinymce/tinymce-react": "3.13.0",
