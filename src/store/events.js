@@ -29,7 +29,7 @@ export default (store) => ({
   getInitialEvents: action('getEvents', async () => {
     let events
     try {
-      events = await getEvents(store, [parseInt(moment().format('YYYY'), 0)])
+      events = await getEvents(store, [new Date().getFullYear()])
     } catch (error) {
       store.error.showError({
         msg: error,
