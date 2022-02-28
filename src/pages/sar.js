@@ -2,6 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div``
+const SubPageTitle = styled.div`
+  margin-top: -12px;
+`
+const F = styled.span`
+  font-weight: bold;
+`
 const NgoContainer = styled.div`
   outline: solid;
   outline-color: #cecece;
@@ -28,6 +34,10 @@ const Text = styled.div``
 const sar = () => (
   <Container>
     <h1>SAR NGOs</h1>
+    <SubPageTitle>
+      <F>S</F>earch <F>A</F>nd <F>R</F>escue <F>N</F>on-<F>G</F>overnmental{' '}
+      <F>O</F>rganisation<F>s</F>
+    </SubPageTitle>
     <NgoContainer>
       <Title>
         <a
