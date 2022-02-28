@@ -28,11 +28,6 @@ if (typeof window !== 'undefined') {
     // expose 'app' to the browser console
     window.app = app
     /**
-     * enable pouch inspector in chrome
-     * (https://chrome.google.com/webstore/detail/pouchdb-inspector/hbhhpaojmpfimakffndmpmpndcmonkfa)
-     */
-    window.PouchDB = PouchDB
-    /**
      * ampersand-app is extended with app methods (=singleton)
      * modules that need an app method import ampersand-app instead of using a global
      */
@@ -44,6 +39,7 @@ if (typeof window !== 'undefined') {
         } catch (error) {
           console.log('error creating PouchDB:', error.message)
         }
+        console.log('App, db:', this.db)
       },
     })
     app.init()
