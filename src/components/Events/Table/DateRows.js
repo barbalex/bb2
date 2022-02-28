@@ -35,29 +35,28 @@ const DateRows = () => {
     store.events.events,
     store.yearsOfEvents.activeEventYears,
   )
+  // console.log('DateRows, dateRowObjects:', dateRowObjects)
   const dateRows = []
   if (dateRowObjects.length > 0) {
     dateRowObjects.forEach((dRO, index) => {
       const day = moment(dRO.date).format('D')
-      const endOfMonth = moment(dRO.date)
-        .endOf('month')
-        .format('DD')
+      const endOfMonth = moment(dRO.date).endOf('month').format('DD')
       const dROForDateRow = {
         date: dRO.date,
         migrationEvents: dRO.migrationEvents.filter(
-          event => !event.tags || !event.tags.includes('monthlyStatistics'),
+          (event) => !event.tags || !event.tags.includes('monthlyStatistics'),
         ),
         politicsEvents: dRO.politicsEvents.filter(
-          event => !event.tags || !event.tags.includes('monthlyStatistics'),
+          (event) => !event.tags || !event.tags.includes('monthlyStatistics'),
         ),
       }
       const dROForMonthlyStatsRow = {
         date: dRO.date,
         migrationEvents: dRO.migrationEvents.filter(
-          event => event.tags && event.tags.includes('monthlyStatistics'),
+          (event) => event.tags && event.tags.includes('monthlyStatistics'),
         ),
         politicsEvents: dRO.politicsEvents.filter(
-          event => event.tags && event.tags.includes('monthlyStatistics'),
+          (event) => event.tags && event.tags.includes('monthlyStatistics'),
         ),
       }
       const dROForMonthlyStatsHasEvents =
@@ -79,7 +78,8 @@ const DateRows = () => {
       }
       dateRows.push(<DateRow key={index} dateRowObject={dROForDateRow} />)
     })
-    const renderDateRow = (index, key) => dateRows[index]
+    const renderDateRow = (index) => dateRows[index]
+    // console.log('DateRows, dateRows:', dateRows)
 
     return (
       <ReactList
