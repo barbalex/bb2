@@ -24,7 +24,7 @@ blue-borders.ch, www.blue-borders.ch {
 
 api.blue-borders.ch {
   # help for cors: https://caddy.community/t/v2-cors-problems-when-reverse-proxying-to-ssh-tunnel/7428/10
-  # BUT: cours still happens!
+  # BUT: cors still happens!
   header {
     origin https://blue-borders.ch
     methods OPTIONS, DELETE, GET, HEAD, POST, PUT
