@@ -1,9 +1,20 @@
-FROM couchdb:2.3.1
-# need default.ini to enable cors
-COPY default.ini /opt/couchdb/etc/local.d/
-#COPY bb.json bb.json
-#RUN curl -s -S -X PUT db:5984/bb 
-#RUN curl -s -S -X PUT localhost:5984/_users 
-#RUN curl -s -S -X PUT localhost:5984/_replicator 
-#RUN curl -s -S localhost:5984/_all_dbs
-#RUN curl -X POST http://db:5984/_replicate -d '{"source": "https://mediterranean-migration.com/api/bb", "target": "http://db:5984/bb", "create_target": false, "continuous": false, "owner": "admin", "user_ctx": {"name": "admin", "roles": ["_admin"]}}' -H "Content-Type: application/json"
+# https://registry.hub.docker.com/r/postgis/postgis/tags
+FROM postgis/postgis:12-3.1
+
+# for using cron, see https://www.cloudsavvyit.com/9033/how-to-use-cron-with-your-docker-containers/
+
+# Install some helpful stuff
+RUN apt-get -qq update
+# log less: https://askubuntu.com/a/668859
+RUN apt-get install -y -qq curl
+RUN apt-get install -y -qq bash
+RUN apt-get install -y -qq nano
+RUN apt-get install -y -qq rclone
+RUN apt-get install -y -qq dos2unix
+
+# add the backup script
+ADD backup.sh /backup.sh
+# Change line ending format to LF
+RUN dos2unix /backup.sh
+RUN chmod +x /backup.sh
+RUN chmod 0744 /backup.sh

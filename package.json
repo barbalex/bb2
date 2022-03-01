@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "gatsby develop",
     "build": "gatsby clean && gatsby build",
-    "postbuild": "rimraf backend/caddy/html && copyfiles -u 1 \"public/**/*\" backend/caddy/html",
     "serve": "gatsby serve",
     "deploy": "yarn build && yarn firebase deploy"
   },

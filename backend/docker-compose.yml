@@ -5,23 +5,38 @@ services:
     # for example, you could run docker exec -i postgres psql -U postgres postgres < schema.sql to run an SQL file against the Postgres database
     container_name: bb_db
     restart: always
-    #image: couchdb:2.3.1
     image: db
     build:
       context: ./db
     env_file:
       - ./.env
+    ports:
+      # make the Postgres database accessible from outside the Docker container on port 5432
+      - '5432:5432'
     networks:
       - network
-    expose:
-      - '5984'
-      - '4369'
-      - '9100'
-    ports:
-      - '5984:5984'
     volumes:
-      - db_data:/opt/couchdb/data
-      - db_config_data:/opt/couchdb/etc/local.d
+      - db_data:/var/lib/postgresql/data
+      - sik_data:/sik_data
+    # hasura needs higher max_locks_per_transaction
+    command: postgres -c max_locks_per_transaction=2000
+    logging:
+      options:
+        max-size: '10m'
+        max-file: '3'
+  graphql:
+    image: 'hasura/graphql-engine:v2.2.1'
+    container_name: bb_graphql
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    restart: always
+    env_file:
+      - ./.env
+    command:
+      - graphql-engine
+      - serve
   caddy:
     build:
       context: ./caddy
