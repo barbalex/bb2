@@ -18,10 +18,10 @@ const OuterSpan = styled.span`
 
 const Event = ({ event }) => {
   const store = useContext(storeContext)
-  const showEditingGlyphons = !!store.login.email
+  const showEditingGlyphons = !!store.login.uid
   const classNames =
     event.tags && event.tags.length > 0
-      ? event.tags.map(tag => `event-${tag}`).join(' ')
+      ? event.tags.map((tag) => `event-${tag}`).join(' ')
       : []
 
   const links = useMemo(

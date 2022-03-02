@@ -7,32 +7,33 @@
 import { action } from 'mobx'
 import { navigate } from '@reach/router'
 
-export default store => {
+export default (store) => {
   if (typeof window === `undefined`) return {}
+
   return {
-    getLogin: action('getLogin', () => window.localStorage.email),
+    uid: null,
+    firebaseAuth: null,
+    getUid: action('getUid', () => window.localStorage.uid),
 
     email: window.localStorage.email,
 
-    login: action('login', email => {
-      // change email only if it was passed
-      const changeEmail = email !== undefined
-      let lsEmail = window.localStorage.email
-      if ((changeEmail && lsEmail !== email) || !email) {
-        if (changeEmail) {
-          lsEmail = email
-        } else {
-          email = lsEmail
-        }
-        window.localStorage.email = email
-        store.login.email = email
+    setFirebaseAuth: action('setFirebaseAuth', (auth) => {
+      if (auth) {
+        store.login.firebaseAuth = auth
+      }
+    }),
+
+    setUid: action('login', (uid) => {
+      if (uid) {
+        store.login.uid = uid
+        window.localStorage.uid = uid
         navigate('/events')
       }
     }),
 
     logout: action('logout', () => {
-      delete window.localStorage.email
-      store.login.email = ''
+      delete window.localStorage.uid
+      store.login.uid = null
     }),
   }
 }

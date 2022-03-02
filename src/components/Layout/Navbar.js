@@ -103,7 +103,7 @@ const MyNavbar = ({ location }) => {
   const { activeMonthlyEvent } = store.monthlyEvents
   const { activePublication } = store.publications
   const { activeArticle } = store.articles
-  const email = store.login.email
+  const uid = store.login.uid
   const glyph = store.editing ? 'eye-open' : 'pencil'
   const { pathname } = location
   const id = activePage && activePage?._id ? activePage?._id : null
@@ -114,15 +114,15 @@ const MyNavbar = ({ location }) => {
     'pages_events',
   ]
   const showEdit =
-    !!email &&
+    !!uid &&
     !!id &&
     (!nonEditableIds.includes(id) ||
       has(activeMonthlyEvent, '_id') ||
       has(activeArticle, '_id') ||
       has(activePublication, '_id'))
-  const showAddArticle = !!email && activePage?._id === 'pages_commentaries'
-  const showAddEvent = !!email && activePage?._id === 'pages_events'
-  const showAddPublication = !!email && activePage?._id === 'pages_publications'
+  const showAddArticle = !!uid && activePage?._id === 'pages_commentaries'
+  const showAddEvent = !!uid && activePage?._id === 'pages_events'
+  const showAddPublication = !!uid && activePage?._id === 'pages_publications'
 
   return (
     <StyledNavbar
@@ -200,8 +200,8 @@ const MyNavbar = ({ location }) => {
             </OverlayTrigger>
           )}
 
-          {!email && <NavItem onClick={onClickLogin}>log in</NavItem>}
-          {!!email && (
+          {!uid && <NavItem onClick={onClickLogin}>log in</NavItem>}
+          {!!uid && (
             <OverlayTrigger
               placement="bottom"
               overlay={<Tooltip id="logout">log out</Tooltip>}

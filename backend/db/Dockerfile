@@ -1,5 +1,5 @@
-# https://registry.hub.docker.com/r/postgis/postgis/tags
-FROM postgis/postgis:12-3.1
+# https://hub.docker.com/_/postgres?tab=tags
+FROM postgres:14.2
 
 # for using cron, see https://www.cloudsavvyit.com/9033/how-to-use-cron-with-your-docker-containers/
 

@@ -11,6 +11,7 @@ import isObject from 'lodash/isObject'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { navigate } from '@reach/router'
+import { signOut, signInWithEmailAndPassword } from 'firebase/auth'
 
 import validateEmail from './validateEmail'
 import storeContext from '../../storeContext'
@@ -36,13 +37,13 @@ const LoginForm = () => {
   const [password, changePassword] = useState('')
   const [loginError, changeLoginError] = useState('')
 
-  const validEmail = useCallback(newEmail => {
+  const validEmail = useCallback((newEmail) => {
     const validEmail = newEmail && validateEmail(newEmail)
     const invalidEmail = !validEmail
     changeInvalidEmail(invalidEmail)
     return !!validEmail
   }, [])
-  const validPassword = useCallback(password => {
+  const validPassword = useCallback((password) => {
     const validPassword = !!password
     const invalidPassword = !validPassword
     changeInvalidPassword(invalidPassword)
@@ -58,19 +59,24 @@ const LoginForm = () => {
     async (newEmail, password) => {
       if (validSignin(newEmail, password)) {
         try {
-          await app.db.login(newEmail, password)
+          await signInWithEmailAndPassword(
+            store.login.firebaseAuth,
+            newEmail,
+            password,
+          )
         } catch (error) {
           changeNewEmail(null)
           changeLoginError(error)
         }
-        store.login.login(newEmail)
+        // TODO: do on auth change
+        store.login.setUid(newEmail)
         navigate('/events')
       }
     },
     [store.login, validSignin],
   )
   const onKeyDownEmail = useCallback(
-    event => {
+    (event) => {
       const enter = 13
       if (event.keyCode === enter) {
         // if enter was pressed, update the value first
@@ -82,7 +88,7 @@ const LoginForm = () => {
     [checkSignin, password],
   )
   const onKeyDownPassword = useCallback(
-    event => {
+    (event) => {
       const enter = 13
       if (event.keyCode === enter) {
         // if enter was pressed, update the value first
@@ -94,7 +100,7 @@ const LoginForm = () => {
     [checkSignin, newEmail],
   )
   const onBlurEmail = useCallback(
-    event => {
+    (event) => {
       const newEmail = event.target.value
       changeNewEmail(newEmail)
       validEmail(newEmail)
@@ -102,15 +108,14 @@ const LoginForm = () => {
     [validEmail],
   )
   const onBlurPassword = useCallback(
-    event => changePassword(event.target.value),
+    (event) => changePassword(event.target.value),
     [],
   )
   const onAlertDismiss = useCallback(() => changeLoginError(null), [])
-  const onClickLogin = useCallback(() => checkSignin(newEmail, password), [
-    checkSignin,
-    newEmail,
-    password,
-  ])
+  const onClickLogin = useCallback(
+    () => checkSignin(newEmail, password),
+    [checkSignin, newEmail, password],
+  )
 
   const emailInputBsStyle = invalidEmail ? 'error' : null
   const passwordInputBsStyle = invalidPassword ? 'error' : null

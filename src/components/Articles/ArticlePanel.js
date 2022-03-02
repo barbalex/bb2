@@ -45,7 +45,7 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
   } = store.articles
   const isArticle = !!activeArticle
   const isActiveArticle = isArticle ? doc._id === activeArticle._id : false
-  const showEditingGlyphons = !!store.login.email
+  const showEditingGlyphons = !!store.login.uid
   const panelbodypadding = store.editing ? '0 !important' : '15px'
   const panelbodymargintop = store.editing ? '-1px' : 0
 

@@ -25,7 +25,7 @@ const ToggleDraftGlyphicon = styled(Glyphicon)`
   right: 40px !important;
   top: 6px !important;
   font-size: 1.5em;
-  color: ${props => props['data-color']};
+  color: ${(props) => props['data-color']};
 `
 const RemoveGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -36,16 +36,13 @@ const RemoveGlyphicon = styled(Glyphicon)`
 
 const PublicationPanel = ({ category, doc, dIndex }) => {
   const store = useContext(storeContext)
-  const {
-    activePublication,
-    getPublication,
-    toggleDraftOfPublication,
-  } = store.publications
+  const { activePublication, getPublication, toggleDraftOfPublication } =
+    store.publications
 
   const isActivePublication = activePublication
     ? doc._id === activePublication._id
     : false
-  const showEditingGlyphons = !!store.login.email
+  const showEditingGlyphons = !!store.login.uid
 
   const [docToRemove, setDocToRemove] = useState(null)
 
@@ -68,7 +65,7 @@ const PublicationPanel = ({ category, doc, dIndex }) => {
   }, [isActivePublication, scrollToActivePanel])
 
   const onClickPublication = useCallback(
-    e => {
+    (e) => {
       // prevent higher level panels from reacting
       e.stopPropagation()
       const idToGet =
@@ -77,7 +74,7 @@ const PublicationPanel = ({ category, doc, dIndex }) => {
     },
     [activePublication, doc._id, getPublication],
   )
-  const onClickEventCollapse = useCallback(event => {
+  const onClickEventCollapse = useCallback((event) => {
     // prevent higher level panels from reacting
     event.stopPropagation()
   }, [])
@@ -90,7 +87,7 @@ const PublicationPanel = ({ category, doc, dIndex }) => {
     [toggleDraftOfPublication],
   )
   const removePublication = useCallback(
-    remove => {
+    (remove) => {
       if (remove) store.publications.removePublication(docToRemove)
       setDocToRemove(null)
     },

@@ -24,6 +24,20 @@ services:
       options:
         max-size: '10m'
         max-file: '3'
+  auth:
+    build:
+      context: ./auth
+    container_name: bb_auth
+    restart: always
+    env_file:
+      - ./.env
+    expose:
+      - '7000'
+    ports:
+      - '7000:7000'
+    depends_on:
+      - db
+      - graphql
   graphql:
     image: 'hasura/graphql-engine:v2.2.1'
     container_name: bb_graphql
@@ -63,5 +77,6 @@ volumes:
   db_config_data:
   caddy_certs:
   caddy_config:
+  sik_data:
 networks:
   network:
