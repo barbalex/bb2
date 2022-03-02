@@ -10,12 +10,14 @@
     "deploy": "yarn build && yarn firebase deploy"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.10",
     "@tinymce/tinymce-react": "3.13.0",
     "ampersand-app": "2.0.0",
     "bootstrap": "3.x",
     "classnames": "2.3.1",
     "gatsby": "4.8.0",
     "gemini-scrollbar": "1.5.3",
+    "graphql": "^16.3.0",
     "isdev": "1.0.1",
     "js-base64": "3.7.2",
     "local-links": "1.4.1",
