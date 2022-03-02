@@ -4,7 +4,6 @@
 const Hapi = require('@hapi/hapi')
 // see: https://firebase.google.com/docs/auth/admin/manage-users
 const admin = require('firebase-admin')
-const postgres = require('postgres')
 
 const serviceAccount = require('./config.js')
 
@@ -12,8 +11,6 @@ const server = new Hapi.Server({
   host: '0.0.0.0',
   port: 7000,
 })
-
-const sql = postgres(process.env.HASURA_GRAPHQL_DATABASE_URL)
 
 let firebaseInitializationError = null
 // Initialize the Firebase admin SDK with your service account credentials
@@ -33,85 +30,6 @@ async function start() {
     path: '/',
     handler: () => {
       return `Hello from the auth api`
-    },
-  })
-  server.route({
-    method: 'GET',
-    path: '/create-user/{email}',
-    handler: async (req, h) => {
-      if (!serviceAccount) {
-        return h.response('Firebase not configured').code(500)
-      }
-      // Check for errors initializing firebase SDK
-      if (firebaseInitializationError) {
-        console.log('firebaseInitializationError:', firebaseInitializationError)
-        return h
-          .response(
-            `firebase initalization error: ${firebaseInitializationError.message}`,
-          )
-          .code(500)
-      }
-      const { email } = req.params
-      if (!email) {
-        return h.response('no email was passed').code(500)
-      }
-
-      let user
-      try {
-        user = await admin.auth().createUser({
-          email,
-          password: 'initial-passwort-bitte-aendern',
-        })
-      } catch (error) {
-        console.log(
-          `firebase error while creating user for email ${email}:`,
-          error,
-        )
-        const code = error.errorInfo.code
-        if (code === 'auth/email-already-exists') {
-          // Somehow the uid did not arrive in vermehrung.ch. Re-query this users uid
-          const existingUser = await admin.auth().getUserByEmail(email)
-          console.log(`returning uid of the existing user:`, existingUser.uid)
-          return h.response(existingUser.uid).code(200)
-        }
-        return h
-          .response(`firebase createUser error: ${error.message}`)
-          .code(500)
-      }
-      return h.response(user.uid).code(200)
-    },
-  })
-
-  server.route({
-    method: 'GET',
-    path: '/delete-user/{uid}',
-    handler: async (req, h) => {
-      if (!serviceAccount) {
-        return h.response('Firebase not configured').code(500)
-      }
-      // Check for errors initializing firebase SDK
-      if (firebaseInitializationError) {
-        console.log('firebaseInitializationError:', firebaseInitializationError)
-        return h
-          .response(
-            `firebase initalization error: ${firebaseInitializationError.message}`,
-          )
-          .code(500)
-      }
-
-      const { uid } = req.params
-      if (!uid) {
-        return h.response('no uid was passed').code(500)
-      }
-
-      try {
-        await admin.auth().deleteUser(uid)
-      } catch (error) {
-        return h
-          .response(`firebase deleteUser error: ${error.message}`)
-          .code(500)
-      }
-      return h.response().code(200)
     },
   })
 
