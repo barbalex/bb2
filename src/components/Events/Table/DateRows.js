@@ -37,7 +37,7 @@ const DateRows = () => {
     client
       .query({
         query: gql`
-          query eventsQuery {
+          query eventsForEvetsPageQuery {
             event(limit: 10) {
               datum
               id
