@@ -13,7 +13,6 @@ import { useApolloClient, gql } from '@apollo/client'
 import DateRow from './DateRow'
 import MonthRow from './MonthRow'
 import MonthlyStatisticsRow from './MonthlyStatisticsRow'
-import getDaterowObjectsSinceOldestEvent from '../../../modules/getDaterowObjectsSinceOldestEvent'
 import storeContext from '../../../storeContext'
 
 const BodyRow = styled.div`
@@ -35,6 +34,7 @@ const DateRows = () => {
   const client = useApolloClient()
   const activeYear = store.yearsOfEvents.activeYear
   const [events, setEvents] = useState([])
+  const [dates, setDates] = useState([])
 
   useEffect(() => {
     client
@@ -43,6 +43,7 @@ const DateRows = () => {
           query eventsForEvetsPageQuery($from: date, $to: date) {
             event(
               where: { _and: { datum: { _gte: $from } }, datum: { _lte: $to } }
+              order_by: { datum: desc }
             ) {
               id
               datum
@@ -51,83 +52,98 @@ const DateRows = () => {
               tags
               title
             }
+            event_dates: event_aggregate(
+              distinct_on: datum
+              where: { _and: { datum: { _gte: $from } }, datum: { _lte: $to } }
+              order_by: { datum: desc }
+            ) {
+              nodes {
+                datum
+              }
+            }
           }
         `,
         variables: { from: `${activeYear}--01-01`, to: `${activeYear}-12-31` },
       })
       .then((result) => {
         setEvents(result?.data?.event ?? [])
+        setDates(result?.data?.event_dates?.nodes ?? [])
       })
       .catch((error) => console.log(error))
   }, [activeYear, client])
-  console.log('DateRows, events:', events)
-  console.log('DateRows, events from store:', store.events.events)
 
-  const dateRowObjects = getDaterowObjectsSinceOldestEvent(
-    store.events.events,
-    store.yearsOfEvents.activeYear,
-  )
+  // console.log('DateRows, events:', events)
+  // console.log('DateRows, dates:', dates)
+
+  const dateRowObjects = dates.map(({ datum: date }) => ({
+    date,
+    migrationEvents: events.filter(
+      (event) => event.datum === date && event.event_type === 'migration',
+    ),
+    politicsEvents: events.filter(
+      (event) => event.datum === date && event.event_type === 'politics',
+    ),
+  }))
   // console.log('DateRows, dateRowObjects:', dateRowObjects)
-  const dateRows = []
-  if (dateRowObjects.length > 0) {
-    dateRowObjects.forEach((dRO, index) => {
-      const day = moment(dRO.date).format('D')
-      const endOfMonth = moment(dRO.date).endOf('month').format('DD')
-      const dROForDateRow = {
-        date: dRO.date,
-        migrationEvents: dRO.migrationEvents.filter(
-          (event) => !event.tags || !event.tags.includes('monthlyStatistics'),
-        ),
-        politicsEvents: dRO.politicsEvents.filter(
-          (event) => !event.tags || !event.tags.includes('monthlyStatistics'),
-        ),
-      }
-      const dROForMonthlyStatsRow = {
-        date: dRO.date,
-        migrationEvents: dRO.migrationEvents.filter(
-          (event) => event.tags && event.tags.includes('monthlyStatistics'),
-        ),
-        politicsEvents: dRO.politicsEvents.filter(
-          (event) => event.tags && event.tags.includes('monthlyStatistics'),
-        ),
-      }
-      const dROForMonthlyStatsHasEvents =
-        dROForMonthlyStatsRow.migrationEvents.length > 0 ||
-        dROForMonthlyStatsRow.politicsEvents.length > 0
-      const needsMonthRow = day === endOfMonth || index === 0
-      const needsMonthlyStatisticsRow =
-        day === endOfMonth && dROForMonthlyStatsHasEvents
-      if (needsMonthRow) {
-        dateRows.push(<MonthRow key={`${index}monthRow`} dateRowObject={dRO} />)
-      }
-      if (needsMonthlyStatisticsRow) {
-        dateRows.push(
-          <MonthlyStatisticsRow
-            key={`${index}monthlyStatisticsRow`}
-            dateRowObject={dROForMonthlyStatsRow}
-          />,
-        )
-      }
-      dateRows.push(<DateRow key={index} dateRowObject={dROForDateRow} />)
-    })
-    const renderDateRow = (index) => dateRows[index]
-    // console.log('DateRows, dateRows:', dateRows)
 
-    return (
-      <ReactList
-        itemRenderer={renderDateRow}
-        length={dateRows.length}
-        type="variable"
-      />
-    )
-  }
+  const dateRows = []
+  dateRowObjects.forEach((dRO, index) => {
+    const day = moment(dRO.date).format('D')
+    const endOfMonth = moment(dRO.date).endOf('month').format('DD')
+    const dROForDateRow = {
+      date: dRO.date,
+      migrationEvents: dRO.migrationEvents.filter(
+        (event) => !event.tags || !event.tags.includes('monthlyStatistics'),
+      ),
+      politicsEvents: dRO.politicsEvents.filter(
+        (event) => !event.tags || !event.tags.includes('monthlyStatistics'),
+      ),
+    }
+    const dROForMonthlyStatsRow = {
+      date: dRO.date,
+      migrationEvents: dRO.migrationEvents.filter(
+        (event) => event.tags && event.tags.includes('monthlyStatistics'),
+      ),
+      politicsEvents: dRO.politicsEvents.filter(
+        (event) => event.tags && event.tags.includes('monthlyStatistics'),
+      ),
+    }
+    const dROForMonthlyStatsHasEvents =
+      dROForMonthlyStatsRow.migrationEvents.length > 0 ||
+      dROForMonthlyStatsRow.politicsEvents.length > 0
+    const needsMonthRow = day === endOfMonth || index === 0
+    const needsMonthlyStatisticsRow =
+      day === endOfMonth && dROForMonthlyStatsHasEvents
+    if (needsMonthRow) {
+      dateRows.push(<MonthRow key={`${index}monthRow`} dateRowObject={dRO} />)
+    }
+    if (needsMonthlyStatisticsRow) {
+      dateRows.push(
+        <MonthlyStatisticsRow
+          key={`${index}monthlyStatisticsRow`}
+          dateRowObject={dROForMonthlyStatsRow}
+        />,
+      )
+    }
+    dateRows.push(<DateRow key={index} dateRowObject={dROForDateRow} />)
+  })
+  const renderDateRow = (index) => dateRows[index]
+  // console.log('DateRows, dateRows:', dateRows)
+
   return (
-    <BodyRow>
-      <BodyCell>
-        <p>Loading events...</p>
-      </BodyCell>
-    </BodyRow>
+    <ReactList
+      itemRenderer={renderDateRow}
+      length={dateRows.length}
+      type="variable"
+    />
   )
+  // return (
+  //   <BodyRow>
+  //     <BodyCell>
+  //       <p>Loading events...</p>
+  //     </BodyCell>
+  //   </BodyRow>
+  // )
 }
 
 export default observer(DateRows)

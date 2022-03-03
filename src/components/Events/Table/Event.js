@@ -26,7 +26,7 @@ const Event = ({ event }) => {
 
   const links = useMemo(
     () =>
-      event.links.map((link, key) => (
+      event.links?.map((link, key) => (
         <OuterSpan key={key}>
           {key > 0 && ' '}
           <a href={link.url} target="_blank" rel="noopener noreferrer">
