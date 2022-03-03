@@ -67,11 +67,6 @@ const LoginForm = () => {
           changeLoginError(error)
         }
         store.login.setReload(true)
-        // setTimeout(() => {
-        //   if (store.login.user && typeof window !== 'undefined') {
-        //     window.location.reload(true)
-        //   }
-        // }, 1000)
       }
     },
     [store.login, validSignin],
