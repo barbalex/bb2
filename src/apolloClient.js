@@ -28,9 +28,9 @@ const Client = ({ store }) => {
   // https://www.apollographql.com/docs/react/migrating/apollo-client-3-migration/?mc_cid=e593721cc7&mc_eid=c8e91f2f0a#apollo-link-and-apollo-link-http
   const authLink = setContext((_, { headers }) => {
     const token = getToken()
-    console.log('apolloClient, token:', token)
+    //console.log('apolloClient, token:', token)
     const tokenDecoded = token ? jwtDecode(token) : {}
-    console.log('apolloClient, tokenDecoded:', tokenDecoded)
+    //console.log('apolloClient, tokenDecoded:', tokenDecoded)
     // for unknown reason, date.now returns three more after comma
     // numbers than the exp date contains
     const tokenIsValid = token ? tokenDecoded.exp > Date.now() / 1000 : false
