@@ -13,8 +13,6 @@ services:
     ports:
       # make the Postgres database accessible from outside the Docker container on port 5432
       - '5432:5432'
-    networks:
-      - network
     volumes:
       - db_data:/var/lib/postgresql/data
       - sik_data:/sik_data
@@ -55,8 +53,6 @@ services:
     build:
       context: ./caddy
     container_name: bb_caddy
-    networks:
-      - network
     depends_on:
       - db
     restart: always
@@ -74,9 +70,6 @@ services:
       - caddy_config:/config
 volumes:
   db_data:
-  db_config_data:
   caddy_certs:
   caddy_config:
   sik_data:
-networks:
-  network:
