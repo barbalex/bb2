@@ -2,23 +2,6 @@ import axios from 'redaxios'
 // import throttle from 'lodash/throttle'
 
 const getAuthToken = async ({ store }) => {
-  // if (!store.login?.user) {
-  //   console.log('getAuthToken missing user')
-  //   const regetMe = () => {
-  //     console.log('getAuthToken recalling itself')
-  //     getAuthToken({ store })
-  //     if (typeof window !== 'undefined') {
-  //       setTimeout(() => {
-  //         console.log('getAuthToken reloading window')
-  //         window.location.reload(true)
-  //       }, 300)
-  //     }
-  //   }
-  //   // need to throttle to prevent cycle
-  //   //throttle(regetMe, 5000, { leading: true })
-  //   setTimeout(() => throttle(regetMe, 5000, { leading: true }), 300)
-  //   return
-  // }
   let res
   try {
     res = await axios.get(
@@ -27,7 +10,6 @@ const getAuthToken = async ({ store }) => {
       }`,
     )
   } catch (error) {
-    // TODO: catch no network error and return token from localStorage
     console.log('error from getting claims from auth.blue-borders.ch:', error)
   }
   console.log('getAuthToken, res:', res)
