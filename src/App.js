@@ -16,6 +16,7 @@ import Errors from './components/Errors'
 import Layout from './components/Layout'
 // to use in apollo
 import buildClient from './apolloClient'
+import getAuthToken from './modules/getAuthToken'
 
 import { StoreContextProvider } from './storeContext'
 
@@ -104,7 +105,13 @@ const App = ({ element }) => {
       if (!user) return
       console.log('App, onAuthStateChanged, user:', user)
       store.login.setUser(user)
-      navigate('/events')
+      getAuthToken({ store }).then(() => {
+        navigate('/events')
+        if (store.login.reload) {
+          store.login.setReload(false)
+          window.location.reload(true)
+        }
+      })
     })
 
     return () => {

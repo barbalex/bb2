@@ -14,11 +14,11 @@ import graphQlUri from './modules/graphQlUri'
 import existsPermissionsError from './modules/existsPermissionError'
 // import getAuthToken from './modules/getAuthToken'
 
-const noToken =
-  'eyJhbGciOiJIUzUxMiIsImtpZCI6IjRlMjdmNWIwNjllYWQ4ZjliZWYxZDE0Y2M2Mjc5YmRmYWYzNGM1MWIiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InRlc3QiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInRlc3QiXSwieC1oYXN1cmEtdXNlci1pZCI6ImFhYWFhYWFhLWFhYWEtMTFlYS1hYWFhLWFhYWFhYWFhYWFhYSJ9LCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdmVybWVocnVuZy1hYWFhYSIsImF1ZCI6InRlc3QiLCJhdXRoX3RpbWUiOjE1OTE5Njg3MzQsInVzZXJfaWQiOiJYUnV6eHAxWDJ3YWFhYWF5ek9hV1Y2emdhYWFhIiwic3ViIjoiWFJ1enhwMVhhYWFhb3l6T2FXVjZ6Z0NDTDIiLCJpYXQiOjE1OTE5NjkzNDksImV4cCI6MTU5MTk3Mjk0OSwiZW1haWwiOiJ0ZXN0QHRlc3QuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEB0ZXN0LmNoIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.uORVEiz5a5Da3MYJZrt5nFe-OLHaI-zanrG1-4siwDoJ7i7v9khjz-n-tKV4IA4BX0OEjJsH9whE0ZUyOg_bgg'
+// const noToken =
+//   'eyJhbGciOiJIUzUxMiIsImtpZCI6IjRlMjdmNWIwNjllYWQ4ZjliZWYxZDE0Y2M2Mjc5YmRmYWYzNGM1MWIiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InRlc3QiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInRlc3QiXSwieC1oYXN1cmEtdXNlci1pZCI6ImFhYWFhYWFhLWFhYWEtMTFlYS1hYWFhLWFhYWFhYWFhYWFhYSJ9LCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdmVybWVocnVuZy1hYWFhYSIsImF1ZCI6InRlc3QiLCJhdXRoX3RpbWUiOjE1OTE5Njg3MzQsInVzZXJfaWQiOiJYUnV6eHAxWDJ3YWFhYWF5ek9hV1Y2emdhYWFhIiwic3ViIjoiWFJ1enhwMVhhYWFhb3l6T2FXVjZ6Z0NDTDIiLCJpYXQiOjE1OTE5NjkzNDksImV4cCI6MTU5MTk3Mjk0OSwiZW1haWwiOiJ0ZXN0QHRlc3QuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEB0ZXN0LmNoIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.uORVEiz5a5Da3MYJZrt5nFe-OLHaI-zanrG1-4siwDoJ7i7v9khjz-n-tKV4IA4BX0OEjJsH9whE0ZUyOg_bgg'
 // to be used in apollo link
 const getToken = () => {
-  if (typeof window === 'undefined') return noToken
+  if (typeof window === 'undefined') return null
   return window.localStorage.getItem('token')
 }
 
@@ -34,10 +34,11 @@ const Client = ({ store }) => {
     // for unknown reason, date.now returns three more after comma
     // numbers than the exp date contains
     const tokenIsValid = token ? tokenDecoded.exp > Date.now() / 1000 : false
+
     return {
       headers: {
         ...headers,
-        authorization: token && tokenIsValid ? `Bearer ${token}` : null,
+        authorization: token && tokenIsValid ? `Bearer ${token}` : '',
       },
     }
   })
@@ -108,7 +109,9 @@ const Client = ({ store }) => {
     },
   })
 
-  const batchHttpLink = new BatchHttpLink({ uri: graphQlUri() })
+  const batchHttpLink = new BatchHttpLink({
+    uri: graphQlUri(),
+  })
   const client = new ApolloClient({
     link: ApolloLink.from([errorLink, authLink, batchHttpLink]),
     cache,

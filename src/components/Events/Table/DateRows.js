@@ -37,7 +37,7 @@ const DateRows = () => {
     client
       .query({
         query: gql`
-          query MyQuery {
+          query eventsQuery {
             event(limit: 10) {
               datum
               id

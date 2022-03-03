@@ -1,4 +1,3 @@
-import app from 'ampersand-app'
 import React, { useContext, useState, useCallback } from 'react'
 import {
   Alert,
@@ -67,6 +66,12 @@ const LoginForm = () => {
           changeNewEmail(null)
           changeLoginError(error)
         }
+        store.login.setReload(true)
+        // setTimeout(() => {
+        //   if (store.login.user && typeof window !== 'undefined') {
+        //     window.location.reload(true)
+        //   }
+        // }, 1000)
       }
     },
     [store.login, validSignin],
