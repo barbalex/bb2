@@ -64,13 +64,20 @@ async function start() {
       return (
         admin
           .auth()
-          // TODO: problem if uid is undefined?
+          // TODO: problem if uid is unknown?
           .setCustomUserClaims(uid, hasuraVariables)
           .then(() => {
             return h.response('user role and id set').code(200)
           })
           .catch((adminError) => {
-            console.log('Error creating custom token:', adminError)
+            //console.log('Error creating custom token:', adminError)
+            console.log(
+              'Error creating custom token, adminError.errorInfo:',
+              adminError?.errorInfo,
+            )
+            if (adminError.errorInfo.code === 'auth/user-not-found') {
+              return h.response('user role and id set').code(200)
+            }
             return h
               .response(`Error creating custom token: ${adminError.message}`)
               .code(500)

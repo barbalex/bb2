@@ -15,11 +15,11 @@ import existsPermissionsError from './modules/existsPermissionError'
 import getAuthToken from './modules/getAuthToken'
 
 const noToken =
-  'eyJhbGciOiJIUzUxMiIsImtpZCI6IjRlMjdmNWIwNjllYWQ4ZjliZWYxZDE0Y2M2Mjc5YmRmYWYzNGM1MWIiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6Im5vbmUiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbIm5vbmUiXSwieC1oYXN1cmEtdXNlci1pZCI6ImFhYWFhYWFhLWFhYWEtMTFlYS1hYWFhLWFhYWFhYWFhYWFhYSJ9LCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdmVybWVocnVuZy1hYWFhYSIsImF1ZCI6InZlcm1laHJ1bmctZjQ4YzQiLCJhdXRoX3RpbWUiOjE1OTE5Njg3MzQsInVzZXJfaWQiOiJYUnV6eHAxWDJ3YWFhYWF5ek9hV1Y2emdhYWFhIiwic3ViIjoiWFJ1enhwMVhhYWFhb3l6T2FXVjZ6Z0NDTDIiLCJpYXQiOjE1OTE5NjkzNDksImV4cCI6MTU5MTk3Mjk0OSwiZW1haWwiOiJ0ZXN0QHRlc3QuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEB0ZXN0LmNoIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0._BWw-QO7K_oTr72pHZBl4OlXox3_x59IGEnllj3PwaFO8fylhQX7YZyaNev7iqeiyzx2DRZyAQyFhffNjEWyog'
+  'eyJhbGciOiJIUzUxMiIsImtpZCI6IjRlMjdmNWIwNjllYWQ4ZjliZWYxZDE0Y2M2Mjc5YmRmYWYzNGM1MWIiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InRlc3QiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInRlc3QiXSwieC1oYXN1cmEtdXNlci1pZCI6ImFhYWFhYWFhLWFhYWEtMTFlYS1hYWFhLWFhYWFhYWFhYWFhYSJ9LCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdmVybWVocnVuZy1hYWFhYSIsImF1ZCI6InRlc3QiLCJhdXRoX3RpbWUiOjE1OTE5Njg3MzQsInVzZXJfaWQiOiJYUnV6eHAxWDJ3YWFhYWF5ek9hV1Y2emdhYWFhIiwic3ViIjoiWFJ1enhwMVhhYWFhb3l6T2FXVjZ6Z0NDTDIiLCJpYXQiOjE1OTE5NjkzNDksImV4cCI6MTU5MTk3Mjk0OSwiZW1haWwiOiJ0ZXN0QHRlc3QuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEB0ZXN0LmNoIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.uORVEiz5a5Da3MYJZrt5nFe-OLHaI-zanrG1-4siwDoJ7i7v9khjz-n-tKV4IA4BX0OEjJsH9whE0ZUyOg_bgg'
 // to be used in apollo link
 const getToken = () => {
   if (typeof window === 'undefined') return noToken
-  return window.localStorage.getItem('token') ?? noToken
+  return window.localStorage.getItem('token')
 }
 
 const Client = ({ store }) => {
@@ -28,23 +28,18 @@ const Client = ({ store }) => {
   // https://www.apollographql.com/docs/react/migrating/apollo-client-3-migration/?mc_cid=e593721cc7&mc_eid=c8e91f2f0a#apollo-link-and-apollo-link-http
   const authLink = setContext((_, { headers }) => {
     const token = getToken()
-    if (token) {
-      const tokenDecoded = jwtDecode(token)
-      // for unknown reason, date.now returns three more after comma
-      // numbers than the exp date contains
-      const tokenIsValid = tokenDecoded.exp > Date.now() / 1000
-      if (tokenIsValid) {
-        return {
-          headers: {
-            ...headers,
-            authorization: `Bearer ${token}`,
-          },
-        }
-      }
-    } else {
-      getAuthToken({ store })
+    console.log('apolloClient, token:', token)
+    const tokenDecoded = token ? jwtDecode(token) : {}
+    console.log('apolloClient, tokenDecoded:', tokenDecoded)
+    // for unknown reason, date.now returns three more after comma
+    // numbers than the exp date contains
+    const tokenIsValid = token ? tokenDecoded.exp > Date.now() / 1000 : false
+    return {
+      headers: {
+        ...headers,
+        authorization: token && tokenIsValid ? `Bearer ${token}` : null,
+      },
     }
-    return { headers }
   })
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {

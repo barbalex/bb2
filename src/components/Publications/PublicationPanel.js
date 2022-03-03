@@ -42,7 +42,7 @@ const PublicationPanel = ({ category, doc, dIndex }) => {
   const isActivePublication = activePublication
     ? doc._id === activePublication._id
     : false
-  const showEditingGlyphons = !!store.login.uid
+  const showEditingGlyphons = !!store.login.user
 
   const [docToRemove, setDocToRemove] = useState(null)
 

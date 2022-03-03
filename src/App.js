@@ -5,6 +5,7 @@ import pouchdbAuthentication from 'pouchdb-authentication'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { ApolloProvider } from '@apollo/client'
+import { navigate } from '@reach/router'
 
 import store from './store'
 import couchUrl from './modules/getCouchUrl'
@@ -99,11 +100,11 @@ const App = ({ element }) => {
     const unregisterAuthObserver = onAuthStateChanged(auth, async (user) => {
       // BEWARE: this is called at least twice
       // https://stackoverflow.com/questions/37673616/firebase-android-onauthstatechanged-called-twice
-      if (store.login?.uid) return
+      if (store.login?.user?.uid) return
       if (!user) return
-      console.log('user:', user)
-      store.login.setUid(user.uid)
-      window.localStorage.uid = user.uid
+      console.log('App, onAuthStateChanged, user:', user)
+      store.login.setUser(user)
+      navigate('/events')
     })
 
     return () => {

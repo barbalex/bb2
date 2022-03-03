@@ -1,44 +1,40 @@
 import axios from 'redaxios'
-import throttle from 'lodash/throttle'
+// import throttle from 'lodash/throttle'
 
 const getAuthToken = async ({ store }) => {
-  const { setAuthorizing, user } = store
-  if (!user?.uid) {
-    console.log('getAuthToken missing user.uid')
-    const regetMe = () => {
-      console.log('getAuthToken recalling itself')
-      getAuthToken({ store })
-      if (typeof window !== 'undefined') {
-        setTimeout(() => {
-          console.log('getAuthToken reloading window')
-          window.location.reload(true)
-        }, 300)
-      }
-    }
-    // need to throttle to prevent cycle
-    //throttle(regetMe, 5000, { leading: true })
-    setTimeout(() => throttle(regetMe, 5000, { leading: true }), 300)
-    return
-  }
-  //console.log('getAuthToken, user.uid:', user.uid)
-  /*if (authorizing) {
-    console.log('getAuthToken returning because authorizing is true')
-    return
-  }*/
-  setAuthorizing(true)
+  // if (!store.login?.user) {
+  //   console.log('getAuthToken missing user')
+  //   const regetMe = () => {
+  //     console.log('getAuthToken recalling itself')
+  //     getAuthToken({ store })
+  //     if (typeof window !== 'undefined') {
+  //       setTimeout(() => {
+  //         console.log('getAuthToken reloading window')
+  //         window.location.reload(true)
+  //       }, 300)
+  //     }
+  //   }
+  //   // need to throttle to prevent cycle
+  //   //throttle(regetMe, 5000, { leading: true })
+  //   setTimeout(() => throttle(regetMe, 5000, { leading: true }), 300)
+  //   return
+  // }
   let res
   try {
     res = await axios.get(
-      `https://auth.artenliste.ch/add-hasura-claims/${user.uid}`,
+      `https://auth.artenliste.ch/add-hasura-claims/${
+        store.login?.user?.uid ?? 'aaaaaaaa-aaaa-11ea-aaaa-aaaaaaaaaaaa'
+      }`,
     )
   } catch (error) {
     // TODO: catch no network error and return token from localStorage
     console.log('error from getting claims from auth.blue-borders.ch:', error)
   }
+  console.log('getAuthToken, res:', res)
   if (res?.status === 200) {
     let token
     try {
-      token = await user.getIdToken(true)
+      token = await store.login.user.getIdToken(true)
     } catch (error) {
       console.log('error from calling getting id token:', error)
     }

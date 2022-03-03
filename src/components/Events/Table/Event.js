@@ -18,7 +18,7 @@ const OuterSpan = styled.span`
 
 const Event = ({ event }) => {
   const store = useContext(storeContext)
-  const showEditingGlyphons = !!store.login.uid
+  const showEditingGlyphons = !!store.login.user
   const classNames =
     event.tags && event.tags.length > 0
       ? event.tags.map((tag) => `event-${tag}`).join(' ')

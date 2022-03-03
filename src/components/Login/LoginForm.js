@@ -10,8 +10,7 @@ import {
 import isObject from 'lodash/isObject'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { navigate } from '@reach/router'
-import { signOut, signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 
 import validateEmail from './validateEmail'
 import storeContext from '../../storeContext'
@@ -68,9 +67,6 @@ const LoginForm = () => {
           changeNewEmail(null)
           changeLoginError(error)
         }
-        // TODO: do on auth change
-        store.login.setUid(newEmail)
-        navigate('/events')
       }
     },
     [store.login, validSignin],

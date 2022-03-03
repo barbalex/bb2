@@ -13,9 +13,9 @@ export default (store) => {
   if (typeof window === `undefined`) return {}
 
   return {
-    uid: null,
+    user: null,
     firebaseAuth: null,
-    getUid: action('getUid', () => window.localStorage.uid),
+    getUid: action('getUid', () => store.user?.uid),
 
     email: window.localStorage.email,
 
@@ -25,18 +25,16 @@ export default (store) => {
       }
     }),
 
-    setUid: action('login', (uid) => {
-      if (uid) {
-        store.login.uid = uid
-        window.localStorage.uid = uid
+    setUser: action('login', (user) => {
+      if (user) {
+        store.login.user = user
         navigate('/events')
       }
     }),
 
     logout: action('logout', () => {
       store.login?.firebaseAuth && signOut(store.login.firebaseAuth)
-      delete window.localStorage.uid
-      store.login.uid = null
+      store.login.user = null
     }),
   }
 }

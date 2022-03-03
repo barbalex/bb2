@@ -3,7 +3,7 @@
  * adding useContext errors:
  * Hooks can only be called inside the body of a function component
  */
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import moment from 'moment'
 import ReactList from 'react-list'
 import { observer } from 'mobx-react-lite'
@@ -32,7 +32,25 @@ const BodyCell = styled.div`
 
 const DateRows = () => {
   const client = useApolloClient()
-  console.log('DateRows, client:', client)
+
+  useEffect(() => {
+    client
+      .query({
+        query: gql`
+          query MyQuery {
+            event(limit: 10) {
+              datum
+              id
+            }
+          }
+        `,
+      })
+      .then((result) => {
+        console.log('DateRows, result:', result)
+      })
+      .catch((error) => console.log(error))
+  }, [client])
+
   const store = useContext(storeContext)
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(
     store.events.events,
