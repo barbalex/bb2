@@ -23,7 +23,7 @@ import { StoreContextProvider } from './storeContext'
 let PouchDB = null
 if (typeof window !== 'undefined') {
   // need to import pouchdb only client side or gatsby will not build
-  // TODO: this breaks dev!!!!!!!!!
+  // TODO: remove
   // because then happens AFTER first calls to db from events form!!!!!!
   import('pouchdb').then((pouchdb) => {
     PouchDB = pouchdb.default
@@ -103,7 +103,7 @@ const App = ({ element }) => {
       // https://stackoverflow.com/questions/37673616/firebase-android-onauthstatechanged-called-twice
       if (store.login?.user?.uid) return
       if (!user) return
-      console.log('App, onAuthStateChanged, user:', user)
+      // console.log('App, onAuthStateChanged, user:', user)
       store.login.setUser(user)
       getAuthToken({ store }).then(() => {
         navigate('/events')
