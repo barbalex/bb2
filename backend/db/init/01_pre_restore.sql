@@ -2,3 +2,5 @@ CREATE DATABASE bb WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'C.U
 
 c bb;
 
+CREATE ROLE bb_user;
+

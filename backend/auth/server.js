@@ -55,8 +55,9 @@ async function start() {
 
       const hasuraVariables = {
         'https://hasura.io/jwt/claims': {
-          'x-hasura-default-role': 'reader',
-          'x-hasura-allowed-roles': [uid ? 'manager' : 'reader'],
+          'x-hasura-default-role': 'bb_user',
+          'x-hasura-allowed-roles': ['bb_user'],
+          'x-hasura-user-id': uid,
         },
       }
 

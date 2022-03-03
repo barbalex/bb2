@@ -4,6 +4,7 @@ import pouchdbUpsert from 'pouchdb-upsert'
 import pouchdbAuthentication from 'pouchdb-authentication'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { initializeApp, getApps, getApp } from 'firebase/app'
+import { ApolloProvider } from '@apollo/client'
 
 import store from './store'
 import couchUrl from './modules/getCouchUrl'
@@ -13,7 +14,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import Errors from './components/Errors'
 import Layout from './components/Layout'
 // to use in apollo
-import getAuthToken from './modules/getAuthToken'
+import buildClient from './apolloClient'
 
 import { StoreContextProvider } from './storeContext'
 
@@ -71,14 +72,6 @@ Bitte versuchen Sie es mit einer aktuellen Version von (zum Beispiel):
 
 const { errors } = store.error
 
-const noToken =
-  'eyJhbGciOiJIUzUxMiIsImtpZCI6IjRlMjdmNWIwNjllYWQ4ZjliZWYxZDE0Y2M2Mjc5YmRmYWYzNGM1MWIiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6Im5vbmUiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbIm5vbmUiXSwieC1oYXN1cmEtdXNlci1pZCI6ImFhYWFhYWFhLWFhYWEtMTFlYS1hYWFhLWFhYWFhYWFhYWFhYSJ9LCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vdmVybWVocnVuZy1hYWFhYSIsImF1ZCI6InZlcm1laHJ1bmctZjQ4YzQiLCJhdXRoX3RpbWUiOjE1OTE5Njg3MzQsInVzZXJfaWQiOiJYUnV6eHAxWDJ3YWFhYWF5ek9hV1Y2emdhYWFhIiwic3ViIjoiWFJ1enhwMVhhYWFhb3l6T2FXVjZ6Z0NDTDIiLCJpYXQiOjE1OTE5NjkzNDksImV4cCI6MTU5MTk3Mjk0OSwiZW1haWwiOiJ0ZXN0QHRlc3QuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEB0ZXN0LmNoIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0._BWw-QO7K_oTr72pHZBl4OlXox3_x59IGEnllj3PwaFO8fylhQX7YZyaNev7iqeiyzx2DRZyAQyFhffNjEWyog'
-// to be used in apollo link
-const getToken = () => {
-  if (typeof window === 'undefined') return noToken
-  return window.localStorage.getItem('token') ?? noToken
-}
-
 // Configure Firebase
 const firebaseConfig = {
   apiKey: process.env.GATSBY_FIREBASE_API_KEY,
@@ -90,6 +83,8 @@ const firebaseConfig = {
 // BEWARE: The redirect caused the app to ALWAYS redirect when it was refreshed
 // and also when it was opened at a sub-route like /login
 const App = ({ element }) => {
+  const client = buildClient({ store })
+
   useEffect(() => {
     let fbApp
     // catch app already existing
@@ -116,14 +111,16 @@ const App = ({ element }) => {
   }, [])
 
   return (
-    <StoreContextProvider value={store}>
-      <div className="container">
-        <Layout>
-          {element}
-          {!!errors && errors.length > 0 && <Errors />}
-        </Layout>
-      </div>
-    </StoreContextProvider>
+    <ApolloProvider client={client}>
+      <StoreContextProvider value={store}>
+        <div className="container">
+          <Layout>
+            {element}
+            {!!errors && errors.length > 0 && <Errors />}
+          </Layout>
+        </div>
+      </StoreContextProvider>
+    </ApolloProvider>
   )
 }
 

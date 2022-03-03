@@ -59,3 +59,9 @@ CREATE INDEX ON publication USING btree (id);
 
 CREATE INDEX ON publication USING btree (sort);
 
+CREATE TABLE user_uids (
+  uid text
+);
+
+CREATE INDEX ON user_uids USING btree (uid);
+

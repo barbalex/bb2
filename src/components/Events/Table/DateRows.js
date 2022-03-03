@@ -8,6 +8,7 @@ import moment from 'moment'
 import ReactList from 'react-list'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { useApolloClient, gql } from '@apollo/client'
 
 import DateRow from './DateRow'
 import MonthRow from './MonthRow'
@@ -30,6 +31,8 @@ const BodyCell = styled.div`
 `
 
 const DateRows = () => {
+  const client = useApolloClient()
+  console.log('DateRows, client:', client)
   const store = useContext(storeContext)
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(
     store.events.events,
