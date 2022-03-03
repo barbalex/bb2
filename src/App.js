@@ -100,7 +100,8 @@ const App = ({ element }) => {
       // BEWARE: this is called at least twice
       // https://stackoverflow.com/questions/37673616/firebase-android-onauthstatechanged-called-twice
       if (store.login?.uid) return
-      console.log('uid:', user.uid)
+      if (!user) return
+      console.log('user:', user)
       store.login.setUid(user.uid)
       window.localStorage.uid = user.uid
     })
