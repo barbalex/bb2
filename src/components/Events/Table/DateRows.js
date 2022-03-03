@@ -3,7 +3,7 @@
  * adding useContext errors:
  * Hooks can only be called inside the body of a function component
  */
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import moment from 'moment'
 import ReactList from 'react-list'
 import { observer } from 'mobx-react-lite'
@@ -31,30 +31,41 @@ const BodyCell = styled.div`
 `
 
 const DateRows = () => {
+  const store = useContext(storeContext)
   const client = useApolloClient()
+  const activeYear = store.yearsOfEvents.activeYear
+  const [events, setEvents] = useState([])
 
   useEffect(() => {
     client
       .query({
         query: gql`
-          query eventsForEvetsPageQuery {
-            event(limit: 10) {
-              datum
+          query eventsForEvetsPageQuery($from: date, $to: date) {
+            event(
+              where: { _and: { datum: { _gte: $from } }, datum: { _lte: $to } }
+            ) {
               id
+              datum
+              event_type
+              links
+              tags
+              title
             }
           }
         `,
+        variables: { from: `${activeYear}--01-01`, to: `${activeYear}-12-31` },
       })
       .then((result) => {
-        console.log('DateRows, result:', result)
+        setEvents(result?.data?.event ?? [])
       })
       .catch((error) => console.log(error))
-  }, [client])
+  }, [activeYear, client])
+  console.log('DateRows, events:', events)
+  console.log('DateRows, events from store:', store.events.events)
 
-  const store = useContext(storeContext)
   const dateRowObjects = getDaterowObjectsSinceOldestEvent(
     store.events.events,
-    store.yearsOfEvents.activeEventYears,
+    store.yearsOfEvents.activeYear,
   )
   // console.log('DateRows, dateRowObjects:', dateRowObjects)
   const dateRows = []

@@ -54,9 +54,8 @@ const YearButtonsContainer = styled.div`
 const Events = () => {
   const store = useContext(storeContext)
   const { getPage } = store.page
-  const { yearsOfEvents, activeEventYears, grouped, setGrouped } =
-    store.yearsOfEvents
-  const showEventsTable = min(activeEventYears) > 2014
+  const { yearsOfEvents, activeYear, grouped, setGrouped } = store.yearsOfEvents
+  const showEventsTable = activeYear > 2014
   const { activeEvent, eventToRemove, getInitialEvents, showNewEvent } =
     store.events
 

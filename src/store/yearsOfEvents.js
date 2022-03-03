@@ -6,7 +6,12 @@ import getYearsOfEvents from '../modules/getYearsOfEvents'
 
 export default (store) => ({
   yearsOfEvents: [parseInt(moment().format('YYYY'), 0)],
-  grouped: true,
+  grouped: true, // describes if some years are grouped in one button
+  activeYear: parseInt(moment().format('YYYY'), 0),
+
+  setActiveYear: action('setActiveYear', (activeYear) => {
+    store.yearsOfEvents.activeYear = activeYear
+  }),
 
   getYearsOfEvents: action('getYearsOfEvents', async () => {
     let years
@@ -17,12 +22,6 @@ export default (store) => ({
     }
     store.yearsOfEvents.yearsOfEvents = years
     return
-  }),
-
-  activeEventYears: [parseInt(moment().format('YYYY'), 0)],
-
-  setActiveEventYears: action('setActiveEventYears', (activeEventYears) => {
-    store.yearsOfEvents.activeEventYears = activeEventYears
   }),
 
   setGrouped: action('setGrouped', (val) => {

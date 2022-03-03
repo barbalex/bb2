@@ -1,5 +1,4 @@
 import axios from 'redaxios'
-// import throttle from 'lodash/throttle'
 
 const getAuthToken = async ({ store }) => {
   let res
@@ -12,7 +11,7 @@ const getAuthToken = async ({ store }) => {
   } catch (error) {
     console.log('error from getting claims from auth.blue-borders.ch:', error)
   }
-  console.log('getAuthToken, res:', res)
+  //console.log('getAuthToken, res:', res)
   if (res?.status === 200) {
     let token
     try {
@@ -24,7 +23,6 @@ const getAuthToken = async ({ store }) => {
     // see: https://www.apollographql.com/docs/react/networking/authentication/#header
     // see: https://github.com/apollographql/subscriptions-transport-ws/issues/171#issuecomment-348492358
     // see: https://github.com/apollographql/subscriptions-transport-ws/issues/171#issuecomment-406859244
-    //console.log('getAuthToken setting new token:', token)
     window.localStorage.setItem('token', token)
   }
   return true
