@@ -7,6 +7,8 @@
 import { action } from 'mobx'
 import { navigate } from '@reach/router'
 
+import { signOut } from 'firebase/auth'
+
 export default (store) => {
   if (typeof window === `undefined`) return {}
 
@@ -32,6 +34,7 @@ export default (store) => {
     }),
 
     logout: action('logout', () => {
+      store.login?.firebaseAuth && signOut(store.login.firebaseAuth)
       delete window.localStorage.uid
       store.login.uid = null
     }),
