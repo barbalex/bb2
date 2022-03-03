@@ -76,7 +76,7 @@ const MonthlyEvents = ({ year, month }) => {
   } = store.monthlyEvents
 
   const yearsOfEvents = useMemo(() => {
-    const allYears = monthlyEvents.map(doc => getYearFromEventId(doc._id))
+    const allYears = monthlyEvents.map((doc) => getYearFromEventId(doc._id))
     if (allYears.length > 0) {
       const years = uniq(allYears)
       return years.sort().reverse()
@@ -89,7 +89,7 @@ const MonthlyEvents = ({ year, month }) => {
   const activeYear = useMemo(() => {
     if (has(activeMonthlyEvent, '_id')) {
       return getYearFromEventId(activeMonthlyEvent._id)
-    } else if (!!activeYearChoosen) {
+    } else if (!activeYearChoosen) {
       return activeYearChoosen
     } else {
       return yearsOfEvents[0]
@@ -105,7 +105,12 @@ const MonthlyEvents = ({ year, month }) => {
     if (!!year && !!month) {
       store.monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
     }
-  }, [year, month, store.monthlyEvents.activeMonthlyEventId])
+  }, [
+    year,
+    month,
+    store.monthlyEvents,
+    store.monthlyEvents.activeMonthlyEventId,
+  ])
 
   const onClick = useCallback(() => {
     setActiveYearChoosen(activeYear)
@@ -123,7 +128,7 @@ const MonthlyEvents = ({ year, month }) => {
           defaultActiveKey={activeYear}
           accordion
         >
-          {yearsOfEvents.map(year => (
+          {yearsOfEvents.map((year) => (
             <Panel key={year} header={year} eventKey={year} onClick={onClick}>
               <StyledPanelHeading>{year}</StyledPanelHeading>
               <MonthlyEventsOfYear year={year} />
