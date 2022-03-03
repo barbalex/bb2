@@ -29,7 +29,7 @@ const getAuthToken = async ({ store }) => {
   let res
   try {
     res = await axios.get(
-      `https://auth.blue-borders.ch/add-hasura-claims/${user.uid}`,
+      `https://auth.artenliste.ch/add-hasura-claims/${user.uid}`,
     )
   } catch (error) {
     // TODO: catch no network error and return token from localStorage
