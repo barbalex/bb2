@@ -3,12 +3,12 @@
  * adding useContext errors:
  * Hooks can only be called inside the body of a function component
  */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import moment from 'moment'
 import ReactList from 'react-list'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { useApolloClient, gql } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 
 import DateRow from './DateRow'
 import MonthRow from './MonthRow'
@@ -31,46 +31,38 @@ const BodyCell = styled.div`
 
 const DateRows = () => {
   const store = useContext(storeContext)
-  const client = useApolloClient()
   const activeYear = store.yearsOfEvents.activeYear
-  const [events, setEvents] = useState([])
-  const [dates, setDates] = useState([])
 
-  useEffect(() => {
-    client
-      .query({
-        query: gql`
-          query eventsForEvetsPageQuery($from: date, $to: date) {
-            event(
-              where: { _and: { datum: { _gte: $from } }, datum: { _lte: $to } }
-              order_by: { datum: desc }
-            ) {
-              id
-              datum
-              event_type
-              links
-              tags
-              title
-            }
-            event_dates: event_aggregate(
-              distinct_on: datum
-              where: { _and: { datum: { _gte: $from } }, datum: { _lte: $to } }
-              order_by: { datum: desc }
-            ) {
-              nodes {
-                datum
-              }
-            }
+  const { loading, error, data } = useQuery(
+    gql`
+      query eventsForEvetsPageQuery($from: date, $to: date) {
+        event(
+          where: { _and: { datum: { _gte: $from } }, datum: { _lte: $to } }
+          order_by: { datum: desc }
+        ) {
+          id
+          datum
+          event_type
+          links
+          tags
+          title
+        }
+        event_dates: event_aggregate(
+          distinct_on: datum
+          where: { _and: { datum: { _gte: $from } }, datum: { _lte: $to } }
+          order_by: { datum: desc }
+        ) {
+          nodes {
+            datum
           }
-        `,
-        variables: { from: `${activeYear}--01-01`, to: `${activeYear}-12-31` },
-      })
-      .then((result) => {
-        setEvents(result?.data?.event ?? [])
-        setDates(result?.data?.event_dates?.nodes ?? [])
-      })
-      .catch((error) => console.log(error))
-  }, [activeYear, client])
+        }
+      }
+    `,
+    { variables: { from: `${activeYear}--01-01`, to: `${activeYear}-12-31` } },
+  )
+
+  const events = data?.event ?? []
+  const dates = data?.event_dates.nodes ?? []
 
   // console.log('DateRows, events:', events)
   // console.log('DateRows, dates:', dates)
@@ -130,6 +122,26 @@ const DateRows = () => {
   const renderDateRow = (index) => dateRows[index]
   // console.log('DateRows, dateRows:', dateRows)
 
+  if (loading) {
+    return (
+      <BodyRow>
+        <BodyCell>
+          <p>Loading events...</p>
+        </BodyCell>
+      </BodyRow>
+    )
+  }
+
+  if (error) {
+    return (
+      <BodyRow>
+        <BodyCell>
+          <p>{`Error loading data: ${error.message}`}</p>
+        </BodyCell>
+      </BodyRow>
+    )
+  }
+
   return (
     <ReactList
       itemRenderer={renderDateRow}
@@ -137,13 +149,6 @@ const DateRows = () => {
       type="variable"
     />
   )
-  // return (
-  //   <BodyRow>
-  //     <BodyCell>
-  //       <p>Loading events...</p>
-  //     </BodyCell>
-  //   </BodyRow>
-  // )
 }
 
 export default observer(DateRows)
