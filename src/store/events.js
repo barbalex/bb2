@@ -26,25 +26,6 @@ export default (store) => ({
 
   getEventsCallback: null,
 
-  getInitialEvents: action('getEvents', async () => {
-    let events
-    try {
-      events = await getEvents(store, [new Date().getFullYear()])
-    } catch (error) {
-      store.error.showError({
-        msg: error,
-      })
-    }
-    store.events.events = events
-    let years
-    try {
-      years = await getYearsOfEvents(store)
-    } catch (error) {
-      console.log('yearsOfEventsStore, error getting years of events', error)
-    }
-    store.yearsOfEvents.yearsOfEvents = years
-  }),
-
   getEvents: action('getEvents', async (years) => {
     let events
     try {

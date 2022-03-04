@@ -7,12 +7,10 @@ import storeContext from '../../storeContext'
 const YearButton = ({ year }) => {
   const store = useContext(storeContext)
   const { activeYear, setActiveYear } = store.yearsOfEvents
-  const { getEvents } = store.events
 
   const onClick = useCallback(() => {
-    getEvents([year])
     setActiveYear(year)
-  }, [getEvents, setActiveYear, year])
+  }, [setActiveYear, year])
 
   return (
     <Button active={activeYear === year} onClick={onClick}>

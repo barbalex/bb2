@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useCallback, useMemo } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
-import min from 'lodash/min'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { navigate } from '@reach/router'
+import { gql, useQuery } from '@apollo/client'
 
 import NewEvent from './NewEvent'
 import EditEvent from './EditEvent'
@@ -56,21 +56,24 @@ const Events = () => {
   const { getPage } = store.page
   const { yearsOfEvents, activeYear, grouped, setGrouped } = store.yearsOfEvents
   const showEventsTable = activeYear > 2014
-  const { activeEvent, eventToRemove, getInitialEvents, showNewEvent } =
-    store.events
+  const { activeEvent, eventToRemove, showNewEvent } = store.events
+
+  const { loading, error, data } = useQuery(
+    gql`
+      query yearsForEventsPage {
+        years: v_event_years {
+          id
+          year
+        }
+      }
+    `,
+  )
+
+  const years = (data?.years ?? []).map((d) => d.year)
 
   useEffect(() => {
     getPage('pages_events')
-    // PROBLEM
-    // gatsby does not build properly with pouchdb importing
-    // so pouchdb is imported async
-    // so this db call happens BEFORE pouchdb is finished importing
-    // in dev
-    // so need to set timeout...
-    typeof window !== 'undefined'
-      ? setTimeout(() => getInitialEvents(), 1000)
-      : getInitialEvents()
-  }, [getPage, getInitialEvents])
+  }, [getPage])
 
   const onClickMonthlyEvents = useCallback(() => {
     navigate('/monthly-events')
@@ -82,8 +85,8 @@ const Events = () => {
   }, [grouped, setGrouped])
 
   const yearsOfEventsToUse = useMemo(
-    () => (grouped ? yearsOfEvents.filter((y) => y > 2018) : yearsOfEvents),
-    [grouped, yearsOfEvents],
+    () => (grouped ? years.filter((y) => y > 2018) : years),
+    [grouped, years],
   )
 
   return (
