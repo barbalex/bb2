@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback, useMemo } from 'react'
+import React, { useContext, useCallback, useMemo } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
@@ -84,6 +84,8 @@ const Events = () => {
     () => (grouped ? years.filter((y) => y > 2018) : years),
     [grouped, years],
   )
+
+  console.log('Events, activeEventId:', activeEventId)
 
   return (
     <DocumentTitle title="Events">

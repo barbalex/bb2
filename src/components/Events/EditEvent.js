@@ -2,7 +2,7 @@
  * using hooks errored
  * Hooks can only be called inside the body of a function component
  */
-import React, { useState, useCallback, useContext } from 'react'
+import React, { useState, useCallback, useContext, useEffect } from 'react'
 import {
   Modal,
   Button,
@@ -14,12 +14,12 @@ import {
 import moment from 'moment'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { gql, useQuery, useApolloClient } from '@apollo/client'
 
 import EventTypeButtonGroup from './EventTypeButtonGroup'
 import DateInput from './DateInput'
 import TagsInput from './TagsInput'
 import EventLinks from './EventLinks'
-import getDateFromEventId from '../../modules/getDateFromEventId'
 import storeContext from '../../storeContext'
 
 const StyledModal = styled(Modal)`
@@ -90,80 +90,106 @@ const StyledModal = styled(Modal)`
     cursor: pointer;
   }
 `
-const EventOrder = styled(FormControl)`
-  margin-bottom: 20px;
-`
+// const EventOrder = styled(FormControl)`
+//   margin-bottom: 20px;
+// `
 const StyledAlert = styled(Alert)`
   margin-top: 10px;
   margin-bottom: 10px;
 `
 
 const EditEvent = () => {
+  const client = useApolloClient()
   const store = useContext(storeContext)
-  const {
-    activeEvent,
-    newEvent,
-    removeEvent,
-    saveEvent,
-    getEvent,
-  } = store.events
+  const { activeEventId, setActiveEventId } = store.events
+
+  const { data, loading } = useQuery(
+    gql`
+      query eventForEditEvent($id: uuid) {
+        event(where: { id: { _eq: $id } }) {
+          id
+          datum
+          event_type
+          links
+          tags
+          title
+        }
+      }
+    `,
+    { variables: { id: activeEventId } },
+  )
+  const activeEvent = data?.event?.[0]
+
+  console.log('EditEvent rendering, data:', data)
 
   const [error, setError] = useState(null)
+  const [title, setTitle] = useState('')
+  useEffect(() => {
+    if (!loading) {
+      setTitle(activeEvent.title)
+    }
+  }, [activeEvent, loading])
 
-  const onChangeTitle = useCallback(
-    e => {
+  const saveToDb = useCallback(
+    ({ field, value }) => {
+      client.mutate({
+        mutation: gql`
+        mutation mutateEvent($id: uuid!) {
+          update_event_by_pk(
+            pk_columns: { id: $id }
+            _set: { ${field}: ${value} }
+          ) {
+            id
+            datum
+            event_type
+            links
+            tags
+            title
+          }
+        }
+      `,
+        variables: { id: activeEvent.id },
+      })
+    },
+    [activeEvent?.id, client],
+  )
+
+  const onChangeTitle = useCallback((e) => setTitle(e.target.value), [])
+  const onBlurTitle = useCallback(
+    (e) => {
       const title = e.target.value
       if (title) {
-        store.events.activeEvent.title = title
+        saveToDb({ field: 'title', value: `"${title}"` })
         setError(null)
       } else {
         setError('Please add a title')
       }
     },
-    [setError, store.events.activeEvent.title],
-  )
-  const onBlurTitle = useCallback(
-    e => {
-      activeEvent.title = e.target.value
-      if (activeEvent.title) {
-        removeEvent(activeEvent)
-        activeEvent.date = getDateFromEventId(activeEvent._id)
-        newEvent(activeEvent)
-      }
-    },
-    [activeEvent, newEvent, removeEvent],
+    [saveToDb],
   )
   const onChangeDatePicker = useCallback(
-    date => {
-      const { activeEvent, newEvent, removeEvent } = store.events
-      const datePassed = moment(date, 'DD.MM.YYYY')
-      if (datePassed) {
-        removeEvent(activeEvent)
-        activeEvent.date = datePassed
-        newEvent(activeEvent)
-      } else {
+    (date) => {
+      console.log({
+        date,
+        value: moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+      })
+      saveToDb({
+        field: 'datum',
+        value: date
+          ? `"${moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD')}"`
+          : null,
+      })
+      if (!date) {
         setError('Please choose a date')
       }
     },
-    [setError, store.events],
-  )
-  const onChangeOrder = useCallback(
-    e => {
-      store.events.activeEvent.order = e.target.value
-      setError(null)
-    },
-    [setError, store.events.activeEvent.order],
-  )
-  const onBlurOrder = useCallback(
-    e => {
-      activeEvent.order = e.target.value
-      saveEvent(activeEvent)
-    },
-    [activeEvent, saveEvent],
+    [saveToDb],
   )
   const close = useCallback(() => {
-    getEvent(null)
-  }, [getEvent])
+    setActiveEventId(null)
+  }, [setActiveEventId])
+
+  if (loading) return null
 
   return (
     <StyledModal show onHide={close} bsSize="large">
@@ -176,29 +202,29 @@ const EditEvent = () => {
           <ControlLabel>Title</ControlLabel>
           <FormControl
             type="text"
-            value={store.events.activeEvent.title}
+            value={title}
             onChange={onChangeTitle}
             onBlur={onBlurTitle}
             tabIndex={1}
           />
         </FormGroup>
         <DateInput
-          date={getDateFromEventId(store.events.activeEvent._id)}
+          date={moment(activeEvent.datum, 'YYYY-MM-DD')}
           onChangeDatePicker={onChangeDatePicker}
         />
-        <EventTypeButtonGroup />
-        <FormGroup controlId="eventOrder">
+        <EventTypeButtonGroup activeEvent={activeEvent} saveToDb={saveToDb} />
+        {/* <FormGroup controlId="eventOrder">
           <ControlLabel>Order</ControlLabel>
           <EventOrder
             type="number"
-            value={store.events.activeEvent.order}
+            value={activeEvent.order}
             onChange={onChangeOrder}
             onBlur={onBlurOrder}
             tabIndex={4}
           />
-        </FormGroup>
-        <TagsInput />
-        <EventLinks />
+        </FormGroup> */}
+        <TagsInput activeEvent={activeEvent} saveToDb={saveToDb} />
+        <EventLinks activeEvent={activeEvent} saveToDb={saveToDb} />
         {error && <StyledAlert bsStyle="danger">{error}</StyledAlert>}
       </Modal.Body>
 

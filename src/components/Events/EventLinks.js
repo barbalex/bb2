@@ -14,9 +14,9 @@ const Label = styled.p`
   margin-bottom: 0;
 `
 
-const EventLinks = () => {
+const EventLinks = ({ activeEvent }) => {
   const store = useContext(storeContext)
-  const { activeEvent, saveEvent } = store.events
+  const { saveEvent } = store.events
 
   const onNewLink = useCallback(() => {
     const newLink = {

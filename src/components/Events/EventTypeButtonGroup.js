@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-
-import storeContext from '../../storeContext'
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -13,37 +11,33 @@ const Label = styled.div`
   margin-bottom: 5px;
 `
 
-const EventTypeButtonGroup = () => {
-  const store = useContext(storeContext)
-  const { activeEvent, saveEvent } = store.events
-  const { eventType } = store.events.activeEvent
-
-  const setTypeToMigration = useCallback(() => {
-    store.events.activeEvent.eventType = 'migration'
-    saveEvent(activeEvent)
-  }, [activeEvent, saveEvent, store.events.activeEvent.eventType])
-  const setTypeToPolitics = useCallback(() => {
-    store.events.activeEvent.eventType = 'politics'
-    saveEvent(activeEvent)
-  }, [activeEvent, saveEvent, store.events.activeEvent.eventType])
+const EventTypeButtonGroup = ({ activeEvent, saveToDb }) => {
+  const setTypeToMigration = useCallback(
+    () => saveToDb({ field: 'event_type', value: 'migration' }),
+    [saveToDb],
+  )
+  const setTypeToPolitics = useCallback(
+    () => saveToDb({ field: 'event_type', value: 'politics' }),
+    [saveToDb],
+  )
 
   useEffect(() => {
-    // if no eventType, set migration
-    if (!eventType) setTypeToMigration()
-  }, [eventType, setTypeToMigration])
+    // if no event_type, set migration
+    if (!activeEvent.event_type) setTypeToMigration()
+  }, [activeEvent.event_type, setTypeToMigration])
 
   return (
     <Container>
       <Label>Column</Label>
       <ButtonGroup>
         <Button
-          className={eventType === 'migration' ? 'active' : ''}
+          className={activeEvent.event_type === 'migration' ? 'active' : ''}
           onClick={setTypeToMigration}
         >
           maritime events / monthly statistics
         </Button>
         <Button
-          className={eventType === 'politics' ? 'active' : ''}
+          className={activeEvent.event_type === 'politics' ? 'active' : ''}
           onClick={setTypeToPolitics}
         >
           political events / total statistics

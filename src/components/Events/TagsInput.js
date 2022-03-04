@@ -1,11 +1,10 @@
 //
-import React, { useContext } from 'react'
+import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import allTags from './tags'
-import storeContext from '../../storeContext'
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -15,14 +14,11 @@ const Label = styled.div`
   margin-bottom: 2px;
 `
 const StyledGlyphicon = styled(Glyphicon)`
-  top: ${props => props['data-top']} !important;
+  top: ${(props) => props['data-top']} !important;
   font-size: 1.5em;
 `
 
-const EventTags = ({ onChangeTag }) => {
-  const store = useContext(storeContext)
-  const { activeEvent, saveEvent } = store.events
-
+const EventTags = ({ activeEvent, saveToDb }) => {
   return (
     <Container>
       <Label>Tags</Label>
@@ -32,17 +28,20 @@ const EventTags = ({ onChangeTag }) => {
             <label>
               <input
                 type="checkbox"
-                checked={activeEvent.tags.includes(option.tag)}
-                onChange={event => {
-                  const checked = event.target.checked
-                  if (checked) {
-                    activeEvent.tags.push(option.tag)
-                    saveEvent(activeEvent)
+                checked={activeEvent.tags?.includes(option.tag)}
+                onChange={(event) => {
+                  if (event.target.checked) {
+                    saveToDb({
+                      field: 'tags',
+                      value: JSON.stringify([...activeEvent.tags, option.tag]),
+                    })
                   } else {
-                    activeEvent.tags = activeEvent.tags.filter(
-                      _tag => _tag !== option.tag,
-                    )
-                    saveEvent(activeEvent)
+                    saveToDb({
+                      field: 'tags',
+                      value: JSON.stringify(
+                        activeEvent.tags.filter((t) => t !== option.tag),
+                      ),
+                    })
                   }
                 }}
               />

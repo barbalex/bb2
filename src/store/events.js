@@ -14,7 +14,11 @@ export default (store) => ({
   // cache the id, not the entire doc
   // advantage: on first load events is empty so no activeEvent can be gotten
   // but if id is used, this can be cached
+  // Hm. Use local state in Event.js instead of this id?
   activeEventId: null,
+  setActiveEventId: action('setActiveEventId', (id) => {
+    store.events.activeEventId = id
+  }),
 
   get activeEvent() {
     return store.events.events.find(
