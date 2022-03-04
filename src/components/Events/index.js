@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { navigate } from '@reach/router'
 import { gql, useQuery } from '@apollo/client'
-import moment from 'moment'
 
 import NewEvent from './NewEvent'
 import EditEvent from './EditEvent'
@@ -70,13 +69,7 @@ const Events = () => {
     `,
   )
 
-  const years = useMemo(
-    () =>
-      (data?.years ?? [parseInt(moment().format('YYYY'), 0)]).map(
-        (d) => d.year,
-      ),
-    [data?.years],
-  )
+  const years = (data?.years ?? [new Date().getFullYear()]).map((d) => d.year)
 
   console.log({ years })
 
