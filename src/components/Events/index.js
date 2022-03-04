@@ -56,7 +56,7 @@ const Events = () => {
   const { getPage } = store.page
   const { activeYear, grouped, setGrouped } = store.yearsOfEvents
   const showEventsTable = activeYear > 2014
-  const { activeEvent, eventToRemove, showNewEvent } = store.events
+  const { activeEventId, eventToRemove, showNewEvent } = store.events
 
   const { data } = useQuery(
     gql`
@@ -71,15 +71,9 @@ const Events = () => {
 
   const years = (data?.years ?? [new Date().getFullYear()]).map((d) => d.year)
 
-  console.log({ years })
-
-  useEffect(() => {
-    getPage('pages_events')
-  }, [getPage])
-
   const onClickMonthlyEvents = useCallback(() => {
-    navigate('/monthly-events')
     getPage('pages_monthlyEvents')
+    navigate('/monthly-events')
   }, [getPage])
 
   const onClickSetGrouped = useCallback(() => {
@@ -107,7 +101,7 @@ const Events = () => {
           </ButtonGroup>
         </YearButtonsContainer>
         {showEventsTable && <EventsTable />}
-        {activeEvent && <EditEvent />}
+        {activeEventId && <EditEvent />}
         {showNewEvent && <NewEvent />}
         {eventToRemove && <ModalRemoveEvent />}
       </Container>

@@ -5,7 +5,6 @@ import moment from 'moment'
 import slug from 'speakingurl'
 import cloneDeep from 'lodash/cloneDeep'
 
-import getEvents from '../modules/getEvents'
 import sortEvents from '../modules/sortEvents'
 import slugOptions from '../modules/slugOptions'
 
@@ -24,22 +23,6 @@ export default (store) => ({
   },
 
   getEventsCallback: null,
-
-  getEvents: action('getEvents', async (years) => {
-    let events
-    try {
-      events = await getEvents(store, years)
-    } catch (error) {
-      store.error.showError({
-        msg: error,
-      })
-    }
-    store.events.events = events
-    if (store.events.getEventsCallback) {
-      store.events.getEventsCallback()
-      store.events.getEventsCallback = null
-    }
-  }),
 
   newEvent: action('newEvent', (event) => {
     const title = event.title
