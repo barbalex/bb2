@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from 'react'
+import React, { useContext, useCallback, useState } from 'react'
 import {
   Row,
   Col,
@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { gql, useQuery, useApolloClient } from '@apollo/client'
 
 import storeContext from '../../storeContext'
 
@@ -19,41 +20,31 @@ const StyledGlyphicon = styled(Glyphicon)`
   cursor: pointer;
 `
 
-const EventLink = ({ link, focus, index }) => {
+const EventLink = ({ activeEvent, focus, index, saveToDb }) => {
+  const client = useApolloClient()
   const store = useContext(storeContext)
-  const { activeEvent, saveEvent } = store.events
+  const { saveEvent } = store.events
+  const links = useCallback(() => [...activeEvent.links], [activeEvent.links])
+  const link = links[index]
+  console.log('EventLink', { link })
+  const [label, setLabel] = useState()
+  const [url, setUrl] = useState()
 
-  const onChangeUrl = useCallback(
-    e => {
-      // not using action because don't know
-      // how to find this link in activeEvent.links...
-      link.url = e.target.value
-    },
-    [link.url],
-  )
+  const onChangeUrl = useCallback((e) => setUrl(e.target.value), [])
   const onBlurUrl = useCallback(() => {
-    const index = activeEvent.links.findIndex(
-      l => l.label === link.label && l.url === link.url,
-    )
-    activeEvent.links[index] = link
-    saveEvent(activeEvent)
-  }, [activeEvent, link, saveEvent])
-  const onChangeLabel = useCallback(
-    e => {
-      link.label = e.target.value
-    },
-    [link.label],
-  )
+    links[index] = { url, label }
+    saveToDb({ field: 'links', value: JSON.stringify(links) })
+  }, [index, label, links, saveToDb, url])
+
+  const onChangeLabel = useCallback((e) => setLabel(e.target.value), [])
   const onBlurLabel = useCallback(() => {
-    const index = activeEvent.links.findIndex(
-      l => l.url === link.url && l.label === link.label,
-    )
-    activeEvent.links[index] = link
-    saveEvent(activeEvent)
-  }, [activeEvent, link, saveEvent])
+    links[index] = { url, label }
+    saveToDb({ field: 'links', value: JSON.stringify(links) })
+  }, [index, label, links, saveToDb, url])
+
   const onRemoveLink = useCallback(() => {
     activeEvent.links = activeEvent.links.filter(
-      l => l.label !== link.label && l.url !== link.url,
+      (l) => l.label !== link.label && l.url !== link.url,
     )
     saveEvent(activeEvent)
   }, [activeEvent, link.label, link.url, saveEvent])
