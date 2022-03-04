@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import {
   Row,
   Col,
@@ -10,9 +10,6 @@ import {
 } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { gql, useQuery, useApolloClient } from '@apollo/client'
-
-import storeContext from '../../storeContext'
 
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 1.5em;
@@ -21,33 +18,36 @@ const StyledGlyphicon = styled(Glyphicon)`
 `
 
 const EventLink = ({ activeEvent, focus, index, saveToDb }) => {
-  const client = useApolloClient()
-  const store = useContext(storeContext)
-  const { saveEvent } = store.events
-  const links = useCallback(() => [...activeEvent.links], [activeEvent.links])
+  const links = useMemo(() => [...activeEvent.links], [activeEvent.links])
   const link = links[index]
-  console.log('EventLink', { link })
+  console.log('EventLink', { activeEvent, links, link, index })
+
   const [label, setLabel] = useState()
   const [url, setUrl] = useState()
+
+  useEffect(() => {
+    setLabel(link.label)
+    setUrl(link.url)
+  }, [link.label, link.url])
 
   const onChangeUrl = useCallback((e) => setUrl(e.target.value), [])
   const onBlurUrl = useCallback(() => {
     links[index] = { url, label }
+    console.log('EventLink, onBlurUrl, new links:', links)
     saveToDb({ field: 'links', value: JSON.stringify(links) })
   }, [index, label, links, saveToDb, url])
 
   const onChangeLabel = useCallback((e) => setLabel(e.target.value), [])
   const onBlurLabel = useCallback(() => {
     links[index] = { url, label }
+    console.log('EventLink, onBlurLabel, new links:', links)
     saveToDb({ field: 'links', value: JSON.stringify(links) })
   }, [index, label, links, saveToDb, url])
 
   const onRemoveLink = useCallback(() => {
-    activeEvent.links = activeEvent.links.filter(
-      (l) => l.label !== link.label && l.url !== link.url,
-    )
-    saveEvent(activeEvent)
-  }, [activeEvent, link.label, link.url, saveEvent])
+    links.splice(index, 1)
+    saveToDb({ field: 'links', value: JSON.stringify(links) })
+  }, [index, links, saveToDb])
 
   return (
     <Row key={index}>
@@ -56,10 +56,10 @@ const EventLink = ({ activeEvent, focus, index, saveToDb }) => {
           <FormControl
             type="text"
             bsSize="small"
-            value={link.label}
+            value={label}
             onChange={onChangeLabel}
             onBlur={onBlurLabel}
-            autoFocus={focus && !link.label}
+            autoFocus={focus && !label}
           />
         </FormGroup>
       </Col>
@@ -68,7 +68,7 @@ const EventLink = ({ activeEvent, focus, index, saveToDb }) => {
           <FormControl
             type="url"
             bsSize="small"
-            value={link.url}
+            value={url}
             onChange={onChangeUrl}
             onBlur={onBlurUrl}
           />
