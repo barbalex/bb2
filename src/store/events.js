@@ -8,7 +8,6 @@ import cloneDeep from 'lodash/cloneDeep'
 import getEvents from '../modules/getEvents'
 import sortEvents from '../modules/sortEvents'
 import slugOptions from '../modules/slugOptions'
-import getYearsOfEvents from '../modules/getYearsOfEvents'
 
 export default (store) => ({
   events: [],

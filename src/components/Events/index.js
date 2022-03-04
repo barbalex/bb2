@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { navigate } from '@reach/router'
 import { gql, useQuery } from '@apollo/client'
+import moment from 'moment'
 
 import NewEvent from './NewEvent'
 import EditEvent from './EditEvent'
@@ -54,11 +55,11 @@ const YearButtonsContainer = styled.div`
 const Events = () => {
   const store = useContext(storeContext)
   const { getPage } = store.page
-  const { yearsOfEvents, activeYear, grouped, setGrouped } = store.yearsOfEvents
+  const { activeYear, grouped, setGrouped } = store.yearsOfEvents
   const showEventsTable = activeYear > 2014
   const { activeEvent, eventToRemove, showNewEvent } = store.events
 
-  const { loading, error, data } = useQuery(
+  const { data } = useQuery(
     gql`
       query yearsForEventsPage {
         years: v_event_years {
@@ -69,7 +70,15 @@ const Events = () => {
     `,
   )
 
-  const years = (data?.years ?? []).map((d) => d.year)
+  const years = useMemo(
+    () =>
+      (data?.years ?? [parseInt(moment().format('YYYY'), 0)]).map(
+        (d) => d.year,
+      ),
+    [data?.years],
+  )
+
+  console.log({ years })
 
   useEffect(() => {
     getPage('pages_events')
