@@ -131,8 +131,9 @@ const EditEvent = () => {
   }, [activeEvent, loading])
 
   const saveToDb = useCallback(
-    ({ field, value }) => {
-      client.mutate({
+    async ({ field, value }) => {
+      console.log('EditEvent, saveToDb', { field, value })
+      await client.mutate({
         mutation: gql`
         mutation mutateEvent($id: uuid!) {
           update_event_by_pk(
@@ -150,6 +151,7 @@ const EditEvent = () => {
       `,
         variables: { id: activeEvent.id },
       })
+      console.log('EditEvent, saveToDb finished')
     },
     [activeEvent?.id, client],
   )
