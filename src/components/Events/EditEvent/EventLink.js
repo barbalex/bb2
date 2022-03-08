@@ -19,7 +19,7 @@ const StyledGlyphicon = styled(Glyphicon)`
   cursor: pointer;
 `
 
-const EventLink = ({ activeEvent, focus, index, saveToDb }) => {
+const EventLink = ({ activeEvent, index, saveToDb }) => {
   const links = useMemo(() => [...activeEvent.links], [activeEvent.links])
   const link = links[index]
   console.log('EventLink', { activeEvent, links, link, index })
@@ -35,6 +35,7 @@ const EventLink = ({ activeEvent, focus, index, saveToDb }) => {
   const onChangeUrl = useCallback((e) => setUrl(e.target.value), [])
   const onBlurUrl = useCallback(() => {
     console.log('bluring url')
+    // see: https://hasura.io/docs/latest/graphql/core/databases/postgres/mutations/update.html#update-jsonb-columns
     links[index] = { url, label }
     saveToDb({ field: 'links', value: tpPgObjectArray(links) })
   }, [index, label, links, saveToDb, url])
