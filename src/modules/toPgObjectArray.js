@@ -1,7 +1,11 @@
 /* eslint-disable no-useless-escape */
-const toPgArray = (array) =>
-  array.length
-    ? array.map((a) => ({ url: `\"${a.url}\"`, label: `\"${a.label}\"` }))
-    : null
+import toPgArray from './toPgArray'
+const toPgObjectArray = (array) => {
+  return array.length
+    ? //? array.map((a) => ({ url: `\"${a.url}\"`, label: `\"${a.label}\"` }))
+      toPgArray(array.map((a) => JSON.stringify(a)))
+    : //  ? array.map((a) => ({ url: `${a.url}`, label: `${a.label}` }))
+      null
+}
 
-export default toPgArray
+export default toPgObjectArray
