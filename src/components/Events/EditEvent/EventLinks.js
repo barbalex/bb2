@@ -42,7 +42,7 @@ const EventLinks = ({ activeEvent, saveToDb }) => {
       {activeEvent.links.map((link, index) => (
         <EventLink
           activeEvent={activeEvent}
-          focus={index === activeEvent.links.length - 1}
+          //focus={index === activeEvent.links.length - 1}
           key={index}
           index={index}
           saveToDb={saveToDb}

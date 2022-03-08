@@ -60,7 +60,7 @@ const EventLink = ({ activeEvent, focus, index, saveToDb }) => {
             value={label}
             onChange={onChangeLabel}
             onBlur={onBlurLabel}
-            autoFocus={focus && !label}
+            //autoFocus={focus && !label}
           />
         </FormGroup>
       </Col>

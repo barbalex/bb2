@@ -19,14 +19,13 @@ const OuterSpan = styled.span`
 const Event = ({ event }) => {
   const store = useContext(storeContext)
   const showEditingGlyphons = !!store.login.user
-  const classNames =
-    event.tags && event.tags.length > 0
-      ? event.tags.map((tag) => `event-${tag}`).join(' ')
-      : []
+  const classNames = (event.tags ?? []).map((tag) => `event-${tag}`).join(' ')
+
+  console.log('Event', { event, links: event.links })
 
   const links = useMemo(
     () =>
-      event.links?.map((link, key) => (
+      (event.links ?? []).map((link, key) => (
         <OuterSpan key={key}>
           {key > 0 && ' '}
           <a href={link.url} target="_blank" rel="noopener noreferrer">
@@ -34,7 +33,7 @@ const Event = ({ event }) => {
             {link.label}
           </a>
         </OuterSpan>
-      )),
+      )) ?? null,
     [event.links],
   )
 
