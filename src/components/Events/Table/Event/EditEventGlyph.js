@@ -3,7 +3,7 @@ import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-import storeContext from '../../../storeContext'
+import storeContext from '../../../../storeContext'
 
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 0.9em;
