@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import EventLink from './EventLink'
-import storeContext from '../../storeContext'
+import storeContext from '../../../storeContext'
 
 const Title = styled.div`
   font-weight: bold;

@@ -53,7 +53,9 @@ const Page = () => {
       </div>
     )
   }
+
   const createMarkup = () => ({ __html: articleDecoded })
+
   return (
     <DocumentTitle title={title}>
       <Container className="page">

@@ -1,5 +1,4 @@
-//      
-export default [
+const tags = [
   {
     tag: 'weather',
     iconNr: '2601',
@@ -22,7 +21,8 @@ export default [
     tag: 'monthlyStatistics',
     iconNr: 'e185',
     iconText: 'stats',
-    explanation: 'places events in blue row directly under month title if date is last day in month',
+    explanation:
+      'places events in blue row directly under month title if date is last day in month',
   },
   {
     tag: 'highlighted',
@@ -72,3 +72,5 @@ export default [
     explanation: null,
   },
 ]
+
+export default tags

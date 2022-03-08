@@ -17,10 +17,10 @@ import styled from 'styled-components'
 import { gql, useQuery, useApolloClient } from '@apollo/client'
 
 import EventTypeButtonGroup from './EventTypeButtonGroup'
-import DateInput from './DateInput'
+import DateInput from '../DateInput'
 import TagsInput from './TagsInput'
 import EventLinks from './EventLinks'
-import storeContext from '../../storeContext'
+import storeContext from '../../../storeContext'
 
 const StyledModal = styled(Modal)`
   .col-xs-1,

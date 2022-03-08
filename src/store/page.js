@@ -6,6 +6,9 @@ const page = (store) => ({
   activePage: {},
   editing: false,
   showMeta: false,
+  setActivePage: action('setActivePage', (val) => {
+    store.page.activePage = val
+  }),
   getPage: action('getPage', async (id) => {
     const get =
       !store?.page?.activePage?._id ||
