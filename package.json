@@ -16,7 +16,7 @@
     "bootstrap": "3.x",
     "classnames": "2.3.1",
     "firebase": "9.6.7",
-    "gatsby": "4.9.2",
+    "gatsby": "4.9.3",
     "gemini-scrollbar": "1.5.3",
     "graphql": "16.3.0",
     "isdev": "1.0.1",
@@ -61,13 +61,13 @@
     "firebase-tools": "10.2.2",
     "gatsby-plugin-create-client-paths": "4.9.0",
     "gatsby-plugin-google-analytics": "4.9.0",
-    "gatsby-plugin-manifest": "4.9.0",
-    "gatsby-plugin-offline": "5.9.0",
+    "gatsby-plugin-manifest": "4.9.1",
+    "gatsby-plugin-offline": "5.9.1",
     "gatsby-plugin-react-helmet": "5.9.0",
-    "gatsby-plugin-sharp": "4.9.0",
+    "gatsby-plugin-sharp": "4.9.1",
     "gatsby-plugin-sitemap": "5.9.0",
     "gatsby-plugin-styled-components": "5.9.0",
-    "gatsby-source-filesystem": "4.9.0",
+    "gatsby-source-filesystem": "4.9.1",
     "gatsby-transformer-sharp": "4.9.0",
     "rimraf": "3.0.2"
   },
@@ -96,7 +96,7 @@
     "prop-types": "needed for react-gemini-scrollbar",
     "react-is": "needed for styled-components",
     "pouchdb": "7.2.1: do not upgrade to 7.2.2, uuid did not export default which created error ONLY ON PRODUCTION",
-    "firebase": "updating from 9.6.7 to 9.6.8 broke gatsby build: WebpackError: ReferenceError: IDBIndex is not defined"
+    "firebase": "updating from 9.6.7 to 9.6.8 broke gatsby build: WebpackError: ReferenceError: IDBIndex is not defined. See: https://github.com/firebase/firebase-js-sdk/issues/6042, https://github.com/firebase/firebase-js-sdk/pull/6061"
   },
   "packageManager": "yarn@3.1.1"
 }
