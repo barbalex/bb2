@@ -18,28 +18,28 @@ const Container = styled.div`
   div {
     font-size: medium;
   }
-  p.event-weather {
+  div.event-weather {
     position: relative !important;
   }
   li.event-weather {
     list-style-type: none !important;
   }
 
-  p.event-statistics,
-  p.event-monthlyStatistics {
+  div.event-statistics,
+  div.event-monthlyStatistics {
     position: relative;
   }
   li.event-statistics,
   li.event-monthlyStatistics {
     list-style-type: none;
   }
-  p.event-victims {
+  div.event-victims {
     position: relative;
   }
   li.event-victims {
     list-style-type: none;
   }
-  p.event-highlighted {
+  div.event-highlighted {
     position: relative;
   }
   li.event-highlighted {

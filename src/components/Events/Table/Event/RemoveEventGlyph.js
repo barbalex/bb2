@@ -1,6 +1,12 @@
 //
-import React, { useCallback } from 'react'
-import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import React, { useCallback, useState } from 'react'
+import {
+  Glyphicon,
+  OverlayTrigger,
+  Popover,
+  ButtonToolbar,
+  Button,
+} from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { gql, useApolloClient } from '@apollo/client'
@@ -15,7 +21,9 @@ const StyledGlyphicon = styled(Glyphicon)`
 const RemoveEventGlyph = ({ event }) => {
   const client = useApolloClient()
 
-  const onRemoveEvent = useCallback(async () => {
+  const [open, setOpen] = useState(true)
+
+  const onClickYes = useCallback(async () => {
     try {
       await client.mutate({
         mutation: gql`
@@ -31,16 +39,36 @@ const RemoveEventGlyph = ({ event }) => {
     } catch (error) {
       console.log(error)
     }
+    setOpen(false)
   }, [client, event.id])
 
-  return (
-    <OverlayTrigger
-      placement="top"
-      overlay={<Tooltip id="removeThisEvent">remove</Tooltip>}
-    >
-      <StyledGlyphicon glyph="remove-circle" onClick={onRemoveEvent} />
-    </OverlayTrigger>
+  const onClickNo = useCallback(() => {
+    setOpen(false)
+    // trick to make overlay re-open-able
+    setTimeout(() => setOpen(true))
+  }, [])
+
+  const popover = (
+    <Popover id="popoverRemoveEvent" title="Delete this event?">
+      <ButtonToolbar>
+        <Button bsSize="small" bsStyle="danger" onClick={onClickYes}>
+          Yes
+        </Button>
+        <Button bsSize="small" onClick={onClickNo}>
+          No
+        </Button>
+      </ButtonToolbar>
+    </Popover>
   )
+
+  if (open) {
+    return (
+      <OverlayTrigger trigger="click" placement="right" overlay={popover}>
+        <StyledGlyphicon glyph="remove-circle" />
+      </OverlayTrigger>
+    )
+  }
+  return <StyledGlyphicon glyph="remove-circle" />
 }
 
 export default observer(RemoveEventGlyph)

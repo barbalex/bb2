@@ -150,8 +150,6 @@ const MyNavbar = ({ location }) => {
   const showAddEvent = !!user && pathname.includes('/events')
   const showAddPublication = !!user && activePage?._id === 'pages_publications'
 
-  console.log('NavBar', { user, activePage: toJS(activePage), pathname })
-
   return (
     <StyledNavbar
       id="nav-wrapper"

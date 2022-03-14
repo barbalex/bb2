@@ -44,7 +44,7 @@ a:link {
  * come over correctly in object literal
  * so need to keep this here
  */
-.events p.event-weather:before {
+.events div.event-weather:before {
   font-family: 'Glyphicons Halflings';
   content: '\2601';
   font-size: 1.4em;
@@ -53,8 +53,8 @@ a:link {
   left: -26px;
 }
 
-.events p.event-statistics:before,
-.events p.event-monthlyStatistics:before {
+.events div.event-statistics:before,
+.events div.event-monthlyStatistics:before {
   font-family: 'Glyphicons Halflings';
   content: '\e185';
   font-size: 1em;
@@ -63,7 +63,7 @@ a:link {
   left: -23px;
 }
 
-.events p.event-victims:before {
+.events div.event-victims:before {
   font-family: 'Glyphicons Halflings';
   content: '\e101';
   font-size: 1.3em;
@@ -72,7 +72,7 @@ a:link {
   left: -26px;
 }
 
-.events p.event-highlighted:before {
+.events div.event-highlighted:before {
   font-family: 'Glyphicons Halflings';
   content: '\e006';
   font-size: 1.3em;
