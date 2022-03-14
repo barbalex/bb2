@@ -6,7 +6,6 @@ import DocumentTitle from 'react-document-title'
 import { navigate } from '@reach/router'
 import { gql, useQuery } from '@apollo/client'
 
-import NewEvent from './NewEvent'
 import EditEvent from './EditEvent'
 import ModalRemoveEvent from './ModalRemoveEvent'
 import EventsTable from './Table'
@@ -56,7 +55,7 @@ const Events = () => {
   const { getPage } = store.page
   const { activeYear, grouped, setGrouped } = store.yearsOfEvents
   const showEventsTable = activeYear > 2014
-  const { activeEventId, eventToRemove, showNewEvent } = store.events
+  const { activeEventId, eventToRemove } = store.events
 
   const { data } = useQuery(
     gql`
@@ -102,7 +101,6 @@ const Events = () => {
         </YearButtonsContainer>
         {showEventsTable && <EventsTable />}
         {activeEventId && <EditEvent />}
-        {showNewEvent && <NewEvent />}
         {eventToRemove && <ModalRemoveEvent />}
       </Container>
     </DocumentTitle>

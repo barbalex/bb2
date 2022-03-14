@@ -32,14 +32,16 @@ const EventLinks = ({ activeEvent }) => {
       <Title>Links</Title>
       <Row>
         <Col sm={3} lg={2}>
-          <Label>{activeEvent.links.length > 0 ? 'Label' : null}</Label>
+          <Label>
+            {(activeEvent?.links ?? []).length > 0 ? 'Label' : null}
+          </Label>
         </Col>
         <Col sm={7} lg={8}>
-          <Label>{activeEvent.links.length > 0 ? 'Url' : null}</Label>
+          <Label>{(activeEvent?.links ?? []).length > 0 ? 'Url' : null}</Label>
         </Col>
         <Col sm={1} lg={1} />
       </Row>
-      {activeEvent.links.map((link, index) => (
+      {(activeEvent?.links ?? []).map((link, index) => (
         <EventLink activeEvent={activeEvent} key={index} index={index} />
       ))}
       <Button onClick={onNewLink}>new link</Button>

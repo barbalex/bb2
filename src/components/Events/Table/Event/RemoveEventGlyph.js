@@ -1,10 +1,9 @@
 //
-import React, { useContext, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-
-import storeContext from '../../../../storeContext'
+import { gql, useApolloClient } from '@apollo/client'
 
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 0.9em;
@@ -14,13 +13,25 @@ const StyledGlyphicon = styled(Glyphicon)`
 `
 
 const RemoveEventGlyph = ({ event }) => {
-  const store = useContext(storeContext)
-  const { setEventToRemove } = store.events
+  const client = useApolloClient()
 
-  const onRemoveEvent = useCallback(
-    () => setEventToRemove(event),
-    [event, setEventToRemove],
-  )
+  const onRemoveEvent = useCallback(async () => {
+    try {
+      await client.mutate({
+        mutation: gql`
+          mutation mutateEvent($id: uuid!) {
+            delete_event_by_pk(id: $id) {
+              id
+            }
+          }
+        `,
+        variables: { id: event.id },
+        refetchQueries: ['eventsForEvetsPageQuery'],
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }, [client, event.id])
 
   return (
     <OverlayTrigger

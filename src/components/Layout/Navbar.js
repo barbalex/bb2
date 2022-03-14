@@ -11,6 +11,9 @@ import has from 'lodash/has'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { navigate } from 'gatsby'
+import { gql, useApolloClient } from '@apollo/client'
+import moment from 'moment'
+import { toJS } from 'mobx'
 
 import oceanDarkImage from '../../images/oceanDark.jpg'
 import storeContext from '../../storeContext'
@@ -39,6 +42,7 @@ const isNavMobile = () => {
 }
 
 const MyNavbar = ({ location }) => {
+  const client = useApolloClient()
   const store = useContext(storeContext)
   const [navExpanded, changeNavExpanded] = useState(false)
 
@@ -94,10 +98,32 @@ const MyNavbar = ({ location }) => {
   const onClickNewPublication = useCallback(() => {
     store.publications.setShowNewPublication(true)
   }, [store.publications])
-  const onClickNewEvent = useCallback(
-    () => store.events.setShowNewEvent(true),
-    [store.events],
-  )
+  const onClickNewEvent = useCallback(async () => {
+    let result
+    try {
+      result = await client.mutate({
+        mutation: gql`
+          mutation mutateEvent($datum: date, $eventType: String) {
+            insert_event_one(
+              object: { datum: $datum, event_type: $eventType }
+            ) {
+              id
+            }
+          }
+        `,
+        variables: {
+          datum: moment(event.date).format('YYYY-MM-DD'),
+          eventType: 'migration',
+        },
+        refetchQueries: ['eventsForEvetsPageQuery'],
+      })
+    } catch (error) {
+      console.log(error)
+    }
+    const id = result?.data?.insert_event_one?.id
+    if (!id) return console.log('got no id')
+    store.events.setActiveEventId(id)
+  }, [client, store.events])
 
   const { activePage } = store.page
   const { activeMonthlyEvent } = store.monthlyEvents
@@ -121,8 +147,10 @@ const MyNavbar = ({ location }) => {
       has(activeArticle, '_id') ||
       has(activePublication, '_id'))
   const showAddArticle = !!user && activePage?._id === 'pages_commentaries'
-  const showAddEvent = !!user && activePage?._id === 'pages_events'
+  const showAddEvent = !!user && pathname.includes('/events')
   const showAddPublication = !!user && activePage?._id === 'pages_publications'
+
+  console.log('NavBar', { user, activePage: toJS(activePage), pathname })
 
   return (
     <StyledNavbar

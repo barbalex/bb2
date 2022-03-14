@@ -1,4 +1,3 @@
-//
 import { action } from 'mobx'
 import app from 'ampersand-app'
 import moment from 'moment'
@@ -50,12 +49,6 @@ export default (store) => ({
     }
     store.events.activeEventId = _id
     store.events.saveEvent(newEvent)
-  }),
-
-  showNewEvent: false,
-
-  setShowNewEvent: action('setShowNewEvent', (show) => {
-    store.events.showNewEvent = show
   }),
 
   getEvent: action('getEvent', (id) => {
