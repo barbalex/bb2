@@ -85,8 +85,6 @@ const Events = () => {
     [grouped, years],
   )
 
-  console.log('Events, activeEventId:', activeEventId)
-
   return (
     <DocumentTitle title="Events">
       <Container className="events">

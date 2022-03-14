@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { gql, useApolloClient } from '@apollo/client'
 
 import tpPgObjectArray from '../../../modules/toPgObjectArray'
 
@@ -19,10 +20,10 @@ const StyledGlyphicon = styled(Glyphicon)`
   cursor: pointer;
 `
 
-const EventLink = ({ activeEvent, index, saveToDb }) => {
+const EventLink = ({ activeEvent, index }) => {
+  const client = useApolloClient()
   const links = useMemo(() => [...activeEvent.links], [activeEvent.links])
   const link = links[index]
-  console.log('EventLink', { activeEvent, links, link, index })
 
   const [label, setLabel] = useState()
   const [url, setUrl] = useState()
@@ -34,22 +35,34 @@ const EventLink = ({ activeEvent, index, saveToDb }) => {
 
   const onChangeUrl = useCallback((e) => setUrl(e.target.value), [])
   const onBlurUrl = useCallback(() => {
-    console.log('bluring url')
-    // see: https://hasura.io/docs/latest/graphql/core/databases/postgres/mutations/update.html#update-jsonb-columns
     links[index] = { url, label }
-    saveToDb({ field: 'links', value: tpPgObjectArray(links) })
-  }, [index, label, links, saveToDb, url])
+    saveLink()
+  }, [index, label, links, saveLink, url])
 
   const onChangeLabel = useCallback((e) => setLabel(e.target.value), [])
   const onBlurLabel = useCallback(() => {
     links[index] = { url, label }
-    saveToDb({ field: 'links', value: tpPgObjectArray(links) })
-  }, [index, label, links, saveToDb, url])
+    saveLink()
+  }, [index, label, links, saveLink, url])
 
   const onRemoveLink = useCallback(() => {
     links.splice(index, 1)
-    saveToDb({ field: 'links', value: links })
-  }, [index, links, saveToDb])
+    saveLink()
+  }, [index, links, saveLink])
+
+  const saveLink = useCallback(() => {
+    client.mutate({
+      mutation: gql`
+        mutation mutateEvent($id: uuid!, $val: jsonb) {
+          update_event_by_pk(pk_columns: { id: $id }, _set: { links: $val }) {
+            id
+            links
+          }
+        }
+      `,
+      variables: { id: activeEvent.id, val: links },
+    })
+  }, [activeEvent.id, client, links])
 
   return (
     <Row key={index}>

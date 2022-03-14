@@ -22,8 +22,6 @@ const Event = ({ event }) => {
   const classNames = (event.tags ?? []).map((tag) => `event-${tag}`).join(' ')
   const links = useMemo(() => event.links ?? [], [event.links])
 
-  console.log('Event, links', { links, map: links.map, id: event.id })
-
   const Links =
     links.map((l, key) => (
       <OuterSpan key={key}>

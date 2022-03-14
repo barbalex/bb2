@@ -14,7 +14,7 @@ const Label = styled.p`
   margin-bottom: 0;
 `
 
-const EventLinks = ({ activeEvent, saveToDb }) => {
+const EventLinks = ({ activeEvent }) => {
   const store = useContext(storeContext)
   const { saveEvent } = store.events
 
@@ -40,12 +40,7 @@ const EventLinks = ({ activeEvent, saveToDb }) => {
         <Col sm={1} lg={1} />
       </Row>
       {activeEvent.links.map((link, index) => (
-        <EventLink
-          activeEvent={activeEvent}
-          key={index}
-          index={index}
-          saveToDb={saveToDb}
-        />
+        <EventLink activeEvent={activeEvent} key={index} index={index} />
       ))}
       <Button onClick={onNewLink}>new link</Button>
     </div>

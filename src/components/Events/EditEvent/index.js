@@ -120,8 +120,6 @@ const EditEvent = () => {
   )
   const activeEvent = data?.event?.[0]
 
-  console.log('EditEvent rendering, data:', data)
-
   const [error, setError] = useState(null)
   const [title, setTitle] = useState('')
   useEffect(() => {
@@ -132,9 +130,9 @@ const EditEvent = () => {
 
   const saveToDb = useCallback(
     async ({ field, value }) => {
-      console.log('EditEvent, saveToDb', { field, value })
-      await client.mutate({
-        mutation: gql`
+      try {
+        await client.mutate({
+          mutation: gql`
         mutation mutateEvent($id: uuid!) {
           update_event_by_pk(
             pk_columns: { id: $id }
@@ -149,9 +147,11 @@ const EditEvent = () => {
           }
         }
       `,
-        variables: { id: activeEvent.id },
-      })
-      console.log('EditEvent, saveToDb finished')
+          variables: { id: activeEvent.id },
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
     [activeEvent?.id, client],
   )
@@ -171,10 +171,6 @@ const EditEvent = () => {
   )
   const onChangeDatePicker = useCallback(
     (date) => {
-      console.log({
-        date,
-        value: moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'),
-      })
       saveToDb({
         field: 'datum',
         value: date
@@ -226,7 +222,7 @@ const EditEvent = () => {
           />
         </FormGroup> */}
         <TagsInput activeEvent={activeEvent} saveToDb={saveToDb} />
-        <EventLinks activeEvent={activeEvent} saveToDb={saveToDb} />
+        <EventLinks activeEvent={activeEvent} />
         {error && <StyledAlert bsStyle="danger">{error}</StyledAlert>}
       </Modal.Body>
 
