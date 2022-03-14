@@ -4930,13 +4930,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"are-passive-events-supported@npm:^1.1.0":
-  version: 1.1.1
-  resolution: "are-passive-events-supported@npm:1.1.1"
-  checksum: 3295a7b3aeb026d26c1b256decdb5ded8bf26f6c02fd0b37c63c7dc9affd57b7474ee9b6230b5d5ac4f0fc624a19acdcfdd76c5155025d97cc7d8bb5dc83e61b
-  languageName: node
-  linkType: hard
-
 "are-we-there-yet@npm:^3.0.0":
   version: 3.0.0
   resolution: "are-we-there-yet@npm:3.0.0"
@@ -5640,7 +5633,6 @@ __metadata:
     rimraf: 3.0.2
     speakingurl: 14.0.1
     styled-components: 5.3.3
-    use-onclickoutside: ^0.4.0
   languageName: unknown
   linkType: soft
 
@@ -19663,44 +19655,6 @@ __metadata:
     querystringify: ~1.0.0
     requires-port: ~1.0.0
   checksum: 4b21b72d3dbd105cac7422687c3bc3e2b180b81beead8644e91fd69f40c9364cca2708ee4c3fd363efe34cffa41fe08f7928f35ddd21e3224447376ebbf44cfc
-  languageName: node
-  linkType: hard
-
-"use-isomorphic-layout-effect@npm:^1.0.0":
-  version: 1.1.1
-  resolution: "use-isomorphic-layout-effect@npm:1.1.1"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-  checksum: fd9061817d4945af37fd79866b1fe96a09cafe873169a66ec699140b609c64db6c60512d94ec3ca90967837026ea6e6d003901c557693708aeee11d392418a9e
-  languageName: node
-  linkType: hard
-
-"use-latest@npm:^1.0.0":
-  version: 1.2.0
-  resolution: "use-latest@npm:1.2.0"
-  dependencies:
-    use-isomorphic-layout-effect: ^1.0.0
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-  checksum: f0cb3a49119e14ed46db8a946b1aa17b838b8834c8a652bde314877ede6057c55b50654a97ee802597a5839c070180195e58ea3a756b7c33db7f540642f0ddea
-  languageName: node
-  linkType: hard
-
-"use-onclickoutside@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "use-onclickoutside@npm:0.4.0"
-  dependencies:
-    are-passive-events-supported: ^1.1.0
-    use-latest: ^1.0.0
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-  checksum: bef953e5138736f6cb67ba8c7343ff6fc6bb25b758ad0e0a8776c5f2ec9b6818be50a67d7d24f15d06d521ad90fccb06c3acaabf1cafda64e4f546fd306122cc
   languageName: node
   linkType: hard
 
