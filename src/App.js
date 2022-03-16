@@ -5,7 +5,6 @@ import pouchdbAuthentication from 'pouchdb-authentication'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { ApolloProvider } from '@apollo/client'
-import { navigate } from '@reach/router'
 
 import store from './store'
 import couchUrl from './modules/getCouchUrl'
@@ -105,9 +104,7 @@ const App = ({ element }) => {
       if (!user) return
       // console.log('App, onAuthStateChanged, user:', user)
       store.login.setUser(user)
-      getAuthToken({ store }).then(() => {
-        // TODO: only navigate if is login
-      })
+      getAuthToken({ store })
     })
 
     return () => {
