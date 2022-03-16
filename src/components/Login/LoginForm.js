@@ -13,6 +13,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth'
 
 import validateEmail from './validateEmail'
 import storeContext from '../../storeContext'
+import { navigate } from 'gatsby'
 
 const StyledAlert = styled(Alert)`
   margin-bottom: 8px;
@@ -66,7 +67,7 @@ const LoginForm = () => {
           changeNewEmail(null)
           changeLoginError(error)
         }
-        store.login.setReload(true)
+        setTimeout(() => navigate('/events/'), 500)
       }
     },
     [store.login, validSignin],

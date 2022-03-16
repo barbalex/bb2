@@ -171,9 +171,9 @@ const MyNavbar = ({ location }) => {
       has(activeMonthlyEvent, '_id') ||
       has(activeArticle, '_id') ||
       has(activePublication, '_id'))
-  const showAddArticle = !!user && activePage?._id === 'pages_commentaries'
+  const showAddArticle = !!user && pathname.includes('/articles')
   const showAddEvent = !!user && pathname.includes('/events')
-  const showAddPublication = !!user && activePage?._id === 'pages_publications'
+  const showAddPublication = !!user && pathname.includes('/publications')
 
   return (
     <StyledNavbar

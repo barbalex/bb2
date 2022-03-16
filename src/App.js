@@ -106,11 +106,7 @@ const App = ({ element }) => {
       // console.log('App, onAuthStateChanged, user:', user)
       store.login.setUser(user)
       getAuthToken({ store }).then(() => {
-        navigate('/events')
-        if (store.login.reload) {
-          store.login.setReload(false)
-          window.location.reload(true)
-        }
+        // TODO: only navigate if is login
       })
     })
 

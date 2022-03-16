@@ -5,7 +5,6 @@
  * app.js sets default email (null) if not exists on app start
  */
 import { action } from 'mobx'
-import { navigate } from '@reach/router'
 
 import { signOut } from 'firebase/auth'
 
@@ -15,8 +14,6 @@ export default (store) => {
   return {
     user: null,
     firebaseAuth: null,
-    reload: false,
-    getUid: action('getUid', () => store.user?.uid),
 
     email: window.localStorage.email,
 
@@ -26,10 +23,9 @@ export default (store) => {
       }
     }),
 
-    setUser: action('login', (user) => {
+    setUser: action('setUser', (user) => {
       if (user) {
         store.login.user = user
-        navigate('/events')
       }
     }),
 
@@ -37,9 +33,6 @@ export default (store) => {
       store.login?.firebaseAuth && signOut(store.login.firebaseAuth)
       window.localStorage.removeItem('token')
       store.login.user = null
-    }),
-    setReload: action('setReload', (val) => {
-      store.login.reload = val
     }),
   }
 }
