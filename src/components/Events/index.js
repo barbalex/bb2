@@ -100,7 +100,7 @@ const Events = ({ id }) => {
           </ButtonGroup>
         </YearButtonsContainer>
         {showEventsTable && <EventsTable />}
-        {id && <EditEvent />}
+        {id && <EditEvent id={id} />}
       </Container>
     </DocumentTitle>
   )
