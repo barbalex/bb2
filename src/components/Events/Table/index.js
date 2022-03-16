@@ -60,7 +60,7 @@ const HeaderRow = styled.div`
   display: flex;
 `
 
-const Events = () => (
+const Events = ({ activeYear }) => (
   <Container>
     <Header className="eventsTable-header">
       <HeaderRow>
@@ -71,7 +71,7 @@ const Events = () => (
     </Header>
     <Body>
       <GeminiScrollbar id="eventsTableBody" autoshow>
-        <DateRows />
+        <DateRows activeYear={activeYear} />
       </GeminiScrollbar>
     </Body>
   </Container>

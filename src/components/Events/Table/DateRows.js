@@ -3,7 +3,7 @@
  * adding useContext errors:
  * Hooks can only be called inside the body of a function component
  */
-import React, { useContext } from 'react'
+import React from 'react'
 import moment from 'moment'
 import ReactList from 'react-list'
 import { observer } from 'mobx-react-lite'
@@ -13,7 +13,6 @@ import { gql, useQuery } from '@apollo/client'
 import DateRow from './DateRow'
 import MonthRow from './MonthRow'
 import MonthlyStatisticsRow from './MonthlyStatisticsRow'
-import storeContext from '../../../storeContext'
 
 const BodyRow = styled.div`
   display: flex;
@@ -29,10 +28,7 @@ const BodyCell = styled.div`
   padding-left: 10px;
 `
 
-const DateRows = () => {
-  const store = useContext(storeContext)
-  const activeYear = store.yearsOfEvents.activeYear
-
+const DateRows = ({ activeYear }) => {
   const { loading, error, data } = useQuery(
     gql`
       query eventsForEvetsPageQuery($from: date, $to: date) {

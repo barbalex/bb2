@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useMemo } from 'react'
+import React, { useContext, useCallback, useMemo, useState } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
@@ -52,8 +52,6 @@ const YearButtonsContainer = styled.div`
 const Events = ({ id }) => {
   const store = useContext(storeContext)
   const { getPage } = store.page
-  const { activeYear, grouped, setGrouped } = store.yearsOfEvents
-  const showEventsTable = activeYear > 2014
 
   console.log('Events, id:', id)
 
@@ -75,9 +73,12 @@ const Events = ({ id }) => {
     navigate('/monthly-events')
   }, [getPage])
 
+  const [grouped, setGrouped] = useState(true)
   const onClickSetGrouped = useCallback(() => {
     setGrouped(!grouped)
   }, [grouped, setGrouped])
+
+  const [activeYear, setActiveYear] = useState(new Date().getFullYear())
 
   const yearsOfEventsToUse = useMemo(
     () => (grouped ? years.filter((y) => y > 2018) : years),
@@ -91,7 +92,12 @@ const Events = ({ id }) => {
         <YearButtonsContainer>
           <ButtonGroup>
             {yearsOfEventsToUse.map((year) => (
-              <YearButton key={year} year={year} />
+              <YearButton
+                key={year}
+                year={year}
+                activeYear={activeYear}
+                setActiveYear={setActiveYear}
+              />
             ))}
             {grouped && (
               <Button onClick={onClickSetGrouped}>2018 - 2015</Button>
@@ -99,7 +105,7 @@ const Events = ({ id }) => {
             <Button onClick={onClickMonthlyEvents}>2014 - 2011</Button>
           </ButtonGroup>
         </YearButtonsContainer>
-        {showEventsTable && <EventsTable />}
+        <EventsTable activeYear={activeYear} />
         {id && <EditEvent id={id} />}
       </Container>
     </DocumentTitle>
