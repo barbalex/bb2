@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { Button } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 
 const YearButton = ({ year, activeYear, setActiveYear }) => {
   const onClick = useCallback(() => setActiveYear(year), [setActiveYear, year])
@@ -11,4 +10,4 @@ const YearButton = ({ year, activeYear, setActiveYear }) => {
     </Button>
   )
 }
-export default observer(YearButton)
+export default YearButton

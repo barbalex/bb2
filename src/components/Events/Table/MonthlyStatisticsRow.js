@@ -1,5 +1,4 @@
 import React from 'react'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import Event from './Event'
@@ -83,4 +82,4 @@ const MonthlyStatisticsRow = ({ dateRowObject: dRO }) => {
   return null
 }
 
-export default observer(MonthlyStatisticsRow)
+export default MonthlyStatisticsRow

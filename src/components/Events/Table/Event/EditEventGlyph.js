@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { navigate } from 'gatsby'
 
@@ -23,4 +22,4 @@ const EditEventGlyph = ({ event }) => {
   )
 }
 
-export default observer(EditEventGlyph)
+export default EditEventGlyph

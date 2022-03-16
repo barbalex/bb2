@@ -12,7 +12,6 @@ import {
   FormControl,
 } from 'react-bootstrap'
 import moment from 'moment'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { gql, useQuery, useApolloClient } from '@apollo/client'
 import { navigate } from 'gatsby'
@@ -229,4 +228,4 @@ const EditEvent = ({ id }) => {
   )
 }
 
-export default observer(EditEvent)
+export default EditEvent

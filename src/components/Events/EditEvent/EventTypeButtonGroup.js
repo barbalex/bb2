@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -47,4 +46,4 @@ const EventTypeButtonGroup = ({ activeEvent, saveToDb }) => {
   )
 }
 
-export default observer(EventTypeButtonGroup)
+export default EventTypeButtonGroup

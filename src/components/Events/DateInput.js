@@ -2,7 +2,6 @@ import React from 'react'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import { FormGroup, ControlLabel, InputGroup } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 const StyledInputGroup = styled(InputGroup)``
@@ -64,4 +63,4 @@ const EventDate = ({ date, onChangeDatePicker }) => {
   )
 }
 
-export default observer(EventDate)
+export default EventDate

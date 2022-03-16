@@ -6,7 +6,6 @@
 import React from 'react'
 import moment from 'moment'
 import ReactList from 'react-list'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { gql, useQuery } from '@apollo/client'
 
@@ -60,9 +59,6 @@ const DateRows = ({ activeYear }) => {
   const events = data?.event ?? []
   const dates = data?.event_dates.nodes ?? []
 
-  // console.log('DateRows, events:', events)
-  // console.log('DateRows, dates:', dates)
-
   const dateRowObjects = dates.map(({ datum: date }) => ({
     date,
     migrationEvents: events.filter(
@@ -72,7 +68,6 @@ const DateRows = ({ activeYear }) => {
       (event) => event.datum === date && event.event_type === 'politics',
     ),
   }))
-  // console.log('DateRows, dateRowObjects:', dateRowObjects)
 
   const dateRows = []
   dateRowObjects.forEach((dRO, index) => {
@@ -147,4 +142,4 @@ const DateRows = ({ activeYear }) => {
   )
 }
 
-export default observer(DateRows)
+export default DateRows

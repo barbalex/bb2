@@ -1,6 +1,5 @@
-import React, { useContext, useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { navigate } from '@reach/router'
@@ -8,7 +7,6 @@ import { gql, useQuery } from '@apollo/client'
 
 import EditEvent from './EditEvent'
 import EventsTable from './Table'
-import storeContext from '../../storeContext'
 import IntroJumbotron from './IntroJumbotron'
 import YearButton from './YearButton'
 
@@ -50,9 +48,6 @@ const YearButtonsContainer = styled.div`
 `
 
 const Events = ({ id }) => {
-  const store = useContext(storeContext)
-  const { getPage } = store.page
-
   console.log('Events, id:', id)
 
   const { data } = useQuery(
@@ -68,10 +63,10 @@ const Events = ({ id }) => {
 
   const years = (data?.years ?? [new Date().getFullYear()]).map((d) => d.year)
 
-  const onClickMonthlyEvents = useCallback(() => {
-    getPage('pages_monthlyEvents')
-    navigate('/monthly-events')
-  }, [getPage])
+  const onClickMonthlyEvents = useCallback(
+    () => navigate('/monthly-events'),
+    [],
+  )
 
   const [grouped, setGrouped] = useState(true)
   const onClickSetGrouped = useCallback(() => {
@@ -111,4 +106,4 @@ const Events = ({ id }) => {
     </DocumentTitle>
   )
 }
-export default observer(Events)
+export default Events

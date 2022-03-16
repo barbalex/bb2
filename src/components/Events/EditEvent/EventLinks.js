@@ -1,10 +1,9 @@
-import React, { useContext, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { gql, useApolloClient } from '@apollo/client'
 
 import EventLink from './EventLink'
-import storeContext from '../../../storeContext'
 
 const Title = styled.div`
   font-weight: bold;
@@ -15,17 +14,28 @@ const Label = styled.p`
 `
 
 const EventLinks = ({ activeEvent }) => {
-  const store = useContext(storeContext)
-  const { saveEvent } = store.events
+  const client = useApolloClient()
 
   const onNewLink = useCallback(() => {
     const newLink = {
       url: '',
       label: '',
     }
-    activeEvent.links.push(newLink)
-    saveEvent(activeEvent)
-  }, [activeEvent, saveEvent])
+    client.mutate({
+      mutation: gql`
+        mutation mutateEvent($id: uuid!, $val: jsonb) {
+          update_event_by_pk(pk_columns: { id: $id }, _set: { links: $val }) {
+            id
+            links
+          }
+        }
+      `,
+      variables: {
+        id: activeEvent.id,
+        val: [...(activeEvent.links ?? []), newLink],
+      },
+    })
+  }, [activeEvent.id, activeEvent.links, client])
 
   return (
     <div>
@@ -49,4 +59,4 @@ const EventLinks = ({ activeEvent }) => {
   )
 }
 
-export default observer(EventLinks)
+export default EventLinks

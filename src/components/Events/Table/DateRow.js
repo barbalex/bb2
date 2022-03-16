@@ -1,6 +1,5 @@
 import React from 'react'
 import moment from 'moment'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import Event from './Event'
@@ -93,4 +92,4 @@ const DateRow = ({ dateRowObject: dRO }) => {
   )
 }
 
-export default observer(DateRow)
+export default DateRow

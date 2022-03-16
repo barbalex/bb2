@@ -1,7 +1,6 @@
 //
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import allTags from './tags'
@@ -18,46 +17,44 @@ const StyledGlyphicon = styled(Glyphicon)`
   font-size: 1.5em;
 `
 
-const EventTags = ({ activeEvent, saveToDb }) => {
-  return (
-    <Container>
-      <Label>Tags</Label>
-      <div className="event-tags">
-        {allTags.map((option, index) => (
-          <div key={index} className="form-group event-tag">
-            <label>
-              <input
-                type="checkbox"
-                checked={activeEvent.tags?.includes(option.tag)}
-                onChange={(event) => {
-                  if (event.target.checked) {
-                    saveToDb({
-                      field: 'tags',
-                      value: JSON.stringify([...activeEvent.tags, option.tag]),
-                    })
-                  } else {
-                    saveToDb({
-                      field: 'tags',
-                      value: JSON.stringify(
-                        activeEvent.tags.filter((t) => t !== option.tag),
-                      ),
-                    })
-                  }
-                }}
+const EventTags = ({ activeEvent, saveToDb }) => (
+  <Container>
+    <Label>Tags</Label>
+    <div className="event-tags">
+      {allTags.map((option, index) => (
+        <div key={index} className="form-group event-tag">
+          <label>
+            <input
+              type="checkbox"
+              checked={activeEvent.tags?.includes(option.tag)}
+              onChange={(event) => {
+                if (event.target.checked) {
+                  saveToDb({
+                    field: 'tags',
+                    value: JSON.stringify([...activeEvent.tags, option.tag]),
+                  })
+                } else {
+                  saveToDb({
+                    field: 'tags',
+                    value: JSON.stringify(
+                      activeEvent.tags.filter((t) => t !== option.tag),
+                    ),
+                  })
+                }
+              }}
+            />
+            {option.iconText && (
+              <StyledGlyphicon
+                glyph={option.iconText}
+                data-top={option.top ? `${option.top}px` : 0}
               />
-              {option.iconText && (
-                <StyledGlyphicon
-                  glyph={option.iconText}
-                  data-top={option.top ? `${option.top}px` : 0}
-                />
-              )}
-              &nbsp;{option.tag}
-            </label>
-          </div>
-        ))}
-      </div>
-    </Container>
-  )
-}
+            )}
+            &nbsp;{option.tag}
+          </label>
+        </div>
+      ))}
+    </div>
+  </Container>
+)
 
-export default observer(EventTags)
+export default EventTags

@@ -8,7 +8,6 @@ import {
   FormGroup,
   FormControl,
 } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { gql, useApolloClient } from '@apollo/client'
 
@@ -99,4 +98,4 @@ const EventLink = ({ activeEvent, index }) => {
   )
 }
 
-export default observer(EventLink)
+export default EventLink

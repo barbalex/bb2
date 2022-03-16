@@ -1,7 +1,6 @@
 //
 import React from 'react'
 import GeminiScrollbar from 'react-gemini-scrollbar'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import DateRows from './DateRows'
@@ -77,4 +76,4 @@ const Events = ({ activeYear }) => (
   </Container>
 )
 
-export default observer(Events)
+export default Events

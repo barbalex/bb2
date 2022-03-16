@@ -7,7 +7,6 @@ import {
   ButtonToolbar,
   Button,
 } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { gql, useApolloClient } from '@apollo/client'
 
@@ -71,4 +70,4 @@ const RemoveEventGlyph = ({ event }) => {
   return <StyledGlyphicon glyph="remove-circle" />
 }
 
-export default observer(RemoveEventGlyph)
+export default RemoveEventGlyph
