@@ -2,7 +2,7 @@
  * using hooks errored
  * Hooks can only be called inside the body of a function component
  */
-import React, { useState, useCallback, useContext, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import {
   Modal,
   Button,
@@ -15,12 +15,12 @@ import moment from 'moment'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { gql, useQuery, useApolloClient } from '@apollo/client'
+import { navigate } from 'gatsby'
 
 import EventTypeButtonGroup from './EventTypeButtonGroup'
 import DateInput from '../DateInput'
 import TagsInput from './TagsInput'
 import EventLinks from './EventLinks'
-import storeContext from '../../../storeContext'
 
 const StyledModal = styled(Modal)`
   .col-xs-1,
@@ -98,10 +98,8 @@ const StyledAlert = styled(Alert)`
   margin-bottom: 10px;
 `
 
-const EditEvent = () => {
+const EditEvent = ({ id }) => {
   const client = useApolloClient()
-  const store = useContext(storeContext)
-  const { activeEventId, setActiveEventId } = store.events
 
   const { data, loading } = useQuery(
     gql`
@@ -116,7 +114,7 @@ const EditEvent = () => {
         }
       }
     `,
-    { variables: { id: activeEventId } },
+    { variables: { id } },
   )
   const activeEvent = data?.event?.[0]
 
@@ -183,9 +181,7 @@ const EditEvent = () => {
     },
     [saveToDb],
   )
-  const close = useCallback(() => {
-    setActiveEventId(null)
-  }, [setActiveEventId])
+  const close = useCallback(() => navigate('/events/'), [])
 
   if (loading) return null
 

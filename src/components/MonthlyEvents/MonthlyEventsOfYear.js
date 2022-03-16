@@ -18,7 +18,7 @@ const MonthlyEventsOfYear = ({ year }) => {
   return (
     <PanelGroup defaultActiveKey={activeEventId} id={year} accordion>
       {monthlyEvents
-        .filter(monthlyEvent => getYearFromEventId(monthlyEvent._id) === year)
+        .filter((monthlyEvent) => getYearFromEventId(monthlyEvent._id) === year)
         .map((doc, dIndex) => (
           <MonthlyEventPanel
             key={dIndex}

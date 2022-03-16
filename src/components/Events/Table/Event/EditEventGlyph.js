@@ -1,9 +1,8 @@
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback } from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-
-import storeContext from '../../../../storeContext'
+import { navigate } from 'gatsby'
 
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 0.9em;
@@ -12,13 +11,7 @@ const StyledGlyphicon = styled(Glyphicon)`
 `
 
 const EditEventGlyph = ({ event }) => {
-  const store = useContext(storeContext)
-  const { setActiveEventId } = store.events
-
-  const onClick = useCallback(
-    () => setActiveEventId(event.id),
-    [event.id, setActiveEventId],
-  )
+  const onClick = useCallback(() => navigate(`/events/${event.id}`), [event.id])
 
   return (
     <OverlayTrigger
