@@ -44,9 +44,8 @@ const Copyright = styled.p`
   margin-top: 70px;
 `
 
-const Articles = ({ id, location }) => {
+const Articles = ({ id }) => {
   const store = useContext(storeContext)
-  console.log('Articles, location:', location)
 
   const { data } = useQuery(
     gql`
@@ -66,8 +65,8 @@ const Articles = ({ id, location }) => {
       <Container>
         <h1>Articles</h1>
         <PanelGroup defaultActiveKey={id} id="articlesAccordion" accordion>
-          {articleIds.map((id) => (
-            <ArticlePanel key={id} id={id} location={location} />
+          {articleIds.map((ownId) => (
+            <ArticlePanel key={ownId} id={ownId} activeId={id} />
           ))}
         </PanelGroup>
         {showNewArticle && <NewArticle />}

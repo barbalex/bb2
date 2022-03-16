@@ -43,10 +43,10 @@ const PanelBody = styled.div`
   overflow-y: auto;
 `
 
-const ArticlePanel = ({ id, location }) => {
+const ArticlePanel = ({ id, activeId }) => {
   const store = useContext(storeContext)
   const client = useApolloClient()
-  console.log('ArticlePanel:', { id, location })
+  console.log('ArticlePanel:', { id, activeId })
 
   const [remove, setRemove] = useState(false)
 
@@ -64,7 +64,7 @@ const ArticlePanel = ({ id, location }) => {
   )
   const doc = data?.article_by_pk
 
-  const isActiveArticle = location.pathname.includes(id)
+  const isActiveArticle = id === activeId
   const showEditingGlyphons = !!store.login.user
   const panelbodypadding = store.editing ? '0 !important' : '15px'
   const panelbodymargintop = store.editing ? '-1px' : 0

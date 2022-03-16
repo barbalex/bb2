@@ -7,7 +7,6 @@ import { navigate } from '@reach/router'
 import { gql, useQuery } from '@apollo/client'
 
 import EditEvent from './EditEvent'
-import ModalRemoveEvent from './ModalRemoveEvent'
 import EventsTable from './Table'
 import storeContext from '../../storeContext'
 import IntroJumbotron from './IntroJumbotron'
@@ -50,12 +49,13 @@ const YearButtonsContainer = styled.div`
   text-align: center;
 `
 
-const Events = () => {
+const Events = ({ id }) => {
   const store = useContext(storeContext)
   const { getPage } = store.page
   const { activeYear, grouped, setGrouped } = store.yearsOfEvents
   const showEventsTable = activeYear > 2014
-  const { activeEventId, eventToRemove } = store.events
+
+  console.log('Events, id:', id)
 
   const { data } = useQuery(
     gql`
@@ -100,8 +100,7 @@ const Events = () => {
           </ButtonGroup>
         </YearButtonsContainer>
         {showEventsTable && <EventsTable />}
-        {activeEventId && <EditEvent />}
-        {eventToRemove && <ModalRemoveEvent />}
+        {id && <EditEvent />}
       </Container>
     </DocumentTitle>
   )

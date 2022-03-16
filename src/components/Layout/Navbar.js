@@ -140,8 +140,8 @@ const MyNavbar = ({ location }) => {
     }
     const id = result?.data?.insert_event_one?.id
     if (!id) return console.log('got no id')
-    store.events.setActiveEventId(id)
-  }, [client, store.events])
+    navigate(`/events/${id}/`)
+  }, [client])
 
   const user = store.login.user
   const { pathname } = location

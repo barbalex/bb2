@@ -129,10 +129,4 @@ export default (store) => ({
       })
     })
   }),
-
-  eventToRemove: null,
-
-  setEventToRemove: action('setEventToRemove', (event) => {
-    store.events.eventToRemove = event
-  }),
 })
