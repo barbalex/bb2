@@ -18,9 +18,12 @@ CREATE TABLE article (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid (),
   datum date DEFAULT NULL,
   title text DEFAULT NULL,
-  content bytea DEFAULT NULL -- was: article
+  content bytea DEFAULT NULL, -- was: article
+  draft boolean DEFAULT TRUE
 );
 
+-- ALTER TABLE article
+--   ADD COLUMN draft boolean DEFAULT TRUE;
 CREATE INDEX ON article USING btree (id);
 
 CREATE INDEX ON article USING btree (datum);

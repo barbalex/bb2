@@ -91,10 +91,34 @@ const MyNavbar = ({ location }) => {
     onToggleNav()
     // need to force update
   }, [onToggleNav, store.login])
-  const onClickNewArticle = useCallback(
-    () => store.articles.toggleShowNewArticle(),
-    [store.articles],
-  )
+
+  const onClickNewArticle = useCallback(async () => {
+    //TODO: test
+    let datum = new Date()
+    const offset = datum.getTimezoneOffset()
+    datum = new Date(datum.getTime() - offset * 60 * 1000)
+    datum = datum.toISOString().split('T')[0]
+    let result
+    try {
+      result = await client.mutate({
+        mutation: gql`
+          mutation AddArticleForArticlePanel($draft: Boolean, $datum: date) {
+            insert_article_one(object: { datum: $datum, draft: $draft }) {
+              id
+              datum
+              draft
+            }
+          }
+        `,
+        variables: { draft: false, datum },
+      })
+    } catch (error) {
+      console.log(error)
+    }
+    const id = result?.data?.insert_article_one?.id
+    navigate(`/articles/${id}`)
+  }, [client])
+
   const onClickNewPublication = useCallback(() => {
     store.publications.setShowNewPublication(true)
   }, [store.publications])

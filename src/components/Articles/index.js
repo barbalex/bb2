@@ -4,6 +4,7 @@ import has from 'lodash/has'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
+import { gql, useQuery } from '@apollo/client'
 
 import ArticlePanel from './ArticlePanel'
 import NewArticle from './NewArticle'
@@ -45,16 +46,23 @@ const Copyright = styled.p`
   margin-top: 70px;
 `
 
-const Articles = ({ year, month, day, title }) => {
+const Articles = () => {
   const store = useContext(storeContext)
+
+  const { data } = useQuery(
+    gql`
+      query articleIdsForArticles {
+        article(order_by: { datum: desc }) {
+          id
+        }
+      }
+    `,
+  )
+  const articleIds = data?.article?.map((a) => a.id) ?? []
+
   const { getPage } = store.page
-  const {
-    articles,
-    activeArticle,
-    showNewArticle,
-    articleToRemove,
-    getArticles,
-  } = store.articles
+  const { activeArticle, showNewArticle, articleToRemove, getArticles } =
+    store.articles
   const activeArticleId = has(activeArticle, '_id') ? activeArticle._id : null
 
   useEffect(() => {
@@ -71,16 +79,8 @@ const Articles = ({ year, month, day, title }) => {
           id="articlesAccordion"
           accordion
         >
-          {articles.map((article, index) => (
-            <ArticlePanel
-              key={article._id}
-              doc={article}
-              index={index}
-              year={year}
-              month={month}
-              day={day}
-              title={title}
-            />
+          {articleIds.map((id) => (
+            <ArticlePanel key={id} id={id} />
           ))}
         </PanelGroup>
         {showNewArticle && <NewArticle />}

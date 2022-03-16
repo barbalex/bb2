@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
+import { gql, useApolloClient, useQuery } from '@apollo/client'
 
 import Article from './Article'
 import storeContext from '../../storeContext'
@@ -34,8 +35,26 @@ const PanelBody = styled.div`
   overflow-y: auto;
 `
 
-const ArticlePanel = ({ doc, index, year, month, day, title }) => {
+const ArticlePanel = ({ id }) => {
   const store = useContext(storeContext)
+  const client = useApolloClient()
+  console.log('ArticlePanel, id:', id)
+
+  const { data } = useQuery(
+    gql`
+      query ArticleForArticlePanel($id: uuid!) {
+        article_by_pk(id: $id) {
+          id
+          title
+          draft
+        }
+      }
+    `,
+    { variables: { id } },
+  )
+  const doc = data?.article_by_pk
+  console.log('ArticlePanel, doc:', doc)
+
   const {
     activeArticle,
     activeArticleId,
@@ -44,7 +63,7 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
     setArticleToRemove,
   } = store.articles
   const isArticle = !!activeArticle
-  const isActiveArticle = isArticle ? doc._id === activeArticle._id : false
+  const isActiveArticle = isArticle ? id === activeArticleId : false
   const showEditingGlyphons = !!store.login.user
   const panelbodypadding = store.editing ? '0 !important' : '15px'
   const panelbodymargintop = store.editing ? '-1px' : 0
@@ -53,11 +72,10 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
     (e) => {
       // prevent higher level panels from reacting
       e.stopPropagation()
-      const idToGet =
-        !activeArticle || activeArticle._id !== doc._id ? doc._id : null
+      const idToGet = !activeArticle || activeArticleId !== id ? id : null
       getArticle(idToGet)
     },
-    [activeArticle, doc._id, getArticle],
+    [activeArticle, activeArticleId, getArticle, id],
   )
   // prevent higher level panels from reacting
   const onClickArticleCollapse = useCallback(
@@ -68,18 +86,37 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
     (event) => {
       event.preventDefault()
       event.stopPropagation()
-      toggleDraftOfArticle(doc)
+      //toggleDraftOfArticle(doc)
+      let datum = new Date()
+      const offset = datum.getTimezoneOffset()
+      datum = new Date(datum.getTime() - offset * 60 * 1000)
+      datum = datum.toISOString().split('T')[0]
+      try {
+        client.mutate({
+          mutation: gql`
+            mutation UpdateDraftForArticlePanel($id: uuid!, $draft: Boolean) {
+              update_article_by_pk(
+                pk_columns: { id: $id }
+                _set: { draft: $draft }
+              ) {
+                id
+              }
+            }
+          `,
+          variables: { draft: !doc.draft, id },
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
-    [doc, toggleDraftOfArticle],
+    [client, doc?.draft, id],
   )
-  const onRemoveArticle = useCallback(
-    (event) => {
-      event.preventDefault()
-      event.stopPropagation()
-      setArticleToRemove(doc)
-    },
-    [doc, setArticleToRemove],
-  )
+  const onRemoveArticle = useCallback((event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    // TODO:
+    //setArticleToRemove(doc)
+  }, [])
 
   const ref = useRef(null)
   const scrollToActivePanel = useCallback(() => {
@@ -92,26 +129,12 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
     }
   }, [])
   useEffect(() => {
-    if (!!year && !!month && !!day && !!title) {
-      store.articles.activeArticleId = `commentaries_${year}_${month}_${day}_${title}`
-    }
-    if (activeArticle && activeArticleId === doc._id) {
+    if (id) {
       window.setTimeout(() => {
         scrollToActivePanel()
       }, 50)
     }
-  }, [
-    activeArticle,
-    activeArticleId,
-    day,
-    doc._id,
-    month,
-    scrollToActivePanel,
-    store.articles,
-    store.articles.activeArticleId,
-    title,
-    year,
-  ])
+  }, [id, scrollToActivePanel])
 
   // use pure bootstrap.
   // advantage: can add edit icon to panel-heading
@@ -120,7 +143,7 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
       <PanelHeading
         className="panel-heading"
         role="tab"
-        id={`heading${index}`}
+        id={`heading${id}`}
         onClick={onClickArticle}
         ref={ref}
       >
@@ -129,11 +152,11 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
             role="button"
             data-toggle="collapse"
             data-parent="#articlesAccordion"
-            href={`#collapse${index}`}
+            href={`#collapse${id}`}
             aria-expanded="false"
-            aria-controls={`#collapse${index}`}
+            aria-controls={`#collapse${id}`}
           >
-            {doc.title}
+            {doc?.title}
           </a>
         </h4>
         {showEditingGlyphons && (
@@ -141,13 +164,13 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
             placement="top"
             overlay={
               <Tooltip id="toggleDraft">
-                {doc.draft ? 'publish' : 'unpublish'}
+                {doc?.draft ? 'publish' : 'unpublish'}
               </Tooltip>
             }
           >
             <ToggleDraftGlyphicon
-              glyph={doc.draft ? 'ban-circle' : 'ok-circle'}
-              data-color={doc.draft ? 'red' : '#00D000'}
+              glyph={doc?.draft ? 'ban-circle' : 'ok-circle'}
+              data-color={doc?.draft ? 'red' : '#00D000'}
               onClick={onToggleDraft}
             />
           </OverlayTrigger>
@@ -163,10 +186,10 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
       </PanelHeading>
       {isActiveArticle && (
         <div
-          id={`#collapse${index}`}
+          id={`#collapse${id}`}
           className="panel-collapse collapse in"
           role="tabpanel"
-          aria-labelledby={`heading${index}`}
+          aria-labelledby={`heading${id}`}
           onClick={onClickArticleCollapse}
         >
           <PanelBody
