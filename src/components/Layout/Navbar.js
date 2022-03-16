@@ -13,7 +13,6 @@ import styled from 'styled-components'
 import { navigate } from 'gatsby'
 import { gql, useApolloClient } from '@apollo/client'
 import moment from 'moment'
-import { toJS } from 'mobx'
 
 import oceanDarkImage from '../../images/oceanDark.jpg'
 import storeContext from '../../storeContext'

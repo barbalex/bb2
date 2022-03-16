@@ -13,6 +13,7 @@ import { gql, useApolloClient, useQuery } from '@apollo/client'
 import Article from './Article'
 import ModalRemoveArticle from './ModalRemoveArticle'
 import storeContext from '../../storeContext'
+import { navigate } from 'gatsby'
 
 const ToggleDraftGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -42,10 +43,10 @@ const PanelBody = styled.div`
   overflow-y: auto;
 `
 
-const ArticlePanel = ({ id }) => {
+const ArticlePanel = ({ id, location }) => {
   const store = useContext(storeContext)
   const client = useApolloClient()
-  console.log('ArticlePanel, id:', id)
+  console.log('ArticlePanel:', { id, location })
 
   const [remove, setRemove] = useState(false)
 
@@ -62,12 +63,8 @@ const ArticlePanel = ({ id }) => {
     { variables: { id } },
   )
   const doc = data?.article_by_pk
-  console.log('ArticlePanel, doc:', doc)
 
-  const { activeArticle, activeArticleId, getArticle, toggleDraftOfArticle } =
-    store.articles
-  const isArticle = !!activeArticle
-  const isActiveArticle = isArticle ? id === activeArticleId : false
+  const isActiveArticle = location.pathname.includes(id)
   const showEditingGlyphons = !!store.login.user
   const panelbodypadding = store.editing ? '0 !important' : '15px'
   const panelbodymargintop = store.editing ? '-1px' : 0
@@ -76,10 +73,9 @@ const ArticlePanel = ({ id }) => {
     (e) => {
       // prevent higher level panels from reacting
       e.stopPropagation()
-      const idToGet = !activeArticle || activeArticleId !== id ? id : null
-      getArticle(idToGet)
+      navigate(`/articles/${id}`)
     },
-    [activeArticle, activeArticleId, getArticle, id],
+    [id],
   )
   // prevent higher level panels from reacting
   const onClickArticleCollapse = useCallback(
@@ -90,7 +86,6 @@ const ArticlePanel = ({ id }) => {
     (event) => {
       event.preventDefault()
       event.stopPropagation()
-      //toggleDraftOfArticle(doc)
       try {
         client.mutate({
           mutation: gql`
@@ -202,7 +197,7 @@ const ArticlePanel = ({ id }) => {
           </OverlayTrigger>
         )}
       </PanelHeading>
-      {isActiveArticle && (
+      {isActiveArticle && id && (
         <div
           id={`#collapse${id}`}
           className="panel-collapse collapse in"
@@ -215,7 +210,7 @@ const ArticlePanel = ({ id }) => {
             data-panelbodypadding={panelbodypadding}
             data-panelbodymargintop={panelbodymargintop}
           >
-            <Article />
+            <Article id={id} />
           </PanelBody>
         </div>
       )}

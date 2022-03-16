@@ -139,13 +139,4 @@ export default (store) => ({
   }),
 
   articleToRemove: null,
-
-  toggleDraftOfArticle: action('toggleDraftOfArticle', (article) => {
-    if (article.draft === true) {
-      delete article.draft
-    } else {
-      article.draft = true
-    }
-    store.articles.saveArticle(article)
-  }),
 })
