@@ -6,7 +6,7 @@ import MonthlyEvents from '../components/MonthlyEvents'
 const MonthlyEventsPage = () => (
   <Router>
     <MonthlyEvents path="/monthly-events/:year/:month" />
-    <MonthlyEvents path="/monthly-events" />
+    <MonthlyEvents path="/monthly-events" year={0} month={0} />
   </Router>
 )
 
