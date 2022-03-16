@@ -7,7 +7,6 @@ import {
   Tooltip,
   OverlayTrigger,
 } from 'react-bootstrap'
-import has from 'lodash/has'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { navigate } from 'gatsby'
@@ -51,11 +50,7 @@ const MyNavbar = ({ location }) => {
     if (navIsMobile) changeNavExpanded(!navExpanded)
   }, [navExpanded])
 
-  const onClickEvents = useCallback(() => {
-    store.page.getPage('pages_events')
-    navigate('/events/')
-    // if home was clicked, do not toggle nav
-  }, [store.page])
+  const onClickEvents = useCallback(() => navigate('/events/'), [])
   const onClickArticles = useCallback(() => {
     store.page.getPage('pages_commentaries')
     navigate('/articles/')
@@ -92,7 +87,6 @@ const MyNavbar = ({ location }) => {
   }, [onToggleNav, store.login])
 
   const onClickNewArticle = useCallback(async () => {
-    //TODO: test
     let datum = new Date()
     const offset = datum.getTimezoneOffset()
     datum = new Date(datum.getTime() - offset * 60 * 1000)
@@ -149,30 +143,14 @@ const MyNavbar = ({ location }) => {
     store.events.setActiveEventId(id)
   }, [client, store.events])
 
-  const { activePage } = store.page
-  const { activeMonthlyEvent } = store.monthlyEvents
-  const { activePublication } = store.publications
-  const { activeArticle } = store.articles
   const user = store.login.user
-  const glyph = store.editing ? 'eye-open' : 'pencil'
   const { pathname } = location
-  const id = activePage && activePage?._id ? activePage?._id : null
-  const nonEditableIds = [
-    'pages_commentaries',
-    'pages_monthlyEvents',
-    'pages_publications',
-    'pages_events',
-  ]
-  const showEdit =
-    !!user &&
-    !!id &&
-    (!nonEditableIds.includes(id) ||
-      has(activeMonthlyEvent, '_id') ||
-      has(activeArticle, '_id') ||
-      has(activePublication, '_id'))
+  const showEdit = !!user && pathname.includes('/about-us')
   const showAddArticle = !!user && pathname.includes('/articles')
   const showAddEvent = !!user && pathname.includes('/events')
   const showAddPublication = !!user && pathname.includes('/publications')
+
+  const glyph = store.editing ? 'eye-open' : 'pencil'
 
   return (
     <StyledNavbar

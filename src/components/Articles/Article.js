@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { Base64 } from 'js-base64'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { gql, useApolloClient, useQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 
 import Editor from '../shared/Editor'
 import storeContext from '../../storeContext'
@@ -54,6 +54,7 @@ const Article = ({ id }) => {
 
   const articleEncoded = doc.content
   console.log('Article, articleEncoded:', articleEncoded)
+  // TODO: Failed to execute 'atob' on 'Window': The string to be decoded is not correctly encoded
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
   console.log('Article, articleDecoded:', articleDecoded)
 
