@@ -111,6 +111,7 @@ const MyNavbar = ({ location }) => {
           }
         `,
         variables: { draft: false, datum },
+        refetchQueries: ['ArticlesForArticlePanel', 'ArticleIdsForArticles'],
       })
     } catch (error) {
       console.log(error)

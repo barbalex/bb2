@@ -24,6 +24,8 @@ CREATE TABLE article (
 
 -- ALTER TABLE article
 --   ADD COLUMN draft boolean DEFAULT TRUE;
+-- ALTER TABLE article
+--   ALTER COLUMN draft SET DEFAULT FALSE;
 CREATE INDEX ON article USING btree (id);
 
 CREATE INDEX ON article USING btree (datum);

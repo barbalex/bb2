@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { PanelGroup } from 'react-bootstrap'
-import has from 'lodash/has'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
@@ -8,7 +7,6 @@ import { gql, useQuery } from '@apollo/client'
 
 import ArticlePanel from './ArticlePanel'
 import NewArticle from './NewArticle'
-import ModalRemoveArticle from './ModalRemoveArticle'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 import storeContext from '../../storeContext'
 
@@ -46,12 +44,12 @@ const Copyright = styled.p`
   margin-top: 70px;
 `
 
-const Articles = () => {
+const Articles = ({ id }) => {
   const store = useContext(storeContext)
 
   const { data } = useQuery(
     gql`
-      query articleIdsForArticles {
+      query ArticleIdsForArticles {
         article(order_by: { datum: desc }) {
           id
         }
@@ -60,31 +58,18 @@ const Articles = () => {
   )
   const articleIds = data?.article?.map((a) => a.id) ?? []
 
-  const { getPage } = store.page
-  const { activeArticle, showNewArticle, articleToRemove, getArticles } =
-    store.articles
-  const activeArticleId = has(activeArticle, '_id') ? activeArticle._id : null
-
-  useEffect(() => {
-    getPage('pages_commentaries')
-    getArticles()
-  }, [getArticles, getPage])
+  const { showNewArticle } = store.articles
 
   return (
     <DocumentTitle title="Articles">
       <Container>
         <h1>Articles</h1>
-        <PanelGroup
-          defaultActiveKey={activeArticleId}
-          id="articlesAccordion"
-          accordion
-        >
+        <PanelGroup defaultActiveKey={id} id="articlesAccordion" accordion>
           {articleIds.map((id) => (
             <ArticlePanel key={id} id={id} />
           ))}
         </PanelGroup>
         {showNewArticle && <NewArticle />}
-        {articleToRemove && <ModalRemoveArticle />}
         <Copyright>© Jürg Martin Gabriel. All Rights Reserved.</Copyright>
       </Container>
     </DocumentTitle>

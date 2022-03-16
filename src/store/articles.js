@@ -140,10 +140,6 @@ export default (store) => ({
 
   articleToRemove: null,
 
-  setArticleToRemove: action('setArticleToRemove', (article) => {
-    store.articles.articleToRemove = article
-  }),
-
   toggleDraftOfArticle: action('toggleDraftOfArticle', (article) => {
     if (article.draft === true) {
       delete article.draft

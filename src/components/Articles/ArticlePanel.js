@@ -1,10 +1,17 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import styled from 'styled-components'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import { gql, useApolloClient, useQuery } from '@apollo/client'
 
 import Article from './Article'
+import ModalRemoveArticle from './ModalRemoveArticle'
 import storeContext from '../../storeContext'
 
 const ToggleDraftGlyphicon = styled(Glyphicon)`
@@ -40,9 +47,11 @@ const ArticlePanel = ({ id }) => {
   const client = useApolloClient()
   console.log('ArticlePanel, id:', id)
 
+  const [remove, setRemove] = useState(false)
+
   const { data } = useQuery(
     gql`
-      query ArticleForArticlePanel($id: uuid!) {
+      query ArticlesForArticlePanel($id: uuid!) {
         article_by_pk(id: $id) {
           id
           title
@@ -55,13 +64,8 @@ const ArticlePanel = ({ id }) => {
   const doc = data?.article_by_pk
   console.log('ArticlePanel, doc:', doc)
 
-  const {
-    activeArticle,
-    activeArticleId,
-    getArticle,
-    toggleDraftOfArticle,
-    setArticleToRemove,
-  } = store.articles
+  const { activeArticle, activeArticleId, getArticle, toggleDraftOfArticle } =
+    store.articles
   const isArticle = !!activeArticle
   const isActiveArticle = isArticle ? id === activeArticleId : false
   const showEditingGlyphons = !!store.login.user
@@ -87,10 +91,6 @@ const ArticlePanel = ({ id }) => {
       event.preventDefault()
       event.stopPropagation()
       //toggleDraftOfArticle(doc)
-      let datum = new Date()
-      const offset = datum.getTimezoneOffset()
-      datum = new Date(datum.getTime() - offset * 60 * 1000)
-      datum = datum.toISOString().split('T')[0]
       try {
         client.mutate({
           mutation: gql`
@@ -104,6 +104,7 @@ const ArticlePanel = ({ id }) => {
             }
           `,
           variables: { draft: !doc.draft, id },
+          refetchQueries: ['ArticlesForArticlePanel'],
         })
       } catch (error) {
         console.log(error)
@@ -111,12 +112,29 @@ const ArticlePanel = ({ id }) => {
     },
     [client, doc?.draft, id],
   )
-  const onRemoveArticle = useCallback((event) => {
-    event.preventDefault()
-    event.stopPropagation()
-    // TODO:
-    //setArticleToRemove(doc)
-  }, [])
+  const onRemoveArticle = useCallback(
+    (event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      setRemove(true)
+      try {
+        client.mutate({
+          mutation: gql`
+            mutation DeleteArticleForArticlePanel($id: uuid!) {
+              delete_article_by_pk(id: $id) {
+                id
+              }
+            }
+          `,
+          variables: { id },
+          refetchQueries: ['ArticlesForArticlePanel'],
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    [client, id],
+  )
 
   const ref = useRef(null)
   const scrollToActivePanel = useCallback(() => {
@@ -201,6 +219,7 @@ const ArticlePanel = ({ id }) => {
           </PanelBody>
         </div>
       )}
+      {remove && <ModalRemoveArticle doc={doc} setRemove={setRemove} />}
     </div>
   )
 }
