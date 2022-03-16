@@ -9,17 +9,20 @@ import getPathFromDocId from '../modules/getPathFromDocId'
 import sortArticles from '../modules/sortArticles'
 import slugOptions from '../modules/slugOptions'
 
-export default store => ({
+export default (store) => ({
   articles: [],
 
   // cache the id, not the entire doc
   // advantage: on first load articles is empty so no activeArticle can be gotten
   // but if id is used, this can be cached
   activeArticleId: null,
+  setActiveArticleId: action('activeArticleId', (val) => {
+    store.articles.activeArticleId = val
+  }),
 
   get activeArticle() {
     return store.articles.articles.find(
-      article => article._id === store.articles.activeArticleId,
+      (article) => article._id === store.articles.activeArticleId,
     )
   },
 
@@ -61,21 +64,21 @@ export default store => ({
     store.articles.saveArticle(articleO)
   }),
 
-  getArticle: action('getArticle', id => {
+  getArticle: action('getArticle', (id) => {
     if (!id) {
       navigate('/articles')
-      store.articles.activeArticleId = null
+      store.articles.setActiveArticleId(null)
     } else {
-      store.articles.activeArticleId = id
+      store.articles.setActiveArticleId(id)
       const path = getPathFromDocId(id)
       navigate(`/${path}`)
     }
   }),
 
-  updateArticlesInCache: action('updateArticlesInCache', article => {
+  updateArticlesInCache: action('updateArticlesInCache', (article) => {
     // first update the article in store.articles.articles
     store.articles.articles = store.articles.articles.filter(
-      c => c._id !== article._id,
+      (c) => c._id !== article._id,
     )
     store.articles.articles.push(article)
     store.articles.articles = sortArticles(store.articles.articles)
@@ -86,7 +89,7 @@ export default store => ({
     store.articles.activeArticleId = oldActiveArticleId
   }),
 
-  saveArticle: action('saveArticle', async article => {
+  saveArticle: action('saveArticle', async (article) => {
     // keep old cache in case of error
     const oldArticles = store.articles.articles
     const oldActiveArticleId = store.articles.activeArticleId
@@ -108,24 +111,24 @@ export default store => ({
     store.articles.updateArticlesInCache(article)
   }),
 
-  removeArticleFromCache: action('removeArticleFromCache', article => {
+  removeArticleFromCache: action('removeArticleFromCache', (article) => {
     // first update the article in store.articles.articles
     store.articles.articles = store.articles.articles.filter(
-      thisArticle => thisArticle._id !== article._id,
+      (thisArticle) => thisArticle._id !== article._id,
     )
     store.articles.articles = sortArticles(store.articles.articles)
     // now update store.articles.activeArticleId if it is the active article's _id
     const isActiveArticle = store.articles.activeArticleId === article._id
-    if (isActiveArticle) store.articles.activeArticleId = null
+    if (isActiveArticle) store.articles.setActiveArticleId(null)
   }),
 
-  removeArticle: action('removeArticle', article => {
+  removeArticle: action('removeArticle', (article) => {
     // keep old cache in case of error
     const oldArticles = store.articles.articles
     const oldActiveArticleId = store.articles.activeArticleId
     // optimistically remove event from cache
     store.articles.removeArticleFromCache(article)
-    app.db.remove(article).catch(error => {
+    app.db.remove(article).catch((error) => {
       // oops. Revert optimistic removal
       store.articles.revertCache(oldArticles, oldActiveArticleId)
       store.error.showError({
@@ -137,11 +140,11 @@ export default store => ({
 
   articleToRemove: null,
 
-  setArticleToRemove: action('setArticleToRemove', article => {
+  setArticleToRemove: action('setArticleToRemove', (article) => {
     store.articles.articleToRemove = article
   }),
 
-  toggleDraftOfArticle: action('toggleDraftOfArticle', article => {
+  toggleDraftOfArticle: action('toggleDraftOfArticle', (article) => {
     if (article.draft === true) {
       delete article.draft
     } else {
