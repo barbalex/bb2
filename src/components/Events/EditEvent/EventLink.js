@@ -12,8 +12,6 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { gql, useApolloClient } from '@apollo/client'
 
-import tpPgObjectArray from '../../../modules/toPgObjectArray'
-
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 1.5em;
   color: red;
