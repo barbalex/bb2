@@ -10,6 +10,7 @@ import {
 import moment from 'moment'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { gql, useApolloClient } from '@apollo/client'
 
 import DateInput from '../Events/DateInput'
 import storeContext from '../../storeContext'
@@ -19,6 +20,7 @@ const ErrorAlert = styled(Alert)`
 `
 
 const NewArticle = () => {
+  const client = useApolloClient()
   const store = useContext(storeContext)
   const { newArticle, toggleShowNewArticle } = store.articles
 
@@ -27,26 +29,38 @@ const NewArticle = () => {
   const [error, changeError] = useState(null)
 
   const onChangeTitle = useCallback(
-    event => changeTitle(event.target.value),
+    (event) => changeTitle(event.target.value),
     [],
   )
   const onChangeDate = useCallback(
-    date => changeDate(moment(date, 'DD.MM.YYYY')),
+    (date) => changeDate(moment(date, 'DD.MM.YYYY')),
     [],
   )
-  const createNewArticle = useCallback(() => {
+  const createNewArticle = useCallback(async () => {
     if (title && date) {
       newArticle(title, date)
       toggleShowNewArticle()
+      let result
+      try {
+        result = await client.mutate({
+          mutation: gql``,
+          variables: { datum: date, title },
+        })
+      } catch (error) {
+        console.log(error)
+      }
     } else {
       let error = 'Please choose a date'
       if (!title) error = 'Please add a title'
       changeError({ error })
     }
+    // TODO: navigate to article
   }, [title, date, newArticle, toggleShowNewArticle])
-  const onCloseNewArticle = useCallback(() => toggleShowNewArticle(), [
-    toggleShowNewArticle,
-  ])
+
+  const onCloseNewArticle = useCallback(
+    () => toggleShowNewArticle(),
+    [toggleShowNewArticle],
+  )
 
   return (
     <Modal show bsSize="large">
