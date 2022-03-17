@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Page from '../components/Page'
+import AboutUs from '../components/AboutUs'
 
-const AboutUs = () => <Page />
+const AboutUsPage = () => <AboutUs />
 
-export default AboutUs
+export default AboutUsPage

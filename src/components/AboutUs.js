@@ -27,7 +27,7 @@ const Container = styled.div`
   }
 `
 
-const Page = () => {
+const AboutUs = () => {
   const store = useContext(storeContext)
   const { activePage } = store.page
   const articleEncoded = activePage?.article
@@ -66,6 +66,6 @@ const Page = () => {
   )
 }
 
-Page.displayName = 'Page'
+AboutUs.displayName = 'Page'
 
-export default observer(Page)
+export default observer(AboutUs)
