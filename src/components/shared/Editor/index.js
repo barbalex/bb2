@@ -1,12 +1,11 @@
 //
 import React, { useContext, useCallback } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { Base64 } from 'js-base64'
 import { observer } from 'mobx-react-lite'
 
 import storeContext from '../../../storeContext'
 
-const MyEditor = ({ doc, docType, articleDecoded }) => {
+const MyEditor = ({ doc, docType, contentDecoded }) => {
   const store = useContext(storeContext)
   const { activePage, savePage } = store.page
   const { activeArticle, saveArticle } = store.articles
@@ -82,7 +81,7 @@ const MyEditor = ({ doc, docType, articleDecoded }) => {
     <Editor
       id={doc._id}
       apiKey="58ali3ylgj6fv1zfjv6vdjkkt32yjw36v1iypn95psmae799"
-      initialValue={articleDecoded}
+      initialValue={contentDecoded}
       init={{
         selector: `#${doc._id}`,
         plugins: [
@@ -100,11 +99,7 @@ const MyEditor = ({ doc, docType, articleDecoded }) => {
         body_class: bodyClass,
         content_css: `./tinymce.css`,
       }}
-      onChange={(e) => {
-        const articleDecoded = e.target.getContent()
-        const articleEncoded = Base64.encode(articleDecoded)
-        saveFunction(articleEncoded)
-      }}
+      onChange={(e) => saveFunction(e.target.getContent())}
     />
   )
 }

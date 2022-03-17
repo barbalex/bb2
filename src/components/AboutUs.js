@@ -1,12 +1,13 @@
 //
 import React, { useEffect, useContext } from 'react'
-import { Base64 } from 'js-base64'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
+import { gql, useQuery, useApolloClient } from '@apollo/client'
 
 import Editor from './shared/Editor'
 import storeContext from '../storeContext'
+import hex2a from '../modules/hex2a'
 
 const Container = styled.div`
   p,
@@ -28,19 +29,32 @@ const Container = styled.div`
 `
 
 const AboutUs = () => {
+  const client = useApolloClient()
   const store = useContext(storeContext)
   const { activePage } = store.page
-  const articleEncoded = activePage?.article
-  const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
-  let title = activePage?.title
-    ? activePage.title
-    : activePage?.category
-    ? activePage.category
-    : 'mediterranean migration'
+  let title = 'About us'
 
   useEffect(() => {
     store.page.getPage('pages_aboutUs')
   }, [store.page])
+
+  const { data } = useQuery(
+    gql`
+      query AboutUsForAboutUs($id: uuid!) {
+        page_by_pk(id: $id) {
+          id
+          name
+          content
+        }
+      }
+    `,
+    { variables: { id: '24c9db53-6d7d-4a97-98b4-666c9aaa85c9' } },
+  )
+  const doc = data?.page_by_pk
+  const contentEncoded = doc?.content
+  const contentDecoded = hex2a(contentEncoded)
+
+  if (!data) return null
 
   if (store.editing) {
     return (
@@ -48,13 +62,13 @@ const AboutUs = () => {
         <Editor
           docType="page"
           doc={activePage}
-          articleDecoded={articleDecoded}
+          contentDecoded={contentDecoded}
         />
       </div>
     )
   }
 
-  const createMarkup = () => ({ __html: articleDecoded })
+  const createMarkup = () => ({ __html: contentDecoded })
 
   return (
     <DocumentTitle title={title}>

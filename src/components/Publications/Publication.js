@@ -32,7 +32,7 @@ const Publication = () => {
         <Editor
           docType="publication"
           doc={activePublication}
-          articleDecoded={articleDecoded}
+          contentDecoded={articleDecoded}
         />
       </Container>
     )

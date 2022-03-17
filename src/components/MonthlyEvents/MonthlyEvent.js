@@ -50,7 +50,7 @@ const MonthlyEvent = ({ year, month }) => {
         <Editor
           docType="monthlyEvent"
           doc={store.monthlyEvents.activeMonthlyEvent}
-          articleDecoded={articleDecoded}
+          contentDecoded={articleDecoded}
         />
         <MetaButton onClick={onClickMeta}>arrivals & victims</MetaButton>
       </Container>

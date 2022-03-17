@@ -1,12 +1,12 @@
 //
 import React, { useContext } from 'react'
-import { Base64 } from 'js-base64'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { gql, useQuery } from '@apollo/client'
 
 import Editor from '../shared/Editor'
 import storeContext from '../../storeContext'
+import hex2a from '../../modules/hex2a'
 
 const Container = styled.div`
   p,
@@ -52,21 +52,18 @@ const Article = ({ id }) => {
 
   if (!doc) return null
 
-  const articleEncoded = doc.content
-  console.log('Article, articleEncoded:', articleEncoded)
-  // TODO: Failed to execute 'atob' on 'Window': The string to be decoded is not correctly encoded
-  const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
-  console.log('Article, articleDecoded:', articleDecoded)
+  const contentDecoded = hex2a(doc.content)
+  console.log('Article, articleDecoded:', contentDecoded)
 
   if (store.editing) {
     return (
       <Container>
-        <Editor docType="article" doc={doc} articleDecoded={articleDecoded} />
+        <Editor docType="article" doc={doc} contentDecoded={contentDecoded} />
       </Container>
     )
   }
 
-  const createMarkup = () => ({ __html: articleDecoded })
+  const createMarkup = () => ({ __html: contentDecoded })
 
   return (
     <Container>
