@@ -1,9 +1,9 @@
 //
-import React, { useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
-import { gql, useQuery, useApolloClient } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 
 import Editor from './shared/Editor'
 import storeContext from '../storeContext'
@@ -29,14 +29,8 @@ const Container = styled.div`
 `
 
 const AboutUs = () => {
-  const client = useApolloClient()
   const store = useContext(storeContext)
-  const { activePage } = store.page
   let title = 'About us'
-
-  useEffect(() => {
-    store.page.getPage('pages_aboutUs')
-  }, [store.page])
 
   const { data } = useQuery(
     gql`
@@ -53,17 +47,15 @@ const AboutUs = () => {
   const doc = data?.page_by_pk
   const contentEncoded = doc?.content
   const contentDecoded = hex2a(contentEncoded)
+  // console.log('AboutUs, contentEncoded:', contentEncoded)
+  // console.log('AboutUs, contentDecoded:', contentDecoded)
 
   if (!data) return null
 
   if (store.editing) {
     return (
       <div className="page">
-        <Editor
-          docType="page"
-          doc={activePage}
-          contentDecoded={contentDecoded}
-        />
+        <Editor docType="page" doc={doc} contentDecoded={contentDecoded} />
       </div>
     )
   }

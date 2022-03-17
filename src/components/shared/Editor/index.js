@@ -1,11 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //
 import React, { useContext, useCallback } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { observer } from 'mobx-react-lite'
+import { gql, useApolloClient } from '@apollo/client'
 
 import storeContext from '../../../storeContext'
 
 const MyEditor = ({ doc, docType, contentDecoded }) => {
+  const client = useApolloClient()
   const store = useContext(storeContext)
   const { activePage, savePage } = store.page
   const { activeArticle, saveArticle } = store.articles
@@ -26,31 +29,109 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
   // need to add specific classes to the iframe body because my css will not apply otherwise
   let bodyClass = ''
 
-  const onSavePageArticle = useCallback(
-    (articleEncoded) => {
-      activePage.article = articleEncoded
-      savePage(activePage)
+  const onSavePageContent = useCallback(
+    (content) => {
+      // console.log('onSavePageArticle, content:', content)
+      try {
+        client.mutate({
+          mutation: gql`
+            mutation UpdateAboutUsContentForEditor(
+              $id: uuid!
+              $content: bytea
+            ) {
+              update_page_by_pk(
+                pk_columns: { id: $id }
+                _set: { content: $content }
+              ) {
+                id
+              }
+            }
+          `,
+          variables: { content, id: doc.id },
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
-    [activePage, savePage],
+    [client, doc.id],
   )
-  const onSaveArticleArticle = useCallback(
-    (articleEncoded) => {
-      activeArticle.article = articleEncoded
-      saveArticle(activeArticle)
+  const onSaveArticleContent = useCallback(
+    (content) => {
+      // console.log('onSaveArticleContent, content:', content)
+      try {
+        client.mutate({
+          mutation: gql`
+            mutation UpdateArticleContentForEditor(
+              $id: uuid!
+              $content: bytea
+            ) {
+              update_article_by_pk(
+                pk_columns: { id: $id }
+                _set: { content: $content }
+              ) {
+                id
+              }
+            }
+          `,
+          variables: { content, id: doc.id },
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
-    [activeArticle, saveArticle],
+    [client, doc.id],
   )
-  const onSavePublicationArticle = useCallback(
-    (articleEncoded) => {
-      activePublication.article = articleEncoded
-      savePublication(activePublication)
+  const onSavePublicationContent = useCallback(
+    (content) => {
+      // TODO: test
+      console.log('onSavePublicationContent, content:', content)
+      try {
+        client.mutate({
+          mutation: gql`
+            mutation UpdatePublicationContentForEditor(
+              $id: uuid!
+              $content: bytea
+            ) {
+              update_publication_by_pk(
+                pk_columns: { id: $id }
+                _set: { content: $content }
+              ) {
+                id
+              }
+            }
+          `,
+          variables: { content, id: doc.id },
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
-    [activePublication, savePublication],
+    [client, doc.id],
   )
-  const onSaveMonthlyEventArticle = useCallback(
-    (articleEncoded) => {
-      activeMonthlyEvent.article = articleEncoded
-      saveMonthlyEvent(activeMonthlyEvent)
+  const onSaveMonthlyEventContent = useCallback(
+    (content) => {
+      // TODO: test
+      console.log('onSaveMonthlyEventContent, content:', content)
+      try {
+        client.mutate({
+          mutation: gql`
+            mutation UpdateMonthlyEventContentForEditor(
+              $id: uuid!
+              $content: bytea
+            ) {
+              update_monthly_event_by_pk(
+                pk_columns: { id: $id }
+                _set: { content: $content }
+              ) {
+                id
+              }
+            }
+          `,
+          variables: { content, id: doc.id },
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
     [activeMonthlyEvent, saveMonthlyEvent],
   )
@@ -59,19 +140,19 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
   switch (docType) {
     case 'page':
       bodyClass = ''
-      saveFunction = onSavePageArticle
+      saveFunction = onSavePageContent
       break
     case 'monthlyEvent':
       bodyClass = 'monthlyEvent'
-      saveFunction = onSaveMonthlyEventArticle
+      saveFunction = onSaveMonthlyEventContent
       break
     case 'publication':
       bodyClass = 'publication'
-      saveFunction = onSavePublicationArticle
+      saveFunction = onSavePublicationContent
       break
     case 'article':
       bodyClass = 'article'
-      saveFunction = onSaveArticleArticle
+      saveFunction = onSaveArticleContent
       break
     default:
       return store.error.showEdit('no or wrong docType passed to editor')
@@ -79,11 +160,11 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
 
   return (
     <Editor
-      id={doc._id}
+      id={doc.id}
       apiKey="58ali3ylgj6fv1zfjv6vdjkkt32yjw36v1iypn95psmae799"
       initialValue={contentDecoded}
       init={{
-        selector: `#${doc._id}`,
+        selector: `#${doc.id}`,
         plugins: [
           'advlist autolink link image lists charmap print hr anchor pagebreak',
           'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',

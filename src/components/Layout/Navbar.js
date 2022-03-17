@@ -40,6 +40,7 @@ const isNavMobile = () => {
 }
 
 const MyNavbar = ({ location }) => {
+  const { pathname } = location
   const client = useApolloClient()
   const store = useContext(storeContext)
   const [navExpanded, changeNavExpanded] = useState(false)
@@ -77,9 +78,16 @@ const MyNavbar = ({ location }) => {
   }, [onToggleNav])
 
   const onClickEdit = useCallback(() => {
+    if (pathname.includes('/about-us') && store.editing) {
+      client.refetchQueries({ include: ['AboutUsForAboutUs'] })
+    }
+    if (pathname.includes('/articles') && store.editing) {
+      client.refetchQueries({ include: ['ArticleForArticle'] })
+    }
     store.toggleEditing()
     onToggleNav()
-  }, [onToggleNav, store])
+  }, [client, onToggleNav, pathname, store])
+
   const onClickLogout = useCallback(() => {
     store.login.logout()
     onToggleNav()
@@ -144,8 +152,11 @@ const MyNavbar = ({ location }) => {
   }, [client])
 
   const user = store.login.user
-  const { pathname } = location
-  const showEdit = !!user && pathname.includes('/about-us')
+  const showEdit =
+    !!user &&
+    (pathname.includes('/about-us') ||
+      pathname.includes('/articles') ||
+      pathname.includes('/publications'))
   const showAddArticle = !!user && pathname.includes('/articles')
   const showAddEvent = !!user && pathname.includes('/events')
   const showAddPublication = !!user && pathname.includes('/publications')
