@@ -41,12 +41,12 @@ const PanelBody = styled.div`
   padding: ${(props) => props['data-panelbodypadding']};
   max-height: ${typeof window !== `undefined` ? window.innerHeight - 141 : 0}px;
   overflow-y: auto;
+  overflow-x: hidden;
 `
 
 const ArticlePanel = ({ id, activeId }) => {
   const store = useContext(storeContext)
   const client = useApolloClient()
-  console.log('ArticlePanel:', { id, activeId })
 
   const [remove, setRemove] = useState(false)
 
@@ -73,9 +73,13 @@ const ArticlePanel = ({ id, activeId }) => {
     (e) => {
       // prevent higher level panels from reacting
       e.stopPropagation()
-      navigate(`/articles/${id}`)
+      if (id === activeId) {
+        navigate(`/articles`)
+      } else {
+        navigate(`/articles/${id}`)
+      }
     },
-    [id],
+    [activeId, id],
   )
   // prevent higher level panels from reacting
   const onClickArticleCollapse = useCallback(
@@ -132,22 +136,17 @@ const ArticlePanel = ({ id, activeId }) => {
   )
 
   const ref = useRef(null)
-  const scrollToActivePanel = useCallback(() => {
-    if (typeof window !== `undefined`) {
-      window.scrollTo({
-        left: 0,
-        top: ref.current ? ref.current.offsetTop - 55 : 55,
-        behavior: 'smooth',
-      })
-    }
-  }, [])
   useEffect(() => {
-    if (id) {
+    if (id && id === activeId) {
       window.setTimeout(() => {
-        scrollToActivePanel()
-      }, 50)
+        window.scrollTo({
+          left: 0,
+          top: ref.current ? ref.current.offsetTop - 55 : 55,
+          behavior: 'smooth',
+        })
+      }, 100)
     }
-  }, [id, scrollToActivePanel])
+  }, [activeId, id, store.editing])
 
   // use pure bootstrap.
   // advantage: can add edit icon to panel-heading

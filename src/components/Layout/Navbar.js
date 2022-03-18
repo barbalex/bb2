@@ -78,13 +78,13 @@ const MyNavbar = ({ location }) => {
   }, [onToggleNav])
 
   const onClickEdit = useCallback(() => {
+    store.toggleEditing()
     if (pathname.includes('/about-us') && store.editing) {
       client.refetchQueries({ include: ['AboutUsForAboutUs'] })
     }
     if (pathname.includes('/articles') && store.editing) {
       client.refetchQueries({ include: ['ArticleForArticle'] })
     }
-    store.toggleEditing()
     onToggleNav()
   }, [client, onToggleNav, pathname, store])
 
@@ -119,7 +119,8 @@ const MyNavbar = ({ location }) => {
     }
     const id = result?.data?.insert_article_one?.id
     navigate(`/articles/${id}`)
-  }, [client])
+    !store.editing && store.toggleEditing()
+  }, [client, store])
 
   const onClickNewPublication = useCallback(() => {
     store.publications.setShowNewPublication(true)

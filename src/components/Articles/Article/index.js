@@ -32,7 +32,6 @@ const Container = styled.div`
 
 const Article = ({ id }) => {
   const store = useContext(storeContext)
-  console.log('Article, id:', id)
 
   const { data } = useQuery(
     gql`
@@ -49,7 +48,6 @@ const Article = ({ id }) => {
     { variables: { id } },
   )
   const doc = data?.article_by_pk
-  console.log('Article, doc:', doc)
 
   if (!doc) return null
 
