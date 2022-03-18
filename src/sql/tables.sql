@@ -59,8 +59,11 @@ CREATE TABLE publication (
   sort integer DEFAULT NULL, -- was: order
   cat_sort integer DEFAULT NULL, -- new to sort by 1. category 2. sort
   content bytea DEFAULT NULL -- was: article
+  draft boolean DEFAULT TRUE
 );
 
+-- ALTER TABLE publication
+--   ADD COLUMN draft boolean DEFAULT TRUE;
 -- ALTER TABLE publication
 --   ADD COLUMN cat_sort integer DEFAULT NULL;
 -- CREATE INDEX ON publication USING btree (cat_sort);
