@@ -12,3 +12,5 @@ GROUP BY
 ORDER BY
   year DESC;
 
+DROP VIEW IF EXISTS v_publication_categories CASCADE;
+

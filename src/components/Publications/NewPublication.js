@@ -12,12 +12,13 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import storeContext from '../../storeContext'
+import categories from './categories'
 
 const ErrorAlert = styled(Alert)`
   margin-bottom: 10px;
 `
 
-const categoryOptions = publicationCategories => {
+const categoryOptions = (publicationCategories) => {
   const options = publicationCategories.map((category, index) => (
     <option key={index + 1} value={category}>
       {category}
@@ -29,23 +30,18 @@ const categoryOptions = publicationCategories => {
 
 const NewPublication = () => {
   const store = useContext(storeContext)
-  const {
-    setShowNewPublication,
-    getPublicationCategories,
-    newPublication,
-  } = store.publications
-  const publicationCategories = getPublicationCategories()
+  const { setShowNewPublication, newPublication } = store.publications
 
   const [title, changeTitle] = useState('')
   const [category, changeCategory] = useState('')
   const [error, changeError] = useState('')
 
   const onChangeTitle = useCallback(
-    event => changeTitle(event.target.value),
+    (event) => changeTitle(event.target.value),
     [],
   )
   const onChangeCategory = useCallback(
-    event => changeCategory(event.target.value),
+    (event) => changeCategory(event.target.value),
     [],
   )
   const createNewPublication = useCallback(() => {
@@ -86,7 +82,7 @@ const NewPublication = () => {
             onChange={onChangeCategory}
             tabIndex={2}
           >
-            {categoryOptions(publicationCategories)}
+            {categoryOptions(categories)}
           </FormControl>
         </FormGroup>
         {error && <ErrorAlert bsStyle="danger">{error}</ErrorAlert>}

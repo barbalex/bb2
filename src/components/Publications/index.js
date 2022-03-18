@@ -1,16 +1,11 @@
 //
-import React, { useContext, useEffect } from 'react'
-import sortBy from 'lodash/sortBy'
-import { observer } from 'mobx-react-lite'
+import React from 'react'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { gql, useQuery } from '@apollo/client'
-import { toJS } from 'mobx'
 
 import PublicationsGroup from './PublicationsGroup'
-import NewPublication from './NewPublication'
 import oceanDarkImage from '../../images/oceanDark.jpg'
-import storeContext from '../../storeContext'
 
 const Container = styled.div`
   p,
@@ -58,53 +53,25 @@ const PanelGroup = styled.div`
     font-weight: bold;
   }
 `
-const orderByCategory = {
-  Academic: 3,
-  'European Union': 1,
-  'IOs & NGOs': 2,
-}
 
-const Publications = ({ category, title }) => {
+const Publications = ({ id: activeId }) => {
   const { data } = useQuery(
     gql`
-      query PublicationsForPublications {
-        article(order_by: { datum: desc }) {
-          id
+      query PublicationCategoriesForPublications {
+        categories: publication_aggregate(
+          distinct_on: cat_sort
+          order_by: { cat_sort: asc }
+        ) {
+          nodes {
+            category
+          }
         }
       }
     `,
   )
+  const categories = (data?.categories?.nodes ?? []).map((c) => c.category)
 
-  const store = useContext(storeContext)
-  const {
-    publications,
-    getPublications,
-    getPublicationCategories,
-    showNewPublication,
-  } = store.publications
-  const publicationCategories = publications ? getPublicationCategories() : []
-
-  useEffect(() => {
-    getPublications()
-  }, [getPublications])
-
-  console.log('Publications, ids:', {
-    ids: publications.map((p) => p._id),
-    publications: toJS(publications),
-  })
-
-  useEffect(() => {
-    if (!!category && !!title) {
-      store.publications.activePublicationId = `publications_${category}_${title}`
-    } else {
-      store.publications.activePublicationId = null
-    }
-  }, [
-    category,
-    store.publications.activePublicationId,
-    title,
-    store.publications,
-  ])
+  console.log('Publications, categories:', categories)
 
   return (
     <DocumentTitle title="Publications">
@@ -115,18 +82,17 @@ const Publications = ({ category, title }) => {
           id="publicationsAccordion"
           role="tablist"
         >
-          {sortBy(publicationCategories, (cat) => {
-            let order = orderByCategory[cat]
-            if (!order) order = 4
-            return order
-          }).map((category) => (
-            <PublicationsGroup key={category} category={category} />
+          {categories.map((category) => (
+            <PublicationsGroup
+              key={category}
+              category={category}
+              activeId={activeId}
+            />
           ))}
         </PanelGroup>
-        {showNewPublication && <NewPublication />}
       </Container>
     </DocumentTitle>
   )
 }
 
-export default observer(Publications)
+export default Publications

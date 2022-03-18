@@ -3,7 +3,6 @@ import { action } from 'mobx'
 import app from 'ampersand-app'
 import { Base64 } from 'js-base64'
 import slug from 'speakingurl'
-import uniq from 'lodash/uniq'
 import { navigate } from '@reach/router'
 
 import getPublications from '../modules/getPublications'
@@ -11,7 +10,7 @@ import getPathFromDocId from '../modules/getPathFromDocId'
 import sortPublications from '../modules/sortPublications'
 import slugOptions from '../modules/slugOptions'
 
-export default store => ({
+export default (store) => ({
   publications: [],
 
   activePublicationCategory: null,
@@ -21,7 +20,7 @@ export default store => ({
   get activePublication() {
     return (
       store.publications.publications.find(
-        publication =>
+        (publication) =>
           publication._id === store.publications.activePublicationId,
       ) || null
     )
@@ -64,11 +63,11 @@ export default store => ({
   }),
   showNewPublication: null,
 
-  setShowNewPublication: action('setShowNewPublication', show => {
+  setShowNewPublication: action('setShowNewPublication', (show) => {
     store.publications.showNewPublication = show
   }),
 
-  getPublication: action('getPublication', id => {
+  getPublication: action('getPublication', (id) => {
     if (!id) {
       navigate('/publications')
       store.publications.activePublicationId = null
@@ -79,27 +78,31 @@ export default store => ({
     }
   }),
 
-  updatePublicationInCache: action('updatePublicationInCache', publication => {
-    // first update the publication in store.publications.publications
-    store.publications.publications = store.publications.publications.filter(
-      p => p._id !== publication._id,
-    )
-    store.publications.publications.push(publication)
-    store.publications.publications = sortPublications(
-      store.publications.publications,
-    )
-  }),
+  updatePublicationInCache: action(
+    'updatePublicationInCache',
+    (publication) => {
+      // first update the publication in store.publications.publications
+      store.publications.publications = store.publications.publications.filter(
+        (p) => p._id !== publication._id,
+      )
+      store.publications.publications.push(publication)
+      store.publications.publications = sortPublications(
+        store.publications.publications,
+      )
+    },
+  ),
 
   revertCache: action(
     'revertCache',
     (oldPublications, oldActivePublicationId, oldActivePublicationCategory) => {
       store.publications.publications = oldPublications
       store.publications.activePublicationId = oldActivePublicationId
-      store.publications.activePublicationCategory = oldActivePublicationCategory
+      store.publications.activePublicationCategory =
+        oldActivePublicationCategory
     },
   ),
 
-  savePublication: action('savePublication', async publication => {
+  savePublication: action('savePublication', async (publication) => {
     // keep old cache in case of error
     const oldPublications = store.publications.publications
     const oldActivePublicationId = store.publications.activePublicationId
@@ -129,10 +132,10 @@ export default store => ({
 
   removePublicationFromCache: action(
     'removePublicationFromCache',
-    publication => {
+    (publication) => {
       // first update the publication in store.publications.publications
       store.publications.publications = store.publications.publications.filter(
-        p => p._id !== publication._id,
+        (p) => p._id !== publication._id,
       )
       store.publications.publications = sortPublications(
         store.publications.publications,
@@ -144,7 +147,7 @@ export default store => ({
     },
   ),
 
-  removePublication: action('removePublication', publication => {
+  removePublication: action('removePublication', (publication) => {
     // keep old cache in case of error
     const oldPublications = store.publications.publications
     const oldActivePublicationId = store.publications.activePublicationId
@@ -152,7 +155,7 @@ export default store => ({
       store.publications.activePublicationCategory
     // optimistically remove publication from cache
     store.publications.removePublicationFromCache(publication)
-    app.db.remove(publication).catch(error => {
+    app.db.remove(publication).catch((error) => {
       // oops. Revert optimistic removal
       store.publications.revertCache(
         oldPublications,
@@ -166,24 +169,19 @@ export default store => ({
     })
   }),
 
-  toggleDraftOfPublication: action('toggleDraftOfPublication', publication => {
-    if (publication.draft === true) {
-      delete publication.draft
-    } else {
-      publication.draft = true
-    }
-    store.publications.savePublication(publication)
-  }),
+  toggleDraftOfPublication: action(
+    'toggleDraftOfPublication',
+    (publication) => {
+      if (publication.draft === true) {
+        delete publication.draft
+      } else {
+        publication.draft = true
+      }
+      store.publications.savePublication(publication)
+    },
+  ),
 
-  getPublicationCategories: action('getPublicationCategories', () => {
-    const allCategories = store.publications.publications.map(
-      publication => publication.category,
-    )
-    const publicationCategories = uniq(allCategories)
-    return publicationCategories.sort()
-  }),
-
-  setPublicationCategory: action('setPublicationCategory', category => {
+  setPublicationCategory: action('setPublicationCategory', (category) => {
     if (store.publications.activePublicationCategory !== category) {
       store.publications.activePublicationId = null
     }

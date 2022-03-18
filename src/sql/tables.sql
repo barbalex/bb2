@@ -57,12 +57,36 @@ CREATE TABLE publication (
   title text DEFAULT NULL,
   category text DEFAULT NULL,
   sort integer DEFAULT NULL, -- was: order
+  cat_sort integer DEFAULT NULL, -- new to sort by 1. category 2. sort
   content bytea DEFAULT NULL -- was: article
 );
 
+-- ALTER TABLE publication
+--   ADD COLUMN cat_sort integer DEFAULT NULL;
+-- CREATE INDEX ON publication USING btree (cat_sort);
+-- UPDATE
+--   publication
+-- SET
+--   cat_sort = 1
+-- WHERE
+--   category = 'European Union';
+-- UPDATE
+--   publication
+-- SET
+--   cat_sort = 2
+-- WHERE
+--   category = 'IOs & NGOs';
+-- UPDATE
+--   publication
+-- SET
+--   cat_sort = 3
+-- WHERE
+--   category = 'Academic';
 CREATE INDEX ON publication USING btree (id);
 
 CREATE INDEX ON publication USING btree (sort);
+
+CREATE INDEX ON publication USING btree (cat_sort);
 
 CREATE TABLE user_uids (
   uid text

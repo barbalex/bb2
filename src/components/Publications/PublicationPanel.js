@@ -8,10 +8,12 @@ import React, {
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { gql, useQuery } from '@apollo/client'
 
 import storeContext from '../../storeContext'
 import Publication from './Publication'
 import ModalRemovePublication from './ModalRemovePublication'
+import { navigate } from 'gatsby'
 
 const PanelHeading = styled.div`
   position: relative;
@@ -34,15 +36,26 @@ const RemoveGlyphicon = styled(Glyphicon)`
   font-size: 1.5em;
 `
 
-const PublicationPanel = ({ category, doc, dIndex }) => {
+const PublicationPanel = ({ id, activeId, category }) => {
+  const { data } = useQuery(
+    gql`
+      query PublicationForPublicationPanel($id: uuid!) {
+        publication_by_pk(id: $id) {
+          id
+          title
+        }
+      }
+    `,
+    { variables: { id } },
+  )
+  const doc = data?.publication_by_pk ?? {}
   const store = useContext(storeContext)
-  const { activePublication, getPublication, toggleDraftOfPublication } =
-    store.publications
+  const { toggleDraftOfPublication } = store.publications
 
-  const isActivePublication = activePublication
-    ? doc._id === activePublication._id
-    : false
+  const isActivePublication = id === activeId
   const showEditingGlyphons = !!store.login.user
+
+  console.log('PublicationPanel', { id, activeId, data, doc, category })
 
   const [docToRemove, setDocToRemove] = useState(null)
 
@@ -68,11 +81,9 @@ const PublicationPanel = ({ category, doc, dIndex }) => {
     (e) => {
       // prevent higher level panels from reacting
       e.stopPropagation()
-      const idToGet =
-        !activePublication || activePublication._id !== doc._id ? doc._id : null
-      getPublication(idToGet)
+      navigate(`/publications/${category}/${id}`)
     },
-    [activePublication, doc._id, getPublication],
+    [category, id],
   )
   const onClickEventCollapse = useCallback((event) => {
     // prevent higher level panels from reacting
@@ -99,14 +110,16 @@ const PublicationPanel = ({ category, doc, dIndex }) => {
     setDocToRemove(docToRemove)
   }, [])
 
+  if (!doc) return null
+
   // use pure bootstrap.
   // advantage: can add edit icon to panel-heading
   return (
-    <div key={dIndex} className="panel panel-default month">
+    <div key={`container${id}`} className="panel panel-default month">
       <PanelHeading
         className="panel-heading"
         role="tab"
-        id={`heading${dIndex}`}
+        id={`heading${id}`}
         onClick={onClickPublication}
         ref={ref}
       >
@@ -115,9 +128,9 @@ const PublicationPanel = ({ category, doc, dIndex }) => {
             role="button"
             data-toggle="collapse"
             data-parent={`#${category}`}
-            href={`#collapse${dIndex}`}
+            href={`#collapse${id}`}
             aria-expanded="false"
-            aria-controls={`#collapse${dIndex}`}
+            aria-controls={`#collapse${id}`}
           >
             {doc.title}
           </a>
@@ -152,10 +165,10 @@ const PublicationPanel = ({ category, doc, dIndex }) => {
       </PanelHeading>
       {isActivePublication && (
         <div
-          id={`#collapse${dIndex}`}
+          id={`#collapse${id}`}
           className="panel-collapse collapse in"
           role="tabpanel"
-          aria-labelledby={`heading${dIndex}`}
+          aria-labelledby={`heading${id}`}
           onClick={onClickEventCollapse}
         >
           <PanelBody className="panel-body">
