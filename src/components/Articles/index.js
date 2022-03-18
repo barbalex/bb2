@@ -41,7 +41,7 @@ const Copyright = styled.p`
   margin-top: 70px;
 `
 
-const Articles = ({ id, location }) => {
+const Articles = ({ id }) => {
   const { data } = useQuery(
     gql`
       query ArticleIdsForArticles {

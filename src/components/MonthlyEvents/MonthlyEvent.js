@@ -1,12 +1,10 @@
 //
-import React, { useContext, useState, useCallback } from 'react'
-import { Button } from 'react-bootstrap'
+import React, { useContext } from 'react'
 import { Base64 } from 'js-base64'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import Editor from '../shared/Editor'
-import MonthlyEventMeta from './MonthlyEventMeta'
 import storeContext from '../../storeContext'
 
 const Container = styled.div`
@@ -21,38 +19,20 @@ const Container = styled.div`
     color: #9c9c9c;
   }
 `
-const MetaButton = styled(Button)`
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-`
 
 const MonthlyEvent = ({ year, month }) => {
   const store = useContext(storeContext)
   const articleEncoded = store.monthlyEvents.activeMonthlyEvent.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
 
-  const [showMeta, setShowMeta] = useState(false)
-
-  const onClickMeta = useCallback(() => setShowMeta(!showMeta), [showMeta])
-  const onCloseMeta = useCallback(() => setShowMeta(false), [])
-
   if (store.editing) {
     return (
       <Container>
-        {showMeta && (
-          <MonthlyEventMeta
-            year={year}
-            month={month}
-            onCloseMeta={onCloseMeta}
-          />
-        )}
         <Editor
           docType="monthlyEvent"
           doc={store.monthlyEvents.activeMonthlyEvent}
           contentDecoded={articleDecoded}
         />
-        <MetaButton onClick={onClickMeta}>arrivals & victims</MetaButton>
       </Container>
     )
   }

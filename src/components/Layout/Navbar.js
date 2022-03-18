@@ -53,24 +53,21 @@ const MyNavbar = ({ location }) => {
 
   const onClickEvents = useCallback(() => navigate('/events/'), [])
   const onClickArticles = useCallback(() => {
-    store.page.getPage('pages_commentaries')
     navigate('/articles/')
     onToggleNav()
-  }, [onToggleNav, store.page])
+  }, [onToggleNav])
   const onClickSar = useCallback(() => {
     navigate('/sar/')
     onToggleNav()
   }, [onToggleNav])
   const onClickPublications = useCallback(() => {
-    store.page.getPage('pages_publications')
     navigate('/publications/')
     onToggleNav()
-  }, [onToggleNav, store.page])
+  }, [onToggleNav])
   const onClickAboutUs = useCallback(() => {
-    store.page.getPage('pages_aboutUs')
     navigate('/about-us/')
     onToggleNav()
-  }, [onToggleNav, store.page])
+  }, [onToggleNav])
 
   const onClickLogin = useCallback(() => {
     navigate('/login/')

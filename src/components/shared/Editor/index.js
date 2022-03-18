@@ -10,7 +10,7 @@ import storeContext from '../../../storeContext'
 const MyEditor = ({ doc, docType, contentDecoded }) => {
   const client = useApolloClient()
   const store = useContext(storeContext)
-  const { activePage, savePage } = store.page
+  const { activePage } = store.page
   const { activePublication, savePublication } = store.publications
   const { activeMonthlyEvent, saveMonthlyEvent } = store.monthlyEvents
 

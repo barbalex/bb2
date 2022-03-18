@@ -97,7 +97,6 @@ const MonthlyEvents = ({ year, month }) => {
   }, [activeMonthlyEvent, activeYearChoosen, yearsOfEvents])
 
   useEffect(() => {
-    store.page.getPage('pages_monthlyEvents')
     getMonthlyEvents()
   }, [getMonthlyEvents, store.page])
 

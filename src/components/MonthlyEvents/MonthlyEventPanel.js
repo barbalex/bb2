@@ -25,7 +25,7 @@ const MonthlyEventPanel = ({ doc, dIndex, year }) => {
   const month = getMonthFromEventId(doc._id)
 
   const onClickMonthlyEvent = useCallback(
-    event => {
+    (event) => {
       // prevent higher level panels from reacting
       event.stopPropagation()
       const idToGet =
@@ -37,7 +37,7 @@ const MonthlyEventPanel = ({ doc, dIndex, year }) => {
     },
     [activeMonthlyEvent, doc._id, getMonthlyEvent],
   )
-  const onClickEventCollapse = useCallback(event => {
+  const onClickEventCollapse = useCallback((event) => {
     // prevent higher level panels from reacting
     event.stopPropagation()
   }, [])

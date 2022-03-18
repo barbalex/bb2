@@ -70,13 +70,11 @@ const Publications = ({ category, title }) => {
     getPublicationCategories,
     showNewPublication,
   } = store.publications
-  const { getPage } = store.page
   const publicationCategories = publications ? getPublicationCategories() : []
 
   useEffect(() => {
-    getPage('pages_publications')
     getPublications()
-  }, [getPage, getPublications])
+  }, [getPublications])
 
   useEffect(() => {
     if (!!category && !!title) {
