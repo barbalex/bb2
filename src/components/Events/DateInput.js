@@ -4,7 +4,6 @@ import moment from 'moment'
 import { FormGroup, ControlLabel, InputGroup } from 'react-bootstrap'
 import styled from 'styled-components'
 
-const StyledInputGroup = styled(InputGroup)``
 const StyledDatePicker = styled(DatePicker)`
   width: 100%;
   height: calc(1.5em + 0.5rem + 2px);
@@ -51,14 +50,14 @@ const EventDate = ({ date, onChangeDatePicker }) => {
   return (
     <FormGroup controlId="date">
       <ControlLabel>Date</ControlLabel>
-      <StyledInputGroup>
+      <InputGroup>
         <StyledDatePicker
           selected={selected}
           onChange={onChangeDatePicker}
           dateFormat={dateFormat}
           popperPlacement="auto"
         />
-      </StyledInputGroup>
+      </InputGroup>
     </FormGroup>
   )
 }

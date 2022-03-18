@@ -1,14 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { PanelGroup } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 import { gql, useQuery } from '@apollo/client'
 
 import ArticlePanel from './ArticlePanel'
-import NewArticle from './NewArticle'
 import oceanDarkImage from '../../images/oceanDark.jpg'
-import storeContext from '../../storeContext'
 
 const Container = styled.div`
   p,
@@ -45,8 +42,6 @@ const Copyright = styled.p`
 `
 
 const Articles = ({ id }) => {
-  const store = useContext(storeContext)
-
   const { data } = useQuery(
     gql`
       query ArticleIdsForArticles {
@@ -58,8 +53,6 @@ const Articles = ({ id }) => {
   )
   const articleIds = data?.article?.map((a) => a.id) ?? []
 
-  const { showNewArticle } = store.articles
-
   return (
     <DocumentTitle title="Articles">
       <Container>
@@ -69,11 +62,10 @@ const Articles = ({ id }) => {
             <ArticlePanel key={ownId} id={ownId} activeId={id} />
           ))}
         </PanelGroup>
-        {showNewArticle && <NewArticle />}
         <Copyright>© Jürg Martin Gabriel. All Rights Reserved.</Copyright>
       </Container>
     </DocumentTitle>
   )
 }
 
-export default observer(Articles)
+export default Articles
