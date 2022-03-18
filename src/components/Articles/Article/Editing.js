@@ -1,8 +1,8 @@
 //
-import React, { useContext, useState, useCallback, useEffect } from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { gql, useQuery, useApolloClient } from '@apollo/client'
+import { gql, useApolloClient } from '@apollo/client'
 import {
   Alert,
   Form,
@@ -14,9 +14,9 @@ import {
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
-import Editor from '../shared/Editor'
-import storeContext from '../../storeContext'
-import hex2a from '../../modules/hex2a'
+import Editor from '../../shared/Editor'
+import storeContext from '../../../storeContext'
+import hex2a from '../../../modules/hex2a'
 
 const Container = styled.div`
   p,
@@ -86,37 +86,12 @@ const dateFormat = [
   'dd',
 ]
 
-const Article = ({ id }) => {
+const Article = ({ doc }) => {
   const client = useApolloClient()
   const store = useContext(storeContext)
-  console.log('Article, id:', id)
 
-  const { data } = useQuery(
-    gql`
-      query ArticleForArticle($id: uuid!) {
-        article_by_pk(id: $id) {
-          id
-          title
-          datum
-          draft
-          content
-        }
-      }
-    `,
-    { variables: { id } },
-  )
-  const doc = data?.article_by_pk
-  console.log('Article, doc:', doc)
-
-  useEffect(() => {
-    if (doc) {
-      setTitle(doc.title)
-      setDatum(moment(doc.datum, 'YYYY-MM-DD'))
-    }
-  }, [doc])
-
-  const [title, setTitle] = useState()
-  const [datum, setDatum] = useState()
+  const [title, setTitle] = useState(doc.title)
+  const [datum, setDatum] = useState(moment(doc.datum, 'YYYY-MM-DD'))
   const [error, setError] = useState(null)
 
   const onChangeTitle = useCallback((event) => setTitle(event.target.value), [])
@@ -134,12 +109,12 @@ const Article = ({ id }) => {
             }
           }
         `,
-        variables: { id, title },
+        variables: { id: doc.id, title },
       })
     } catch (error) {
       setError({ error })
     }
-  }, [client, id, title])
+  }, [client, doc.id, title])
 
   const onChangeDate = useCallback(
     (date) => {
@@ -158,7 +133,7 @@ const Article = ({ id }) => {
             }
           `,
           variables: {
-            id,
+            id: doc.id,
             datum: moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'),
           },
         })
@@ -166,14 +141,12 @@ const Article = ({ id }) => {
         setError({ error })
       }
     },
-    [client, id],
+    [client, doc.id],
   )
 
   const selected = moment(datum, 'DD.MM.YYYY').isValid()
     ? new Date(moment(datum, 'DD.MM.YYYY').toDate())
     : null
-
-  if (!doc) return null
 
   const contentDecoded = hex2a(doc.content)
 
@@ -215,14 +188,6 @@ const Article = ({ id }) => {
       </Container>
     )
   }
-
-  const createMarkup = () => ({ __html: contentDecoded })
-
-  return (
-    <Container>
-      <div dangerouslySetInnerHTML={createMarkup()} />
-    </Container>
-  )
 }
 
 export default observer(Article)
