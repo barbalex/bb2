@@ -2,7 +2,7 @@
  * using hooks errored
  * Hooks can only be called inside the body of a function component
  */
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useContext } from 'react'
 import {
   Modal,
   Button,
@@ -20,6 +20,7 @@ import EventTypeButtonGroup from './EventTypeButtonGroup'
 import DateInput from '../DateInput'
 import TagsInput from './TagsInput'
 import EventLinks from './EventLinks'
+import storeContext from '../../../storeContext'
 
 const StyledModal = styled(Modal)`
   .col-xs-1,
@@ -99,6 +100,7 @@ const StyledAlert = styled(Alert)`
 
 const EditEvent = ({ id }) => {
   const client = useApolloClient()
+  const store = useContext(storeContext)
 
   const { data, loading } = useQuery(
     gql`
@@ -147,10 +149,10 @@ const EditEvent = ({ id }) => {
           variables: { id: activeEvent.id },
         })
       } catch (error) {
-        console.log(error)
+        store.error.showError(error)
       }
     },
-    [activeEvent?.id, client],
+    [activeEvent.id, client, store.error],
   )
 
   const onChangeTitle = useCallback((e) => setTitle(e.target.value), [])

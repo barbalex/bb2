@@ -106,10 +106,10 @@ const ArticlePanel = ({ id, activeId }) => {
           refetchQueries: ['ArticlesForArticlePanel'],
         })
       } catch (error) {
-        console.log(error)
+        store.error.showError(error)
       }
     },
-    [client, doc?.draft, id],
+    [client, doc.draft, id, store.error],
   )
   const onRemoveArticle = useCallback(
     (event) => {
@@ -129,10 +129,10 @@ const ArticlePanel = ({ id, activeId }) => {
           refetchQueries: ['ArticlesForArticlePanel'],
         })
       } catch (error) {
-        console.log(error)
+        store.error.showError(error)
       }
     },
-    [client, id],
+    [client, id, store.error],
   )
 
   const ref = useRef(null)

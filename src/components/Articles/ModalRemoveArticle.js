@@ -1,11 +1,14 @@
 //
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import { gql, useApolloClient } from '@apollo/client'
 
+import storeContext from '../../storeContext'
+
 const ModalRemoveArticle = ({ doc, setRemove }) => {
   const client = useApolloClient()
+  const store = useContext(storeContext)
 
   const abort = useCallback(() => setRemove(false), [setRemove])
   const remove = useCallback(async () => {
@@ -22,10 +25,10 @@ const ModalRemoveArticle = ({ doc, setRemove }) => {
         refetchQueries: ['ArticleIdsForArticles'],
       })
     } catch (error) {
-      console.log(error)
+      store.error.showError(error)
     }
     setRemove(false)
-  }, [client, doc?.id, setRemove])
+  }, [client, doc?.id, setRemove, store.error])
 
   return (
     <div className="static-modal">

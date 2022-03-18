@@ -112,7 +112,7 @@ const MyNavbar = ({ location }) => {
         refetchQueries: ['ArticlesForArticlePanel', 'ArticleIdsForArticles'],
       })
     } catch (error) {
-      console.log(error)
+      store.error.showError(error)
     }
     const id = result?.data?.insert_article_one?.id
     navigate(`/articles/${id}`)
@@ -142,12 +142,12 @@ const MyNavbar = ({ location }) => {
         refetchQueries: ['eventsForEvetsPageQuery'],
       })
     } catch (error) {
-      console.log(error)
+      store.error.showError(error)
     }
     const id = result?.data?.insert_event_one?.id
     if (!id) return console.log('got no id')
     navigate(`/events/${id}/`)
-  }, [client])
+  }, [client, store.error])
 
   const user = store.login.user
   const showEdit =

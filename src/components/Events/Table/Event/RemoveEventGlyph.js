@@ -1,5 +1,5 @@
 //
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useContext } from 'react'
 import {
   Glyphicon,
   OverlayTrigger,
@@ -10,6 +10,8 @@ import {
 import styled from 'styled-components'
 import { gql, useApolloClient } from '@apollo/client'
 
+import StoreContext from '../../../../storeContext'
+
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 0.9em;
   color: red;
@@ -19,6 +21,7 @@ const StyledGlyphicon = styled(Glyphicon)`
 
 const RemoveEventGlyph = ({ event }) => {
   const client = useApolloClient()
+  const store = useContext(StoreContext)
 
   const [open, setOpen] = useState(true)
 
@@ -36,10 +39,10 @@ const RemoveEventGlyph = ({ event }) => {
         refetchQueries: ['eventsForEvetsPageQuery'],
       })
     } catch (error) {
-      console.log(error)
+      store.error.showError(error)
     }
     setOpen(false)
-  }, [client, event.id])
+  }, [client, event.id, store.error])
 
   const onClickNo = useCallback(() => {
     setOpen(false)

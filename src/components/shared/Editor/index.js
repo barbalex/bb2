@@ -10,8 +10,6 @@ import storeContext from '../../../storeContext'
 const MyEditor = ({ doc, docType, contentDecoded }) => {
   const client = useApolloClient()
   const store = useContext(storeContext)
-  const { activePublication, savePublication } = store.publications
-  const { activeMonthlyEvent, saveMonthlyEvent } = store.monthlyEvents
 
   // height = window - menu height - (menubar + iconbar)
   let height = typeof window !== `undefined` ? window.innerHeight - 52 - 74 : 1
@@ -48,7 +46,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
           variables: { content, id: doc.id },
         })
       } catch (error) {
-        console.log(error)
+        store.error.showError(error)
       }
     },
     [client, doc.id],
@@ -74,7 +72,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
           variables: { content, id: doc.id },
         })
       } catch (error) {
-        console.log(error)
+        store.error.showError(error)
       }
     },
     [client, doc.id],
@@ -101,7 +99,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
           variables: { content, id: doc.id },
         })
       } catch (error) {
-        console.log(error)
+        store.error.showError(error)
       }
     },
     [client, doc.id],
@@ -122,7 +120,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
       saveFunction = onSaveArticleContent
       break
     default:
-      return store.error.showEdit('no or wrong docType passed to editor')
+      return store.error.showError('no or wrong docType passed to editor')
   }
 
   return (
