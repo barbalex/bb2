@@ -1,7 +1,6 @@
 //
 import { observable, extendObservable } from 'mobx'
 
-import page from './page'
 import monthlyEvents from './monthlyEvents'
 import publications from './publications'
 import login from './login'
@@ -10,7 +9,6 @@ import store from './store'
 
 function Store() {
   extendObservable(this, store(this))
-  this.page = observable(page(this))
   this.monthlyEvents = observable(monthlyEvents(this))
   this.publications = observable(publications(this))
   this.login = observable(login(this))
