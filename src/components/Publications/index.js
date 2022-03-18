@@ -4,6 +4,8 @@ import sortBy from 'lodash/sortBy'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
+import { gql, useQuery } from '@apollo/client'
+import { toJS } from 'mobx'
 
 import PublicationsGroup from './PublicationsGroup'
 import NewPublication from './NewPublication'
@@ -63,6 +65,16 @@ const orderByCategory = {
 }
 
 const Publications = ({ category, title }) => {
+  const { data } = useQuery(
+    gql`
+      query PublicationsForPublications {
+        article(order_by: { datum: desc }) {
+          id
+        }
+      }
+    `,
+  )
+
   const store = useContext(storeContext)
   const {
     publications,
@@ -75,6 +87,11 @@ const Publications = ({ category, title }) => {
   useEffect(() => {
     getPublications()
   }, [getPublications])
+
+  console.log('Publications, ids:', {
+    ids: publications.map((p) => p._id),
+    publications: toJS(publications),
+  })
 
   useEffect(() => {
     if (!!category && !!title) {

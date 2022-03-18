@@ -109,7 +109,7 @@ const ArticlePanel = ({ id, activeId }) => {
         store.error.showError(error)
       }
     },
-    [client, doc.draft, id, store.error],
+    [client, doc?.draft, id, store.error],
   )
   const onRemoveArticle = useCallback(
     (event) => {
