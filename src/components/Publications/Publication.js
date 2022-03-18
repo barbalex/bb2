@@ -1,11 +1,12 @@
 //
 import React, { useContext } from 'react'
-import { Base64 } from 'js-base64'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { gql, useQuery } from '@apollo/client'
 
 import Editor from '../shared/Editor'
 import storeContext from '../../storeContext'
+import hex2a from '../../modules/hex2a'
 
 const Container = styled.div`
   h2 {
@@ -20,24 +21,39 @@ const Container = styled.div`
   }
 `
 
-const Publication = () => {
+const Publication = ({ id }) => {
+  const { data } = useQuery(
+    gql`
+      query PublicationForPublication($id: uuid!) {
+        publication_by_pk(id: $id) {
+          id
+          content
+        }
+      }
+    `,
+    { variables: { id } },
+  )
+  const doc = data?.publication_by_pk
+
   const store = useContext(storeContext)
-  const { activePublication } = store.publications
-  const articleEncoded = activePublication.article
-  const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
+
+  if (!doc) return null
+
+  const contentDecoded = hex2a(doc.content)
 
   if (store.editing) {
     return (
       <Container>
         <Editor
           docType="publication"
-          doc={activePublication}
-          contentDecoded={articleDecoded}
+          doc={doc}
+          contentDecoded={contentDecoded}
         />
       </Container>
     )
   }
-  const createMarkup = () => ({ __html: articleDecoded })
+
+  const createMarkup = () => ({ __html: contentDecoded })
   return (
     <Container>
       <div dangerouslySetInnerHTML={createMarkup()} />

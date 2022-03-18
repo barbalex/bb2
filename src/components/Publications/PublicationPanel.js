@@ -21,6 +21,7 @@ const PanelHeading = styled.div`
 const PanelBody = styled.div`
   max-height: ${typeof window !== `undefined` ? window.innerHeight - 127 : 1}px;
   overflow-y: auto;
+  ${(props) => props['data-editing'] && 'padding: 0 !important;'}
 `
 const ToggleDraftGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -171,8 +172,8 @@ const PublicationPanel = ({ id, activeId, category }) => {
           aria-labelledby={`heading${id}`}
           onClick={onClickEventCollapse}
         >
-          <PanelBody className="panel-body">
-            <Publication />
+          <PanelBody className="panel-body" data-editing={store.editing}>
+            <Publication id={id} />
           </PanelBody>
         </div>
       )}
