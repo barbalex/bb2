@@ -106,43 +106,12 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
     },
     [client, doc.id],
   )
-  const onSaveMonthlyEventContent = useCallback(
-    (content) => {
-      // TODO: test
-      console.log('onSaveMonthlyEventContent, content:', content)
-      try {
-        client.mutate({
-          mutation: gql`
-            mutation UpdateMonthlyEventContentForEditor(
-              $id: uuid!
-              $content: bytea
-            ) {
-              update_monthly_event_by_pk(
-                pk_columns: { id: $id }
-                _set: { content: $content }
-              ) {
-                id
-              }
-            }
-          `,
-          variables: { content, id: doc.id },
-        })
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    [activeMonthlyEvent, saveMonthlyEvent],
-  )
 
   let saveFunction = () => {}
   switch (docType) {
     case 'page':
       bodyClass = ''
       saveFunction = onSavePageContent
-      break
-    case 'monthlyEvent':
-      bodyClass = 'monthlyEvent'
-      saveFunction = onSaveMonthlyEventContent
       break
     case 'publication':
       bodyClass = 'publication'
