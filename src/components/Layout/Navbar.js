@@ -119,9 +119,34 @@ const MyNavbar = ({ location }) => {
     !store.editing && store.toggleEditing()
   }, [client, store])
 
-  const onClickNewPublication = useCallback(() => {
-    store.publications.setShowNewPublication(true)
-  }, [store.publications])
+  const onClickNewPublication = useCallback(async () => {
+    let result
+    try {
+      result = await client.mutate({
+        mutation: gql`
+          mutation AddPublicationForPublicationPanel(
+            $draft: Boolean
+            $category: String
+            $catSort: int
+          ) {
+            insert_publication_one(
+              object: { category: $category, cat_sort: $catSort, draft: $draft }
+            ) {
+              id
+            }
+          }
+        `,
+        variables: { draft: false, category: 'European Union', catSort: 1 },
+        refetchQueries: ['PublicationsForPublicationsOfCategory'],
+      })
+    } catch (error) {
+      store.error.showError(error)
+    }
+    const id = result?.data?.insert_publication_one?.id
+    navigate(`/publications/European Union/${id}`)
+    !store.editing && store.toggleEditing()
+  }, [client, store])
+
   const onClickNewEvent = useCallback(async () => {
     let result
     try {

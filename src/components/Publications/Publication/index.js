@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { gql, useQuery } from '@apollo/client'
 
-import Editor from '../shared/Editor'
-import storeContext from '../../storeContext'
-import hex2a from '../../modules/hex2a'
+import storeContext from '../../../storeContext'
+import hex2a from '../../../modules/hex2a'
+import Editing from './Editing'
 
 const Container = styled.div`
   h2 {
@@ -27,6 +27,8 @@ const Publication = ({ id }) => {
       query PublicationForPublication($id: uuid!) {
         publication_by_pk(id: $id) {
           id
+          title
+          category
           content
         }
       }
@@ -42,15 +44,7 @@ const Publication = ({ id }) => {
   const contentDecoded = hex2a(doc.content)
 
   if (store.editing) {
-    return (
-      <Container>
-        <Editor
-          docType="publication"
-          doc={doc}
-          contentDecoded={contentDecoded}
-        />
-      </Container>
-    )
+    return <Editing doc={doc} />
   }
 
   const createMarkup = () => ({ __html: contentDecoded })
@@ -60,7 +54,5 @@ const Publication = ({ id }) => {
     </Container>
   )
 }
-
-Publication.displayName = 'Publication'
 
 export default observer(Publication)

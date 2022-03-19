@@ -15,6 +15,7 @@ const PanelHeading = styled.div`
 const PanelBody = styled.div`
   max-height: ${typeof window !== `undefined` ? window.innerHeight - 127 : 1}px;
   overflow-y: auto;
+  overflow-x: hidden;
   ${(props) => props['data-editing'] && 'padding: 0 !important;'}
 `
 const ToggleDraftGlyphicon = styled(Glyphicon)`
@@ -109,8 +110,6 @@ const PublicationPanel = ({ id, activeId, category }) => {
   )
 
   if (!doc) return null
-
-  console.log('PublicationPanel', { id, activeId, doc, title: doc?.title })
 
   // use pure bootstrap.
   // advantage: can add edit icon to panel-heading

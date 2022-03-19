@@ -2,10 +2,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
-import { gql, useQuery } from '@apollo/client'
 
 import PublicationsGroup from './PublicationsGroup'
 import oceanDarkImage from '../../images/oceanDark.jpg'
+import categories from './categories'
 
 const Container = styled.div`
   p,
@@ -54,45 +54,25 @@ const PanelGroup = styled.div`
   }
 `
 
-const Publications = ({ id: activeId }) => {
-  const { data } = useQuery(
-    gql`
-      query PublicationCategoriesForPublications {
-        categories: publication_aggregate(
-          distinct_on: cat_sort
-          order_by: { cat_sort: asc }
-        ) {
-          nodes {
-            category
-          }
-        }
-      }
-    `,
-  )
-  const categories = (data?.categories?.nodes ?? []).map((c) => c.category)
-
-  console.log('Publications, categories:', categories)
-
-  return (
-    <DocumentTitle title="Publications">
-      <Container>
-        <h1>Publications</h1>
-        <PanelGroup
-          className="panel-group"
-          id="publicationsAccordion"
-          role="tablist"
-        >
-          {categories.map((category) => (
-            <PublicationsGroup
-              key={category}
-              category={category}
-              activeId={activeId}
-            />
-          ))}
-        </PanelGroup>
-      </Container>
-    </DocumentTitle>
-  )
-}
+const Publications = ({ id: activeId }) => (
+  <DocumentTitle title="Publications">
+    <Container>
+      <h1>Publications</h1>
+      <PanelGroup
+        className="panel-group"
+        id="publicationsAccordion"
+        role="tablist"
+      >
+        {categories.map((category) => (
+          <PublicationsGroup
+            key={category}
+            category={category}
+            activeId={activeId}
+          />
+        ))}
+      </PanelGroup>
+    </Container>
+  </DocumentTitle>
+)
 
 export default Publications
