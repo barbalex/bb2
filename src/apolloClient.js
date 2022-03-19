@@ -35,6 +35,9 @@ const Client = ({ store }) => {
     // numbers than the exp date contains
     const tokenIsValid = token ? tokenDecoded.exp > Date.now() / 1000 : false
 
+    // only add authorization if token exists
+    if (!token) return headers
+
     return {
       headers: {
         ...headers,
