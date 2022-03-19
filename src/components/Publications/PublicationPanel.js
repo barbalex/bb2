@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useRef,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import React, { useContext, useRef, useCallback, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
@@ -12,7 +6,6 @@ import { gql, useQuery, useApolloClient } from '@apollo/client'
 
 import storeContext from '../../storeContext'
 import Publication from './Publication'
-import ModalRemovePublication from './ModalRemovePublication'
 import RemovePublicationGlyph from './RemovePublicationGlyph'
 import { navigate } from 'gatsby'
 
@@ -45,6 +38,7 @@ const PublicationPanel = ({ id, activeId, category }) => {
         publication_by_pk(id: $id) {
           id
           title
+          draft
         }
       }
     `,
@@ -52,14 +46,9 @@ const PublicationPanel = ({ id, activeId, category }) => {
   )
   const doc = data?.publication_by_pk
   const store = useContext(storeContext)
-  const { toggleDraftOfPublication } = store.publications
 
   const isActivePublication = id === activeId
   const showEditingGlyphons = !!store.login.user
-
-  console.log('PublicationPanel', { id, activeId, data, doc, category })
-
-  const [docToRemove, setDocToRemove] = useState(null)
 
   const ref = useRef(null)
   const scrollToActivePanel = useCallback(() => {
@@ -94,19 +83,34 @@ const PublicationPanel = ({ id, activeId, category }) => {
     (event) => {
       event.preventDefault()
       event.stopPropagation()
-      toggleDraftOfPublication(doc)
+      try {
+        client.mutate({
+          mutation: gql`
+            mutation UpdateDraftForPublicationPanel(
+              $id: uuid!
+              $draft: Boolean
+            ) {
+              update_publication_by_pk(
+                pk_columns: { id: $id }
+                _set: { draft: $draft }
+              ) {
+                id
+              }
+            }
+          `,
+          variables: { draft: !doc.draft, id },
+          refetchQueries: ['PublicationForPublicationPanel'],
+        })
+      } catch (error) {
+        store.error.showError(error)
+      }
     },
-    [doc, toggleDraftOfPublication],
-  )
-  const removePublication = useCallback(
-    (remove) => {
-      if (remove) store.publications.removePublication(docToRemove)
-      setDocToRemove(null)
-    },
-    [docToRemove, store.publications],
+    [client, doc?.draft, id, store.error],
   )
 
   if (!doc) return null
+
+  console.log('PublicationPanel', { id, activeId, doc, title: doc?.title })
 
   // use pure bootstrap.
   // advantage: can add edit icon to panel-heading
@@ -162,12 +166,6 @@ const PublicationPanel = ({ id, activeId, category }) => {
             <Publication id={id} />
           </PanelBody>
         </div>
-      )}
-      {docToRemove && (
-        <ModalRemovePublication
-          doc={docToRemove}
-          removePublication={removePublication}
-        />
       )}
     </div>
   )
