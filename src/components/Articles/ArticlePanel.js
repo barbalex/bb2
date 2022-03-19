@@ -14,6 +14,7 @@ import Article from './Article'
 import ModalRemoveArticle from './ModalRemoveArticle'
 import storeContext from '../../storeContext'
 import { navigate } from 'gatsby'
+import RemoveArticleGlyph from './RemoveArticleGlyph'
 
 const ToggleDraftGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -22,12 +23,10 @@ const ToggleDraftGlyphicon = styled(Glyphicon)`
   font-size: 1.5em;
   color: ${(props) => props['data-color']};
 `
-const RemoveGlyphicon = styled(Glyphicon)`
-  position: absolute !important;
-  right: 10px !important;
-  top: 6px !important;
-  font-size: 1.5em;
-  color: #edf4f8;
+const PanelClickArea = styled.div`
+  width: calc(100% - 45px);
+  padding: 10px 15px;
+  margin: -10px -15px;
 `
 const PanelHeading = styled.div`
   position: relative;
@@ -111,29 +110,6 @@ const ArticlePanel = ({ id, activeId }) => {
     },
     [client, doc?.draft, id, store.error],
   )
-  const onRemoveArticle = useCallback(
-    (event) => {
-      event.preventDefault()
-      event.stopPropagation()
-      setRemove(true)
-      try {
-        client.mutate({
-          mutation: gql`
-            mutation DeleteArticleForArticlePanel($id: uuid!) {
-              delete_article_by_pk(id: $id) {
-                id
-              }
-            }
-          `,
-          variables: { id },
-          refetchQueries: ['ArticlesForArticlePanel'],
-        })
-      } catch (error) {
-        store.error.showError(error)
-      }
-    },
-    [client, id, store.error],
-  )
 
   const ref = useRef(null)
   useEffect(() => {
@@ -156,21 +132,22 @@ const ArticlePanel = ({ id, activeId }) => {
         className="panel-heading"
         role="tab"
         id={`heading${id}`}
-        onClick={onClickArticle}
         ref={ref}
       >
-        <h4 className="panel-title">
-          <a
-            role="button"
-            data-toggle="collapse"
-            data-parent="#articlesAccordion"
-            href={`#collapse${id}`}
-            aria-expanded="false"
-            aria-controls={`#collapse${id}`}
-          >
-            {doc?.title}
-          </a>
-        </h4>
+        <PanelClickArea onClick={onClickArticle}>
+          <h4 className="panel-title">
+            <a
+              role="button"
+              data-toggle="collapse"
+              data-parent="#articlesAccordion"
+              href={`#collapse${id}`}
+              aria-expanded="false"
+              aria-controls={`#collapse${id}`}
+            >
+              {doc?.title}
+            </a>
+          </h4>
+        </PanelClickArea>
         {showEditingGlyphons && (
           <OverlayTrigger
             placement="top"
@@ -187,14 +164,7 @@ const ArticlePanel = ({ id, activeId }) => {
             />
           </OverlayTrigger>
         )}
-        {showEditingGlyphons && (
-          <OverlayTrigger
-            placement="top"
-            overlay={<Tooltip id="removeThisArticle">remove</Tooltip>}
-          >
-            <RemoveGlyphicon glyph="remove-circle" onClick={onRemoveArticle} />
-          </OverlayTrigger>
-        )}
+        {showEditingGlyphons && <RemoveArticleGlyph article={doc} />}
       </PanelHeading>
       {isActiveArticle && id && (
         <div

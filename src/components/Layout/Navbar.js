@@ -82,6 +82,9 @@ const MyNavbar = ({ location }) => {
     if (pathname.includes('/articles') && store.editing) {
       client.refetchQueries({ include: ['ArticleForArticle'] })
     }
+    if (pathname.includes('/publications') && store.editing) {
+      client.refetchQueries({ include: ['PublicationForPublication'] })
+    }
     onToggleNav()
   }, [client, onToggleNav, pathname, store])
 

@@ -52,22 +52,18 @@ const PublicationPanel = ({ id, activeId, category }) => {
   const showEditingGlyphons = !!store.login.user
 
   const ref = useRef(null)
-  const scrollToActivePanel = useCallback(() => {
-    if (typeof window !== `undefined`) {
-      window.scrollTo({
-        left: 0,
-        top: ref.current ? ref.current.offsetTop - 55 : 55,
-        behavior: 'smooth',
-      })
-    }
-  }, [])
+
   useEffect(() => {
     if (isActivePublication) {
-      window.setTimeout(() => {
-        scrollToActivePanel()
-      }, 50)
+      setTimeout(() => {
+        window.scrollTo({
+          left: 0,
+          top: ref.current ? ref.current.offsetTop - 55 : 55,
+          behavior: 'smooth',
+        })
+      }, 100)
     }
-  }, [isActivePublication, scrollToActivePanel])
+  }, [isActivePublication, store.editing])
 
   const onClickPublication = useCallback(() => {
     if (isActivePublication) {

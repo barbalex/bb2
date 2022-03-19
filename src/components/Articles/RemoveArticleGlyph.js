@@ -10,7 +10,7 @@ import {
 import styled from 'styled-components'
 import { gql, useApolloClient } from '@apollo/client'
 
-import StoreContext from '../../../../storeContext'
+import StoreContext from '../../storeContext'
 
 const StyledGlyphicon = styled(Glyphicon)`
   font-size: 0.9em;
@@ -18,8 +18,15 @@ const StyledGlyphicon = styled(Glyphicon)`
   padding-left: 8px;
   cursor: pointer;
 `
+const RemoveGlyphicon = styled(Glyphicon)`
+  position: absolute !important;
+  right: 10px !important;
+  top: 6px !important;
+  font-size: 1.5em;
+  color: #edf4f8;
+`
 
-const RemoveEventGlyph = ({ event }) => {
+const RemoveArticleGlyph = ({ article }) => {
   const client = useApolloClient()
   const store = useContext(StoreContext)
 
@@ -29,20 +36,20 @@ const RemoveEventGlyph = ({ event }) => {
     try {
       await client.mutate({
         mutation: gql`
-          mutation mutateEvent($id: uuid!) {
-            delete_event_by_pk(id: $id) {
+          mutation deleteArticle($id: uuid!) {
+            delete_article_by_pk(id: $id) {
               id
             }
           }
         `,
-        variables: { id: event.id },
-        refetchQueries: ['eventsForEvetsPageQuery'],
+        variables: { id: article.id },
+        refetchQueries: ['ArticleIdsForArticles', 'ArticlesForArticlePanel'],
       })
     } catch (error) {
       store.error.showError(error)
     }
     setOpen(false)
-  }, [client, event.id, store.error])
+  }, [client, article?.id, store.error])
 
   const onClickNo = useCallback(() => {
     setOpen(false)
@@ -51,7 +58,7 @@ const RemoveEventGlyph = ({ event }) => {
   }, [])
 
   const popover = (
-    <Popover id="popoverRemoveEvent" title="Delete this event?">
+    <Popover id="popoverRemoveArticle" title="Delete this article?">
       <ButtonToolbar>
         <Button bsSize="small" bsStyle="danger" onClick={onClickYes}>
           Yes
@@ -66,11 +73,11 @@ const RemoveEventGlyph = ({ event }) => {
   if (open) {
     return (
       <OverlayTrigger trigger="click" placement="top" overlay={popover}>
-        <StyledGlyphicon glyph="remove-circle" />
+        <RemoveGlyphicon glyph="remove-circle" />
       </OverlayTrigger>
     )
   }
   return <StyledGlyphicon glyph="remove-circle" />
 }
 
-export default RemoveEventGlyph
+export default RemoveArticleGlyph
