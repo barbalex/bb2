@@ -127,16 +127,15 @@ const MyNavbar = ({ location }) => {
           mutation AddPublicationForPublicationPanel(
             $draft: Boolean
             $category: String
-            $catSort: int
           ) {
             insert_publication_one(
-              object: { category: $category, cat_sort: $catSort, draft: $draft }
+              object: { category: $category, draft: $draft }
             ) {
               id
             }
           }
         `,
-        variables: { draft: false, category: 'European Union', catSort: 1 },
+        variables: { draft: false, category: 'European Union' },
         refetchQueries: ['PublicationsForPublicationsOfCategory'],
       })
     } catch (error) {

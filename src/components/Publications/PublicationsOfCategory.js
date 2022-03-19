@@ -1,4 +1,3 @@
-//
 import React from 'react'
 import styled from 'styled-components'
 import { gql, useQuery } from '@apollo/client'
@@ -14,7 +13,7 @@ const PublicationsOfCategory = ({ category, activeId }) => {
     gql`
       query PublicationsForPublicationsOfCategory($category: String) {
         publication(
-          order_by: [{ cat_sort: asc }, { sort: asc }, { title: asc }]
+          order_by: [{ sort: asc }, { title: asc }]
           where: { category: { _eq: $category } }
         ) {
           id
