@@ -8,11 +8,12 @@ import React, {
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery, useApolloClient } from '@apollo/client'
 
 import storeContext from '../../storeContext'
 import Publication from './Publication'
 import ModalRemovePublication from './ModalRemovePublication'
+import RemovePublicationGlyph from './RemovePublicationGlyph'
 import { navigate } from 'gatsby'
 
 const PanelHeading = styled.div`
@@ -30,14 +31,14 @@ const ToggleDraftGlyphicon = styled(Glyphicon)`
   font-size: 1.5em;
   color: ${(props) => props['data-color']};
 `
-const RemoveGlyphicon = styled(Glyphicon)`
-  position: absolute !important;
-  right: 8px !important;
-  top: 6px !important;
-  font-size: 1.5em;
+const PanelClickArea = styled.div`
+  width: calc(100% - 45px);
+  padding: 10px 15px;
+  margin: -10px -15px;
 `
 
 const PublicationPanel = ({ id, activeId, category }) => {
+  const client = useApolloClient()
   const { data } = useQuery(
     gql`
       query PublicationForPublicationPanel($id: uuid!) {
@@ -49,7 +50,7 @@ const PublicationPanel = ({ id, activeId, category }) => {
     `,
     { variables: { id } },
   )
-  const doc = data?.publication_by_pk ?? {}
+  const doc = data?.publication_by_pk
   const store = useContext(storeContext)
   const { toggleDraftOfPublication } = store.publications
 
@@ -78,25 +79,24 @@ const PublicationPanel = ({ id, activeId, category }) => {
     }
   }, [isActivePublication, scrollToActivePanel])
 
-  const onClickPublication = useCallback(
-    (e) => {
-      // prevent higher level panels from reacting
-      e.stopPropagation()
+  const onClickPublication = useCallback(() => {
+    if (isActivePublication) {
+      navigate(`/publications`)
+    } else {
       navigate(`/publications/${category}/${id}`)
-    },
-    [category, id],
-  )
+    }
+  }, [category, id, isActivePublication])
   const onClickEventCollapse = useCallback((event) => {
     // prevent higher level panels from reacting
     event.stopPropagation()
   }, [])
   const onToggleDraft = useCallback(
-    (doc, event) => {
+    (event) => {
       event.preventDefault()
       event.stopPropagation()
       toggleDraftOfPublication(doc)
     },
-    [toggleDraftOfPublication],
+    [doc, toggleDraftOfPublication],
   )
   const removePublication = useCallback(
     (remove) => {
@@ -105,11 +105,6 @@ const PublicationPanel = ({ id, activeId, category }) => {
     },
     [docToRemove, store.publications],
   )
-  const onRemovePublication = useCallback((docToRemove, event) => {
-    event.preventDefault()
-    event.stopPropagation()
-    setDocToRemove(docToRemove)
-  }, [])
 
   if (!doc) return null
 
@@ -121,21 +116,22 @@ const PublicationPanel = ({ id, activeId, category }) => {
         className="panel-heading"
         role="tab"
         id={`heading${id}`}
-        onClick={onClickPublication}
         ref={ref}
       >
-        <h4 className="panel-title">
-          <a
-            role="button"
-            data-toggle="collapse"
-            data-parent={`#${category}`}
-            href={`#collapse${id}`}
-            aria-expanded="false"
-            aria-controls={`#collapse${id}`}
-          >
-            {doc.title}
-          </a>
-        </h4>
+        <PanelClickArea onClick={onClickPublication}>
+          <h4 className="panel-title">
+            <a
+              role="button"
+              data-toggle="collapse"
+              data-parent={`#${category}`}
+              href={`#collapse${id}`}
+              aria-expanded="false"
+              aria-controls={`#collapse${id}`}
+            >
+              {doc.title}
+            </a>
+          </h4>
+        </PanelClickArea>
         {showEditingGlyphons && (
           <OverlayTrigger
             placement="top"
@@ -148,21 +144,11 @@ const PublicationPanel = ({ id, activeId, category }) => {
             <ToggleDraftGlyphicon
               glyph={doc.draft ? 'ban-circle' : 'ok-circle'}
               data-color={doc.draft ? 'red' : 'green'}
-              onClick={onToggleDraft.bind(this, doc)}
+              onClick={onToggleDraft}
             />
           </OverlayTrigger>
         )}
-        {showEditingGlyphons && (
-          <OverlayTrigger
-            placement="top"
-            overlay={<Tooltip id="removeThisPublication">remove</Tooltip>}
-          >
-            <RemoveGlyphicon
-              glyph="remove-circle"
-              onClick={onRemovePublication.bind(this, doc)}
-            />
-          </OverlayTrigger>
-        )}
+        {showEditingGlyphons && <RemovePublicationGlyph publication={doc} />}
       </PanelHeading>
       {isActivePublication && (
         <div
