@@ -57,7 +57,7 @@ async function start() {
         'https://hasura.io/jwt/claims': {
           'x-hasura-default-role': 'bb_user',
           'x-hasura-allowed-roles': ['bb_user'],
-          'x-hasura-user-id': uid,
+          'x-hasura-user-id': uid ?? 'visitor',
         },
       }
 
@@ -65,7 +65,7 @@ async function start() {
         admin
           .auth()
           // TODO: problem if uid is unknown?
-          .setCustomUserClaims(uid, hasuraVariables)
+          .setCustomUserClaims(uid ?? 'visitor', hasuraVariables)
           .then(() => {
             return h.response('user role and id set').code(200)
           })
