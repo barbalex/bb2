@@ -117,15 +117,15 @@ const EditEvent = ({ id }) => {
     `,
     { variables: { id } },
   )
-  const activeEvent = data?.event?.[0]
+  const doc = data?.event?.[0]
 
   const [error, setError] = useState(null)
   const [title, setTitle] = useState('')
   useEffect(() => {
     if (!loading) {
-      setTitle(activeEvent.title)
+      setTitle(doc.title)
     }
-  }, [activeEvent, loading])
+  }, [doc, loading])
 
   const saveToDb = useCallback(
     async ({ field, value }) => {
@@ -146,13 +146,14 @@ const EditEvent = ({ id }) => {
           }
         }
       `,
-          variables: { id: activeEvent.id },
+          variables: { id: doc.id },
+          refetchQueries: ['EventsForEventsPageQuery'],
         })
       } catch (error) {
         store.error.showError(error)
       }
     },
-    [activeEvent.id, client, store.error],
+    [doc?.id, client, store.error],
   )
 
   const onChangeTitle = useCallback((e) => setTitle(e.target.value), [])
@@ -204,10 +205,10 @@ const EditEvent = ({ id }) => {
           />
         </FormGroup>
         <DateInput
-          date={moment(activeEvent.datum, 'YYYY-MM-DD')}
+          date={moment(doc.datum, 'YYYY-MM-DD')}
           onChangeDatePicker={onChangeDatePicker}
         />
-        <EventTypeButtonGroup activeEvent={activeEvent} saveToDb={saveToDb} />
+        <EventTypeButtonGroup activeEvent={doc} saveToDb={saveToDb} />
         {/* <FormGroup controlId="eventOrder">
           <ControlLabel>Order</ControlLabel>
           <EventOrder
@@ -218,8 +219,8 @@ const EditEvent = ({ id }) => {
             tabIndex={4}
           />
         </FormGroup> */}
-        <TagsInput activeEvent={activeEvent} saveToDb={saveToDb} />
-        <EventLinks activeEvent={activeEvent} />
+        <TagsInput activeEvent={doc} saveToDb={saveToDb} />
+        <EventLinks activeEvent={doc} />
         {error && <StyledAlert bsStyle="danger">{error}</StyledAlert>}
       </Modal.Body>
 

@@ -30,7 +30,7 @@ const BodyCell = styled.div`
 const DateRows = ({ activeYear }) => {
   const { loading, error, data } = useQuery(
     gql`
-      query eventsForEvetsPageQuery($from: date, $to: date) {
+      query EventsForEventsPageQuery($from: date, $to: date) {
         event(
           where: { _and: { datum: { _gte: $from } }, datum: { _lte: $to } }
           order_by: { datum: desc }

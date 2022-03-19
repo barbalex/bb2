@@ -166,7 +166,7 @@ const MyNavbar = ({ location }) => {
           datum: moment(event.date).format('YYYY-MM-DD'),
           eventType: 'migration',
         },
-        refetchQueries: ['eventsForEvetsPageQuery'],
+        refetchQueries: ['EventsForEventsPageQuery'],
       })
     } catch (error) {
       store.error.showError(error)

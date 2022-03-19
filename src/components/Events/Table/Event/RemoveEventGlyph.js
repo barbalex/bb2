@@ -36,7 +36,7 @@ const RemoveEventGlyph = ({ event }) => {
           }
         `,
         variables: { id: event.id },
-        refetchQueries: ['eventsForEvetsPageQuery'],
+        refetchQueries: ['EventsForEventsPageQuery'],
       })
     } catch (error) {
       store.error.showError(error)

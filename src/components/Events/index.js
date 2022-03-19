@@ -48,8 +48,6 @@ const YearButtonsContainer = styled.div`
 `
 
 const Events = ({ id }) => {
-  console.log('Events, id:', id)
-
   const { data } = useQuery(
     gql`
       query yearsForEventsPage {
