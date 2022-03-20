@@ -86,7 +86,7 @@ async function start() {
     },
   })
   await server.start()
-  console.log('Auth-Server running at:', server.info.uri)
+  console.log(`${Date.now()}, Auth-Server running at:`, server.info.uri)
 }
 
 process.on('unhandledRejection', (err) => {
