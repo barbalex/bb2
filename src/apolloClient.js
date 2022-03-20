@@ -38,6 +38,7 @@ const Client = ({ store }) => {
     return {
       headers: {
         ...headers,
+        'x-hasura-role': 'bb_user',
         //authorization: token && tokenIsValid ? `Bearer ${token}` : '',
         authorization: `Bearer ${token && tokenIsValid ? token : noToken}`,
       },
