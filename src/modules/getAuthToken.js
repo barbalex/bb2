@@ -5,7 +5,7 @@ const getAuthToken = async ({ store }) => {
   try {
     res = await axios.get(
       `https://auth.artenliste.ch/add-hasura-claims/${
-        store.login?.user?.uid ?? 'aaaaaaaa-aaaa-11ea-aaaa-aaaaaaaaaaaa'
+        store.login?.user?.uid ?? process.env.GATSBY_VISITOR_UID
       }`,
     )
   } catch (error) {

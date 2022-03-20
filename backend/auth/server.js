@@ -51,13 +51,13 @@ async function start() {
           .code(500)
       }
 
-      const { uid } = req.params
+      const uid = req.params?.uid ?? serviceAccount.visitor_uid
 
       const hasuraVariables = {
         'https://hasura.io/jwt/claims': {
           'x-hasura-default-role': 'bb_user',
           'x-hasura-allowed-roles': ['bb_user'],
-          'x-hasura-user-id': uid ?? 'visitor',
+          'x-hasura-user-id': uid,
         },
       }
 
@@ -65,7 +65,7 @@ async function start() {
         admin
           .auth()
           // TODO: problem if uid is unknown?
-          .setCustomUserClaims(uid ?? 'visitor', hasuraVariables)
+          .setCustomUserClaims(uid, hasuraVariables)
           .then(() => {
             return h.response('user role and id set').code(200)
           })
