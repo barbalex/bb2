@@ -1,5 +1,5 @@
 //
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { gql, useQuery } from '@apollo/client'
@@ -33,7 +33,7 @@ const Container = styled.div`
 const Article = ({ id }) => {
   const store = useContext(storeContext)
 
-  const { data } = useQuery(
+  const { data, refetch, networkStatus, loading } = useQuery(
     gql`
       query ArticleForArticle($id: uuid!) {
         article_by_pk(id: $id) {
@@ -48,6 +48,26 @@ const Article = ({ id }) => {
     { variables: { id } },
   )
   const doc = data?.article_by_pk
+  // console.log('Article', { networkStatus, loading })
+
+  // need to know previous network status
+  // to not refetch on first load
+  // and rather only on exiting editing mode
+  const networkstatusRef = useRef()
+  useEffect(() => {
+    networkstatusRef.current = networkStatus
+    // console.log('network status set to:', networkstatusRef.current)
+  }, [networkStatus])
+  useEffect(() => {
+    if (
+      !store.editing &&
+      networkStatus === 7 &&
+      networkstatusRef.current !== 1
+    ) {
+      // console.log('Article refetching, networkStatus:', networkStatus)
+      refetch()
+    }
+  }, [networkStatus, refetch, store.editing])
 
   if (!doc) return null
 

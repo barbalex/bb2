@@ -71,7 +71,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
             }
           `,
           variables: { content, id: doc.id },
-          refetchQueries: ['ArticleForArticle'],
+          //refetchQueries: ['ArticleForArticle'],
         })
       } catch (error) {
         store.showError(error)
@@ -97,7 +97,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
             }
           `,
           variables: { content, id: doc.id },
-          refetchQueries: ['PublicationForPublication'],
+          //refetchQueries: ['PublicationForPublication'],
         })
       } catch (error) {
         store.showError(error)
@@ -146,7 +146,13 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
         body_class: bodyClass,
         content_css: `./tinymce.css`,
       }}
-      onChange={(e) => saveFunction(e.target.getContent())}
+      onEditorChange={(e) => {
+        console.log('Editor onEditorChange')
+      }}
+      onChange={(e) => {
+        console.log('Editor onChange')
+        saveFunction(e.target.getContent())
+      }}
     />
   )
 }
