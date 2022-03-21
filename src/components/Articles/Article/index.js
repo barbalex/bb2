@@ -33,7 +33,7 @@ const Container = styled.div`
 const Article = ({ id }) => {
   const store = useContext(storeContext)
 
-  const { data, refetch, networkStatus, loading } = useQuery(
+  const { data, refetch, networkStatus } = useQuery(
     gql`
       query ArticleForArticle($id: uuid!) {
         article_by_pk(id: $id) {

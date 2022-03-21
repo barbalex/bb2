@@ -1,5 +1,5 @@
 //
-import React, { useContext } from 'react'
+import React, { useContext, useRef, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
@@ -32,7 +32,7 @@ const AboutUs = () => {
   const store = useContext(storeContext)
   let title = 'About us'
 
-  const { data } = useQuery(
+  const { data, refetch, networkStatus } = useQuery(
     gql`
       query AboutUsForAboutUs($id: uuid!) {
         page_by_pk(id: $id) {
@@ -49,6 +49,23 @@ const AboutUs = () => {
   const contentDecoded = hex2a(contentEncoded)
   // console.log('AboutUs, contentEncoded:', contentEncoded)
   // console.log('AboutUs, contentDecoded:', contentDecoded)
+
+  // need to know previous network status
+  // to not refetch on first load (previous status 1)
+  // but rather only on exiting editing mode
+  const networkstatusRef = useRef()
+  useEffect(() => {
+    networkstatusRef.current = networkStatus
+  }, [networkStatus])
+  useEffect(() => {
+    if (
+      !store.editing &&
+      networkStatus === 7 &&
+      networkstatusRef.current !== 1
+    ) {
+      refetch()
+    }
+  }, [networkStatus, refetch, store.editing])
 
   if (!data) return null
 

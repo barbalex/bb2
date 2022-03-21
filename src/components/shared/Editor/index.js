@@ -44,7 +44,6 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
             }
           `,
           variables: { content, id: doc.id },
-          refetchQueries: ['AboutUsForAboutUs'],
         })
       } catch (error) {
         store.showError(error)
@@ -71,7 +70,6 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
             }
           `,
           variables: { content, id: doc.id },
-          //refetchQueries: ['ArticleForArticle'],
         })
       } catch (error) {
         store.showError(error)
@@ -97,7 +95,6 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
             }
           `,
           variables: { content, id: doc.id },
-          //refetchQueries: ['PublicationForPublication'],
         })
       } catch (error) {
         store.showError(error)
@@ -134,7 +131,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
         plugins: [
           'advlist autolink link image lists charmap print hr anchor pagebreak',
           'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',
-          'save table contextmenu directionality template paste textcolor autosave',
+          'save table directionality template paste autosave',
         ],
         menubar: 'edit insert view format table tools',
         toolbar:
@@ -145,9 +142,6 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
         statusbar: false,
         body_class: bodyClass,
         content_css: `./tinymce.css`,
-      }}
-      onEditorChange={(e) => {
-        console.log('Editor onEditorChange')
       }}
       onChange={(e) => {
         console.log('Editor onChange')
