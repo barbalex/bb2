@@ -20,7 +20,7 @@ const getToken = () => {
 }
 
 const Client = ({ store }) => {
-  const { showError } = store.error
+  const { showError } = store
   // TODO: use new functionality
   // https://www.apollographql.com/docs/react/migrating/apollo-client-3-migration/?mc_cid=e593721cc7&mc_eid=c8e91f2f0a#apollo-link-and-apollo-link-http
   const authLink = setContext((_, { headers }) => {

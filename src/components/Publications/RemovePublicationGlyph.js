@@ -45,10 +45,10 @@ const RemovePublicationGlyph = ({ publication }) => {
         refetchQueries: ['PublicationsForPublicationsOfCategory'],
       })
     } catch (error) {
-      store.error.showError(error)
+      store.showError(error)
     }
     setOpen(false)
-  }, [client, publication.id, store.error])
+  }, [client, publication.id, store])
 
   const onClickNo = useCallback(() => {
     setOpen(false)

@@ -46,7 +46,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
           variables: { content, id: doc.id },
         })
       } catch (error) {
-        store.error.showError(error)
+        store.showError(error)
       }
     },
     [client, doc.id],
@@ -72,7 +72,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
           variables: { content, id: doc.id },
         })
       } catch (error) {
-        store.error.showError(error)
+        store.showError(error)
       }
     },
     [client, doc.id],
@@ -99,7 +99,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
           variables: { content, id: doc.id },
         })
       } catch (error) {
-        store.error.showError(error)
+        store.showError(error)
       }
     },
     [client, doc.id],
@@ -120,7 +120,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
       saveFunction = onSaveArticleContent
       break
     default:
-      return store.error.showError('no or wrong docType passed to editor')
+      return store.showError('no or wrong docType passed to editor')
   }
 
   return (

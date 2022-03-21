@@ -39,10 +39,10 @@ const RemoveEventGlyph = ({ event }) => {
         refetchQueries: ['EventsForEventsPageQuery'],
       })
     } catch (error) {
-      store.error.showError(error)
+      store.showError(error)
     }
     setOpen(false)
-  }, [client, event.id, store.error])
+  }, [client, event.id, store])
 
   const onClickNo = useCallback(() => {
     setOpen(false)

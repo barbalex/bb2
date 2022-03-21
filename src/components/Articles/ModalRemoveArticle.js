@@ -25,10 +25,10 @@ const ModalRemoveArticle = ({ doc, setRemove }) => {
         refetchQueries: ['ArticleIdsForArticles'],
       })
     } catch (error) {
-      store.error.showError(error)
+      store.showError(error)
     }
     setRemove(false)
-  }, [client, doc?.id, setRemove, store.error])
+  }, [client, doc?.id, setRemove, store])
 
   return (
     <div className="static-modal">

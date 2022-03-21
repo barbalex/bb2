@@ -100,10 +100,10 @@ const PublicationPanel = ({ id, activeId, category }) => {
           refetchQueries: ['PublicationForPublicationPanel'],
         })
       } catch (error) {
-        store.error.showError(error)
+        store.showError(error)
       }
     },
-    [client, doc?.draft, id, store.error],
+    [client, doc?.draft, id, store],
   )
 
   if (!doc) return null

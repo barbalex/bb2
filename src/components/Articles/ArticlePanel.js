@@ -106,10 +106,10 @@ const ArticlePanel = ({ id, activeId }) => {
           refetchQueries: ['ArticlesForArticlePanel'],
         })
       } catch (error) {
-        store.error.showError(error)
+        store.showError(error)
       }
     },
-    [client, doc?.draft, id, store.error],
+    [client, doc.draft, id, store],
   )
 
   const ref = useRef(null)

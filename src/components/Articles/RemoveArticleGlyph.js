@@ -46,10 +46,10 @@ const RemoveArticleGlyph = ({ article }) => {
         refetchQueries: ['ArticleIdsForArticles', 'ArticlesForArticlePanel'],
       })
     } catch (error) {
-      store.error.showError(error)
+      store.showError(error)
     }
     setOpen(false)
-  }, [client, article?.id, store.error])
+  }, [client, article?.id, store])
 
   const onClickNo = useCallback(() => {
     setOpen(false)

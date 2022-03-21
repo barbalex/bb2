@@ -115,7 +115,7 @@ const MyNavbar = ({ location }) => {
         refetchQueries: ['ArticlesForArticlePanel', 'ArticleIdsForArticles'],
       })
     } catch (error) {
-      store.error.showError(error)
+      store.showError(error)
     }
     const id = result?.data?.insert_article_one?.id
     navigate(`/articles/${id}`)
@@ -142,7 +142,7 @@ const MyNavbar = ({ location }) => {
         refetchQueries: ['PublicationsForPublicationsOfCategory'],
       })
     } catch (error) {
-      store.error.showError(error)
+      store.showError(error)
     }
     const id = result?.data?.insert_publication_one?.id
     navigate(`/publications/European Union/${id}`)
@@ -169,12 +169,12 @@ const MyNavbar = ({ location }) => {
         refetchQueries: ['EventsForEventsPageQuery'],
       })
     } catch (error) {
-      store.error.showError(error)
+      store.showError(error)
     }
     const id = result?.data?.insert_event_one?.id
     if (!id) return console.log('got no id')
     navigate(`/events/${id}/`)
-  }, [client, store.error])
+  }, [client, store])
 
   const user = store.login.user
   const showEdit =

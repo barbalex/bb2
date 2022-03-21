@@ -150,10 +150,10 @@ const EditEvent = ({ id }) => {
           refetchQueries: ['EventsForEventsPageQuery'],
         })
       } catch (error) {
-        store.error.showError(error)
+        store.showError(error)
       }
     },
-    [doc?.id, client, store.error],
+    [doc?.id, client, store],
   )
 
   const onChangeTitle = useCallback((e) => setTitle(e.target.value), [])
