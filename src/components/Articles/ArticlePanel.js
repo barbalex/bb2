@@ -109,7 +109,7 @@ const ArticlePanel = ({ id, activeId }) => {
         store.showError(error)
       }
     },
-    [client, doc.draft, id, store],
+    [client, doc?.draft, id, store],
   )
 
   const ref = useRef(null)

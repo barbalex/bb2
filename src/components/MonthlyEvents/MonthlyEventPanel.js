@@ -17,11 +17,10 @@ const MonthlyEventPanel = ({ year, month, activeMonth, activeYear }) => {
   const isActiveMonthlyEvent = year === activeYear && month === activeMonth
 
   const onClickMonthlyEvent = useCallback(() => {
-    if (isActiveMonthlyEvent) {
-      navigate(`/monthly-events`)
-    } else {
-      navigate(`/monthly-events/${year}/${month}`)
-    }
+    const to = isActiveMonthlyEvent
+      ? `/monthly-events`
+      : `/monthly-events/${year}/${month}`
+    navigate(to)
   }, [isActiveMonthlyEvent, month, year])
   const onClickEventCollapse = useCallback((event) => {
     // prevent higher level panels from reacting

@@ -44,6 +44,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
             }
           `,
           variables: { content, id: doc.id },
+          refetchQueries: ['AboutUsForAboutUs'],
         })
       } catch (error) {
         store.showError(error)
@@ -70,6 +71,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
             }
           `,
           variables: { content, id: doc.id },
+          refetchQueries: ['ArticleForArticle'],
         })
       } catch (error) {
         store.showError(error)
@@ -79,8 +81,6 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
   )
   const onSavePublicationContent = useCallback(
     (content) => {
-      // TODO: test
-      console.log('onSavePublicationContent, content:', content)
       try {
         client.mutate({
           mutation: gql`
@@ -97,6 +97,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
             }
           `,
           variables: { content, id: doc.id },
+          refetchQueries: ['PublicationForPublication'],
         })
       } catch (error) {
         store.showError(error)
