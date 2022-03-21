@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-//
 import React, { useContext, useCallback } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { observer } from 'mobx-react-lite'
@@ -143,10 +142,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
         body_class: bodyClass,
         content_css: `./tinymce.css`,
       }}
-      onChange={(e) => {
-        console.log('Editor onChange')
-        saveFunction(e.target.getContent())
-      }}
+      onChange={(e) => saveFunction(e.target.getContent())}
     />
   )
 }
