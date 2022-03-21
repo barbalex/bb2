@@ -138,7 +138,7 @@ const MyNavbar = ({ location }) => {
             }
           }
         `,
-        variables: { draft: false, category: 'European Union' },
+        variables: { draft: true, category: 'European Union' },
         refetchQueries: ['PublicationsForPublicationsOfCategory'],
       })
     } catch (error) {
