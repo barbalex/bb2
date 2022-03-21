@@ -11,6 +11,7 @@ import { navigate } from 'gatsby'
 
 const PanelHeading = styled.div`
   position: relative;
+  min-height: 38px;
 `
 const PanelBody = styled.div`
   max-height: ${typeof window !== `undefined` ? window.innerHeight - 127 : 1}px;

@@ -34,6 +34,7 @@ const PanelHeading = styled.div`
   border-bottom-right-radius: ${(props) =>
     !props.isActiveArticle ? '3px' : 0};
   border-bottom-left-radius: ${(props) => (!props.isActiveArticle ? '3px' : 0)};
+  min-height: 37px;
 `
 const PanelBody = styled.div`
   margin-top: ${(props) => props['data-panelbodymargintop']};
