@@ -4,9 +4,7 @@ const getAuthToken = async ({ store }) => {
   let res
   try {
     res = await axios.get(
-      `https://auth.artenliste.ch/add-hasura-claims/${
-        store.login?.user?.uid ?? process.env.GATSBY_VISITOR_UID
-      }`,
+      `https://auth.artenliste.ch/add-hasura-claims/${store.login?.user?.uid}`,
     )
   } catch (error) {
     console.log('error from getting claims from auth.blue-borders.ch:', error)

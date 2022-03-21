@@ -14,8 +14,6 @@ import graphQlUri from './modules/graphQlUri'
 import existsPermissionsError from './modules/existsPermissionError'
 // import getAuthToken from './modules/getAuthToken'
 
-const noToken =
-  'eyJhbGciOiJIUzUxMiIsImtpZCI6ImYxZDU2YTI1MWU0ZGRhM2Y0NWM0MWZkNWQ0ZGEwMWQyYjlkNzJlMGQiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6ImJiX3VzZXIiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbImJiX3VzZXIiXSwieC1oYXN1cmEtdXNlci1pZCI6IkhEakFaeWxEYWtiYklXdWF1aXF0NXgxTW12aTIifSwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2JsdWUtYm9yZGVycyIsImF1ZCI6ImJsdWUtYm9yZGVycyIsImF1dGhfdGltZSI6MTY0Nzc5NDk0NSwidXNlcl9pZCI6IkhEakFaeWxEYWtiYklXdWF1aXF0NXgxTW12aTIiLCJzdWIiOiJVUGtaNVhMNHhHUDlJNFdOYTVMYVdOOUJFYjMyIiwiaWF0IjoxNjQ3Nzk0OTQ3LCJleHAiOjE2NDc3OTg1NDcsImVtYWlsIjoidmlzaXRvckB2aXNpdG9yLmNoIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInZpc2l0b3JAdmlzaXRvci5jaCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.bl0Np3m2YFHTEMeTGES2rEHNzJgp_AAfAFbOqnsNVk3EGiX5ENyuxe7iEpJvZfMhpwxEX8w7vNbjhgC4KCe89w'
 // to be used in apollo link
 const getToken = () => {
   if (typeof window === 'undefined') return null
@@ -35,12 +33,13 @@ const Client = ({ store }) => {
     // numbers than the exp date contains
     const tokenIsValid = token ? tokenDecoded.exp > Date.now() / 1000 : false
 
+    if (!(token && tokenIsValid)) return headers
+
     return {
       headers: {
         ...headers,
         'x-hasura-role': 'bb_user',
-        //authorization: token && tokenIsValid ? `Bearer ${token}` : '',
-        authorization: `Bearer ${token && tokenIsValid ? token : noToken}`,
+        authorization: `Bearer ${token}`,
       },
     }
   })

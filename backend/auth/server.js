@@ -51,13 +51,12 @@ async function start() {
           .code(500)
       }
 
-      const uid = req.params?.uid ?? process.env.FIREBASE_VISITOR_UID
+      const uid = req.params?.uid
 
       const hasuraVariables = {
         'https://hasura.io/jwt/claims': {
           'x-hasura-default-role': 'bb_user',
           'x-hasura-allowed-roles': ['bb_user'],
-          'x-hasura-user-id': uid,
         },
       }
 
