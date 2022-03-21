@@ -17,6 +17,7 @@ import getYearFromEventId from '../../modules/getYearFromEventId'
 import MonthlyEventsOfYear from './MonthlyEventsOfYear'
 import oceanDarkImage from '../../images/oceanDark.jpg'
 import storeContext from '../../storeContext'
+import years from './years'
 
 const Container = styled.div`
   p,
@@ -127,10 +128,10 @@ const MonthlyEvents = ({ year, month }) => {
           defaultActiveKey={activeYear}
           accordion
         >
-          {yearsOfEvents.map((year) => (
+          {years.map((year) => (
             <Panel key={year} header={year} eventKey={year} onClick={onClick}>
               <StyledPanelHeading>{year}</StyledPanelHeading>
-              <MonthlyEventsOfYear year={year} />
+              <MonthlyEventsOfYear year={year} month={month} />
             </Panel>
           ))}
         </PanelGroup>

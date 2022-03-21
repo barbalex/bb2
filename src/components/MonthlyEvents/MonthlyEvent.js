@@ -1,10 +1,9 @@
 //
-import React, { useContext } from 'react'
-import { Base64 } from 'js-base64'
+import React, { lazy, Suspense, useContext } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
+import { Base64 } from 'js-base64'
 
-import Editor from '../shared/Editor'
 import storeContext from '../../storeContext'
 
 const Container = styled.div`
@@ -21,25 +20,17 @@ const Container = styled.div`
 `
 
 const MonthlyEvent = ({ year, month }) => {
+  const MyComponent = lazy(() => import(`./${year}/${month}`))
   const store = useContext(storeContext)
   const articleEncoded = store.monthlyEvents.activeMonthlyEvent.article
   const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
+  console.log('MonthlyEvent', { year, month, articleDecoded })
 
-  if (store.editing) {
-    return (
-      <Container>
-        <Editor
-          docType="monthlyEvent"
-          doc={store.monthlyEvents.activeMonthlyEvent}
-          contentDecoded={articleDecoded}
-        />
-      </Container>
-    )
-  }
-  const createMarkup = () => ({ __html: articleDecoded })
   return (
     <Container>
-      <div dangerouslySetInnerHTML={createMarkup()} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <MyComponent />
+      </Suspense>
     </Container>
   )
 }

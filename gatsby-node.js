@@ -6,8 +6,16 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
       module: {
         rules: [
           {
+            // TODO: remove after migrating to hasura
             test: /pouchdb/,
             use: loaders.null(),
+          },
+          {
+            test: /\.html$/,
+            loader: require.resolve('html-loader'),
+            options: {
+              minimize: false,
+            },
           },
         ],
       },

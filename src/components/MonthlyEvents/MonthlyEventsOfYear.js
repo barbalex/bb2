@@ -8,7 +8,7 @@ import MonthlyEventPanel from './MonthlyEventPanel'
 import getYearFromEventId from '../../modules/getYearFromEventId'
 import storeContext from '../../storeContext'
 
-const MonthlyEventsOfYear = ({ year }) => {
+const MonthlyEventsOfYear = ({ year, month }) => {
   const store = useContext(storeContext)
   const { activeMonthlyEvent, monthlyEvents } = store.monthlyEvents
   const activeEventId = has(activeMonthlyEvent, '_id')
@@ -25,6 +25,7 @@ const MonthlyEventsOfYear = ({ year }) => {
             doc={doc}
             dIndex={dIndex}
             year={year}
+            month={month}
           />
         ))}
     </PanelGroup>

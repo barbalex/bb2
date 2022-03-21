@@ -15,7 +15,7 @@ const PanelBody = styled.div`
   overflow-y: auto;
 `
 
-const MonthlyEventPanel = ({ doc, dIndex, year }) => {
+const MonthlyEventPanel = ({ doc, dIndex, year, month: activeMonth }) => {
   const store = useContext(storeContext)
   const { activeMonthlyEvent, getMonthlyEvent } = store.monthlyEvents
 
@@ -90,7 +90,7 @@ const MonthlyEventPanel = ({ doc, dIndex, year }) => {
           onClick={onClickEventCollapse}
         >
           <PanelBody className="panel-body">
-            <MonthlyEvent year={year} month={month} />
+            <MonthlyEvent year={year} month={activeMonth} />
           </PanelBody>
         </div>
       )}
