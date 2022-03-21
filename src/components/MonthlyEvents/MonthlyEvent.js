@@ -1,6 +1,5 @@
 //
 import React, { lazy, Suspense } from 'react'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -17,15 +16,23 @@ const Container = styled.div`
 `
 
 const MonthlyEvent = ({ year, month }) => {
-  const MyComponent = lazy(() => import(`./${year}/${month}`))
+  const MyComponent = lazy(async () => {
+    let comp
+    try {
+      comp = await import(`./${year}/${month}`)
+    } catch (error) {
+      return <p>archived events not found, something went wrong</p>
+    }
+    return comp
+  })
 
   return (
     <Container>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div />}>
         <MyComponent />
       </Suspense>
     </Container>
   )
 }
 
-export default observer(MonthlyEvent)
+export default MonthlyEvent

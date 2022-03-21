@@ -1,7 +1,6 @@
 //
 import React from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 
@@ -57,7 +56,10 @@ const StyledPanelHeading = styled(Panel.Heading)`
   font-weight: bold !important;
 `
 
-const MonthlyEvents = ({ year: activeYear, month: activeMonth }) => {
+const MonthlyEvents = ({ year, month }) => {
+  const activeYear = year ? Number(year) : year
+  const activeMonth = month ? Number(month) : month
+
   return (
     <DocumentTitle title="Events">
       <Container id="monthlyEvents">
@@ -83,4 +85,4 @@ const MonthlyEvents = ({ year: activeYear, month: activeMonth }) => {
   )
 }
 
-export default observer(MonthlyEvents)
+export default MonthlyEvents

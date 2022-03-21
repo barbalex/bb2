@@ -1,5 +1,4 @@
 import React, { useCallback, useRef, useEffect } from 'react'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { navigate } from 'gatsby'
 
@@ -39,8 +38,6 @@ const MonthlyEventPanel = ({ year, month, activeMonth, activeYear }) => {
       })
     }
   }, [isActiveMonthlyEvent])
-
-  console.log('MonthlyEventPanel', { month })
 
   // use pure bootstrap.
   // advantage: can add edit icon to panel-heading
@@ -86,4 +83,4 @@ const MonthlyEventPanel = ({ year, month, activeMonth, activeYear }) => {
   )
 }
 
-export default observer(MonthlyEventPanel)
+export default MonthlyEventPanel

@@ -1,7 +1,6 @@
 //
 import React from 'react'
 import { PanelGroup } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 
 import MonthlyEventPanel from './MonthlyEventPanel'
 
@@ -27,4 +26,4 @@ const MonthlyEventsOfYear = ({ year, activeYear, activeMonth }) => {
   )
 }
 
-export default observer(MonthlyEventsOfYear)
+export default MonthlyEventsOfYear

@@ -71,7 +71,7 @@ Bitte versuchen Sie es mit einer aktuellen Version von (zum Beispiel):
   )
 }
 
-const { errors } = store.error
+const { errors } = store
 
 // Configure Firebase
 const firebaseConfig = {
