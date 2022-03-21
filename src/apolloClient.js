@@ -12,7 +12,6 @@ import uniqBy from 'lodash/uniqBy'
 
 import graphQlUri from './modules/graphQlUri'
 import existsPermissionsError from './modules/existsPermissionError'
-// import getAuthToken from './modules/getAuthToken'
 
 // to be used in apollo link
 const getToken = () => {
@@ -100,13 +99,14 @@ const Client = ({ store }) => {
       // this will cause hard to solve issues
       // so need to force default data id that combines __typename with id
       // list all query names that do not return pure table rows
-      if (['QueryNameThatDoesNotReturnTableRow'].includes(object.__typename)) {
+      if (['VEventYears'].includes(object.__typename)) {
         return defaultDataIdFromObject(object)
       }
-      if (object.id && isNaN(object.id)) {
-        return object.id
-      }
-      return defaultDataIdFromObject(object)
+      return object.id
+      // if (object.id && isNaN(object.id)) {
+      //   return object.id
+      // }
+      // return defaultDataIdFromObject(object)
     },
   })
 
