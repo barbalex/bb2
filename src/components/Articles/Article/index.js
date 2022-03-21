@@ -51,8 +51,8 @@ const Article = ({ id }) => {
   // console.log('Article', { networkStatus, loading })
 
   // need to know previous network status
-  // to not refetch on first load
-  // and rather only on exiting editing mode
+  // to not refetch on first load (previous status 1)
+  // but rather only on exiting editing mode
   const networkstatusRef = useRef()
   useEffect(() => {
     networkstatusRef.current = networkStatus
