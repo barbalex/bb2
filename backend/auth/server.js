@@ -51,7 +51,7 @@ async function start() {
           .code(500)
       }
 
-      const uid = req.params?.uid ?? serviceAccount.visitor_uid
+      const uid = req.params?.uid ?? process.env.FIREBASE_VISITOR_UID
 
       const hasuraVariables = {
         'https://hasura.io/jwt/claims': {
