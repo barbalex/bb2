@@ -94,7 +94,7 @@ const Client = ({ store }) => {
 
   const cache = new InMemoryCache({
     dataIdFromObject: (object) => {
-      // BEWARE: the following functions/types use existing id's as their id
+      // BEWARE: the following functions/types use existing id's as their id (or non-guid-ids)
       // thus once loaded apollo will replace the existing models in the cache with their data
       // this will cause hard to solve issues
       // so need to force default data id that combines __typename with id
