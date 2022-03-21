@@ -26,7 +26,6 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
 
   const onSavePageContent = useCallback(
     (content) => {
-      // console.log('onSavePageArticle, content:', content)
       try {
         client.mutate({
           mutation: gql`
