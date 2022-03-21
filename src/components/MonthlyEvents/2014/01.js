@@ -333,6 +333,6 @@ const HTML = `<table style="width: 1002px; border-collapse: collapse; margin-lef
 </tbody>
 </table>`
 
-const one = () => <div dangerouslySetInnerHTML={{ __html: HTML }} />
+const mevent = () => <div dangerouslySetInnerHTML={{ __html: HTML }} />
 
-export default one
+export default mevent

@@ -10,13 +10,6 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
             test: /pouchdb/,
             use: loaders.null(),
           },
-          {
-            test: /\.html$/,
-            loader: require.resolve('html-loader'),
-            options: {
-              minimize: false,
-            },
-          },
         ],
       },
     })

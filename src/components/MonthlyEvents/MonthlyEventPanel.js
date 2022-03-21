@@ -1,11 +1,10 @@
-import React, { useContext, useCallback, useRef, useEffect } from 'react'
+import React, { useCallback, useRef, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
-import has from 'lodash/has'
 import styled from 'styled-components'
+import { navigate } from 'gatsby'
 
-import storeContext from '../../storeContext'
 import MonthlyEvent from './MonthlyEvent'
-import getMonthFromEventId from '../../modules/getMonthFromEventId'
+import months from '../../modules/months'
 
 const PanelHeading = styled.div`
   position: relative;
@@ -15,56 +14,45 @@ const PanelBody = styled.div`
   overflow-y: auto;
 `
 
-const MonthlyEventPanel = ({ doc, dIndex, year, month: activeMonth }) => {
-  const store = useContext(storeContext)
-  const { activeMonthlyEvent, getMonthlyEvent } = store.monthlyEvents
+const MonthlyEventPanel = ({ year, month, activeMonth, activeYear }) => {
+  const isActiveMonthlyEvent = year === activeYear && month === activeMonth
 
-  const isActiveMonthlyEvent = has(activeMonthlyEvent, '_id')
-    ? doc._id === activeMonthlyEvent._id
-    : false
-  const month = getMonthFromEventId(doc._id)
-
-  const onClickMonthlyEvent = useCallback(
-    (event) => {
-      // prevent higher level panels from reacting
-      event.stopPropagation()
-      const idToGet =
-        !activeMonthlyEvent ||
-        (activeMonthlyEvent._id && activeMonthlyEvent._id !== doc._id)
-          ? doc._id
-          : null
-      getMonthlyEvent(idToGet)
-    },
-    [activeMonthlyEvent, doc._id, getMonthlyEvent],
-  )
+  const onClickMonthlyEvent = useCallback(() => {
+    if (isActiveMonthlyEvent) {
+      navigate(`/monthly-events`)
+    } else {
+      navigate(`/monthly-events/${year}/${month}`)
+    }
+  }, [isActiveMonthlyEvent, month, year])
   const onClickEventCollapse = useCallback((event) => {
     // prevent higher level panels from reacting
     event.stopPropagation()
   }, [])
 
   const ref = useRef(null)
-  const scrollToActivePanel = useCallback(() => {
-    if (typeof window !== `undefined`) {
+  useEffect(() => {
+    if (isActiveMonthlyEvent) {
       window.scrollTo({
         left: 0,
         top: ref.current ? ref.current.offsetTop - 55 : 55,
         behavior: 'smooth',
       })
     }
-  }, [])
+  }, [isActiveMonthlyEvent])
 
-  useEffect(() => {
-    if (isActiveMonthlyEvent) scrollToActivePanel()
-  }, [activeMonthlyEvent, isActiveMonthlyEvent, scrollToActivePanel])
+  console.log('MonthlyEventPanel', { month })
 
   // use pure bootstrap.
   // advantage: can add edit icon to panel-heading
   return (
-    <div key={dIndex} className="panel panel-default month">
+    <div
+      key={`${year}/${month}/EventPanel`}
+      className="panel panel-default month"
+    >
       <PanelHeading
         className="panel-heading"
         role="tab"
-        id={`heading${dIndex}`}
+        id={`heading/${year}/${month}/EventPanel`}
         onClick={onClickMonthlyEvent}
         ref={ref}
       >
@@ -73,20 +61,20 @@ const MonthlyEventPanel = ({ doc, dIndex, year, month: activeMonth }) => {
             role="button"
             data-toggle="collapse"
             data-parent={`#${year}`}
-            href={`#collapse${dIndex}`}
+            href={`#collapse/${year}/${month}/EventPanel`}
             aria-expanded="false"
-            aria-controls={`#collapse${dIndex}`}
+            aria-controls={`#collapse/${year}/${month}/EventPanel`}
           >
-            {month}
+            {months[month]}
           </a>
         </h4>
       </PanelHeading>
       {isActiveMonthlyEvent && (
         <div
-          id={`#collapse${dIndex}`}
+          id={`#collapse/${year}/${month}/EventPanel`}
           className="panel-collapse collapse in"
           role="tabpanel"
-          aria-labelledby={`heading${dIndex}`}
+          aria-labelledby={`heading/${year}/${month}/EventPanel`}
           onClick={onClickEventCollapse}
         >
           <PanelBody className="panel-body">

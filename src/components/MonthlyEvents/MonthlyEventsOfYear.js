@@ -1,33 +1,28 @@
 //
-import React, { useContext } from 'react'
+import React from 'react'
 import { PanelGroup } from 'react-bootstrap'
-import has from 'lodash/has'
 import { observer } from 'mobx-react-lite'
 
 import MonthlyEventPanel from './MonthlyEventPanel'
-import getYearFromEventId from '../../modules/getYearFromEventId'
-import storeContext from '../../storeContext'
 
-const MonthlyEventsOfYear = ({ year, month }) => {
-  const store = useContext(storeContext)
-  const { activeMonthlyEvent, monthlyEvents } = store.monthlyEvents
-  const activeEventId = has(activeMonthlyEvent, '_id')
-    ? activeMonthlyEvent._id
-    : null
+const months = [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
 
+const MonthlyEventsOfYear = ({ year, activeYear, activeMonth }) => {
   return (
-    <PanelGroup defaultActiveKey={activeEventId} id={year} accordion>
-      {monthlyEvents
-        .filter((monthlyEvent) => getYearFromEventId(monthlyEvent._id) === year)
-        .map((doc, dIndex) => (
-          <MonthlyEventPanel
-            key={dIndex}
-            doc={doc}
-            dIndex={dIndex}
-            year={year}
-            month={month}
-          />
-        ))}
+    <PanelGroup
+      defaultActiveKey={`${activeYear}/${activeMonth}/PanelGroup`}
+      id={year}
+      accordion
+    >
+      {months.map((month) => (
+        <MonthlyEventPanel
+          key={`${year}/${month}/PanelGroup`}
+          year={year}
+          month={month}
+          activeMonth={activeMonth}
+          activeYear={activeYear}
+        />
+      ))}
     </PanelGroup>
   )
 }

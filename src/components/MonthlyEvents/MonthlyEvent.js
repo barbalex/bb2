@@ -1,10 +1,7 @@
 //
-import React, { lazy, Suspense, useContext } from 'react'
+import React, { lazy, Suspense } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
-import { Base64 } from 'js-base64'
-
-import storeContext from '../../storeContext'
 
 const Container = styled.div`
   table > thead > tr > th {
@@ -21,10 +18,6 @@ const Container = styled.div`
 
 const MonthlyEvent = ({ year, month }) => {
   const MyComponent = lazy(() => import(`./${year}/${month}`))
-  const store = useContext(storeContext)
-  const articleEncoded = store.monthlyEvents.activeMonthlyEvent.article
-  const articleDecoded = articleEncoded ? Base64.decode(articleEncoded) : null
-  console.log('MonthlyEvent', { year, month, articleDecoded })
 
   return (
     <Container>
