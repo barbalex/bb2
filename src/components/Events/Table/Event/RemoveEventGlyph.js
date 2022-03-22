@@ -42,6 +42,8 @@ const RemoveEventGlyph = ({ event }) => {
       store.showError(error)
     }
     setOpen(false)
+    // trick to make overlay re-open-able
+    setTimeout(() => setOpen(true))
   }, [client, event.id, store])
 
   const onClickNo = useCallback(() => {
@@ -51,7 +53,7 @@ const RemoveEventGlyph = ({ event }) => {
   }, [])
 
   const popover = (
-    <Popover id="popoverRemoveEvent" title="Delete this event?">
+    <Popover id={`popoverRemoveEvent${event.id}`} title="Delete this event?">
       <ButtonToolbar>
         <Button bsSize="small" bsStyle="danger" onClick={onClickYes}>
           Yes
@@ -65,7 +67,12 @@ const RemoveEventGlyph = ({ event }) => {
 
   if (open) {
     return (
-      <OverlayTrigger trigger="click" placement="top" overlay={popover}>
+      <OverlayTrigger
+        //id={`overlayTriggerRemoveEvent${event.id}`}
+        trigger="click"
+        placement="top"
+        overlay={popover}
+      >
         <StyledGlyphicon glyph="remove-circle" />
       </OverlayTrigger>
     )
