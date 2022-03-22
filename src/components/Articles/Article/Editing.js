@@ -11,7 +11,6 @@ import {
   ControlLabel,
   FormControl,
 } from 'react-bootstrap'
-import moment from 'moment'
 import dayjs from 'dayjs'
 import DatePicker from 'react-datepicker'
 
@@ -147,7 +146,7 @@ const Article = ({ doc }) => {
   )
 
   const selected = dayjs(datum, 'DD.MM.YYYY').isValid()
-    ? new Date(moment(datum, 'DD.MM.YYYY').toDate())
+    ? dayjs(datum, 'DD.MM.YYYY')
     : null
 
   const contentDecoded = hex2a(doc.content)
