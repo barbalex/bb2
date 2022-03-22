@@ -32,16 +32,6 @@ CREATE INDEX ON article USING btree (datum);
 
 CREATE INDEX ON article USING btree (title);
 
-CREATE TABLE monthly_event (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid (),
-  datum date DEFAULT NULL,
-  content bytea DEFAULT NULL -- was: article
-);
-
-CREATE INDEX ON monthly_event USING btree (id);
-
-CREATE INDEX ON monthly_event USING btree (datum);
-
 CREATE TABLE page (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid (),
   name text DEFAULT NULL,
