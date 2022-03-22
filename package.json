@@ -13,7 +13,6 @@
     "@apollo/client": "3.5.10",
     "@tinymce/tinymce-react": "3.13.1",
     "bootstrap": "3.x",
-    "classnames": "2.3.1",
     "firebase": "9.6.9",
     "gatsby": "4.10.1",
     "gemini-scrollbar": "1.5.3",
@@ -26,7 +25,6 @@
     "prop-types": "15.8.1",
     "react": "17.0.2",
     "react-bootstrap": "0.32.x",
-    "react-copy-to-clipboard": "5.0.4",
     "react-datepicker": "4.7.0",
     "react-document-title": "2.0.3",
     "react-dom": "17.0.2",
@@ -35,9 +33,7 @@
     "react-helmet": "6.1.0",
     "react-is": "17.0.2",
     "react-list": "0.8.16",
-    "react-loadable": "5.5.0",
     "redaxios": "0.4.1",
-    "speakingurl": "14.0.1",
     "styled-components": "5.3.3"
   },
   "devDependencies": {
@@ -46,7 +42,6 @@
     "babel-eslint": "10.1.0",
     "babel-plugin-styled-components": "2.0.6",
     "case-sensitive-paths-webpack-plugin": "2.4.0",
-    "copyfiles": "2.4.1",
     "eslint": "8.11.0",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-react": "7.29.4",
