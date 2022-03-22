@@ -1,6 +1,6 @@
 import React from 'react'
 import DatePicker from 'react-datepicker'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FormGroup, ControlLabel, InputGroup } from 'react-bootstrap'
 import styled from 'styled-components'
 
@@ -43,8 +43,8 @@ const dateFormat = [
 ]
 
 const EventDate = ({ date, onChangeDatePicker }) => {
-  const selected = moment(date, 'DD.MM.YYYY').isValid()
-    ? new Date(moment(date, 'DD.MM.YYYY').toDate())
+  const selected = dayjs(date, 'DD.MM.YYYY').isValid()
+    ? dayjs(date, 'DD.MM.YYYY').toDate()
     : null
 
   return (
