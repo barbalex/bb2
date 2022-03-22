@@ -85,7 +85,6 @@
     "babel-plugin-styled-components": "needed by gatsby-plugin-styled-components",
     "babel-eslint": "requested by eslint-config-react-app",
     "react-is": "needed for styled-components",
-    "pouchdb": "7.2.1: do not upgrade to 7.2.2, uuid did not export default which created error ONLY ON PRODUCTION",
     "firebase": "updating from 9.6.7 to 9.6.8 broke gatsby build: WebpackError: ReferenceError: IDBIndex is not defined. See: https://github.com/firebase/firebase-js-sdk/issues/6042, https://github.com/firebase/firebase-js-sdk/pull/6061"
   },
   "packageManager": "yarn@3.1.1"
