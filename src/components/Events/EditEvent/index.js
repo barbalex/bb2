@@ -219,7 +219,7 @@ const EditEvent = ({ id }) => {
             tabIndex={4}
           />
         </FormGroup> */}
-        <TagsInput activeEvent={doc} saveToDb={saveToDb} />
+        <TagsInput event={doc} setError={setError} />
         <EventLinks activeEvent={doc} />
         {error && <StyledAlert bsStyle="danger">{error}</StyledAlert>}
       </Modal.Body>
