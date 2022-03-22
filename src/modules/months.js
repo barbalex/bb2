@@ -1,5 +1,4 @@
-//
-export default {
+const months = {
   1: 'January',
   2: 'February',
   3: 'March',
@@ -13,3 +12,5 @@ export default {
   11: 'November',
   12: 'December',
 }
+
+export default months
