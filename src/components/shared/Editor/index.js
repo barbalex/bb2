@@ -12,10 +12,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
 
   // height = window - menu height - (menubar + iconbar)
   let height = typeof window !== `undefined` ? window.innerHeight - 52 - 74 : 1
-  if (
-    ['monthlyEvent', 'publication'].includes(docType) &&
-    typeof window !== `undefined`
-  ) {
+  if (['publication'].includes(docType) && typeof window !== `undefined`) {
     height = window.innerHeight - 52 - 74 - 76
   }
   if (['article'].includes(docType) && typeof window !== `undefined`) {
