@@ -16,14 +16,14 @@ export default (store) => ({
     const duration = 100000000
     if (!error) {
       // user wants to remove error messages
-      store.error.errors = []
+      store.errors = []
     } else {
       if (error.msg && error.msg.message) {
         error.msg = error.msg.message
       }
-      store.error.errors.unshift(error)
+      store.errors.unshift(error)
       setTimeout(() => {
-        store.error.errors.pop()
+        store.errors.pop()
       }, duration)
     }
   }),

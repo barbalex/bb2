@@ -9,13 +9,13 @@ const StyledGlyphicon = styled(Glyphicon)`
   font-size: 1.5em;
 `
 
-const TagsInput = ({ event, option: tag, setError }) => {
+const TagInput = ({ event, tag, setError }) => {
   const client = useApolloClient()
-  const tags = useMemo(() => [...event.tags], [event.tags])
+  const tags = useMemo(() => [...(event?.tags ?? [])], [event.tags])
 
   const onChange = useCallback(
-    (event) => {
-      const newTags = event.target.checked
+    (ev) => {
+      const newTags = ev.target.checked
         ? [...tags, tag.tag]
         : tags.filter((t) => t !== tag.tag)
       try {
@@ -37,7 +37,7 @@ const TagsInput = ({ event, option: tag, setError }) => {
         setError(error)
       }
     },
-    [client, tag.tag, setError, tags],
+    [client, event.id, setError, tag.tag, tags],
   )
 
   return (
@@ -60,4 +60,4 @@ const TagsInput = ({ event, option: tag, setError }) => {
   )
 }
 
-export default TagsInput
+export default TagInput
