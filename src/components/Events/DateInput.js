@@ -46,7 +46,6 @@ const EventDate = ({ date, onChangeDatePicker }) => {
   const selected = dayjs(date, 'DD.MM.YYYY').isValid()
     ? dayjs(date, 'DD.MM.YYYY').toDate()
     : null
-  // console.log('EventDate', { date, selected })
 
   return (
     <FormGroup controlId="date">
