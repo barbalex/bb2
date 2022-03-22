@@ -11,10 +11,10 @@ import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { navigate } from 'gatsby'
 import { gql, useApolloClient } from '@apollo/client'
-import moment from 'moment'
 
 import oceanDarkImage from '../../images/oceanDark.jpg'
 import storeContext from '../../storeContext'
+import newDateYYYYMMDD from '../../modules/newDateYYYY-MM-DD'
 
 const StyledNavbar = styled(Navbar)`
   p,
@@ -163,7 +163,7 @@ const MyNavbar = ({ location }) => {
           }
         `,
         variables: {
-          datum: moment(event.date).format('YYYY-MM-DD'),
+          datum: newDateYYYYMMDD(),
           eventType: 'migration',
         },
         refetchQueries: ['EventsForEventsPageQuery'],

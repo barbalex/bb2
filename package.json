@@ -13,6 +13,7 @@
     "@apollo/client": "3.5.10",
     "@tinymce/tinymce-react": "3.13.1",
     "bootstrap": "3.x",
+    "dayjs": "1.11.0",
     "firebase": "9.6.9",
     "gatsby": "4.10.1",
     "gemini-scrollbar": "1.5.3",

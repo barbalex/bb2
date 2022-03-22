@@ -12,6 +12,7 @@ import {
   FormControl,
 } from 'react-bootstrap'
 import moment from 'moment'
+import dayjs from 'dayjs'
 import DatePicker from 'react-datepicker'
 
 import Editor from '../../shared/Editor'
@@ -91,7 +92,7 @@ const Article = ({ doc }) => {
   const store = useContext(storeContext)
 
   const [title, setTitle] = useState(doc.title)
-  const [datum, setDatum] = useState(moment(doc.datum, 'YYYY-MM-DD'))
+  const [datum, setDatum] = useState(dayjs(doc.datum, 'YYYY-MM-DD'))
   const [error, setError] = useState(null)
 
   const onChangeTitle = useCallback((event) => setTitle(event.target.value), [])
@@ -117,8 +118,9 @@ const Article = ({ doc }) => {
   }, [client, doc.id, title])
 
   const onChangeDate = useCallback(
-    (date) => {
-      setDatum(moment(date, 'DD.MM.YYYY'))
+    (dateString) => {
+      const date = dayjs(dateString, 'DD.MM.YYYY')
+      setDatum(date)
       try {
         client.mutate({
           mutation: gql`
@@ -134,7 +136,7 @@ const Article = ({ doc }) => {
           `,
           variables: {
             id: doc.id,
-            datum: moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+            datum: dayjs(date, 'YYYY-MM-DD'),
           },
         })
       } catch (error) {
@@ -144,7 +146,7 @@ const Article = ({ doc }) => {
     [client, doc.id],
   )
 
-  const selected = moment(datum, 'DD.MM.YYYY').isValid()
+  const selected = dayjs(datum, 'DD.MM.YYYY').isValid()
     ? new Date(moment(datum, 'DD.MM.YYYY').toDate())
     : null
 
