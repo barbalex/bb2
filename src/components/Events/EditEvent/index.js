@@ -124,7 +124,7 @@ const EditEvent = ({ id }) => {
   const [title, setTitle] = useState('')
   useEffect(() => {
     if (!loading) {
-      setTitle(doc.title)
+      setTitle(doc.title ?? '')
     }
   }, [doc, loading])
 

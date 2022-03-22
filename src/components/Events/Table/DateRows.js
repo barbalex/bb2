@@ -33,7 +33,7 @@ const DateRows = ({ activeYear }) => {
       query EventsForEventsPageQuery($from: date, $to: date) {
         event(
           where: { _and: { datum: { _gte: $from } }, datum: { _lte: $to } }
-          order_by: { datum: desc }
+          order_by: [{ datum: desc, tags_sort: asc }]
         ) {
           id
           datum
