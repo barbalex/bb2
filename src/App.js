@@ -15,26 +15,6 @@ import getAuthToken from './modules/getAuthToken'
 
 import { StoreContextProvider } from './storeContext'
 
-// some old browsers can't deal with ArrayBuffer
-// pouchdb needs it
-// give the users an explanation instead of an empty page
-// also: MobX needs proxies
-// sadly does not work because of other errors
-if (
-  typeof window !== `undefined` &&
-  (!window.ArrayBuffer || window.Proxy === undefined)
-) {
-  window.alert(
-    `mediterranean-migration.com nutzt moderne Technologien, welche von Ihrem Browser nicht unterstützt werden.
-
-Bitte versuchen Sie es mit einer aktuellen Version von (zum Beispiel):
-- Chrome
-- Firefox
-- Safari
-- Edge`,
-  )
-}
-
 const { errors } = store
 
 // Configure Firebase
