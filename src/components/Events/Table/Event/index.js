@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext } from 'react'
 import { Glyphicon } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
@@ -20,10 +20,9 @@ const Event = ({ event }) => {
   const store = useContext(storeContext)
   const showEditingGlyphons = !!store.login.user
   const classNames = (event.tags ?? []).map((tag) => `event-${tag}`).join(' ')
-  const links = useMemo(() => event.links ?? [], [event.links])
 
   const Links =
-    links.map((l, key) => (
+    (event.links ?? []).map((l, key) => (
       <OuterSpan key={key}>
         {key > 0 && ' '}
         <a href={l.url} target="_blank" rel="noopener noreferrer">
