@@ -1,5 +1,5 @@
 import React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import styled from 'styled-components'
 
 import Event from './Event'
@@ -58,7 +58,7 @@ const BodyRow = styled.div`
 `
 
 const DateRow = ({ dateRowObject: dRO }) => {
-  const day = moment(dRO.date).format('D')
+  const day = dayjs(dRO.date).format('D')
   const dayWithEvents =
     dRO.migrationEvents.length > 0 || dRO.politicsEvents.length > 0
 

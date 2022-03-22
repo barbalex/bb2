@@ -4,7 +4,7 @@
  * Hooks can only be called inside the body of a function component
  */
 import React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import ReactList from 'react-list'
 import styled from 'styled-components'
 import { gql, useQuery } from '@apollo/client'
@@ -71,8 +71,8 @@ const DateRows = ({ activeYear }) => {
 
   const dateRows = []
   dateRowObjects.forEach((dRO, index) => {
-    const day = moment(dRO.date).format('D')
-    const endOfMonth = moment(dRO.date).endOf('month').format('DD')
+    const day = dayjs(dRO.date).format('D')
+    const endOfMonth = dayjs(dRO.date).endOf('month').format('DD')
     const dROForDateRow = {
       date: dRO.date,
       migrationEvents: dRO.migrationEvents.filter(

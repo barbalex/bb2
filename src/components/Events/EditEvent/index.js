@@ -11,7 +11,7 @@ import {
   ControlLabel,
   FormControl,
 } from 'react-bootstrap'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import styled from 'styled-components'
 import { gql, useQuery, useApolloClient } from '@apollo/client'
 import { navigate } from 'gatsby'
@@ -175,7 +175,7 @@ const EditEvent = ({ id }) => {
       saveToDb({
         field: 'datum',
         value: date
-          ? `"${moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD')}"`
+          ? `"${dayjs(date, 'DD.MM.YYYY').format('YYYY-MM-DD')}"`
           : null,
       })
       if (!date) {
@@ -206,7 +206,7 @@ const EditEvent = ({ id }) => {
           />
         </FormGroup>
         <DateInput
-          date={moment(doc.datum, 'YYYY-MM-DD')}
+          date={dayjs(doc.datum, 'YYYY-MM-DD')}
           onChangeDatePicker={onChangeDatePicker}
         />
         <EventTypeButtonGroup activeEvent={doc} saveToDb={saveToDb} />

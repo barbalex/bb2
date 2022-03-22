@@ -1,5 +1,5 @@
 import React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import styled from 'styled-components'
 
 import oceanDarkImage from '../../../images/oceanDark.jpg'
@@ -39,8 +39,8 @@ const BodyCell = styled.div`
 `
 
 const MonthRow = ({ dateRowObject: dRO }) => {
-  const year = parseInt(moment(dRO.date).format('YYYY'), 0)
-  const month = moment(dRO.date).format('MMMM')
+  const year = parseInt(dayjs(dRO.date).format('YYYY'), 0)
+  const month = dayjs(dRO.date).format('MMMM')
   const text = `${month} ${year}`
 
   return (
