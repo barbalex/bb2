@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react'
-import app from 'ampersand-app'
-import pouchdbUpsert from 'pouchdb-upsert'
-import pouchdbAuthentication from 'pouchdb-authentication'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { ApolloProvider } from '@apollo/client'
 
 import store from './store'
-import couchUrl from './modules/getCouchUrl'
 // make webpack import styles
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -18,38 +14,6 @@ import buildClient from './apolloClient'
 import getAuthToken from './modules/getAuthToken'
 
 import { StoreContextProvider } from './storeContext'
-
-let PouchDB = null
-if (typeof window !== 'undefined') {
-  // need to import pouchdb only client side or gatsby will not build
-  // TODO: remove
-  // because then happens AFTER first calls to db from events form!!!!!!
-  import('pouchdb').then((pouchdb) => {
-    PouchDB = pouchdb.default
-    /**
-     * set up pouchdb plugins
-     */
-    PouchDB.plugin(pouchdbUpsert)
-    PouchDB.plugin(pouchdbAuthentication)
-    // expose 'app' to the browser console
-    window.app = app
-    /**
-     * ampersand-app is extended with app methods (=singleton)
-     * modules that need an app method import ampersand-app instead of using a global
-     */
-    app.extend({
-      init() {
-        this.store = store
-        try {
-          this.db = new PouchDB(couchUrl())
-        } catch (error) {
-          console.log('error creating PouchDB:', error.message)
-        }
-      },
-    })
-    app.init()
-  })
-}
 
 // some old browsers can't deal with ArrayBuffer
 // pouchdb needs it

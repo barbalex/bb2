@@ -12,7 +12,6 @@
   "dependencies": {
     "@apollo/client": "3.5.10",
     "@tinymce/tinymce-react": "3.13.1",
-    "ampersand-app": "2.0.0",
     "bootstrap": "3.x",
     "classnames": "2.3.1",
     "firebase": "9.6.9",
@@ -27,8 +26,6 @@
     "mobx-react-lite": "3.3.0",
     "moment": "2.29.1",
     "pouchdb": "7.2.2",
-    "pouchdb-authentication": "1.1.3",
-    "pouchdb-upsert": "2.2.0",
     "prop-types": "15.8.1",
     "react": "17.0.2",
     "react-bootstrap": "0.32.x",
