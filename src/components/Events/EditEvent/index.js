@@ -15,6 +15,7 @@ import moment from 'moment'
 import styled from 'styled-components'
 import { gql, useQuery, useApolloClient } from '@apollo/client'
 import { navigate } from 'gatsby'
+import { observer } from 'mobx-react-lite'
 
 import EventTypeButtonGroup from './EventTypeButtonGroup'
 import DateInput from '../DateInput'
@@ -231,4 +232,4 @@ const EditEvent = ({ id }) => {
   )
 }
 
-export default EditEvent
+export default observer(EditEvent)
