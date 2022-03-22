@@ -15,9 +15,6 @@ const StyledGlyphicon = styled(Glyphicon)`
 const OuterSpan = styled.span`
   padding-left: 5px;
 `
-const LiInside = styled.div`
-  display: inline-block;
-`
 
 const Event = ({ event }) => {
   const store = useContext(storeContext)
@@ -38,11 +35,11 @@ const Event = ({ event }) => {
 
   return (
     <li className={classNames}>
-      <LiInside className={classNames}>
+      <div className={classNames}>
         {event.title} <span>{Links}</span>
         {showEditingGlyphons && <EditEventGlyph event={event} />}
         {showEditingGlyphons && <RemoveEventGlyph event={event} />}
-      </LiInside>
+      </div>
     </li>
   )
 }
