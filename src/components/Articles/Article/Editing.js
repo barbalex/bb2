@@ -94,6 +94,8 @@ const Article = ({ doc }) => {
   const [datum, setDatum] = useState(dayjs(doc.datum, 'YYYY-MM-DD'))
   const [error, setError] = useState(null)
 
+  console.log('Article', { docDatum: doc.datum, datum })
+
   const onChangeTitle = useCallback((event) => setTitle(event.target.value), [])
   const onBlurTitle = useCallback(() => {
     try {
@@ -146,7 +148,7 @@ const Article = ({ doc }) => {
   )
 
   const selected = dayjs(datum, 'DD.MM.YYYY').isValid()
-    ? dayjs(datum, 'DD.MM.YYYY')
+    ? dayjs(datum, 'DD.MM.YYYY').toDate()
     : null
 
   const contentDecoded = hex2a(doc.content)
