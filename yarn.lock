@@ -3993,7 +3993,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/glob@npm:*, @types/glob@npm:^7.1.1":
+"@types/glob@npm:*":
   version: 7.2.0
   resolution: "@types/glob@npm:7.2.0"
   dependencies:
@@ -5505,8 +5505,8 @@ __metadata:
     eslint-plugin-react-hooks: 4.3.0
     eslint-webpack-plugin: 3.1.1
     firebase: 9.6.9
-    firebase-tools: 10.4.0
-    gatsby: 4.10.1
+    firebase-tools: 10.4.2
+    gatsby: 4.10.2
     gatsby-plugin-create-client-paths: 4.9.0
     gatsby-plugin-google-analytics: 4.10.0
     gatsby-plugin-manifest: 4.10.1
@@ -7372,22 +7372,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"del@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "del@npm:5.1.0"
-  dependencies:
-    globby: ^10.0.1
-    graceful-fs: ^4.2.2
-    is-glob: ^4.0.1
-    is-path-cwd: ^2.2.0
-    is-path-inside: ^3.0.1
-    p-map: ^3.0.0
-    rimraf: ^3.0.0
-    slash: ^3.0.0
-  checksum: d9e4ef2c1227230ed61291fc99bdcb084167c0fe580df5fa8b2524b511c09f0c51887edf7dc5ffaa6ecfb25c92a2ca185ec49d5233baf6c5fe50248ab1f13e57
-  languageName: node
-  linkType: hard
-
 "delayed-stream@npm:~1.0.0":
   version: 1.0.0
   resolution: "delayed-stream@npm:1.0.0"
@@ -8812,7 +8796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.0.3, fast-glob@npm:^3.1.1, fast-glob@npm:^3.2.9":
+"fast-glob@npm:^3.1.1, fast-glob@npm:^3.2.9":
   version: 3.2.11
   resolution: "fast-glob@npm:3.2.11"
   dependencies:
@@ -9072,9 +9056,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firebase-tools@npm:10.4.0":
-  version: 10.4.0
-  resolution: "firebase-tools@npm:10.4.0"
+"firebase-tools@npm:10.4.2":
+  version: 10.4.2
+  resolution: "firebase-tools@npm:10.4.2"
   dependencies:
     "@google-cloud/pubsub": ^2.18.4
     abort-controller: ^3.0.0
@@ -9137,7 +9121,7 @@ __metadata:
     ws: ^7.2.3
   bin:
     firebase: lib/bin/firebase.js
-  checksum: d950b30f033f5f6f1768284e708b6129ac8d28dfdecf58e80fce4984776f4362e623d32dfbc3a7ce51e67c0514203e6c8b1b445b393afc7855220fe1d8533275
+  checksum: b94735e93056f67b6d84b072321a65b78020dd602210c66b8dbb27fc17d7caa7b1f69725fe3d74c5929a1ec1ff4c5973201f99761cec8d645ceaa59daae0e619
   languageName: node
   linkType: hard
 
@@ -9902,19 +9886,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gatsby-worker@npm:^1.10.0":
-  version: 1.10.0
-  resolution: "gatsby-worker@npm:1.10.0"
+"gatsby-worker@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "gatsby-worker@npm:1.10.1"
   dependencies:
     "@babel/core": ^7.15.5
     "@babel/runtime": ^7.15.4
-  checksum: c8c9bf2faa71400d060d2b38785ca02fbf1aba3a6434c1265d8048cab3df0e7879d6b751c318d972ef2c941f919f270c2f09a248422e4d9efc84a248e3011c3e
+  checksum: 8868708dae8cfb9e9a38324d8458ce9711ad5baee9327b32827b180182ae411796dda2b9bf3bdbbc5033a8712094e1e8134d1f1e053e00766258671b53541e3b
   languageName: node
   linkType: hard
 
-"gatsby@npm:4.10.1":
-  version: 4.10.1
-  resolution: "gatsby@npm:4.10.1"
+"gatsby@npm:4.10.2":
+  version: 4.10.2
+  resolution: "gatsby@npm:4.10.2"
   dependencies:
     "@babel/code-frame": ^7.14.0
     "@babel/core": ^7.15.5
@@ -9961,7 +9945,6 @@ __metadata:
     date-fns: ^2.25.0
     debug: ^3.2.7
     deepmerge: ^4.2.2
-    del: ^5.1.0
     detect-port: ^1.3.0
     devcert: ^1.2.0
     dotenv: ^8.6.0
@@ -9998,8 +9981,9 @@ __metadata:
     gatsby-react-router-scroll: ^5.10.0
     gatsby-sharp: ^0.4.0
     gatsby-telemetry: ^3.10.0
-    gatsby-worker: ^1.10.0
+    gatsby-worker: ^1.10.1
     glob: ^7.2.0
+    globby: ^11.1.0
     got: ^11.8.2
     graphql: ^15.7.2
     graphql-compose: ^9.0.7
@@ -10077,7 +10061,7 @@ __metadata:
       optional: true
   bin:
     gatsby: ./cli.js
-  checksum: 424ac191dd32e5f2a00f2971fcee18661d9e11b98b23a7d78608ee4536e3abf523e09eabd52123f8b85ee95f22c3aefa1abf0fb0d0f8a2fb2635c1d2dec2444b
+  checksum: 7ab12672fc4e70b6356a2734b6fb3996f3c8027d5e3a3d9b0ea7b31b673c98d583d26ed0a860034a73df2c28b6bb403e1ce8c80c32a0192295e3da1543f4507b
   languageName: node
   linkType: hard
 
@@ -10424,23 +10408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^10.0.1":
-  version: 10.0.2
-  resolution: "globby@npm:10.0.2"
-  dependencies:
-    "@types/glob": ^7.1.1
-    array-union: ^2.1.0
-    dir-glob: ^3.0.1
-    fast-glob: ^3.0.3
-    glob: ^7.1.3
-    ignore: ^5.1.1
-    merge2: ^1.2.3
-    slash: ^3.0.0
-  checksum: 167cd067f2cdc030db2ec43232a1e835fa06217577d545709dbf29fd21631b30ff8258705172069c855dc4d5766c3b2690834e35b936fbff01ad0329fb95a26f
-  languageName: node
-  linkType: hard
-
-"globby@npm:^11.0.3, globby@npm:^11.0.4":
+"globby@npm:^11.0.3, globby@npm:^11.0.4, globby@npm:^11.1.0":
   version: 11.1.0
   resolution: "globby@npm:11.1.0"
   dependencies:
@@ -11047,7 +11015,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ignore@npm:^5.1.1, ignore@npm:^5.1.4, ignore@npm:^5.1.8, ignore@npm:^5.2.0":
+"ignore@npm:^5.1.4, ignore@npm:^5.1.8, ignore@npm:^5.2.0":
   version: 5.2.0
   resolution: "ignore@npm:5.2.0"
   checksum: 6b1f926792d614f64c6c83da3a1f9c83f6196c2839aa41e1e32dd7b8d174cef2e329d75caabb62cb61ce9dc432f75e67d07d122a037312db7caa73166a1bdb77
@@ -11600,13 +11568,6 @@ __metadata:
   version: 2.0.0
   resolution: "is-obj@npm:2.0.0"
   checksum: c9916ac8f4621962a42f5e80e7ffdb1d79a3fab7456ceaeea394cd9e0858d04f985a9ace45be44433bf605673c8be8810540fe4cc7f4266fc7526ced95af5a08
-  languageName: node
-  linkType: hard
-
-"is-path-cwd@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "is-path-cwd@npm:2.2.0"
-  checksum: 46a840921bb8cc0dc7b5b423a14220e7db338072a4495743a8230533ce78812dc152548c86f4b828411fe98c5451959f07cf841c6a19f611e46600bd699e8048
   languageName: node
   linkType: hard
 
@@ -13180,7 +13141,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"merge2@npm:^1.2.3, merge2@npm:^1.3.0, merge2@npm:^1.4.1":
+"merge2@npm:^1.3.0, merge2@npm:^1.4.1":
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
   checksum: 7268db63ed5169466540b6fb947aec313200bcf6d40c5ab722c22e242f651994619bcd85601602972d3c85bd2cc45a358a4c61937e9f11a061919a1da569b0c2
@@ -14402,15 +14363,6 @@ __metadata:
   dependencies:
     p-limit: ^2.2.0
   checksum: 513bd14a455f5da4ebfcb819ef706c54adb09097703de6aeaa5d26fe5ea16df92b48d1ac45e01e3944ce1e6aa2a66f7f8894742b8c9d6e276e16cd2049a2b870
-  languageName: node
-  linkType: hard
-
-"p-map@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "p-map@npm:3.0.0"
-  dependencies:
-    aggregate-error: ^3.0.0
-  checksum: 49b0fcbc66b1ef9cd379de1b4da07fa7a9f84b41509ea3f461c31903623aaba8a529d22f835e0d77c7cb9fcc16e4fae71e308fd40179aea514ba68f27032b5d5
   languageName: node
   linkType: hard
 
