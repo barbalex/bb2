@@ -1,10 +1,14 @@
 import axios from 'redaxios'
 
 const getAuthToken = async ({ store }) => {
+  const hostnameWithoutWww = window.location.hostname.replace('www.', '')
+  const isLocalhost = hostnameWithoutWww === 'localhost'
+  const hostToUse = isLocalhost ? 'blue-borders.ch' : hostnameWithoutWww
+
   let res
   try {
     res = await axios.get(
-      `https://auth.artenliste.ch/add-hasura-claims/${store.login?.user?.uid}`,
+      `https://auth.${hostToUse}/add-hasura-claims/${store.login?.user?.uid}`,
     )
   } catch (error) {
     console.log('error from getting claims from auth.blue-borders.ch:', error)
