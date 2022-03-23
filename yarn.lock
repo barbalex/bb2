@@ -5486,59 +5486,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bb2@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "bb2@workspace:."
-  dependencies:
-    "@apollo/client": 3.5.10
-    "@babel/eslint-parser": 7.17.0
-    "@babel/preset-react": 7.16.7
-    "@tinymce/tinymce-react": 3.13.1
-    babel-eslint: 10.1.0
-    babel-plugin-styled-components: 2.0.6
-    bootstrap: 3.x
-    case-sensitive-paths-webpack-plugin: 2.4.0
-    dayjs: 1.11.0
-    eslint: 8.11.0
-    eslint-plugin-import: 2.25.4
-    eslint-plugin-react: 7.29.4
-    eslint-plugin-react-hooks: 4.3.0
-    eslint-webpack-plugin: 3.1.1
-    firebase: 9.6.9
-    firebase-tools: 10.4.2
-    gatsby: 4.10.2
-    gatsby-plugin-create-client-paths: 4.9.0
-    gatsby-plugin-google-analytics: 4.10.0
-    gatsby-plugin-manifest: 4.10.1
-    gatsby-plugin-offline: 5.10.1
-    gatsby-plugin-react-helmet: 5.10.0
-    gatsby-plugin-sharp: 4.10.1
-    gatsby-plugin-sitemap: 5.10.1
-    gatsby-plugin-styled-components: 5.10.0
-    gatsby-source-filesystem: 4.10.0
-    gatsby-transformer-sharp: 4.10.0
-    gemini-scrollbar: 1.5.3
-    graphql: 16.3.0
-    jwt-decode: 3.1.2
-    lodash: 4.17.21
-    mobx: 6.5.0
-    mobx-react-lite: 3.3.0
-    prop-types: 15.8.1
-    react: 17.0.2
-    react-bootstrap: 0.32.x
-    react-datepicker: 4.7.0
-    react-document-title: 2.0.3
-    react-dom: 17.0.2
-    react-dropzone: 12.0.4
-    react-gemini-scrollbar: 2.3.4
-    react-helmet: 6.1.0
-    react-is: 17.0.2
-    react-list: 0.8.16
-    redaxios: 0.4.1
-    styled-components: 5.3.3
-  languageName: unknown
-  linkType: soft
-
 "bcrypt-pbkdf@npm:^1.0.0":
   version: 1.0.2
   resolution: "bcrypt-pbkdf@npm:1.0.2"
@@ -5612,6 +5559,59 @@ __metadata:
   checksum: 77a0875af41fe0a6b15feacc69a4a730063df697b2932adbde15aa2c9c58a592870cd511a494ceee59cc8143ae64964dfa1bf301dab275b330debcd12c2b3db9
   languageName: node
   linkType: hard
+
+"blue-borders@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "blue-borders@workspace:."
+  dependencies:
+    "@apollo/client": 3.5.10
+    "@babel/eslint-parser": 7.17.0
+    "@babel/preset-react": 7.16.7
+    "@tinymce/tinymce-react": 3.13.1
+    babel-eslint: 10.1.0
+    babel-plugin-styled-components: 2.0.6
+    bootstrap: 3.x
+    case-sensitive-paths-webpack-plugin: 2.4.0
+    dayjs: 1.11.0
+    eslint: 8.11.0
+    eslint-plugin-import: 2.25.4
+    eslint-plugin-react: 7.29.4
+    eslint-plugin-react-hooks: 4.3.0
+    eslint-webpack-plugin: 3.1.1
+    firebase: 9.6.9
+    firebase-tools: 10.4.2
+    gatsby: 4.10.2
+    gatsby-plugin-create-client-paths: 4.9.0
+    gatsby-plugin-google-analytics: 4.10.0
+    gatsby-plugin-manifest: 4.10.1
+    gatsby-plugin-offline: 5.10.1
+    gatsby-plugin-react-helmet: 5.10.0
+    gatsby-plugin-sharp: 4.10.1
+    gatsby-plugin-sitemap: 5.10.1
+    gatsby-plugin-styled-components: 5.10.0
+    gatsby-source-filesystem: 4.10.0
+    gatsby-transformer-sharp: 4.10.0
+    gemini-scrollbar: 1.5.3
+    graphql: 16.3.0
+    jwt-decode: 3.1.2
+    lodash: 4.17.21
+    mobx: 6.5.0
+    mobx-react-lite: 3.3.0
+    prop-types: 15.8.1
+    react: 17.0.2
+    react-bootstrap: 0.32.x
+    react-datepicker: 4.7.0
+    react-document-title: 2.0.3
+    react-dom: 17.0.2
+    react-dropzone: 12.0.4
+    react-gemini-scrollbar: 2.3.4
+    react-helmet: 6.1.0
+    react-is: 17.0.2
+    react-list: 0.8.16
+    redaxios: 0.4.1
+    styled-components: 5.3.3
+  languageName: unknown
+  linkType: soft
 
 "bluebird@npm:^3.7.2":
   version: 3.7.2

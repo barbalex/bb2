@@ -5,30 +5,30 @@
   #debug
 }
 
-# api.artenliste.ch {
-#   reverse_proxy * {
-#     to bb_graphql:8080
-#     header_down Access-Control-Allow-Origin *
-#     header_up Host {http.request.host}
-#     header_up X-Real-IP {http.request.remote}
-#     header_up X-Forwarded-For {http.request.remote}
-#     header_up X-Forwarded-Port {http.request.port}
-#     header_up X-Forwarded-Proto {http.request.scheme}
-#   }
-# }
+api.artenliste.ch {
+  reverse_proxy * {
+    to bb_graphql:8080
+    header_down Access-Control-Allow-Origin *
+    header_up Host {http.request.host}
+    header_up X-Real-IP {http.request.remote}
+    header_up X-Forwarded-For {http.request.remote}
+    header_up X-Forwarded-Port {http.request.port}
+    header_up X-Forwarded-Proto {http.request.scheme}
+  }
+}
 
-# auth.artenliste.ch {
-#   reverse_proxy * {
-#     to bb_auth:7000
-#     header_down Access-Control-Allow-Origin *
-#     header_down Access-Control-Allow-Methods "HEAD, GET, POST, OPTIONS"
-#     header_up Host {http.request.host}
-#     header_up X-Real-IP {http.request.remote}
-#     header_up X-Forwarded-For {http.request.remote}
-#     header_up X-Forwarded-Port {http.request.port}
-#     header_up X-Forwarded-Proto {http.request.scheme}
-#   }
-# }
+auth.artenliste.ch {
+  reverse_proxy * {
+    to bb_auth:7000
+    header_down Access-Control-Allow-Origin *
+    header_down Access-Control-Allow-Methods "HEAD, GET, POST, OPTIONS"
+    header_up Host {http.request.host}
+    header_up X-Real-IP {http.request.remote}
+    header_up X-Forwarded-For {http.request.remote}
+    header_up X-Forwarded-Port {http.request.port}
+    header_up X-Forwarded-Proto {http.request.scheme}
+  }
+}
 
 api.blue-borders.ch {
   reverse_proxy * {

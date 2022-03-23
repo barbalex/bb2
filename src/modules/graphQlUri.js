@@ -2,7 +2,7 @@ const graphQlUri = () => {
   if (typeof window === 'undefined') {
     return 'https://api.blue-borders.ch/v1/graphql'
   }
-  const hostnameWithoutWww = window.location.hostname.replace('www.', '')
+  let hostnameWithoutWww = window.location.hostname.replace('www.', '')
   const isLocalhost = hostnameWithoutWww === 'localhost'
 
   return isLocalhost
