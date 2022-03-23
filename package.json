@@ -7,7 +7,7 @@
     "dev": "gatsby develop",
     "build": "gatsby clean && gatsby build",
     "serve": "gatsby serve",
-    "deploy": "yarn build && yarn firebase deploy"
+    "deploy": "yarn build && yarn firebase deploy --only hosting"
   },
   "dependencies": {
     "@apollo/client": "3.5.10",
