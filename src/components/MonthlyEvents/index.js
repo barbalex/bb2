@@ -1,22 +1,12 @@
 //
-import React, {
-  useContext,
-  useState,
-  useEffect,
-  useMemo,
-  useCallback,
-} from 'react'
+import React from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
-import uniq from 'lodash/uniq'
-import has from 'lodash/has'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 
-import getYearFromEventId from '../../modules/getYearFromEventId'
 import MonthlyEventsOfYear from './MonthlyEventsOfYear'
 import oceanDarkImage from '../../images/oceanDark.jpg'
-import storeContext from '../../storeContext'
+import years from './years'
 
 const Container = styled.div`
   p,
@@ -67,52 +57,8 @@ const StyledPanelHeading = styled(Panel.Heading)`
 `
 
 const MonthlyEvents = ({ year, month }) => {
-  const store = useContext(storeContext)
-  const {
-    getMonthlyEvents,
-    getMonthlyEvent,
-    monthlyEvents,
-    activeMonthlyEvent,
-  } = store.monthlyEvents
-
-  const yearsOfEvents = useMemo(() => {
-    const allYears = monthlyEvents.map(doc => getYearFromEventId(doc._id))
-    if (allYears.length > 0) {
-      const years = uniq(allYears)
-      return years.sort().reverse()
-    }
-    return []
-  }, [monthlyEvents])
-
-  const [activeYearChoosen, setActiveYearChoosen] = useState(null)
-
-  const activeYear = useMemo(() => {
-    if (has(activeMonthlyEvent, '_id')) {
-      return getYearFromEventId(activeMonthlyEvent._id)
-    } else if (!!activeYearChoosen) {
-      return activeYearChoosen
-    } else {
-      return yearsOfEvents[0]
-    }
-  }, [activeMonthlyEvent, activeYearChoosen, yearsOfEvents])
-
-  useEffect(() => {
-    store.page.getPage('pages_monthlyEvents')
-    getMonthlyEvents()
-  }, [getMonthlyEvents, store.page])
-
-  useEffect(() => {
-    if (!!year && !!month) {
-      store.monthlyEvents.activeMonthlyEventId = `monthlyEvents_${year}_${month}`
-    }
-  }, [year, month, store.monthlyEvents.activeMonthlyEventId])
-
-  const onClick = useCallback(() => {
-    setActiveYearChoosen(activeYear)
-    // make sure no monthlyEvent is loaded
-    // i.e. if an monthlyEvent was loaded it is unloaded
-    getMonthlyEvent(null)
-  }, [activeYear, getMonthlyEvent])
+  const activeYear = year ? Number(year) : year
+  const activeMonth = month ? Number(month) : month
 
   return (
     <DocumentTitle title="Events">
@@ -123,10 +69,14 @@ const MonthlyEvents = ({ year, month }) => {
           defaultActiveKey={activeYear}
           accordion
         >
-          {yearsOfEvents.map(year => (
-            <Panel key={year} header={year} eventKey={year} onClick={onClick}>
+          {years.map((year) => (
+            <Panel key={year} header={year} eventKey={year}>
               <StyledPanelHeading>{year}</StyledPanelHeading>
-              <MonthlyEventsOfYear year={year} />
+              <MonthlyEventsOfYear
+                year={year}
+                activeYear={activeYear}
+                activeMonth={activeMonth}
+              />
             </Panel>
           ))}
         </PanelGroup>
@@ -135,4 +85,4 @@ const MonthlyEvents = ({ year, month }) => {
   )
 }
 
-export default observer(MonthlyEvents)
+export default MonthlyEvents

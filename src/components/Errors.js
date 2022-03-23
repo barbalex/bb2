@@ -32,7 +32,7 @@ const Container = styled.div`
 `
 const ErrorContainer = styled.div`
   border: none;
-  padding-right: ${props => (props.first ? '27px' : 'inherit')};
+  padding-right: ${(props) => (props.first ? '27px' : 'inherit')};
 `
 const Error = styled.div`
   padding-left: 10px;
@@ -60,7 +60,7 @@ const Hr = styled.hr`
 
 const Errors = () => {
   const store = useContext(storeContext)
-  const { showError, errors } = store.error
+  const { showError, errors } = store
   const onClickGlyph = useCallback(() => showError(), [showError])
 
   return (

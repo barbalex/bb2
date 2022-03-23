@@ -1,15 +1,11 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import { PanelGroup } from 'react-bootstrap'
-import has from 'lodash/has'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
+import { gql, useQuery } from '@apollo/client'
 
 import ArticlePanel from './ArticlePanel'
-import NewArticle from './NewArticle'
-import ModalRemoveArticle from './ModalRemoveArticle'
 import oceanDarkImage from '../../images/oceanDark.jpg'
-import storeContext from '../../storeContext'
 
 const Container = styled.div`
   p,
@@ -45,50 +41,31 @@ const Copyright = styled.p`
   margin-top: 70px;
 `
 
-const Articles = ({ year, month, day, title }) => {
-  const store = useContext(storeContext)
-  const { getPage } = store.page
-  const {
-    articles,
-    activeArticle,
-    showNewArticle,
-    articleToRemove,
-    getArticles,
-  } = store.articles
-  const activeArticleId = has(activeArticle, '_id') ? activeArticle._id : null
-
-  useEffect(() => {
-    getPage('pages_commentaries')
-    getArticles()
-  }, [getArticles, getPage])
+const Articles = ({ id }) => {
+  const { data } = useQuery(
+    gql`
+      query ArticleIdsForArticles {
+        article(order_by: { datum: desc }) {
+          id
+        }
+      }
+    `,
+  )
+  const articleIds = data?.article?.map((a) => a.id) ?? []
 
   return (
     <DocumentTitle title="Articles">
       <Container>
         <h1>Articles</h1>
-        <PanelGroup
-          defaultActiveKey={activeArticleId}
-          id="articlesAccordion"
-          accordion
-        >
-          {articles.map((article, index) => (
-            <ArticlePanel
-              key={article._id}
-              doc={article}
-              index={index}
-              year={year}
-              month={month}
-              day={day}
-              title={title}
-            />
+        <PanelGroup defaultActiveKey={id} id="articlesAccordion" accordion>
+          {articleIds.map((ownId) => (
+            <ArticlePanel key={ownId} id={ownId} activeId={id} />
           ))}
         </PanelGroup>
-        {showNewArticle && <NewArticle />}
-        {articleToRemove && <ModalRemoveArticle />}
         <Copyright>© Jürg Martin Gabriel. All Rights Reserved.</Copyright>
       </Container>
     </DocumentTitle>
   )
 }
 
-export default observer(Articles)
+export default Articles

@@ -1,7 +1,6 @@
 //
 import React from 'react'
 import GeminiScrollbar from 'react-gemini-scrollbar'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
 import DateRows from './DateRows'
@@ -60,7 +59,7 @@ const HeaderRow = styled.div`
   display: flex;
 `
 
-const Events = () => (
+const Events = ({ activeYear }) => (
   <Container>
     <Header className="eventsTable-header">
       <HeaderRow>
@@ -71,10 +70,10 @@ const Events = () => (
     </Header>
     <Body>
       <GeminiScrollbar id="eventsTableBody" autoshow>
-        <DateRows />
+        <DateRows activeYear={activeYear} />
       </GeminiScrollbar>
     </Body>
   </Container>
 )
 
-export default observer(Events)
+export default Events

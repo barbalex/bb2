@@ -1,10 +1,20 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import styled from 'styled-components'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
+import { gql, useApolloClient, useQuery } from '@apollo/client'
 
 import Article from './Article'
+import ModalRemoveArticle from './ModalRemoveArticle'
 import storeContext from '../../storeContext'
+import { navigate } from 'gatsby'
+import RemoveArticleGlyph from './RemoveArticleGlyph'
 
 const ToggleDraftGlyphicon = styled(Glyphicon)`
   position: absolute !important;
@@ -13,12 +23,10 @@ const ToggleDraftGlyphicon = styled(Glyphicon)`
   font-size: 1.5em;
   color: ${(props) => props['data-color']};
 `
-const RemoveGlyphicon = styled(Glyphicon)`
-  position: absolute !important;
-  right: 10px !important;
-  top: 6px !important;
-  font-size: 1.5em;
-  color: #edf4f8;
+const PanelClickArea = styled.div`
+  width: calc(100% - 45px);
+  padding: 10px 15px;
+  margin: -10px -15px;
 `
 const PanelHeading = styled.div`
   position: relative;
@@ -26,26 +34,38 @@ const PanelHeading = styled.div`
   border-bottom-right-radius: ${(props) =>
     !props.isActiveArticle ? '3px' : 0};
   border-bottom-left-radius: ${(props) => (!props.isActiveArticle ? '3px' : 0)};
+  min-height: 37px;
 `
 const PanelBody = styled.div`
   margin-top: ${(props) => props['data-panelbodymargintop']};
   padding: ${(props) => props['data-panelbodypadding']};
   max-height: ${typeof window !== `undefined` ? window.innerHeight - 141 : 0}px;
   overflow-y: auto;
+  overflow-x: hidden;
 `
 
-const ArticlePanel = ({ doc, index, year, month, day, title }) => {
+const ArticlePanel = ({ id, activeId }) => {
   const store = useContext(storeContext)
-  const {
-    activeArticle,
-    activeArticleId,
-    getArticle,
-    toggleDraftOfArticle,
-    setArticleToRemove,
-  } = store.articles
-  const isArticle = !!activeArticle
-  const isActiveArticle = isArticle ? doc._id === activeArticle._id : false
-  const showEditingGlyphons = !!store.login.email
+  const client = useApolloClient()
+
+  const [remove, setRemove] = useState(false)
+
+  const { data } = useQuery(
+    gql`
+      query ArticlesForArticlePanel($id: uuid!) {
+        article_by_pk(id: $id) {
+          id
+          title
+          draft
+        }
+      }
+    `,
+    { variables: { id } },
+  )
+  const doc = data?.article_by_pk
+
+  const isActiveArticle = id === activeId
+  const showEditingGlyphons = !!store.login.user
   const panelbodypadding = store.editing ? '0 !important' : '15px'
   const panelbodymargintop = store.editing ? '-1px' : 0
 
@@ -53,11 +73,13 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
     (e) => {
       // prevent higher level panels from reacting
       e.stopPropagation()
-      const idToGet =
-        !activeArticle || activeArticle._id !== doc._id ? doc._id : null
-      getArticle(idToGet)
+      if (id === activeId) {
+        navigate(`/articles`)
+      } else {
+        navigate(`/articles/${id}`)
+      }
     },
-    [activeArticle, doc._id, getArticle],
+    [activeId, id],
   )
   // prevent higher level panels from reacting
   const onClickArticleCollapse = useCallback(
@@ -68,50 +90,40 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
     (event) => {
       event.preventDefault()
       event.stopPropagation()
-      toggleDraftOfArticle(doc)
+      try {
+        client.mutate({
+          mutation: gql`
+            mutation UpdateDraftForArticlePanel($id: uuid!, $draft: Boolean) {
+              update_article_by_pk(
+                pk_columns: { id: $id }
+                _set: { draft: $draft }
+              ) {
+                id
+              }
+            }
+          `,
+          variables: { draft: !doc.draft, id },
+          refetchQueries: ['ArticlesForArticlePanel'],
+        })
+      } catch (error) {
+        store.showError(error)
+      }
     },
-    [doc, toggleDraftOfArticle],
-  )
-  const onRemoveArticle = useCallback(
-    (event) => {
-      event.preventDefault()
-      event.stopPropagation()
-      setArticleToRemove(doc)
-    },
-    [doc, setArticleToRemove],
+    [client, doc?.draft, id, store],
   )
 
   const ref = useRef(null)
-  const scrollToActivePanel = useCallback(() => {
-    if (typeof window !== `undefined`) {
-      window.scrollTo({
-        left: 0,
-        top: ref.current ? ref.current.offsetTop - 55 : 55,
-        behavior: 'smooth',
-      })
-    }
-  }, [])
   useEffect(() => {
-    if (!!year && !!month && !!day && !!title) {
-      store.articles.activeArticleId = `commentaries_${year}_${month}_${day}_${title}`
-    }
-    if (activeArticle && activeArticleId === doc._id) {
+    if (id && id === activeId) {
       window.setTimeout(() => {
-        scrollToActivePanel()
-      }, 50)
+        window.scrollTo({
+          left: 0,
+          top: ref.current ? ref.current.offsetTop - 55 : 55,
+          behavior: 'smooth',
+        })
+      }, 100)
     }
-  }, [
-    activeArticle,
-    activeArticleId,
-    day,
-    doc._id,
-    month,
-    scrollToActivePanel,
-    store.articles,
-    store.articles.activeArticleId,
-    title,
-    year,
-  ])
+  }, [activeId, id, store.editing])
 
   // use pure bootstrap.
   // advantage: can add edit icon to panel-heading
@@ -120,53 +132,47 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
       <PanelHeading
         className="panel-heading"
         role="tab"
-        id={`heading${index}`}
-        onClick={onClickArticle}
+        id={`heading${id}`}
         ref={ref}
       >
-        <h4 className="panel-title">
-          <a
-            role="button"
-            data-toggle="collapse"
-            data-parent="#articlesAccordion"
-            href={`#collapse${index}`}
-            aria-expanded="false"
-            aria-controls={`#collapse${index}`}
-          >
-            {doc.title}
-          </a>
-        </h4>
+        <PanelClickArea onClick={onClickArticle}>
+          <h4 className="panel-title">
+            <a
+              role="button"
+              data-toggle="collapse"
+              data-parent="#articlesAccordion"
+              href={`#collapse${id}`}
+              aria-expanded="false"
+              aria-controls={`#collapse${id}`}
+            >
+              {doc?.title}
+            </a>
+          </h4>
+        </PanelClickArea>
         {showEditingGlyphons && (
           <OverlayTrigger
             placement="top"
             overlay={
               <Tooltip id="toggleDraft">
-                {doc.draft ? 'publish' : 'unpublish'}
+                {doc?.draft ? 'publish' : 'unpublish'}
               </Tooltip>
             }
           >
             <ToggleDraftGlyphicon
-              glyph={doc.draft ? 'ban-circle' : 'ok-circle'}
-              data-color={doc.draft ? 'red' : '#00D000'}
+              glyph={doc?.draft ? 'ban-circle' : 'ok-circle'}
+              data-color={doc?.draft ? 'red' : '#00D000'}
               onClick={onToggleDraft}
             />
           </OverlayTrigger>
         )}
-        {showEditingGlyphons && (
-          <OverlayTrigger
-            placement="top"
-            overlay={<Tooltip id="removeThisArticle">remove</Tooltip>}
-          >
-            <RemoveGlyphicon glyph="remove-circle" onClick={onRemoveArticle} />
-          </OverlayTrigger>
-        )}
+        {showEditingGlyphons && <RemoveArticleGlyph article={doc} />}
       </PanelHeading>
-      {isActiveArticle && (
+      {isActiveArticle && id && (
         <div
-          id={`#collapse${index}`}
+          id={`#collapse${id}`}
           className="panel-collapse collapse in"
           role="tabpanel"
-          aria-labelledby={`heading${index}`}
+          aria-labelledby={`heading${id}`}
           onClick={onClickArticleCollapse}
         >
           <PanelBody
@@ -174,10 +180,11 @@ const ArticlePanel = ({ doc, index, year, month, day, title }) => {
             data-panelbodypadding={panelbodypadding}
             data-panelbodymargintop={panelbodymargintop}
           >
-            <Article />
+            <Article id={id} />
           </PanelBody>
         </div>
       )}
+      {remove && <ModalRemoveArticle doc={doc} setRemove={setRemove} />}
     </div>
   )
 }

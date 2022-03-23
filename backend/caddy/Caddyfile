@@ -5,79 +5,77 @@
   #debug
 }
 
-blue-borders.ch, www.blue-borders.ch {
-  root * /html
-  encode zstd gzip
-  file_server
-  
-  reverse_proxy /bb/* {
-    # use: uri strip_prefix bb ?
-    # see: https://caddy.community/t/v2-reverse-proxy-please-add-cors-example-to-the-docs/7349/22?u=alexander_gabriel
-    to bb_db:5984
+api.artenliste.ch {
+  reverse_proxy * {
+    to bb_graphql:8080
+    header_down Access-Control-Allow-Origin *
+    header_up Host {http.request.host}
+    header_up X-Real-IP {http.request.remote}
+    header_up X-Forwarded-For {http.request.remote}
+    header_up X-Forwarded-Port {http.request.port}
+    header_up X-Forwarded-Proto {http.request.scheme}
   }
-  
-  # need to add this because it us used by couchdb when logging in
-  reverse_proxy /_session {
-    to bb_db:5984
+}
+
+auth.artenliste.ch {
+  reverse_proxy * {
+    to bb_auth:7000
+    header_down Access-Control-Allow-Origin *
+    header_down Access-Control-Allow-Methods "HEAD, GET, POST, OPTIONS"
+    header_up Host {http.request.host}
+    header_up X-Real-IP {http.request.remote}
+    header_up X-Forwarded-For {http.request.remote}
+    header_up X-Forwarded-Port {http.request.port}
+    header_up X-Forwarded-Proto {http.request.scheme}
   }
 }
 
 api.blue-borders.ch {
-  # help for cors: https://caddy.community/t/v2-cors-problems-when-reverse-proxying-to-ssh-tunnel/7428/10
-  # BUT: cors still happens!
-  header {
-    origin https://www.blue-borders.ch
-    methods OPTIONS, DELETE, GET, HEAD, POST, PUT
-    allow_credentials true
-  }
-  reverse_proxy * bb_db:5984 {
-    header_down Access-Control-Allow-Origin https://www.blue-borders.ch
-    header_down Access-Control-Allow-Credentials true
-    header_down Access-Control-Allow-Methods "OPTIONS DELETE GET HEAD POST PUT"
-    header_down max_age 3600
-    header_down headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
-    header_up headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
-  }
-  
-  reverse_proxy /bb/* {
-    to bb_db:5984
-  }
-  
-  # need to add this because it us used by couchdb when logging in
-  reverse_proxy /_session {
-    to bb_db:5984
+  reverse_proxy * {
+    to bb_graphql:8080
+    header_down Access-Control-Allow-Origin *
+    header_up Host {http.request.host}
+    header_up X-Real-IP {http.request.remote}
+    header_up X-Forwarded-For {http.request.remote}
+    header_up X-Forwarded-Port {http.request.port}
+    header_up X-Forwarded-Proto {http.request.scheme}
   }
 }
 
-mediterranean-migration.com, www.mediterranean-migration.com {
-  root * /html
-  encode zstd gzip
-  file_server
-  
-  reverse_proxy /bb/* {
-    to bb_db:5984
-  }
-  
-  # need to add this because it us used by couchdb when logging in
-  reverse_proxy /_session {
-    to bb_db:5984
+auth.blue-borders.ch {
+  reverse_proxy * {
+    to bb_auth:7000
+    header_down Access-Control-Allow-Origin *
+    header_down Access-Control-Allow-Methods "HEAD, GET, POST, OPTIONS"
+    header_up Host {http.request.host}
+    header_up X-Real-IP {http.request.remote}
+    header_up X-Forwarded-For {http.request.remote}
+    header_up X-Forwarded-Port {http.request.port}
+    header_up X-Forwarded-Proto {http.request.scheme}
   }
 }
 
 api.mediterranean-migration.com {
-  # help for cors: https://caddy.community/t/v2-cors-problems-when-reverse-proxying-to-ssh-tunnel/7428/10
-  header {
-    origin https://www.mediterranean-migration.com
-    methods OPTIONS, DELETE, GET, HEAD, POST, PUT
-    allow_credentials true
+  reverse_proxy * {
+    to bb_graphql:8080
+    header_down Access-Control-Allow-Origin *
+    header_up Host {http.request.host}
+    header_up X-Real-IP {http.request.remote}
+    header_up X-Forwarded-For {http.request.remote}
+    header_up X-Forwarded-Port {http.request.port}
+    header_up X-Forwarded-Proto {http.request.scheme}
   }
-  reverse_proxy * bb_db:5984 {
-    header_down Access-Control-Allow-Origin https://www.mediterranean-migration.com
-    header_down Access-Control-Allow-Credentials true
-    header_down Access-Control-Allow-Methods "OPTIONS DELETE GET HEAD POST PUT"
-    header_down max_age 3600
-    header_down headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
-    header_up headers X-Couch-Id,X-Couch-Rev,accept,authorization,content-type,origin,referer,x-csrf-token
-    #curl -X PUT $HOST/_config/cors/headers -d '"accept, authorization, content-type, origin, referer, x-csrf-token"'
+}
+
+auth.mediterranean-migration.com {
+  reverse_proxy * {
+    to bb_auth:7000
+    header_down Access-Control-Allow-Origin *
+    header_down Access-Control-Allow-Methods "HEAD, GET, POST, OPTIONS"
+    header_up Host {http.request.host}
+    header_up X-Real-IP {http.request.remote}
+    header_up X-Forwarded-For {http.request.remote}
+    header_up X-Forwarded-Port {http.request.port}
+    header_up X-Forwarded-Proto {http.request.scheme}
   }
 }

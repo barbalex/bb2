@@ -1,6 +1,5 @@
 import React from 'react'
-import moment from 'moment'
-import { observer } from 'mobx-react-lite'
+import dayjs from 'dayjs'
 import styled from 'styled-components'
 
 import Event from './Event'
@@ -58,14 +57,10 @@ const BodyRow = styled.div`
   }
 `
 
-const mapEventComponents = events =>
-  events.map((event, key) => <Event key={key} event={event} />)
-
 const DateRow = ({ dateRowObject: dRO }) => {
-  const day = moment(dRO.date).format('D')
-  const migrationEvents = mapEventComponents(dRO.migrationEvents)
-  const politicsEvents = mapEventComponents(dRO.politicsEvents)
-  const dayWithEvents = migrationEvents.length > 0 || politicsEvents.length > 0
+  const day = dayjs(dRO.date).format('D')
+  const dayWithEvents =
+    dRO.migrationEvents.length > 0 || dRO.politicsEvents.length > 0
 
   return (
     <BodyRow>
@@ -80,13 +75,21 @@ const DateRow = ({ dateRowObject: dRO }) => {
         </BodyCellDay>
       )}
       <BodyCellMigration>
-        <ul>{migrationEvents}</ul>
+        <ul>
+          {dRO.migrationEvents.map((event, key) => (
+            <Event key={key} event={event} />
+          ))}
+        </ul>
       </BodyCellMigration>
       <BodyCellPolitics>
-        <ul>{politicsEvents}</ul>
+        <ul>
+          {dRO.politicsEvents.map((event, key) => (
+            <Event key={key} event={event} />
+          ))}
+        </ul>
       </BodyCellPolitics>
     </BodyRow>
   )
 }
 
-export default observer(DateRow)
+export default DateRow

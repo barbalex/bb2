@@ -1,23 +1,13 @@
-import React, { useContext, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Button } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 
-import storeContext from '../../storeContext'
-
-const YearButton = ({ year }) => {
-  const store = useContext(storeContext)
-  const { activeEventYears, setActiveEventYears } = store.yearsOfEvents
-  const { getEvents } = store.events
-
-  const onClick = useCallback(() => {
-    getEvents([year])
-    setActiveEventYears([year])
-  }, [getEvents, setActiveEventYears, year])
+const YearButton = ({ year, activeYear, setActiveYear }) => {
+  const onClick = useCallback(() => setActiveYear(year), [setActiveYear, year])
 
   return (
-    <Button active={activeEventYears.includes(year)} onClick={onClick}>
+    <Button active={activeYear === year} onClick={onClick}>
       {year}
     </Button>
   )
 }
-export default observer(YearButton)
+export default YearButton

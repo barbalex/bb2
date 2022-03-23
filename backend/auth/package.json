@@ -1,0 +1,14 @@
+{
+  "name": "bb_auth",
+  "version": "1.0.1",
+  "description": "returns user id and role",
+  "author": "me",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@hapi/hapi": "20.2.1",
+    "firebase-admin": "10.0.2"
+  }
+}

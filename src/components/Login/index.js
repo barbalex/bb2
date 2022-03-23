@@ -10,7 +10,7 @@ import storeContext from '../../storeContext'
 
 const Login = () => {
   const store = useContext(storeContext)
-  const { email, logout } = store.login
+  const { user, logout } = store.login
 
   const onClickLogout = useCallback(() => logout(), [logout])
 
@@ -18,8 +18,8 @@ const Login = () => {
     <DocumentTitle title="blue-borders | Login">
       <div>
         <h1>Login</h1>
-        {!email && <LoginForm />}
-        {email && (
+        {!user && <LoginForm />}
+        {user && (
           <Button className="btn-primary" onClick={onClickLogout}>
             log out
           </Button>

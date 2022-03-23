@@ -1,14 +1,11 @@
 //
-import React, { useContext, useEffect } from 'react'
-import sortBy from 'lodash/sortBy'
-import { observer } from 'mobx-react-lite'
+import React from 'react'
 import styled from 'styled-components'
 import DocumentTitle from 'react-document-title'
 
 import PublicationsGroup from './PublicationsGroup'
-import NewPublication from './NewPublication'
 import oceanDarkImage from '../../images/oceanDark.jpg'
-import storeContext from '../../storeContext'
+import categories from './categories'
 
 const Container = styled.div`
   p,
@@ -56,62 +53,26 @@ const PanelGroup = styled.div`
     font-weight: bold;
   }
 `
-const orderByCategory = {
-  Academic: 3,
-  'European Union': 1,
-  'IOs & NGOs': 2,
-}
 
-const Publications = ({ category, title }) => {
-  const store = useContext(storeContext)
-  const {
-    publications,
-    getPublications,
-    getPublicationCategories,
-    showNewPublication,
-  } = store.publications
-  const { getPage } = store.page
-  const publicationCategories = publications ? getPublicationCategories() : []
+const Publications = ({ id: activeId }) => (
+  <DocumentTitle title="Publications">
+    <Container>
+      <h1>Publications</h1>
+      <PanelGroup
+        className="panel-group"
+        id="publicationsAccordion"
+        role="tablist"
+      >
+        {categories.map((category) => (
+          <PublicationsGroup
+            key={category}
+            category={category}
+            activeId={activeId}
+          />
+        ))}
+      </PanelGroup>
+    </Container>
+  </DocumentTitle>
+)
 
-  useEffect(() => {
-    getPage('pages_publications')
-    getPublications()
-  }, [getPage, getPublications])
-
-  useEffect(() => {
-    if (!!category && !!title) {
-      store.publications.activePublicationId = `publications_${category}_${title}`
-    } else {
-      store.publications.activePublicationId = null
-    }
-  }, [
-    category,
-    store.publications.activePublicationId,
-    title,
-    store.publications,
-  ])
-
-  return (
-    <DocumentTitle title="Publications">
-      <Container>
-        <h1>Publications</h1>
-        <PanelGroup
-          className="panel-group"
-          id="publicationsAccordion"
-          role="tablist"
-        >
-          {sortBy(publicationCategories, (cat) => {
-            let order = orderByCategory[cat]
-            if (!order) order = 4
-            return order
-          }).map((category) => (
-            <PublicationsGroup key={category} category={category} />
-          ))}
-        </PanelGroup>
-        {showNewPublication && <NewPublication />}
-      </Container>
-    </DocumentTitle>
-  )
-}
-
-export default observer(Publications)
+export default Publications

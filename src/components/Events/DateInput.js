@@ -1,11 +1,9 @@
 import React from 'react'
 import DatePicker from 'react-datepicker'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FormGroup, ControlLabel, InputGroup } from 'react-bootstrap'
-import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-const StyledInputGroup = styled(InputGroup)``
 const StyledDatePicker = styled(DatePicker)`
   width: 100%;
   height: calc(1.5em + 0.5rem + 2px);
@@ -45,23 +43,23 @@ const dateFormat = [
 ]
 
 const EventDate = ({ date, onChangeDatePicker }) => {
-  const selected = moment(date, 'DD.MM.YYYY').isValid()
-    ? new Date(moment(date, 'DD.MM.YYYY').toDate())
+  const selected = dayjs(date, 'DD.MM.YYYY').isValid()
+    ? dayjs(date, 'DD.MM.YYYY').toDate()
     : null
 
   return (
     <FormGroup controlId="date">
       <ControlLabel>Date</ControlLabel>
-      <StyledInputGroup>
+      <InputGroup>
         <StyledDatePicker
           selected={selected}
           onChange={onChangeDatePicker}
           dateFormat={dateFormat}
           popperPlacement="auto"
         />
-      </StyledInputGroup>
+      </InputGroup>
     </FormGroup>
   )
 }
 
-export default observer(EventDate)
+export default EventDate

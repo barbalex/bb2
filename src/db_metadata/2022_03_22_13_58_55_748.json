@@ -1,0 +1,371 @@
+{
+  "resource_version": 30,
+  "metadata": {
+    "version": 3,
+    "sources": [
+      {
+        "name": "default",
+        "kind": "postgres",
+        "tables": [
+          {
+            "table": {
+              "schema": "public",
+              "name": "article"
+            },
+            "insert_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "content",
+                    "datum",
+                    "draft",
+                    "id",
+                    "title"
+                  ],
+                  "backend_only": false
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "draft",
+                    "content",
+                    "datum",
+                    "title",
+                    "id"
+                  ],
+                  "filter": {
+                    "draft": {
+                      "_ne": true
+                    }
+                  },
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "bb_user",
+                "permission": {
+                  "columns": [
+                    "content",
+                    "datum",
+                    "draft",
+                    "id",
+                    "title"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "columns": [
+                    "draft",
+                    "content",
+                    "datum",
+                    "title",
+                    "id"
+                  ],
+                  "filter": {},
+                  "check": null
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "event"
+            },
+            "insert_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "datum",
+                    "links",
+                    "tags",
+                    "event_type",
+                    "title",
+                    "id"
+                  ],
+                  "backend_only": false
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "datum",
+                    "links",
+                    "tags",
+                    "event_type",
+                    "title",
+                    "id"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "bb_user",
+                "permission": {
+                  "columns": [
+                    "datum",
+                    "links",
+                    "tags",
+                    "event_type",
+                    "title",
+                    "id"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "columns": [
+                    "datum",
+                    "links",
+                    "tags",
+                    "event_type",
+                    "title",
+                    "id"
+                  ],
+                  "filter": {},
+                  "check": null
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "page"
+            },
+            "insert_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "content",
+                    "name",
+                    "id"
+                  ],
+                  "backend_only": false
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "content",
+                    "name",
+                    "id"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "bb_user",
+                "permission": {
+                  "columns": [
+                    "content",
+                    "name",
+                    "id"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "columns": [
+                    "content",
+                    "name",
+                    "id"
+                  ],
+                  "filter": {},
+                  "check": null
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "publication"
+            },
+            "insert_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "draft",
+                    "content",
+                    "sort",
+                    "category",
+                    "title",
+                    "id"
+                  ],
+                  "backend_only": false
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "draft",
+                    "content",
+                    "sort",
+                    "category",
+                    "title",
+                    "id"
+                  ],
+                  "filter": {
+                    "draft": {
+                      "_ne": true
+                    }
+                  },
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "bb_user",
+                "permission": {
+                  "columns": [
+                    "draft",
+                    "content",
+                    "sort",
+                    "category",
+                    "title",
+                    "id"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "columns": [
+                    "draft",
+                    "content",
+                    "sort",
+                    "category",
+                    "title",
+                    "id"
+                  ],
+                  "filter": {},
+                  "check": null
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "bb_user",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "v_event_years"
+            },
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "year"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "bb_user",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "year"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          }
+        ],
+        "configuration": {
+          "connection_info": {
+            "use_prepared_statements": true,
+            "database_url": {
+              "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+            },
+            "isolation_level": "read-committed",
+            "pool_settings": {
+              "connection_lifetime": 600,
+              "retries": 1,
+              "idle_timeout": 180,
+              "max_connections": 50
+            }
+          }
+        }
+      }
+    ]
+  }
+}

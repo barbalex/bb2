@@ -7,13 +7,14 @@ import {
   Tooltip,
   OverlayTrigger,
 } from 'react-bootstrap'
-import has from 'lodash/has'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { navigate } from 'gatsby'
+import { gql, useApolloClient } from '@apollo/client'
 
 import oceanDarkImage from '../../images/oceanDark.jpg'
 import storeContext from '../../storeContext'
+import newDateYYYYMMDD from '../../modules/newDateYYYY-MM-DD'
 
 const StyledNavbar = styled(Navbar)`
   p,
@@ -39,6 +40,8 @@ const isNavMobile = () => {
 }
 
 const MyNavbar = ({ location }) => {
+  const { pathname } = location
+  const client = useApolloClient()
   const store = useContext(storeContext)
   const [navExpanded, changeNavExpanded] = useState(false)
 
@@ -48,30 +51,23 @@ const MyNavbar = ({ location }) => {
     if (navIsMobile) changeNavExpanded(!navExpanded)
   }, [navExpanded])
 
-  const onClickEvents = useCallback(() => {
-    store.page.getPage('pages_events')
-    navigate('/events/')
-    // if home was clicked, do not toggle nav
-  }, [store.page])
+  const onClickEvents = useCallback(() => navigate('/events/'), [])
   const onClickArticles = useCallback(() => {
-    store.page.getPage('pages_commentaries')
     navigate('/articles/')
     onToggleNav()
-  }, [onToggleNav, store.page])
+  }, [onToggleNav])
   const onClickSar = useCallback(() => {
     navigate('/sar/')
     onToggleNav()
   }, [onToggleNav])
   const onClickPublications = useCallback(() => {
-    store.page.getPage('pages_publications')
     navigate('/publications/')
     onToggleNav()
-  }, [onToggleNav, store.page])
+  }, [onToggleNav])
   const onClickAboutUs = useCallback(() => {
-    store.page.getPage('pages_aboutUs')
     navigate('/about-us/')
     onToggleNav()
-  }, [onToggleNav, store.page])
+  }, [onToggleNav])
 
   const onClickLogin = useCallback(() => {
     navigate('/login/')
@@ -80,49 +76,117 @@ const MyNavbar = ({ location }) => {
 
   const onClickEdit = useCallback(() => {
     store.toggleEditing()
+    if (pathname.includes('/about-us') && store.editing) {
+      client.refetchQueries({ include: ['AboutUsForAboutUs'] })
+    }
+    if (pathname.includes('/articles') && store.editing) {
+      client.refetchQueries({ include: ['ArticleForArticle'] })
+    }
+    if (pathname.includes('/publications') && store.editing) {
+      client.refetchQueries({ include: ['PublicationForPublication'] })
+    }
     onToggleNav()
-  }, [onToggleNav, store])
+  }, [client, onToggleNav, pathname, store])
+
   const onClickLogout = useCallback(() => {
     store.login.logout()
     onToggleNav()
     // need to force update
   }, [onToggleNav, store.login])
-  const onClickNewArticle = useCallback(
-    () => store.articles.toggleShowNewArticle(),
-    [store.articles],
-  )
-  const onClickNewPublication = useCallback(() => {
-    store.publications.setShowNewPublication(true)
-  }, [store.publications])
-  const onClickNewEvent = useCallback(
-    () => store.events.setShowNewEvent(true),
-    [store.events],
-  )
 
-  const { activePage } = store.page
-  const { activeMonthlyEvent } = store.monthlyEvents
-  const { activePublication } = store.publications
-  const { activeArticle } = store.articles
-  const email = store.login.email
-  const glyph = store.editing ? 'eye-open' : 'pencil'
-  const { pathname } = location
-  const id = activePage && activePage?._id ? activePage?._id : null
-  const nonEditableIds = [
-    'pages_commentaries',
-    'pages_monthlyEvents',
-    'pages_publications',
-    'pages_events',
-  ]
+  const onClickNewArticle = useCallback(async () => {
+    let datum = new Date()
+    const offset = datum.getTimezoneOffset()
+    datum = new Date(datum.getTime() - offset * 60 * 1000)
+    datum = datum.toISOString().split('T')[0]
+    let result
+    try {
+      result = await client.mutate({
+        mutation: gql`
+          mutation AddArticleForArticlePanel($draft: Boolean, $datum: date) {
+            insert_article_one(object: { datum: $datum, draft: $draft }) {
+              id
+              datum
+              draft
+            }
+          }
+        `,
+        variables: { draft: true, datum },
+        refetchQueries: ['ArticlesForArticlePanel', 'ArticleIdsForArticles'],
+      })
+    } catch (error) {
+      store.showError(error)
+    }
+    const id = result?.data?.insert_article_one?.id
+    navigate(`/articles/${id}`)
+    !store.editing && store.toggleEditing()
+  }, [client, store])
+
+  const onClickNewPublication = useCallback(async () => {
+    let result
+    try {
+      result = await client.mutate({
+        mutation: gql`
+          mutation AddPublicationForPublicationPanel(
+            $draft: Boolean
+            $category: String
+          ) {
+            insert_publication_one(
+              object: { category: $category, draft: $draft }
+            ) {
+              id
+            }
+          }
+        `,
+        variables: { draft: true, category: 'European Union' },
+        refetchQueries: ['PublicationsForPublicationsOfCategory'],
+      })
+    } catch (error) {
+      store.showError(error)
+    }
+    const id = result?.data?.insert_publication_one?.id
+    navigate(`/publications/European Union/${id}`)
+    !store.editing && store.toggleEditing()
+  }, [client, store])
+
+  const onClickNewEvent = useCallback(async () => {
+    let result
+    try {
+      result = await client.mutate({
+        mutation: gql`
+          mutation mutateEvent($datum: date, $eventType: String) {
+            insert_event_one(
+              object: { datum: $datum, event_type: $eventType }
+            ) {
+              id
+            }
+          }
+        `,
+        variables: {
+          datum: newDateYYYYMMDD(),
+          eventType: 'migration',
+        },
+        refetchQueries: ['EventsForEventsPageQuery'],
+      })
+    } catch (error) {
+      store.showError(error)
+    }
+    const id = result?.data?.insert_event_one?.id
+    if (!id) return console.log('got no id')
+    navigate(`/events/${id}/`)
+  }, [client, store])
+
+  const user = store.login.user
   const showEdit =
-    !!email &&
-    !!id &&
-    (!nonEditableIds.includes(id) ||
-      has(activeMonthlyEvent, '_id') ||
-      has(activeArticle, '_id') ||
-      has(activePublication, '_id'))
-  const showAddArticle = !!email && activePage?._id === 'pages_commentaries'
-  const showAddEvent = !!email && activePage?._id === 'pages_events'
-  const showAddPublication = !!email && activePage?._id === 'pages_publications'
+    !!user &&
+    (pathname.includes('/about-us') ||
+      pathname.includes('/articles') ||
+      pathname.includes('/publications'))
+  const showAddArticle = !!user && pathname.includes('/articles')
+  const showAddEvent = !!user && pathname.includes('/events')
+  const showAddPublication = !!user && pathname.includes('/publications')
+
+  const glyph = store.editing ? 'eye-open' : 'pencil'
 
   return (
     <StyledNavbar
@@ -138,9 +202,6 @@ const MyNavbar = ({ location }) => {
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav>
-          <NavItem active={pathname === '/articles/'} onClick={onClickArticles}>
-            My Articles
-          </NavItem>
           <NavItem active={pathname === '/sar/'} onClick={onClickSar}>
             SAR NGOs
           </NavItem>
@@ -149,6 +210,9 @@ const MyNavbar = ({ location }) => {
             onClick={onClickPublications}
           >
             Publications
+          </NavItem>
+          <NavItem active={pathname === '/articles/'} onClick={onClickArticles}>
+            My Articles
           </NavItem>
           <NavItem active={pathname === '/about-us/'} onClick={onClickAboutUs}>
             About us
@@ -200,8 +264,8 @@ const MyNavbar = ({ location }) => {
             </OverlayTrigger>
           )}
 
-          {!email && <NavItem onClick={onClickLogin}>log in</NavItem>}
-          {!!email && (
+          {!user && <NavItem onClick={onClickLogin}>log in</NavItem>}
+          {!!user && (
             <OverlayTrigger
               placement="bottom"
               overlay={<Tooltip id="logout">log out</Tooltip>}
