@@ -202,9 +202,6 @@ const MyNavbar = ({ location }) => {
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav>
-          <NavItem active={pathname === '/articles/'} onClick={onClickArticles}>
-            My Articles
-          </NavItem>
           <NavItem active={pathname === '/sar/'} onClick={onClickSar}>
             SAR NGOs
           </NavItem>
@@ -213,6 +210,9 @@ const MyNavbar = ({ location }) => {
             onClick={onClickPublications}
           >
             Publications
+          </NavItem>
+          <NavItem active={pathname === '/articles/'} onClick={onClickArticles}>
+            My Articles
           </NavItem>
           <NavItem active={pathname === '/about-us/'} onClick={onClickAboutUs}>
             About us
