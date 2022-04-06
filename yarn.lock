@@ -5582,13 +5582,22 @@ __metadata:
     case-sensitive-paths-webpack-plugin: 2.4.0
     dayjs: 1.11.0
     eslint: 8.12.0
+<<<<<<< HEAD
     eslint-plugin-import: 2.26.0
+=======
+    eslint-plugin-import: 2.25.4
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
     eslint-plugin-react: 7.29.4
     eslint-plugin-react-hooks: 4.4.0
     eslint-webpack-plugin: 3.1.1
     firebase: 9.6.10
+<<<<<<< HEAD
     firebase-tools: 10.6.0
     gatsby: 4.11.2
+=======
+    firebase-tools: 10.5.0
+    gatsby: 4.11.1
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
     gatsby-plugin-create-client-paths: 4.9.0
     gatsby-plugin-google-analytics: 4.11.0
     gatsby-plugin-manifest: 4.11.1
@@ -5614,7 +5623,11 @@ __metadata:
     react-dropzone: 12.0.4
     react-gemini-scrollbar: 2.3.4
     react-helmet: 6.1.0
+<<<<<<< HEAD
     react-is: 18.0.0
+=======
+    react-is: 17.0.2
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
     react-list: 0.8.17
     redaxios: 0.4.1
     styled-components: 5.3.5
@@ -6838,14 +6851,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "create-gatsby@npm:^2.11.2":
   version: 2.11.2
   resolution: "create-gatsby@npm:2.11.2"
+=======
+"create-gatsby@npm:^2.11.1":
+  version: 2.11.1
+  resolution: "create-gatsby@npm:2.11.1"
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
   dependencies:
     "@babel/runtime": ^7.15.4
   bin:
     create-gatsby: cli.js
+<<<<<<< HEAD
   checksum: 672840735b59033ea3133b4f5b0a07ad2efb55e89103b2b6b2a887704a4a572c702ec7828b1be590b713bdb37829a4400e178e9078c9e97af29a49096cae85f0
+=======
+  checksum: 8ff3c758bb9af6dc9cb8ee5aeac716bb98f08e49f86c19cbbe1df51a437046a563573645c5285276ada93dd3a2d0dd886ec75be11430c335d6281f451880d562
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
   languageName: node
   linkType: hard
 
@@ -9096,9 +9119,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "firebase-tools@npm:10.6.0":
   version: 10.6.0
   resolution: "firebase-tools@npm:10.6.0"
+=======
+"firebase-tools@npm:10.5.0":
+  version: 10.5.0
+  resolution: "firebase-tools@npm:10.5.0"
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
   dependencies:
     "@google-cloud/pubsub": ^2.18.4
     abort-controller: ^3.0.0
@@ -9161,7 +9190,11 @@ __metadata:
     ws: ^7.2.3
   bin:
     firebase: lib/bin/firebase.js
+<<<<<<< HEAD
   checksum: e0cd0c5a0168cbd3b3b20f71fc2fc3dd83eae3bff47b5a92e7d1159678bdbdd2d162ebe43917def45bf8f1d03541c59200d7280a9103a5d869de85591c5a83bc
+=======
+  checksum: d2efcd1160f5501d7de04111edfebdaba7473092d4e2e673285f6e681744f5ed2e8bc8526bd06d2c2acda383f8803ac39e8c8c816e50b91172d0d554d2c7107c
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
   languageName: node
   linkType: hard
 
@@ -9473,9 +9506,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "gatsby-cli@npm:^4.11.2":
   version: 4.11.2
   resolution: "gatsby-cli@npm:4.11.2"
+=======
+"gatsby-cli@npm:^4.11.1":
+  version: 4.11.1
+  resolution: "gatsby-cli@npm:4.11.1"
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
   dependencies:
     "@babel/code-frame": ^7.14.0
     "@babel/core": ^7.15.5
@@ -9493,7 +9532,11 @@ __metadata:
     common-tags: ^1.8.2
     configstore: ^5.0.1
     convert-hrtime: ^3.0.0
+<<<<<<< HEAD
     create-gatsby: ^2.11.2
+=======
+    create-gatsby: ^2.11.1
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
     envinfo: ^7.8.1
     execa: ^5.1.1
     fs-exists-cached: ^1.0.0
@@ -9524,7 +9567,11 @@ __metadata:
     yurnalist: ^2.1.0
   bin:
     gatsby: cli.js
+<<<<<<< HEAD
   checksum: e892fa85ef71ed421e1a6154a95074c0e8b3b0b8167b26a1e879b73c4e289a1c1afbb9365c4c7a9bb1bbc313d5c859b5aaa04b2ba520d1f32e414f8377d9f508
+=======
+  checksum: e0e8be47e22309c187afa79bc85758e6a8692a330ddde2cdbc4a8edc018acb60a6776fc6a07d7e65087af6261f63d0671d5dd0e4cefa5dd59857b385ae6f2b6c
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
   languageName: node
   linkType: hard
 
@@ -9936,9 +9983,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "gatsby@npm:4.11.2":
   version: 4.11.2
   resolution: "gatsby@npm:4.11.2"
+=======
+"gatsby@npm:4.11.1":
+  version: 4.11.1
+  resolution: "gatsby@npm:4.11.1"
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
   dependencies:
     "@babel/code-frame": ^7.14.0
     "@babel/core": ^7.15.5
@@ -10008,7 +10061,11 @@ __metadata:
     find-cache-dir: ^3.3.2
     fs-exists-cached: 1.0.0
     fs-extra: ^10.0.0
+<<<<<<< HEAD
     gatsby-cli: ^4.11.2
+=======
+    gatsby-cli: ^4.11.1
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
     gatsby-core-utils: ^3.11.1
     gatsby-graphiql-explorer: ^2.11.0
     gatsby-legacy-polyfills: ^2.11.0
@@ -10101,7 +10158,11 @@ __metadata:
       optional: true
   bin:
     gatsby: ./cli.js
+<<<<<<< HEAD
   checksum: 2d2a14e17385f19c47114425347b86d392849c078415582c9beb66aa7fa08b7223dcd649c33f732d559cbbb91aa2192af5575b696657caf4d5d557f29c457b5c
+=======
+  checksum: 3b1ba33c8c4668ad4c7bf4c8e9663c6517f207aafbbd2a1897fa764766b64c5a1b8bcdb85c5b2eb1a701d98b083f42a2894db5bc57aef4764b5bd5e68f5eaf39
+>>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
   languageName: node
   linkType: hard
 
