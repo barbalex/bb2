@@ -15,11 +15,7 @@
     "bootstrap": "3.x",
     "dayjs": "1.11.0",
     "firebase": "9.6.10",
-<<<<<<< HEAD
     "gatsby": "4.11.2",
-=======
-    "gatsby": "4.11.1",
->>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
     "gemini-scrollbar": "1.5.3",
     "graphql": "16.3.0",
     "jwt-decode": "3.1.2",
@@ -35,11 +31,7 @@
     "react-dropzone": "12.0.4",
     "react-gemini-scrollbar": "2.3.4",
     "react-helmet": "6.1.0",
-<<<<<<< HEAD
     "react-is": "18.0.0",
-=======
-    "react-is": "17.0.2",
->>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
     "react-list": "0.8.17",
     "redaxios": "0.4.1",
     "styled-components": "5.3.5"
@@ -51,19 +43,11 @@
     "babel-plugin-styled-components": "2.0.6",
     "case-sensitive-paths-webpack-plugin": "2.4.0",
     "eslint": "8.12.0",
-<<<<<<< HEAD
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-react": "7.29.4",
     "eslint-plugin-react-hooks": "4.4.0",
     "eslint-webpack-plugin": "3.1.1",
     "firebase-tools": "10.6.0",
-=======
-    "eslint-plugin-import": "2.25.4",
-    "eslint-plugin-react": "7.29.4",
-    "eslint-plugin-react-hooks": "4.4.0",
-    "eslint-webpack-plugin": "3.1.1",
-    "firebase-tools": "10.5.0",
->>>>>>> c2b1c39d52461fbbd7ef1796a44438880fc4e74f
     "gatsby-plugin-create-client-paths": "4.9.0",
     "gatsby-plugin-google-analytics": "4.11.0",
     "gatsby-plugin-manifest": "4.11.1",
