@@ -102,6 +102,32 @@ const sar = () => (
     <NgoContainer>
       <NgoTitle>
         <a
+          href="https://sos-humanity.org/en/about-us/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          SOS Humanity
+        </a>
+      </NgoTitle>
+      <Text>German NGO, 2015 –</Text>
+      <Text>{'2016-21 part of SOS Mediterranee Network'}</Text>
+      <Text>{'with ‘Aquarius’ & ‘Ocean Viking’'}</Text>
+      <Text>{'Now seeking EU coordination'}</Text>
+      <ShipTitle>
+        <a
+          href="https://sos-humanity.org/en/press/rescue-vessel-humanity-1-departed-for-central-mediterranean/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Humanity 1
+        </a>
+      </ShipTitle>
+      <Text>German flag, Kiel 2021</Text>
+      <Text>SAR operations start August 2022</Text>
+    </NgoContainer>
+    <NgoContainer>
+      <NgoTitle>
+        <a
           href="https://de.wikipedia.org/wiki/Sea-Watch"
           target="_blank"
           rel="noreferrer"
