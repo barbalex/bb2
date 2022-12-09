@@ -1,6 +1,6 @@
 //
 import React, { lazy, Suspense } from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 const Container = styled.div`
   table > thead > tr > th {

@@ -1,7 +1,7 @@
 //
 import React from 'react'
 import GeminiScrollbar from 'react-gemini-scrollbar'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 import DateRows from './DateRows'
 

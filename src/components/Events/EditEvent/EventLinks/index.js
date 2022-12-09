@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { gql, useApolloClient } from '@apollo/client'
 
 import EventLink from './EventLink'

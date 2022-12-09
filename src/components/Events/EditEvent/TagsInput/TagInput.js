@@ -1,7 +1,7 @@
 //
 import React, { useCallback, useMemo } from 'react'
 import { Glyphicon } from 'react-bootstrap'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { gql, useApolloClient } from '@apollo/client'
 
 const StyledGlyphicon = styled(Glyphicon)`

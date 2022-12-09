@@ -1,6 +1,6 @@
 import React from 'react'
 import dayjs from 'dayjs'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 import oceanDarkImage from '../../../images/oceanDark.jpg'
 

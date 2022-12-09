@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 const Container = styled.div`
   margin-bottom: 20px;

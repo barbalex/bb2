@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@apollo/client": "3.7.2",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@tinymce/tinymce-react": "3.14.0",
     "bootstrap": "3.x",
     "dayjs": "1.11.7",

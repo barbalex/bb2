@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Glyphicon } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 import RemoveEventGlyph from './RemoveEventGlyph'
 import EditEventGlyph from './EditEventGlyph'

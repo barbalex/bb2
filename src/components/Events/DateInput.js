@@ -2,7 +2,7 @@ import React from 'react'
 import DatePicker from 'react-datepicker'
 import dayjs from 'dayjs'
 import { FormGroup, ControlLabel, InputGroup } from 'react-bootstrap'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 const StyledDatePicker = styled(DatePicker)`
   width: 100%;

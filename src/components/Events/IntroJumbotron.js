@@ -4,7 +4,7 @@
 
 import React from 'react'
 import { Jumbotron } from 'react-bootstrap'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 const StyledJumbotron = styled(Jumbotron)`
   hyphens: manual !important;

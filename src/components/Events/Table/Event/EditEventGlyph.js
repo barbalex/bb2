@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { navigate } from 'gatsby'
 
 const StyledGlyphicon = styled(Glyphicon)`

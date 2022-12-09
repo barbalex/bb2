@@ -1,7 +1,7 @@
 //
 import React, { useContext, useState, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { gql, useApolloClient } from '@apollo/client'
 import {
   Alert,

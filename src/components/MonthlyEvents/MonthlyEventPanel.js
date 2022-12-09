@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useEffect } from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { navigate } from 'gatsby'
 
 import MonthlyEvent from './MonthlyEvent'

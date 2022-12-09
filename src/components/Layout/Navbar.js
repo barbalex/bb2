@@ -8,7 +8,7 @@ import {
   OverlayTrigger,
 } from 'react-bootstrap'
 import { observer } from 'mobx-react-lite'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { navigate } from 'gatsby'
 import { gql, useApolloClient } from '@apollo/client'
 

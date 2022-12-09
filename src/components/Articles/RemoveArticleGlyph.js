@@ -7,7 +7,7 @@ import {
   ButtonToolbar,
   Button,
 } from 'react-bootstrap'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { gql, useApolloClient } from '@apollo/client'
 
 import StoreContext from '../../storeContext'

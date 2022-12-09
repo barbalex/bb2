@@ -12,7 +12,7 @@ import {
   FormControl,
 } from 'react-bootstrap'
 import dayjs from 'dayjs'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { gql, useQuery, useApolloClient } from '@apollo/client'
 import { navigate } from 'gatsby'
 import { observer } from 'mobx-react-lite'

@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { ButtonGroup, Button } from 'react-bootstrap'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import DocumentTitle from 'react-document-title'
 import { navigate } from '@reach/router'
 import { gql, useQuery } from '@apollo/client'

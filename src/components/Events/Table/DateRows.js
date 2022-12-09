@@ -6,7 +6,7 @@
 import React from 'react'
 import dayjs from 'dayjs'
 import ReactList from 'react-list'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { gql, useQuery } from '@apollo/client'
 
 import DateRow from './DateRow'

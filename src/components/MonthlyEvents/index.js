@@ -1,7 +1,7 @@
 //
 import React from 'react'
 import { PanelGroup, Panel } from 'react-bootstrap'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import DocumentTitle from 'react-document-title'
 
 import MonthlyEventsOfYear from './MonthlyEventsOfYear'
