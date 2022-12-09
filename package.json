@@ -46,7 +46,7 @@
     "eslint-plugin-react": "7.31.11",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-webpack-plugin": "3.2.0",
-    "firebase-tools": "10.9.2",
+    "firebase-tools": "11.17.0",
     "gatsby-plugin-create-client-paths": "4.9.0",
     "gatsby-plugin-google-analytics": "4.25.0",
     "gatsby-plugin-manifest": "4.25.0",
