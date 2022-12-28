@@ -164,6 +164,53 @@ const sar = () => (
     <NgoContainer>
       <NgoTitle>
         <a
+          href="https://de.wikipedia.org/wiki/Mission_Lifeline"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Mission Lifeline
+        </a>
+      </NgoTitle>
+      <Text>German NGO, Dresden, 2016 -</Text>
+      <ShipTitle>
+        <a
+          href="https://mission-lifeline.de/das-jahr-der-rise-above"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Rise Above
+        </a>
+      </ShipTitle>
+      <Text>2021 - (flag?)</Text>
+      <Text>‘Eleonore’ 2019 -</Text>
+      <Text>‘Lifeline’ 2016 –</Text>
+    </NgoContainer>
+    <NgoContainer>
+      <NgoTitle>
+        <a
+          href="https://en.wikipedia.org/wiki/Emergency_(organization)#Italy"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Emergency
+        </a>
+      </NgoTitle>
+      <Text>International NGO, Milan, 1994 –</Text>
+      <ShipTitle>
+        <a
+          href="https://reliefweb.int/report/world/emergency-ngo-search-and-rescue-ship-life-support-embarks-inaugural-mission-central-mediterranean-sea"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Life Support
+        </a>
+      </ShipTitle>
+      <Text>Italian flag (?)</Text>
+      <Text>SAR December 2022 –</Text>
+    </NgoContainer>
+    <NgoContainer>
+      <NgoTitle>
+        <a
           href="https://de.wikipedia.org/wiki/Sea-Eye"
           target="_blank"
           rel="noreferrer"
