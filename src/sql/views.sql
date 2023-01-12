@@ -10,7 +10,7 @@ FROM
 GROUP BY
   year
 ORDER BY
-  year DESC;
+  year ASC;
 
 DROP VIEW IF EXISTS v_publication_categories CASCADE;
 
