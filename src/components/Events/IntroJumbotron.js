@@ -27,9 +27,10 @@ const P = styled.p`
 const IntroJumbotron = () => (
   <StyledJumbotron className="eventsIntro">
     <P>
-      Most migrants and refugees arriving in Europe cross the Mediterranean. The
-      purpose of this website is to provide a rough overview by focusing mainly
-      on the Central Med and by covering both maritime and political events.
+      Large numbers of migrants and refugees arriving in Europe cross some part
+      of the Mediterranean. The purpose of this website is to take a look at the
+      most important route, that of the Central Mediterranean by focusing on
+      both maritime and political events.
     </P>
   </StyledJumbotron>
 )
