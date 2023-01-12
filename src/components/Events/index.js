@@ -66,17 +66,40 @@ const Events = ({ id }) => {
     [],
   )
 
-  const [grouped, setGrouped] = useState(true)
-  const onClickSetGrouped = useCallback(() => {
-    setGrouped(!grouped)
-  }, [grouped, setGrouped])
+  const [grouped15to18, setGrouped15to18] = useState(true)
+  const onClickSetGrouped15to18 = useCallback(() => {
+    setGrouped15to18(!grouped15to18)
+  }, [grouped15to18, setGrouped15to18])
+
+  const [grouped19to22, setGrouped19to22] = useState(true)
+
+  const onClickSetGrouped19to22 = useCallback(() => {
+    setGrouped19to22(!grouped19to22)
+  }, [grouped19to22, setGrouped19to22])
 
   const [activeYear, setActiveYear] = useState(new Date().getFullYear())
 
-  const yearsOfEventsToUse = useMemo(
-    () => (grouped ? years.filter((y) => y > 2018) : years),
-    [grouped, years],
-  )
+  const yearsOfEventsToUse = useMemo(() => {
+    let yrs = years
+    if (grouped19to22) {
+      yrs = yrs.filter((y) => y < 2019 || y > 2022)
+    }
+    if (grouped15to18) {
+      yrs = yrs.filter((y) => y < 2015 || y > 2018)
+    }
+
+    return yrs
+  }, [grouped15to18, grouped19to22, years])
+
+  console.log('yearsOfEventsToUse', {
+    yearsOfEventsToUse,
+    years,
+    grouped19to22,
+    grouped15to18,
+  })
+  // years.forEach((y) => {
+  //   console.log({ y, type: typeof y })
+  // })
 
   return (
     <DocumentTitle title="Events">
@@ -92,8 +115,11 @@ const Events = ({ id }) => {
                 setActiveYear={setActiveYear}
               />
             ))}
-            {grouped && (
-              <Button onClick={onClickSetGrouped}>2018 - 2015</Button>
+            {grouped19to22 && (
+              <Button onClick={onClickSetGrouped19to22}>2022 - 2019</Button>
+            )}
+            {grouped15to18 && (
+              <Button onClick={onClickSetGrouped15to18}>2018 - 2015</Button>
             )}
             <Button onClick={onClickMonthlyEvents}>2014 - 2011</Button>
           </ButtonGroup>
