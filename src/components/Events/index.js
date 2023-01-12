@@ -90,7 +90,9 @@ const Events = ({ id }) => {
 
     return yrs
   }, [grouped15to18, grouped19to22, years])
-
+  const years15to18 = yearsOfEventsToUse.filter((y) => y >= 2015 && y <= 2018)
+  const years19to22 = yearsOfEventsToUse.filter((y) => y >= 2019 && y <= 2022)
+  const yearsAfter22 = yearsOfEventsToUse.filter((y) => y > 2022)
 
   return (
     <DocumentTitle title="Events">
@@ -99,13 +101,31 @@ const Events = ({ id }) => {
         <YearButtonsContainer>
           <ButtonGroup>
             <Button onClick={onClickMonthlyEvents}>2011 - 2014</Button>
-            {grouped15to18 && (
+            {grouped15to18 ? (
               <Button onClick={onClickSetGrouped15to18}>2015 - 2018</Button>
+            ) : (
+              years15to18.map((year) => (
+                <YearButton
+                  key={year}
+                  year={year}
+                  activeYear={activeYear}
+                  setActiveYear={setActiveYear}
+                />
+              ))
             )}
-            {grouped19to22 && (
+            {grouped19to22 ? (
               <Button onClick={onClickSetGrouped19to22}>2019 - 2022</Button>
+            ) : (
+              years19to22.map((year) => (
+                <YearButton
+                  key={year}
+                  year={year}
+                  activeYear={activeYear}
+                  setActiveYear={setActiveYear}
+                />
+              ))
             )}
-            {yearsOfEventsToUse.map((year) => (
+            {yearsAfter22.map((year) => (
               <YearButton
                 key={year}
                 year={year}
