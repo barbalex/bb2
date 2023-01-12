@@ -62,7 +62,7 @@ const Events = ({ id }) => {
   const years = (data?.years ?? [new Date().getFullYear()]).map((d) => d.year)
 
   const onClickMonthlyEvents = useCallback(
-    () => navigate('/monthly-events'),
+    () => navigate('/monthly-events/'),
     [],
   )
 
@@ -91,15 +91,6 @@ const Events = ({ id }) => {
     return yrs
   }, [grouped15to18, grouped19to22, years])
 
-  console.log('yearsOfEventsToUse', {
-    yearsOfEventsToUse,
-    years,
-    grouped19to22,
-    grouped15to18,
-  })
-  // years.forEach((y) => {
-  //   console.log({ y, type: typeof y })
-  // })
 
   return (
     <DocumentTitle title="Events">
@@ -107,6 +98,13 @@ const Events = ({ id }) => {
         <IntroJumbotron />
         <YearButtonsContainer>
           <ButtonGroup>
+            <Button onClick={onClickMonthlyEvents}>2011 - 2014</Button>
+            {grouped15to18 && (
+              <Button onClick={onClickSetGrouped15to18}>2015 - 2018</Button>
+            )}
+            {grouped19to22 && (
+              <Button onClick={onClickSetGrouped19to22}>2019 - 2022</Button>
+            )}
             {yearsOfEventsToUse.map((year) => (
               <YearButton
                 key={year}
@@ -115,13 +113,6 @@ const Events = ({ id }) => {
                 setActiveYear={setActiveYear}
               />
             ))}
-            {grouped19to22 && (
-              <Button onClick={onClickSetGrouped19to22}>2022 - 2019</Button>
-            )}
-            {grouped15to18 && (
-              <Button onClick={onClickSetGrouped15to18}>2018 - 2015</Button>
-            )}
-            <Button onClick={onClickMonthlyEvents}>2014 - 2011</Button>
           </ButtonGroup>
         </YearButtonsContainer>
         <EventsTable activeYear={activeYear} />
