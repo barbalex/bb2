@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { ApolloProvider } from '@apollo/client'
+import ReactGA from 'react-ga'
 
 import store from './store'
 // make webpack import styles
@@ -24,6 +25,8 @@ const firebaseConfig = {
   projectId: process.env.GATSBY_FIREBASE_PROJECT_ID,
   appId: process.env.GATSBY_FIREBASE_APP_ID,
 }
+
+ReactGA.initialize(process.env.GATSBY_GOOGLE_ANALYTICS_ID)
 
 // BEWARE: The redirect caused the app to ALWAYS redirect when it was refreshed
 // and also when it was opened at a sub-route like /login
