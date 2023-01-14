@@ -29,7 +29,7 @@ const IntroJumbotron = () => (
     <P>
       Large numbers of migrants and refugees arriving in Europe cross some part
       of the Mediterranean. The purpose of this website is to take a look at the
-      most important route, that of the Central Mediterranean by focusing on
+      most important route, that of the Central Mediterranean, by focusing on
       both maritime and political events.
     </P>
   </StyledJumbotron>
