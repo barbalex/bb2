@@ -7,7 +7,8 @@
     "dev": "gatsby develop",
     "build": "gatsby clean && gatsby build",
     "serve": "gatsby serve",
-    "deploy": "yarn build && yarn firebase deploy --only hosting"
+    "deploy": "yarn build && yarn firebase deploy --only hosting",
+    "info": "gatsby info --clipboard"
   },
   "dependencies": {
     "@apollo/client": "3.7.3",
@@ -19,7 +20,6 @@
     "firebase": "9.15.0",
     "gatsby": "4.25.1",
     "gemini-scrollbar": "1.5.3",
-    "graphql": "16.6.0",
     "jwt-decode": "3.1.2",
     "lodash": "4.17.21",
     "mobx": "6.7.0",
