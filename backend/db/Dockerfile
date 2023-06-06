@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/postgres?tab=tags
-FROM postgres:14.2
+FROM postgres:14.8
 
 # for using cron, see https://www.cloudsavvyit.com/9033/how-to-use-cron-with-your-docker-containers/
 
