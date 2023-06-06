@@ -7,7 +7,8 @@
     "dev": "gatsby develop",
     "build": "gatsby clean && gatsby build",
     "serve": "gatsby serve",
-    "deploy": "npm run build && npm run firebase deploy --only hosting",
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "deploy-only": "firebase deploy --only hosting",
     "info": "gatsby info --clipboard"
   },
   "dependencies": {
