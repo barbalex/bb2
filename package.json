@@ -7,7 +7,7 @@
     "dev": "gatsby develop",
     "build": "gatsby clean && gatsby build",
     "serve": "gatsby serve",
-    "deploy": "yarn build && yarn firebase deploy --only hosting",
+    "deploy": "npm run build && npm run firebase deploy --only hosting",
     "info": "gatsby info --clipboard"
   },
   "dependencies": {
@@ -31,7 +31,6 @@
     "react-document-title": "2.0.3",
     "react-dom": "17.0.2",
     "react-dropzone": "12.1.0",
-    "react-ga": "3.3.1",
     "react-gemini-scrollbar": "2.3.4",
     "react-helmet": "6.1.0",
     "react-list": "0.8.17",
@@ -83,6 +82,5 @@
     "not dead",
     "not ie > 0",
     "not op_mini all"
-  ],
-  "packageManager": "yarn@3.1.1"
+  ]
 }
