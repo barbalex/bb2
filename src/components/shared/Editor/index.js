@@ -124,7 +124,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
       init={{
         selector: `#${doc.id}`,
         plugins:
-          'advlist autolink link image lists charmap print hr anchor pagebreak searchreplace wordcount visualblocks visualchars media nonbreaking save table directionality paste autosave fullscreen code',
+          'advlist autolink link image lists charmap print anchor pagebreak searchreplace wordcount visualblocks visualchars media nonbreaking save table directionality paste autosave fullscreen code',
         menubar: 'edit insert view format table',
         toolbar:
           'insertfile undo redo searchreplace | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code | wordcount print fullscreen',
@@ -133,7 +133,6 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
         automatic_uploads: false,
         statusbar: false,
         body_class: bodyClass,
-        content_css: `./tinymce.css`,
         fullscreen_native: true,
       }}
       onChange={(e) => saveFunction(e.target.getContent())}
