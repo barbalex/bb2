@@ -14,7 +14,7 @@ import {
 import dayjs from 'dayjs'
 import DatePicker from 'react-datepicker'
 
-import Editor from '../../shared/Editor'
+import Editor from '../../Editor'
 import storeContext from '../../../storeContext'
 import hex2a from '../../../modules/hex2a'
 

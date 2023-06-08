@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import DocumentTitle from 'react-document-title'
 import { gql, useQuery } from '@apollo/client'
 
-import Editor from './shared/Editor'
+import Editor from './Editor'
 import storeContext from '../storeContext'
 import hex2a from '../modules/hex2a'
 

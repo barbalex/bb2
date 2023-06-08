@@ -11,7 +11,7 @@ import {
   FormControl,
 } from 'react-bootstrap'
 
-import Editor from '../../shared/Editor'
+import Editor from '../../Editor'
 import hex2a from '../../../modules/hex2a'
 import categories from '../categories'
 

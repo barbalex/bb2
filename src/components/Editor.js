@@ -4,7 +4,7 @@ import { Editor } from '@tinymce/tinymce-react'
 import { observer } from 'mobx-react-lite'
 import { gql, useApolloClient } from '@apollo/client'
 
-import storeContext from '../../../storeContext'
+import storeContext from '../storeContext'
 
 const MyEditor = ({ doc, docType, contentDecoded }) => {
   const client = useApolloClient()
@@ -124,7 +124,7 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
       init={{
         selector: `#${doc.id}`,
         plugins:
-          'advlist autolink link image lists charmap print anchor pagebreak searchreplace wordcount visualblocks visualchars media nonbreaking save table directionality paste autosave fullscreen code',
+          'advlist autolink link image lists charmap print anchor pagebreak searchreplace wordcount visualblocks visualchars media nonbreaking save table directionality autosave fullscreen code',
         menubar: 'edit insert view format table',
         toolbar:
           'insertfile undo redo searchreplace | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code | wordcount print fullscreen',
