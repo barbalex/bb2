@@ -123,20 +123,18 @@ const MyEditor = ({ doc, docType, contentDecoded }) => {
       initialValue={contentDecoded}
       init={{
         selector: `#${doc.id}`,
-        plugins: [
-          'advlist autolink link image lists charmap print hr anchor pagebreak',
-          'searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking',
-          'save table directionality template paste autosave',
-        ],
+        plugins:
+          'advlist autolink link image lists charmap print hr anchor pagebreak searchreplace wordcount visualblocks visualchars media nonbreaking save table directionality paste autosave fullscreen code',
         menubar: 'edit insert view format table tools',
         toolbar:
-          'insertfile undo redo | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print code fullscreen',
+          'insertfile undo redo searchreplace | styleselect | bold italic underline forecolor backcolor removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code | print fullscreen',
         height,
         browser_spellcheck: true,
         automatic_uploads: false,
         statusbar: false,
         body_class: bodyClass,
         content_css: `./tinymce.css`,
+        fullscreen_native: true,
       }}
       onChange={(e) => saveFunction(e.target.getContent())}
     />
