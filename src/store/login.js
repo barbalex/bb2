@@ -14,7 +14,6 @@ export default (store) => {
   return {
     user: null,
     firebaseAuth: null,
-
     email: window.localStorage.email,
 
     setFirebaseAuth: action('setFirebaseAuth', (auth) => {
