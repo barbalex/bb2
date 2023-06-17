@@ -75,7 +75,7 @@ async function start() {
               adminError?.errorInfo,
             )
             if (adminError.errorInfo.code === 'auth/user-not-found') {
-              return h.response('user role and id set').code(200)
+              return h.response('user role and is set').code(200)
             }
             return h
               .response(`Error creating custom token: ${adminError.message}`)
