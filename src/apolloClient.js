@@ -5,7 +5,7 @@ import {
 } from '@apollo/client'
 import { BatchHttpLink } from '@apollo/client/link/batch-http'
 import { setContext } from '@apollo/client/link/context'
-import { ApolloLink } from '@apollo/client'
+import { ApolloLink, HttpLink } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 import jwtDecode from 'jwt-decode'
 import uniqBy from 'lodash/uniqBy'
@@ -13,10 +13,13 @@ import uniqBy from 'lodash/uniqBy'
 import graphQlUri from './modules/graphQlUri'
 import existsPermissionsError from './modules/existsPermissionError'
 
+const noToken =
+  'eyJhbGciOiJIUzUxMiIsImtpZCI6ImY5N2U3ZWVlY2YwMWM4MDhiZjRhYjkzOTczNDBiZmIyOTgyZTg0NzUiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6ImFub255bW91cyIsIngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsiYW5vbnltb3VzIl19LCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYmx1ZS1ib3JkZXJzIiwiYXVkIjoiYmx1ZS1ib3JkZXJzIiwiYXV0aF90aW1lIjoxNjg4MTE3OTU2LCJ1c2VyX2lkIjoiSERqQVp5bERha2JiSVd1YXVpcXQ1eDFNbXZpMiIsInN1YiI6IkhEakFaeWxEYWtiYklXdWF1aXF0NXgxTW12aTIiLCJpYXQiOjE3OTgxMTc5NjEsImV4cCI6MTc5ODEyMTU2MSwiZW1haWwiOiJ2aXNpdG9yQHZpc2l0b3IuY2giLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidmlzaXRvckB2aXNpdG9yLmNoIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.9wsHhGVwjf5YyeqgwhwI41ejzIdYBso6hnWIxpCjxsklZwJiXCLSMJXDORMCvRjGoJxsBrh0nMd9I-pj8ABylg'
+
 // to be used in apollo link
 const getToken = () => {
   if (typeof window === 'undefined') return null
-  return window.localStorage.getItem('token')
+  return window.localStorage.getItem('token') ?? noToken
 }
 
 const Client = ({ store }) => {
@@ -32,13 +35,13 @@ const Client = ({ store }) => {
     // numbers than the exp date contains
     const tokenIsValid = token ? tokenDecoded.exp > Date.now() / 1000 : false
 
-    if (!(token && tokenIsValid)) return headers
+    // if (!(token && tokenIsValid)) return headers
 
     return {
       headers: {
         ...headers,
         'x-hasura-role': 'bb_user',
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${token ?? 'just-any-value'}`,
       },
     }
   })
@@ -110,7 +113,7 @@ const Client = ({ store }) => {
     },
   })
 
-  const batchHttpLink = new BatchHttpLink({
+  const batchHttpLink = new HttpLink({
     uri: graphQlUri(),
   })
   const client = new ApolloClient({
